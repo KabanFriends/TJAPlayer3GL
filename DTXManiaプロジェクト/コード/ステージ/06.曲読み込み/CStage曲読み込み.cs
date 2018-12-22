@@ -263,15 +263,15 @@ namespace DTXMania
                 CDTXMania.Tx.SongLoading_Plate.n透明度 = C変換.nParsentTo255((this.ct曲名表示.n現在の値 / 30.0));
                 if(CDTXMania.Skin.SongLoading_Plate_ReferencePoint == CSkin.ReferencePoint.Left)
                 {
-                CDTXMania.Tx.SongLoading_Plate.t2D描画(CDTXMania.app.Device, CDTXMania.Skin.SongLoading_Plate_X, CDTXMania.Skin.SongLoading_Plate_Y - (CDTXMania.Tx.SongLoading_Plate.sz画像サイズ.Height / 2));
+                CDTXMania.Tx.SongLoading_Plate.t2D描画(CDTXMania.app.Device, CDTXMania.Skin.SongLoading_Plate_XY[0], CDTXMania.Skin.SongLoading_Plate_XY[1] - (CDTXMania.Tx.SongLoading_Plate.sz画像サイズ.Height / 2));
                 }
                 else if(CDTXMania.Skin.SongLoading_Plate_ReferencePoint == CSkin.ReferencePoint.Right)
                 {
-                CDTXMania.Tx.SongLoading_Plate.t2D描画(CDTXMania.app.Device, CDTXMania.Skin.SongLoading_Plate_X - CDTXMania.Tx.SongLoading_Plate.sz画像サイズ.Width, CDTXMania.Skin.SongLoading_Plate_Y - (CDTXMania.Tx.SongLoading_Plate.sz画像サイズ.Height / 2));
+                CDTXMania.Tx.SongLoading_Plate.t2D描画(CDTXMania.app.Device, CDTXMania.Skin.SongLoading_Plate_XY[0] - CDTXMania.Tx.SongLoading_Plate.sz画像サイズ.Width, CDTXMania.Skin.SongLoading_Plate_XY[1] - (CDTXMania.Tx.SongLoading_Plate.sz画像サイズ.Height / 2));
                 }
                 else
                 {
-                CDTXMania.Tx.SongLoading_Plate.t2D描画(CDTXMania.app.Device, CDTXMania.Skin.SongLoading_Plate_X - (CDTXMania.Tx.SongLoading_Plate.sz画像サイズ.Width / 2), CDTXMania.Skin.SongLoading_Plate_Y - (CDTXMania.Tx.SongLoading_Plate.sz画像サイズ.Height / 2));
+                CDTXMania.Tx.SongLoading_Plate.t2D描画(CDTXMania.app.Device, CDTXMania.Skin.SongLoading_Plate_XY[0] - (CDTXMania.Tx.SongLoading_Plate.sz画像サイズ.Width / 2), CDTXMania.Skin.SongLoading_Plate_XY[1] - (CDTXMania.Tx.SongLoading_Plate.sz画像サイズ.Height / 2));
                 }
             }
             //CDTXMania.act文字コンソール.tPrint( 0, 16, C文字コンソール.Eフォント種別.灰, C変換.nParsentTo255( ( this.ct曲名表示.n現在の値 / 30.0 ) ).ToString() );
@@ -285,15 +285,15 @@ namespace DTXMania
                 this.txタイトル.n透明度 = C変換.nParsentTo255( ( this.ct曲名表示.n現在の値 / 30.0 ) );
                 if(CDTXMania.Skin.SongLoading_Title_ReferencePoint == CSkin.ReferencePoint.Left)
                 {
-                    this.txタイトル.t2D描画(CDTXMania.app.Device, CDTXMania.Skin.SongLoading_Title_X, CDTXMania.Skin.SongLoading_Title_Y - (this.txタイトル.sz画像サイズ.Height / 2) + nサブタイトル補正);
+                    this.txタイトル.t2D描画(CDTXMania.app.Device, CDTXMania.Skin.SongLoading_Title_XY[0], CDTXMania.Skin.SongLoading_Title_XY[1] - (this.txタイトル.sz画像サイズ.Height / 2) + nサブタイトル補正);
                 }
                 else if(CDTXMania.Skin.SongLoading_Title_ReferencePoint == CSkin.ReferencePoint.Right)
                 {
-                    this.txタイトル.t2D描画(CDTXMania.app.Device, CDTXMania.Skin.SongLoading_Title_X - (this.txタイトル.sz画像サイズ.Width * txタイトル.vc拡大縮小倍率.X), CDTXMania.Skin.SongLoading_Title_Y - (this.txタイトル.sz画像サイズ.Height / 2) + nサブタイトル補正);
+                    this.txタイトル.t2D描画(CDTXMania.app.Device, CDTXMania.Skin.SongLoading_Title_XY[0] - (this.txタイトル.sz画像サイズ.Width * txタイトル.vc拡大縮小倍率.X), CDTXMania.Skin.SongLoading_Title_XY[1] - (this.txタイトル.sz画像サイズ.Height / 2) + nサブタイトル補正);
                 }
                 else
                 {
-                    this.txタイトル.t2D描画(CDTXMania.app.Device, (CDTXMania.Skin.SongLoading_Title_X - ((this.txタイトル.sz画像サイズ.Width * txタイトル.vc拡大縮小倍率.X) / 2)), CDTXMania.Skin.SongLoading_Title_Y - (this.txタイトル.sz画像サイズ.Height / 2) + nサブタイトル補正);
+                    this.txタイトル.t2D描画(CDTXMania.app.Device, (CDTXMania.Skin.SongLoading_Title_XY[0] - ((this.txタイトル.sz画像サイズ.Width * txタイトル.vc拡大縮小倍率.X) / 2)), CDTXMania.Skin.SongLoading_Title_XY[1] - (this.txタイトル.sz画像サイズ.Height / 2) + nサブタイトル補正);
                 }
             }
 			if( this.txサブタイトル != null )
@@ -301,15 +301,15 @@ namespace DTXMania
                 this.txサブタイトル.n透明度 = C変換.nParsentTo255( ( this.ct曲名表示.n現在の値 / 30.0 ) );
                 if(CDTXMania.Skin.SongLoading_SubTitle_ReferencePoint == CSkin.ReferencePoint.Left)
                 {
-                    this.txサブタイトル.t2D描画(CDTXMania.app.Device, CDTXMania.Skin.SongLoading_SubTitle_X, CDTXMania.Skin.SongLoading_SubTitle_Y - (this.txサブタイトル.sz画像サイズ.Height / 2));
+                    this.txサブタイトル.t2D描画(CDTXMania.app.Device, CDTXMania.Skin.SongLoading_SubTitle_XY[0], CDTXMania.Skin.SongLoading_SubTitle_XY[1] - (this.txサブタイトル.sz画像サイズ.Height / 2));
                 }
                 else if(CDTXMania.Skin.SongLoading_Title_ReferencePoint == CSkin.ReferencePoint.Right)
                 {
-                    this.txサブタイトル.t2D描画(CDTXMania.app.Device, CDTXMania.Skin.SongLoading_SubTitle_X - (this.txサブタイトル.sz画像サイズ.Width * txタイトル.vc拡大縮小倍率.X), CDTXMania.Skin.SongLoading_SubTitle_Y - (this.txサブタイトル.sz画像サイズ.Height / 2));
+                    this.txサブタイトル.t2D描画(CDTXMania.app.Device, CDTXMania.Skin.SongLoading_SubTitle_XY[0] - (this.txサブタイトル.sz画像サイズ.Width * txタイトル.vc拡大縮小倍率.X), CDTXMania.Skin.SongLoading_SubTitle_XY[1] - (this.txサブタイトル.sz画像サイズ.Height / 2));
                 }
                 else
                 {
-                    this.txサブタイトル.t2D描画(CDTXMania.app.Device, (CDTXMania.Skin.SongLoading_SubTitle_X - ((this.txサブタイトル.sz画像サイズ.Width * txサブタイトル.vc拡大縮小倍率.X) / 2)), CDTXMania.Skin.SongLoading_SubTitle_Y - (this.txサブタイトル.sz画像サイズ.Height / 2));
+                    this.txサブタイトル.t2D描画(CDTXMania.app.Device, (CDTXMania.Skin.SongLoading_SubTitle_XY[0] - ((this.txサブタイトル.sz画像サイズ.Width * txサブタイトル.vc拡大縮小倍率.X) / 2)), CDTXMania.Skin.SongLoading_SubTitle_XY[1] - (this.txサブタイトル.sz画像サイズ.Height / 2));
                 }
             }
 			//-----------------------------

@@ -148,15 +148,15 @@ namespace DTXMania
             {
                 if (CDTXMania.Skin.Game_Lyric_ReferencePoint == CSkin.ReferencePoint.Left)
                 {
-                this.tx歌詞テクスチャ.t2D描画(CDTXMania.app.Device, CDTXMania.Skin.Game_Lyric_X , CDTXMania.Skin.Game_Lyric_Y);
+                this.tx歌詞テクスチャ.t2D描画(CDTXMania.app.Device, CDTXMania.Skin.Game_Lyric_XY[0] , CDTXMania.Skin.Game_Lyric_XY[1]);
                 }
                 else if (CDTXMania.Skin.Game_Lyric_ReferencePoint == CSkin.ReferencePoint.Right)
                 {
-                this.tx歌詞テクスチャ.t2D描画(CDTXMania.app.Device, CDTXMania.Skin.Game_Lyric_X - this.tx歌詞テクスチャ.szテクスチャサイズ.Width, CDTXMania.Skin.Game_Lyric_Y);
+                this.tx歌詞テクスチャ.t2D描画(CDTXMania.app.Device, CDTXMania.Skin.Game_Lyric_XY[0] - this.tx歌詞テクスチャ.szテクスチャサイズ.Width, CDTXMania.Skin.Game_Lyric_XY[1]);
                 }
                 else
                 {
-                this.tx歌詞テクスチャ.t2D描画(CDTXMania.app.Device, CDTXMania.Skin.Game_Lyric_X - (this.tx歌詞テクスチャ.szテクスチャサイズ.Width / 2), CDTXMania.Skin.Game_Lyric_Y);
+                this.tx歌詞テクスチャ.t2D描画(CDTXMania.app.Device, CDTXMania.Skin.Game_Lyric_XY[0] - (this.tx歌詞テクスチャ.szテクスチャサイズ.Width / 2), CDTXMania.Skin.Game_Lyric_XY[1]);
                 }
             }
         }
@@ -239,7 +239,7 @@ namespace DTXMania
                     this.ct進行用.n現在の値 = 300;
                 }
                 if( this.txGENRE != null )
-                    this.txGENRE.t2D描画( CDTXMania.app.Device, CDTXMania.Skin.Game_Genre_X, CDTXMania.Skin.Game_Genre_Y );
+                    this.txGENRE.t2D描画( CDTXMania.app.Device, CDTXMania.Skin.Game_Genre_XY[0], CDTXMania.Skin.Game_Genre_XY[1] );
 
                 if( CDTXMania.Skin.b現在のステージ数を表示しない )
                 {
@@ -251,15 +251,15 @@ namespace DTXMania
                         this.txMusicName.vc拡大縮小倍率.X = fRate;
                         if (CDTXMania.Skin.Game_MusicName_ReferencePoint == CSkin.ReferencePoint.Center)
                         {
-                            this.txMusicName.t2D描画(CDTXMania.app.Device, CDTXMania.Skin.Game_MusicName_X - ((this.txMusicName.szテクスチャサイズ.Width * fRate) / 2), CDTXMania.Skin.Game_MusicName_Y);
+                            this.txMusicName.t2D描画(CDTXMania.app.Device, CDTXMania.Skin.Game_MusicName_XY[0] - ((this.txMusicName.szテクスチャサイズ.Width * fRate) / 2), CDTXMania.Skin.Game_MusicName_XY[1]);
                         }
                         else if (CDTXMania.Skin.Game_MusicName_ReferencePoint == CSkin.ReferencePoint.Left)
                         {
-                            this.txMusicName.t2D描画(CDTXMania.app.Device, CDTXMania.Skin.Game_MusicName_X, CDTXMania.Skin.Game_MusicName_Y);
+                            this.txMusicName.t2D描画(CDTXMania.app.Device, CDTXMania.Skin.Game_MusicName_XY[0], CDTXMania.Skin.Game_MusicName_XY[1]);
                         }
                         else
                         {
-                            this.txMusicName.t2D描画(CDTXMania.app.Device, CDTXMania.Skin.Game_MusicName_X - (this.txMusicName.szテクスチャサイズ.Width * fRate), CDTXMania.Skin.Game_MusicName_Y);
+                            this.txMusicName.t2D描画(CDTXMania.app.Device, CDTXMania.Skin.Game_MusicName_XY[0] - (this.txMusicName.szテクスチャサイズ.Width * fRate), CDTXMania.Skin.Game_MusicName_XY[1]);
                         }
                     }
                 }
@@ -306,29 +306,29 @@ namespace DTXMania
                         }
                         if (CDTXMania.Skin.Game_MusicName_ReferencePoint == CSkin.ReferencePoint.Center)
                         {
-                            this.txMusicName.t2D描画(CDTXMania.app.Device, CDTXMania.Skin.Game_MusicName_X - ((this.txMusicName.szテクスチャサイズ.Width * txMusicName.vc拡大縮小倍率.X) / 2), CDTXMania.Skin.Game_MusicName_Y);
+                            this.txMusicName.t2D描画(CDTXMania.app.Device, CDTXMania.Skin.Game_MusicName_XY[0] - ((this.txMusicName.szテクスチャサイズ.Width * txMusicName.vc拡大縮小倍率.X) / 2), CDTXMania.Skin.Game_MusicName_XY[1]);
                         }
                         else if (CDTXMania.Skin.Game_MusicName_ReferencePoint == CSkin.ReferencePoint.Left)
                         {
-                            this.txMusicName.t2D描画(CDTXMania.app.Device, CDTXMania.Skin.Game_MusicName_X, CDTXMania.Skin.Game_MusicName_Y);
+                            this.txMusicName.t2D描画(CDTXMania.app.Device, CDTXMania.Skin.Game_MusicName_XY[0], CDTXMania.Skin.Game_MusicName_XY[1]);
                         }
                         else
                         {
-                            this.txMusicName.t2D描画(CDTXMania.app.Device, CDTXMania.Skin.Game_MusicName_X - (this.txMusicName.szテクスチャサイズ.Width * txMusicName.vc拡大縮小倍率.X), CDTXMania.Skin.Game_MusicName_Y);
+                            this.txMusicName.t2D描画(CDTXMania.app.Device, CDTXMania.Skin.Game_MusicName_XY[0] - (this.txMusicName.szテクスチャサイズ.Width * txMusicName.vc拡大縮小倍率.X), CDTXMania.Skin.Game_MusicName_XY[1]);
                         }
                     }
                     if (this.tx難易度とステージ数 != null)
                         if (CDTXMania.Skin.Game_MusicName_ReferencePoint == CSkin.ReferencePoint.Center)
                         {
-                            this.tx難易度とステージ数.t2D描画(CDTXMania.app.Device, CDTXMania.Skin.Game_MusicName_X - (this.tx難易度とステージ数.szテクスチャサイズ.Width / 2), CDTXMania.Skin.Game_MusicName_Y);
+                            this.tx難易度とステージ数.t2D描画(CDTXMania.app.Device, CDTXMania.Skin.Game_MusicName_XY[0] - (this.tx難易度とステージ数.szテクスチャサイズ.Width / 2), CDTXMania.Skin.Game_MusicName_XY[1]);
                         }
                         else if (CDTXMania.Skin.Game_MusicName_ReferencePoint == CSkin.ReferencePoint.Left)
                         {
-                            this.tx難易度とステージ数.t2D描画(CDTXMania.app.Device, CDTXMania.Skin.Game_MusicName_X, CDTXMania.Skin.Game_MusicName_Y);
+                            this.tx難易度とステージ数.t2D描画(CDTXMania.app.Device, CDTXMania.Skin.Game_MusicName_XY[0], CDTXMania.Skin.Game_MusicName_XY[1]);
                         }
                         else
                         {
-                            this.tx難易度とステージ数.t2D描画(CDTXMania.app.Device, CDTXMania.Skin.Game_MusicName_X - this.tx難易度とステージ数.szテクスチャサイズ.Width, CDTXMania.Skin.Game_MusicName_Y);
+                            this.tx難易度とステージ数.t2D描画(CDTXMania.app.Device, CDTXMania.Skin.Game_MusicName_XY[0] - this.tx難易度とステージ数.szテクスチャサイズ.Width, CDTXMania.Skin.Game_MusicName_XY[1]);
                         }
                 }
 
