@@ -8,6 +8,7 @@ using System.Drawing.Drawing2D;
 using System.Diagnostics;
 using SlimDX;
 using FDK;
+using FDK.ExtensionMethods;
 using System.Linq;
 
 namespace DTXMania
@@ -39,15 +40,6 @@ namespace DTXMania
     /// テクスチャに定義するようにしてください。
     /// </remarks>
 
-    #region In拡張子
-    public static class StringExtensions
-    {
-        public static bool In(this string str, params string[] param)
-        {
-            return param.Contains(str);
-        }
-    }
-    #endregion
 
     public class CPrivateFont : IDisposable
 	{
