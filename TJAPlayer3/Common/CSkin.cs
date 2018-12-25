@@ -977,13 +977,9 @@ namespace TJAPlayer3
 
                             #region 新・SkinConfig
                             #region Config
-                            else if (strCommand == nameof(Config_ItemText_Correction_X))
+                            else if (strCommand == nameof(Config_ItemText_Correction_XY))
                             {
-                                Config_ItemText_Correction_X = int.Parse(strParam);
-                            }
-                            else if (strCommand == nameof(Config_ItemText_Correction_Y))
-                            {
-                                Config_ItemText_Correction_Y = int.Parse(strParam);
+                                Config_ItemText_Correction_XY = strParam.Split(',').Select(int.Parse).ToArray();
                             }
                             #endregion
                             #region SongSelect
@@ -1100,11 +1096,11 @@ namespace TJAPlayer3
                             }
                             else if (strCommand == nameof(SongSelect_CorrectionX_Chara_Value))
                             {
-                                SongSelect_CorrectionX_Chara_Value = int.Parse(strParam);
+                                SongSelect_CorrectionX_Chara_Value = strParam.Split(',').Select(int.Parse).ToArray();
                             }
                             else if (strCommand == nameof(SongSelect_CorrectionY_Chara_Value))
                             {
-                                SongSelect_CorrectionY_Chara_Value = int.Parse(strParam);
+                                SongSelect_CorrectionY_Chara_Value = strParam.Split(',').Select(int.Parse).ToArray();
                             }
                             else if (strCommand == nameof(SongSelect_Rotate_Chara))
                             {
@@ -1112,29 +1108,17 @@ namespace TJAPlayer3
                             }
                             #endregion
                             #region SongLoading
-                            else if (strCommand == nameof(SongLoading_Plate_X))
+                            else if (strCommand == nameof(SongLoading_Plate_XY))
                             {
-                                SongLoading_Plate_X = int.Parse(strParam);
+                                SongLoading_Plate_XY = strParam.Split(',').Select(int.Parse).ToArray();
                             }
-                            else if (strCommand == nameof(SongLoading_Plate_Y))
+                            else if (strCommand == nameof(SongLoading_Title_XY))
                             {
-                                SongLoading_Plate_Y = int.Parse(strParam);
+                                SongLoading_Title_XY = strParam.Split(',').Select(int.Parse).ToArray();
                             }
-                            else if (strCommand == nameof(SongLoading_Title_X))
+                            else if (strCommand == nameof(SongLoading_SubTitle_XY))
                             {
-                                SongLoading_Title_X = int.Parse(strParam);
-                            }
-                            else if (strCommand == nameof(SongLoading_Title_Y))
-                            {
-                                SongLoading_Title_Y = int.Parse(strParam);
-                            }
-                            else if (strCommand == nameof(SongLoading_SubTitle_X))
-                            {
-                                SongLoading_SubTitle_X = int.Parse(strParam);
-                            }
-                            else if (strCommand == nameof(SongLoading_SubTitle_Y))
-                            {
-                                SongLoading_SubTitle_Y = int.Parse(strParam);
+                                SongLoading_SubTitle_XY = strParam.Split(',').Select(int.Parse).ToArray();
                             }
                             else if (strCommand == nameof(SongLoading_Title_FontSize))
                             {
@@ -1217,13 +1201,9 @@ namespace TJAPlayer3
                             }
                             #endregion
                             #region PanelFont
-                            else if (strCommand == nameof(Game_MusicName_X))
+                            else if (strCommand == nameof(Game_MusicName_XY))
                             {
-                                Game_MusicName_X = int.Parse(strParam);
-                            }
-                            else if (strCommand == nameof(Game_MusicName_Y))
-                            {
-                                Game_MusicName_Y = int.Parse(strParam);
+                                Game_MusicName_XY = strParam.Split(',').Select(int.Parse).ToArray();
                             }
                             else if (strCommand == nameof(Game_MusicName_FontSize))
                             {
@@ -1234,21 +1214,13 @@ namespace TJAPlayer3
                             {
                                 Game_MusicName_ReferencePoint = (ReferencePoint)int.Parse(strParam);
                             }
-                            else if (strCommand == nameof(Game_Genre_X))
+                            else if (strCommand == nameof(Game_Genre_XY))
                             {
-                                Game_Genre_X = int.Parse(strParam);
+                                Game_Genre_XY = strParam.Split(',').Select(int.Parse).ToArray();
                             }
-                            else if (strCommand == nameof(Game_Genre_Y))
+                            else if (strCommand == nameof(Game_Lyric_XY))
                             {
-                                Game_Genre_Y = int.Parse(strParam);
-                            }
-                            else if (strCommand == nameof(Game_Lyric_X))
-                            {
-                                Game_Lyric_X = int.Parse(strParam);
-                            }
-                            else if (strCommand == nameof(Game_Lyric_Y))
-                            {
-                                Game_Lyric_Y = int.Parse(strParam);
+                                Game_Lyric_XY = strParam.Split(',').Select(int.Parse).ToArray();
                             }
                             else if (strCommand == nameof(Game_Lyric_FontName))
                             {
@@ -2126,13 +2098,9 @@ namespace TJAPlayer3
                             #endregion
                             #endregion
                             #region Result
-                            else if (strCommand == nameof(Result_MusicName_X))
+                            else if (strCommand == nameof(Result_MusicName_XY))
                             {
-                                Result_MusicName_X = int.Parse(strParam);
-                            }
-                            else if (strCommand == nameof(Result_MusicName_Y))
-                            {
-                                Result_MusicName_Y = int.Parse(strParam);
+                                Result_MusicName_XY = strParam.Split(',').Select(int.Parse).ToArray();
                             }
                             else if (strCommand == nameof(Result_MusicName_FontSize))
                             {
@@ -2143,13 +2111,9 @@ namespace TJAPlayer3
                             {
                                 Result_MusicName_ReferencePoint = (ReferencePoint)int.Parse(strParam);
                             }
-                            else if (strCommand == nameof(Result_StageText_X))
+                            else if (strCommand == nameof(Result_StageText_XY))
                             {
-                                Result_StageText_X = int.Parse(strParam);
-                            }
-                            else if (strCommand == nameof(Result_StageText_Y))
-                            {
-                                Result_StageText_Y = int.Parse(strParam);
+                                Result_StageText_XY = strParam.Split(',').Select(int.Parse).ToArray();
                             }
                             else if (strCommand == nameof(Result_StageText_FontSize))
                             {
@@ -2224,13 +2188,9 @@ namespace TJAPlayer3
                                 if (int.Parse(strParam) > 0)
                                     Font_Edge_Ratio_Vertical = int.Parse(strParam);
                             }
-                            else if (strCommand == nameof(Text_Correction_X))
+                            else if (strCommand == nameof(Text_Correction_XY))
                             {
-                                Text_Correction_X = int.Parse(strParam);
-                            }
-                            else if (strCommand == nameof(Text_Correction_Y))
-                            {
-                                Text_Correction_Y = int.Parse(strParam);
+                                Text_Correction_XY = strParam.Split(',').Select(int.Parse).ToArray();
                             }
                             #endregion
                             #endregion
@@ -2389,8 +2349,7 @@ namespace TJAPlayer3
         public string Skin_Creator = "Unknown";
         #endregion
         #region Config
-        public int Config_ItemText_Correction_X = 0;
-        public int Config_ItemText_Correction_Y = 0;
+        public int[] Config_ItemText_Correction_XY = new int[] { 0, 0 };
         #endregion
         #region SongSelect
         public int SongSelect_Overall_Y = 123;
@@ -2416,17 +2375,14 @@ namespace TJAPlayer3
         public Color SongSelect_BackColor_Namco = ColorTranslator.FromHtml("#980E00");
         public string[] SongSelect_CorrectionX_Chara = { "ここにX座標を補正したい文字をカンマで区切って記入" };
         public string[] SongSelect_CorrectionY_Chara = { "ここにY座標を補正したい文字をカンマで区切って記入" };
-        public int SongSelect_CorrectionX_Chara_Value = 0;
-        public int SongSelect_CorrectionY_Chara_Value = 0;
-        public string[] SongSelect_Rotate_Chara = { "ここに90℃回転させたい文字をカンマで区切って記入" };
+        public int[] SongSelect_CorrectionX_Chara_Value = new int[] { 0 };
+        public int[] SongSelect_CorrectionY_Chara_Value = new int[] { 0 };
+        public string[] SongSelect_Rotate_Chara = { "ここに90°回転させたい文字をカンマで区切って記入" };
         #endregion
         #region SongLoading
-        public int SongLoading_Plate_X = 640;
-        public int SongLoading_Plate_Y = 360;
-        public int SongLoading_Title_X = 640;
-        public int SongLoading_Title_Y = 340;
-        public int SongLoading_SubTitle_X = 640;
-        public int SongLoading_SubTitle_Y = 390;
+        public int[] SongLoading_Plate_XY = new int[] { 640, 360 };
+        public int[] SongLoading_Title_XY = new int[] { 640, 340 };
+        public int[] SongLoading_SubTitle_XY = new int[] { 640, 390 };
         public int SongLoading_Title_FontSize = 30;
         public int SongLoading_SubTitle_FontSize = 22;
         public ReferencePoint SongLoading_Plate_ReferencePoint = ReferencePoint.Center;
@@ -2488,14 +2444,11 @@ namespace TJAPlayer3
         public int[] Game_CourseSymbol_Y = new int[] { 232, 432 };
         #endregion
         #region PanelFont
-        public int Game_MusicName_X = 1254;
-        public int Game_MusicName_Y = 14;
+        public int[] Game_MusicName_XY = new int[] { 1254, 14 };
+        public int[] Game_Genre_XY = new int[] { 1114, 74 };
+        public int[] Game_Lyric_XY = new int[] { 640, 630 };
         public int Game_MusicName_FontSize = 30;
         public ReferencePoint Game_MusicName_ReferencePoint = ReferencePoint.Right;
-        public int Game_Genre_X = 1114;
-        public int Game_Genre_Y = 74;
-        public int Game_Lyric_X = 640;
-        public int Game_Lyric_Y = 630;
         public string Game_Lyric_FontName = "MS UI Gothic";
         public int Game_Lyric_FontSize = 38;
         public ReferencePoint Game_Lyric_ReferencePoint = ReferencePoint.Center;
@@ -2652,12 +2605,10 @@ namespace TJAPlayer3
         #endregion
         #endregion
         #region Result
-        public int Result_MusicName_X = 1254;
-        public int Result_MusicName_Y = 6;
+        public int[] Result_MusicName_XY = new int[] { 1254, 6 };
         public int Result_MusicName_FontSize = 30;
         public ReferencePoint Result_MusicName_ReferencePoint = ReferencePoint.Right;
-        public int Result_StageText_X = 230;
-        public int Result_StageText_Y = 6;
+        public int[] Result_StageText_XY = new int[] { 230, 6 };
         public int Result_StageText_FontSize = 30;
         public ReferencePoint Result_StageText_ReferencePoint = ReferencePoint.Left;
 
@@ -2677,8 +2628,7 @@ namespace TJAPlayer3
         #region Font
         public int Font_Edge_Ratio = 30;
         public int Font_Edge_Ratio_Vertical = 30;
-        public int Text_Correction_X = 0;
-        public int Text_Correction_Y = 0;
+        public int[] Text_Correction_XY = new int[] { 0, 0 };
         #endregion
         #endregion
     }
