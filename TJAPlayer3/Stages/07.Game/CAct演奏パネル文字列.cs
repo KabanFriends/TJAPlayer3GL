@@ -156,7 +156,7 @@ namespace TJAPlayer3
                 }
                 else
                 {
-                this.tx歌詞テクスチャ.t2D描画(TJAPlayer3.app.Device, CDTXMania.Skin.Game_Lyric_X - (this.tx歌詞テクスチャ.szテクスチャサイズ.Width / 2), TJAPlayer3.Skin.Game_Lyric_Y);
+                this.tx歌詞テクスチャ.t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Lyric_XY[0] - (this.tx歌詞テクスチャ.szテクスチャサイズ.Width / 2), TJAPlayer3.Skin.Game_Lyric_XY[1]);
                 }
             }
         }
