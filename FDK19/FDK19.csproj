@@ -80,6 +80,7 @@
     <Compile Include="コード\00.共通\C共通.cs" />
     <Compile Include="コード\00.共通\ExtensionMethods\DoubleExtensions.cs" />
     <Compile Include="コード\00.共通\ExtensionMethods\Int32Extensions.cs" />
+    <Compile Include="コード\00.共通\StringExtensions.cs" />
     <Compile Include="コード\01.フレームワーク\Core\GameWindowSize.cs" />
     <Compile Include="コード\01.フレームワーク\Core\Game.cs" />
     <Compile Include="コード\01.フレームワーク\Core\GameClock.cs" />

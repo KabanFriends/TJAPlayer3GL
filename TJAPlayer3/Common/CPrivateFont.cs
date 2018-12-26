@@ -8,6 +8,7 @@ using System.Drawing.Drawing2D;
 using System.Diagnostics;
 using SlimDX;
 using FDK;
+using FDK.ExtensionMethods;
 using System.Linq;
 
 namespace TJAPlayer3
@@ -39,15 +40,6 @@ namespace TJAPlayer3
     /// テクスチャに定義するようにしてください。
     /// </remarks>
 
-    #region In拡張子
-    public static class StringExtensions
-    {
-        public static bool In(this string str, params string[] param)
-        {
-            return param.Contains(str);
-        }
-    }
-    #endregion
 
     public class CPrivateFont : IDisposable
 	{
@@ -340,7 +332,7 @@ namespace TJAPlayer3
             sf.FormatFlags = StringFormatFlags.NoWrap; // どんなに長くて単語の区切りが良くても改行しない (AioiLight)
             sf.Trimming = StringTrimming.None; // どんなに長くてもトリミングしない (AioiLight)
 			// レイアウト枠
-			Rectangle r = new Rectangle( 0, 0, stringSize.Width + nEdgePt * 2 + (TJAPlayer3.Skin.Text_Correction_X * stringSize.Width / 100), stringSize.Height + nEdgePt * 2 + (TJAPlayer3.Skin.Text_Correction_Y * stringSize.Height / 100));
+			Rectangle r = new Rectangle( 0, 0, stringSize.Width + nEdgePt * 2 + (TJAPlayer3.Skin.Text_Correction_XY[0] * stringSize.Width / 100), stringSize.Height + nEdgePt * 2 + (TJAPlayer3.Skin.Text_Correction_XY[1] * stringSize.Height / 100));
 
 			if ( bEdge )	// 縁取り有りの描画
 			{
@@ -513,18 +505,35 @@ namespace TJAPlayer3
                 Graphics gV = Graphics.FromImage(bmpV);
                 gV.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
 
+                //SongSelect_Correction*_Charaの何番目に当該の文字があるかを取得(20181222 rhimm)
+                int IndexX = Array.IndexOf(TJAPlayer3.Skin.SongSelect_CorrectionX_Chara, strName[i]);
+                int IndexY = Array.IndexOf(TJAPlayer3.Skin.SongSelect_CorrectionY_Chara, strName[i]);
 
-                if (strName[i].In(TJAPlayer3.Skin.SongSelect_CorrectionX_Chara))
+                //取得した*_Charaの配列上の位置にある*_Chara_Valueの値で補正
+                //補正文字の数に比べて補正値の数が足りない時、配列の一番最後の補正値で足りない分の文字を補正
+                //例えば　補正文字あ,い,う,え,おに対して補正値が10,13,15の3つだった時、
+                //あ　は補正値10、い　は補正値13、　う,え,お　は補正値15　となるようにする(20181222 rhimm)
+
+                if (-1 < IndexX && IndexX < TJAPlayer3.Skin.SongSelect_CorrectionX_Chara_Value.Length && strName[i].In(TJAPlayer3.Skin.SongSelect_CorrectionX_Chara))
                 {
-                    nEdge補正X = TJAPlayer3.Skin.SongSelect_CorrectionX_Chara_Value;
+                    nEdge補正X = TJAPlayer3.Skin.SongSelect_CorrectionX_Chara_Value[IndexX];
+                }
+                else if(-1 < IndexX && TJAPlayer3.Skin.SongSelect_CorrectionX_Chara_Value.Length <= IndexX && strName[i].In(TJAPlayer3.Skin.SongSelect_CorrectionX_Chara))
+                {
+                    nEdge補正X = TJAPlayer3.Skin.SongSelect_CorrectionX_Chara_Value[TJAPlayer3.Skin.SongSelect_CorrectionX_Chara_Value.Length - 1];
                 }
                 else
                 {
                     nEdge補正X = 0;
                 }
-                if (strName[i].In(TJAPlayer3.Skin.SongSelect_CorrectionY_Chara))
+
+                if (-1 < IndexY && IndexY < TJAPlayer3.Skin.SongSelect_CorrectionY_Chara_Value.Length && strName[i].In(TJAPlayer3.Skin.SongSelect_CorrectionY_Chara))
                 {
-                    nEdge補正Y = TJAPlayer3.Skin.SongSelect_CorrectionY_Chara_Value;
+                    nEdge補正Y = TJAPlayer3.Skin.SongSelect_CorrectionY_Chara_Value[IndexY];
+                }
+                else if (-1 < IndexY && TJAPlayer3.Skin.SongSelect_CorrectionY_Chara_Value.Length <= IndexY && strName[i].In(TJAPlayer3.Skin.SongSelect_CorrectionY_Chara))
+                {
+                    nEdge補正Y = TJAPlayer3.Skin.SongSelect_CorrectionY_Chara_Value[TJAPlayer3.Skin.SongSelect_CorrectionY_Chara_Value.Length - 1];
                 }
                 else
                 {
