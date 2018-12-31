@@ -129,7 +129,9 @@
     <Compile Include="Songs\CDTXCompanionFileFinder.cs" />
     <Compile Include="Songs\CDTXStyleExtractor.cs" />
     <Compile Include="Songs\CScoreIni.cs" />
+    <Compile Include="Songs\CStrジャンル.cs" />
     <Compile Include="Songs\CStrジャンルtoNum.cs" />
+    <Compile Include="Songs\CStrジャンルtoStr.cs" />
     <Compile Include="Songs\C曲リストノードComparers\ComparerChain.cs" />
     <Compile Include="Songs\C曲リストノードComparers\C曲リストノードComparerAC15.cs" />
     <Compile Include="Songs\C曲リストノードComparers\C曲リストノードComparerAC8_14.cs" />
