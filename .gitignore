@@ -14,4 +14,5 @@
 /Test/Config.ini
 /Test/bs1770gain**
 /Test/dll/CSharpTest.Net.Collections.*
+/Test/dll/FDK.*
 /Test/dll/SlimDX.*
