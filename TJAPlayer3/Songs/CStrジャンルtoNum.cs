@@ -94,5 +94,31 @@
         {
             return ForAC8_14SortOrder( strジャンル );
         }
+        
+        internal static string ForTextureFileName( string genreName )
+        {
+            switch (genreName)
+            {
+                case "アニメ":
+                    return "Anime";
+                case "J-POP":
+                    return "J-POP";
+                case "ゲームミュージック":
+                    return "Game";
+                case "ナムコオリジナル":
+                    return "Namco";
+                case "クラシック":
+                    return "Classic";
+                case "どうよう":
+                    return "Child";
+                case "バラエティ":
+                    return "Variety";
+                case "ボーカロイド":
+                case "VOCALOID":
+                    return "Vocaloid";
+                default:
+                    return null;
+            }
+        }
     }
 }

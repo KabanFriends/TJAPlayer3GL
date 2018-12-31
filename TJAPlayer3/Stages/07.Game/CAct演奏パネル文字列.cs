@@ -80,54 +80,13 @@ namespace TJAPlayer3
 						this.txPanel = null;
 					}
 				}
-                if( !string.IsNullOrEmpty(genreName) )
-                {
-                    if(genreName.Equals( "アニメ" ) )
-                    {
-                        this.txGENRE = TJAPlayer3.Tx.TxCGen("Anime");
-                    }
-                    else if(genreName.Equals( "J-POP" ) )
-                    {
-                        this.txGENRE = TJAPlayer3.Tx.TxCGen("J-POP");
-                    }
-                    else if(genreName.Equals( "ゲームミュージック" ) )
-                    {
-                        this.txGENRE = TJAPlayer3.Tx.TxCGen("Game");
-                    }
-                    else if(genreName.Equals( "ナムコオリジナル" ) )
-                    {
-                        this.txGENRE = TJAPlayer3.Tx.TxCGen("Namco");
-                    }
-                    else if(genreName.Equals( "クラシック" ) )
-                    {
-                        this.txGENRE = TJAPlayer3.Tx.TxCGen("Classic");
-                    }
-                    else if(genreName.Equals( "どうよう" ) )
-                    {
-                        this.txGENRE = TJAPlayer3.Tx.TxCGen("Child");
-                    }
-                    else if(genreName.Equals( "バラエティ" ) )
-                    {
-                        this.txGENRE = TJAPlayer3.Tx.TxCGen("Variety");
-                    }
-                    else if(genreName.Equals( "ボーカロイド" ) || genreName.Equals( "VOCALOID" ) )
-                    {
-                        this.txGENRE = TJAPlayer3.Tx.TxCGen("Vocaloid");
-                    }
-                    else
-                    {
-                        using (var bmpDummy = new Bitmap( 1, 1 ))
-                        {
-                            this.txGENRE = TJAPlayer3.tテクスチャの生成( bmpDummy, true );
-                        }
-                    }
-                }
+
+			    this.txGENRE?.Dispose();
+                var textureFileName = CStrジャンルtoNum.ForTextureFileName( genreName );
+			    this.txGENRE = textureFileName == null ? null : TJAPlayer3.Tx.TxCGen(textureFileName);
 
 			    this.ct進行用 = new CCounter( 0, 2000, 2, TJAPlayer3.Timer );
 				this.Start();
-
-
-
 			}
 		}
 
