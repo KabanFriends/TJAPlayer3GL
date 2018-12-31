@@ -54,6 +54,32 @@
             }
         }
 
+        internal static int ForFrameBoxIndex( string strジャンル )
+        {
+            switch ( strジャンル )
+            {
+                case "J-POP":
+                    return 1;
+                case "アニメ":
+                    return 2;
+                case "ゲームミュージック":
+                    return 3;
+                case "ナムコオリジナル":
+                    return 4;
+                case "クラシック":
+                    return 5;
+                case "バラエティ":
+                    return 6;
+                case "どうよう":
+                    return 7;
+                case "ボーカロイド":
+                case "VOCALOID":
+                    return 8;
+                default:
+                    return 0;
+            }
+        }
+
         internal static int ForGenreBackIndex( string strジャンル )
         {
             switch( strジャンル )
