@@ -298,7 +298,7 @@ namespace TJAPlayer3
 
 			        if (this.r現在選択中の曲 != null)
 			        {
-			            var genreBack = TJAPlayer3.Tx.SongSelect_GenreBack[this.nStrジャンルtoNum(this.r現在選択中の曲.strジャンル)];
+			            var genreBack = TJAPlayer3.Tx.SongSelect_GenreBack[CStrジャンルtoNum.ForGenreBackIndex(this.r現在選択中の曲.strジャンル)];
 			            if (genreBack != null)
 			            {
 			                var width = TJAPlayer3.Tx.SongSelect_Background.szテクスチャサイズ.Width;
@@ -1009,45 +1009,7 @@ namespace TJAPlayer3
 			}
 		}
 
-        private int nStrジャンルtoNum( string strジャンル )
-        {
-            int nGenre = 8;
-            switch( strジャンル )
-            {
-                case "アニメ":
-                    nGenre = 2;
-                    break;
-                case "J-POP":
-                    nGenre = 1;
-                    break;
-                case "ゲームミュージック":
-                    nGenre = 3;
-                    break;
-                case "ナムコオリジナル":
-                    nGenre = 4;
-                    break;
-                case "クラシック":
-                    nGenre = 5;
-                    break;
-                case "どうよう":
-                    nGenre = 7;
-                    break;
-                case "バラエティ":
-                    nGenre = 6;
-                    break;
-                case "ボーカロイド":
-                case "VOCALOID":
-                    nGenre = 8;
-                    break;
-                default:
-                    nGenre = 0;
-                    break;
-
-            }
-
-            return nGenre;
-        }
 		//-----------------
 		#endregion
-	}
+    }
 }

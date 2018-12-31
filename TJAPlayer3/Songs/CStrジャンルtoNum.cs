@@ -28,7 +28,7 @@
             }
         }
 
-        internal static int ForAC15SortOrder(string strジャンル)
+        internal static int ForAC15SortOrder( string strジャンル )
         {
             switch (strジャンル)
             {
@@ -52,6 +52,37 @@
                 default:
                     return 8;
             }
+        }
+
+        internal static int ForGenreBackIndex( string strジャンル )
+        {
+            switch( strジャンル )
+            {
+                case "アニメ":
+                    return 2;
+                case "J-POP":
+                    return 1;
+                case "ゲームミュージック":
+                    return 3;
+                case "ナムコオリジナル":
+                    return 4;
+                case "クラシック":
+                    return 5;
+                case "どうよう":
+                    return 7;
+                case "バラエティ":
+                    return 6;
+                case "ボーカロイド":
+                case "VOCALOID":
+                    return 8;
+                default:
+                    return 0;
+            }
+        }
+
+        internal static int ForGenreTextIndex( string strジャンル )
+        {
+            return ForAC8_14SortOrder( strジャンル );
         }
     }
 }
