@@ -1,9 +1,6 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Drawing;
 using System.Diagnostics;
-using SlimDX;
 using FDK;
 
 namespace TJAPlayer3
