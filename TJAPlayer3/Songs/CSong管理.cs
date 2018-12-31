@@ -306,7 +306,7 @@ namespace TJAPlayer3
                                 }
 
 
-                                switch (CStrジャンルtoNum.ForAC15(c曲リストノード.strジャンル))
+                                switch (CStrジャンルtoNum.ForAC15SortOrder(c曲リストノード.strジャンル)) // twopointzero parse to enum!
                                 {
                                     case 0:
                                         c曲リストノード.ForeColor = TJAPlayer3.Skin.SongSelect_ForeColor_JPOP;
@@ -510,7 +510,7 @@ namespace TJAPlayer3
                         c曲リストノード.IsChangedBackColor = true;
                     }
 
-                    switch (CStrジャンルtoNum.ForAC15(c曲リストノード.strジャンル))
+                    switch (CStrジャンルtoNum.ForAC15SortOrder(c曲リストノード.strジャンル)) // twopointzero parse to enum!
                     {
                         case 0:
                             c曲リストノード.ForeColor = TJAPlayer3.Skin.SongSelect_ForeColor_JPOP;

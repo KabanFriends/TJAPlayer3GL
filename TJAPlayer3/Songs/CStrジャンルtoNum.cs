@@ -2,7 +2,7 @@
 {
     internal static class CStrジャンルtoNum
     {
-        internal static int ForAC8_14( string strジャンル )
+        internal static int ForAC8_14SortOrder( string strジャンル )
         {
             switch( strジャンル )
             {
@@ -28,7 +28,7 @@
             }
         }
 
-        internal static int ForAC15(string strジャンル)
+        internal static int ForAC15SortOrder(string strジャンル)
         {
             switch (strジャンル)
             {
