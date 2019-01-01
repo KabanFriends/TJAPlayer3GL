@@ -306,37 +306,37 @@ namespace TJAPlayer3
                                 }
 
 
-                                switch (CStrジャンルtoNum.ForAC15SortOrder(c曲リストノード.strジャンル)) // twopointzero parse to enum!
+                                switch (CStrジャンルtoNum.ForAC15SortOrder(c曲リストノード.strジャンル))
                                 {
-                                    case 0:
+                                    case EジャンルAC15SortOrder.JPOP:
                                         c曲リストノード.ForeColor = TJAPlayer3.Skin.SongSelect_ForeColor_JPOP;
                                         c曲リストノード.BackColor = TJAPlayer3.Skin.SongSelect_BackColor_JPOP;
                                         break;
-                                    case 1:
+                                    case EジャンルAC15SortOrder.アニメ:
                                         c曲リストノード.ForeColor = TJAPlayer3.Skin.SongSelect_ForeColor_Anime;
                                         c曲リストノード.BackColor = TJAPlayer3.Skin.SongSelect_BackColor_Anime;
                                         break;
-                                    case 2:
+                                    case EジャンルAC15SortOrder.ボーカロイド:
                                         c曲リストノード.ForeColor = TJAPlayer3.Skin.SongSelect_ForeColor_VOCALOID;
                                         c曲リストノード.BackColor = TJAPlayer3.Skin.SongSelect_BackColor_VOCALOID;
                                         break;
-                                    case 3:
+                                    case EジャンルAC15SortOrder.どうよう:
                                         c曲リストノード.ForeColor = TJAPlayer3.Skin.SongSelect_ForeColor_Children;
                                         c曲リストノード.BackColor = TJAPlayer3.Skin.SongSelect_BackColor_Children;
                                         break;
-                                    case 4:
+                                    case EジャンルAC15SortOrder.バラエティ:
                                         c曲リストノード.ForeColor = TJAPlayer3.Skin.SongSelect_ForeColor_Variety;
                                         c曲リストノード.BackColor = TJAPlayer3.Skin.SongSelect_BackColor_Variety;
                                         break;
-                                    case 5:
+                                    case EジャンルAC15SortOrder.クラシック:
                                         c曲リストノード.ForeColor = TJAPlayer3.Skin.SongSelect_ForeColor_Classic;
                                         c曲リストノード.BackColor = TJAPlayer3.Skin.SongSelect_BackColor_Classic;
                                         break;
-                                    case 6:
+                                    case EジャンルAC15SortOrder.ゲームミュージック:
                                         c曲リストノード.ForeColor = TJAPlayer3.Skin.SongSelect_ForeColor_GameMusic;
                                         c曲リストノード.BackColor = TJAPlayer3.Skin.SongSelect_BackColor_GameMusic;
                                         break;
-                                    case 7:
+                                    case EジャンルAC15SortOrder.ナムコオリジナル:
                                         c曲リストノード.ForeColor = TJAPlayer3.Skin.SongSelect_ForeColor_Namco;
                                         c曲リストノード.BackColor = TJAPlayer3.Skin.SongSelect_BackColor_Namco;
                                         break;
@@ -510,37 +510,37 @@ namespace TJAPlayer3
                         c曲リストノード.IsChangedBackColor = true;
                     }
 
-                    switch (CStrジャンルtoNum.ForAC15SortOrder(c曲リストノード.strジャンル)) // twopointzero parse to enum!
+                    switch (CStrジャンルtoNum.ForAC15SortOrder(c曲リストノード.strジャンル))
                     {
-                        case 0:
+                        case EジャンルAC15SortOrder.JPOP:
                             c曲リストノード.ForeColor = TJAPlayer3.Skin.SongSelect_ForeColor_JPOP;
                             c曲リストノード.BackColor = TJAPlayer3.Skin.SongSelect_BackColor_JPOP;
                             break;
-                        case 1:
+                        case EジャンルAC15SortOrder.アニメ:
                             c曲リストノード.ForeColor = TJAPlayer3.Skin.SongSelect_ForeColor_Anime;
                             c曲リストノード.BackColor = TJAPlayer3.Skin.SongSelect_BackColor_Anime;
                             break;
-                        case 2:
+                        case EジャンルAC15SortOrder.ボーカロイド:
                             c曲リストノード.ForeColor = TJAPlayer3.Skin.SongSelect_ForeColor_VOCALOID;
                             c曲リストノード.BackColor = TJAPlayer3.Skin.SongSelect_BackColor_VOCALOID;
                             break;
-                        case 3:
+                        case EジャンルAC15SortOrder.どうよう:
                             c曲リストノード.ForeColor = TJAPlayer3.Skin.SongSelect_ForeColor_Children;
                             c曲リストノード.BackColor = TJAPlayer3.Skin.SongSelect_BackColor_Children;
                             break;
-                        case 4:
+                        case EジャンルAC15SortOrder.バラエティ:
                             c曲リストノード.ForeColor = TJAPlayer3.Skin.SongSelect_ForeColor_Variety;
                             c曲リストノード.BackColor = TJAPlayer3.Skin.SongSelect_BackColor_Variety;
                             break;
-                        case 5:
+                        case EジャンルAC15SortOrder.クラシック:
                             c曲リストノード.ForeColor = TJAPlayer3.Skin.SongSelect_ForeColor_Classic;
                             c曲リストノード.BackColor = TJAPlayer3.Skin.SongSelect_BackColor_Classic;
                             break;
-                        case 6:
+                        case EジャンルAC15SortOrder.ゲームミュージック:
                             c曲リストノード.ForeColor = TJAPlayer3.Skin.SongSelect_ForeColor_GameMusic;
                             c曲リストノード.BackColor = TJAPlayer3.Skin.SongSelect_BackColor_GameMusic;
                             break;
-                        case 7:
+                        case EジャンルAC15SortOrder.ナムコオリジナル:
                             c曲リストノード.ForeColor = TJAPlayer3.Skin.SongSelect_ForeColor_Namco;
                             c曲リストノード.BackColor = TJAPlayer3.Skin.SongSelect_BackColor_Namco;
                             break;

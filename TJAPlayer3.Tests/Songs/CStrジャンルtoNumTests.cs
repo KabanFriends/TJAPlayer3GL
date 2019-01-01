@@ -30,23 +30,23 @@ namespace TJAPlayer3.Tests.Songs
         }
 
         [Test]
-        [TestCase("J-POP", 0)]
-        [TestCase("アニメ", 1)]
-        [TestCase("ボーカロイド", 2)]
-        [TestCase("VOCALOID", 2)]
-        [TestCase("どうよう", 3)]
-        [TestCase("バラエティ", 4)]
-        [TestCase("クラシック", 5)]
-        [TestCase("ゲームミュージック", 6)]
-        [TestCase("ナムコオリジナル", 7)]
-        [TestCase(null, 8)]
-        [TestCase("", 8)]
-        [TestCase(" ", 8)]
-        [TestCase("unknown value", 8)]
-        [TestCase(" アニメ", 8)]
-        [TestCase(" アニメ ", 8)]
-        [TestCase("アニメ ", 8)]
-        public void TestForAC15SortOrder(string strジャンル, int expected)
+        [TestCase("J-POP", EジャンルAC15SortOrder.JPOP)]
+        [TestCase("アニメ", EジャンルAC15SortOrder.アニメ)]
+        [TestCase("ボーカロイド", EジャンルAC15SortOrder.ボーカロイド)]
+        [TestCase("VOCALOID", EジャンルAC15SortOrder.ボーカロイド)]
+        [TestCase("どうよう", EジャンルAC15SortOrder.どうよう)]
+        [TestCase("バラエティ", EジャンルAC15SortOrder.バラエティ)]
+        [TestCase("クラシック", EジャンルAC15SortOrder.クラシック)]
+        [TestCase("ゲームミュージック", EジャンルAC15SortOrder.ゲームミュージック)]
+        [TestCase("ナムコオリジナル", EジャンルAC15SortOrder.ナムコオリジナル)]
+        [TestCase(null, EジャンルAC15SortOrder.Unknown)]
+        [TestCase("", EジャンルAC15SortOrder.Unknown)]
+        [TestCase(" ", EジャンルAC15SortOrder.Unknown)]
+        [TestCase("unknown value", EジャンルAC15SortOrder.Unknown)]
+        [TestCase(" アニメ", EジャンルAC15SortOrder.Unknown)]
+        [TestCase(" アニメ ", EジャンルAC15SortOrder.Unknown)]
+        [TestCase("アニメ ", EジャンルAC15SortOrder.Unknown)]
+        public void TestForAC15SortOrder(string strジャンル, EジャンルAC15SortOrder expected)
         {
             var actual = CStrジャンルtoNum.ForAC15SortOrder(strジャンル);
 

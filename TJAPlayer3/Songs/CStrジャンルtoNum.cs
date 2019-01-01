@@ -28,29 +28,29 @@
             }
         }
 
-        public static int ForAC15SortOrder( string strジャンル )
+        public static EジャンルAC15SortOrder ForAC15SortOrder( string strジャンル )
         {
             switch ( strジャンル )
             {
                 case CStrジャンル.JPOP:
-                    return 0;
+                    return EジャンルAC15SortOrder.JPOP;
                 case CStrジャンル.アニメ:
-                    return 1;
+                    return EジャンルAC15SortOrder.アニメ;
                 case CStrジャンル.ボーカロイドJP:
                 case CStrジャンル.ボーカロイドEN:
-                    return 2;
+                    return EジャンルAC15SortOrder.ボーカロイド;
                 case CStrジャンル.どうよう:
-                    return 3;
+                    return EジャンルAC15SortOrder.どうよう;
                 case CStrジャンル.バラエティ:
-                    return 4;
+                    return EジャンルAC15SortOrder.バラエティ;
                 case CStrジャンル.クラシック:
-                    return 5;
+                    return EジャンルAC15SortOrder.クラシック;
                 case CStrジャンル.ゲームミュージック:
-                    return 6;
+                    return EジャンルAC15SortOrder.ゲームミュージック;
                 case CStrジャンル.ナムコオリジナル:
-                    return 7;
+                    return EジャンルAC15SortOrder.ナムコオリジナル;
                 default:
-                    return 8;
+                    return EジャンルAC15SortOrder.Unknown;
             }
         }
 
