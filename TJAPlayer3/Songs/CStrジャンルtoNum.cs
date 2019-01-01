@@ -1,8 +1,8 @@
 ﻿namespace TJAPlayer3
 {
-    internal static class CStrジャンルtoNum
+    public static class CStrジャンルtoNum
     {
-        internal static int ForAC8_14SortOrder( string strジャンル )
+        public static int ForAC8_14SortOrder( string strジャンル )
         {
             switch( strジャンル )
             {
@@ -28,7 +28,7 @@
             }
         }
 
-        internal static int ForAC15SortOrder( string strジャンル )
+        public static int ForAC15SortOrder( string strジャンル )
         {
             switch ( strジャンル )
             {
@@ -54,17 +54,17 @@
             }
         }
 
-        internal static int ForBarGenreIndex( string strジャンル )
+        public static int ForBarGenreIndex( string strジャンル )
         {
             return ForGenreBackIndex( strジャンル );
         }
 
-        internal static int ForFrameBoxIndex( string strジャンル )
+        public static int ForFrameBoxIndex( string strジャンル )
         {
             return ForGenreBackIndex( strジャンル );
         }
 
-        internal static int ForGenreBackIndex( string strジャンル )
+        public static int ForGenreBackIndex( string strジャンル )
         {
             switch ( strジャンル )
             {
@@ -90,7 +90,7 @@
             }
         }
 
-        internal static int ForGenreTextIndex( string strジャンル )
+        public static int ForGenreTextIndex( string strジャンル )
         {
             return ForAC8_14SortOrder( strジャンル );
         }

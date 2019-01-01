@@ -1,10 +1,10 @@
 ﻿namespace TJAPlayer3
 {
-    internal static class CStrジャンルtoStr
+    public static class CStrジャンルtoStr
     {
-        internal static string ForTextureFileName( string genreName )
+        public static string ForTextureFileName( string strジャンル )
         {
-            switch (genreName)
+            switch (strジャンル)
             {
                 case CStrジャンル.アニメ:
                     return "Anime";
