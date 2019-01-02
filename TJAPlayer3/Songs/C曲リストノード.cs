@@ -55,7 +55,6 @@ namespace TJAPlayer3
 		public string strSkinPath = "";			// #28195 2012.5.4 yyagi; box.defでのスキン切り替え対応
         public bool bBranch = false;
         public int[] nLevel = new int[(int)Difficulty.Total]{ 0, 0, 0, 0, 0, 0, 0 };
-        public Eジャンル eジャンル = Eジャンル.None;
 		
 		// コンストラクタ
 

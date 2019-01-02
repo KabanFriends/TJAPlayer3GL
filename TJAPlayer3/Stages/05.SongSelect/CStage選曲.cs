@@ -292,21 +292,25 @@ namespace TJAPlayer3
 
 				this.ct登場時アニメ用共通.t進行();
 
-				if( TJAPlayer3.Tx.SongSelect_Background != null )
-                    TJAPlayer3.Tx.SongSelect_Background.t2D描画( TJAPlayer3.app.Device, 0, 0 );
+			    if (TJAPlayer3.Tx.SongSelect_Background != null)
+			    {
+			        TJAPlayer3.Tx.SongSelect_Background.t2D描画(TJAPlayer3.app.Device, 0, 0);
 
-                if( this.r現在選択中の曲 != null )
-                {
-                    if (TJAPlayer3.Tx.SongSelect_GenreBack[ this.nStrジャンルtoNum( this.r現在選択中の曲.strジャンル ) ] != null )
-                    {
-                        for( int i = 0 ; i <(1280 / TJAPlayer3.Tx.SongSelect_Background.szテクスチャサイズ.Width) + 2; i++ )
-                            if (TJAPlayer3.Tx.SongSelect_GenreBack[ this.nStrジャンルtoNum( this.r現在選択中の曲.strジャンル ) ] != null )
-                                    TJAPlayer3.Tx.SongSelect_GenreBack[this.nStrジャンルtoNum(this.r現在選択中の曲.strジャンル)].t2D描画(TJAPlayer3.app.Device, -ct背景スクロール用タイマー.n現在の値 + TJAPlayer3.Tx.SongSelect_Background.szテクスチャサイズ.Width * i , 0);
-                    }
-                }
+			        if (this.r現在選択中の曲 != null)
+			        {
+			            var genreBack = TJAPlayer3.Tx.SongSelect_GenreBack[CStrジャンルtoNum.ForGenreBackIndex(this.r現在選択中の曲.strジャンル)];
+			            if (genreBack != null)
+			            {
+			                var width = TJAPlayer3.Tx.SongSelect_Background.szテクスチャサイズ.Width;
+			                for (int i = 0; i < (1280 / width) + 2; i++)
+			                {
+			                    genreBack.t2D描画(TJAPlayer3.app.Device, -ct背景スクロール用タイマー.n現在の値 + width * i, 0);
+			                }
+			            }
+			        }
+			    }
 
-
-				//this.actPreimageパネル.On進行描画();
+			    //this.actPreimageパネル.On進行描画();
 			//	this.bIsEnumeratingSongs = !this.actPreimageパネル.bIsPlayingPremovie;				// #27060 2011.3.2 yyagi: #PREMOVIE再生中は曲検索を中断する
 
 				this.act曲リスト.On進行描画();
@@ -1005,45 +1009,7 @@ namespace TJAPlayer3
 			}
 		}
 
-        private int nStrジャンルtoNum( string strジャンル )
-        {
-            int nGenre = 8;
-            switch( strジャンル )
-            {
-                case "アニメ":
-                    nGenre = 2;
-                    break;
-                case "J-POP":
-                    nGenre = 1;
-                    break;
-                case "ゲームミュージック":
-                    nGenre = 3;
-                    break;
-                case "ナムコオリジナル":
-                    nGenre = 4;
-                    break;
-                case "クラシック":
-                    nGenre = 5;
-                    break;
-                case "どうよう":
-                    nGenre = 7;
-                    break;
-                case "バラエティ":
-                    nGenre = 6;
-                    break;
-                case "ボーカロイド":
-                case "VOCALOID":
-                    nGenre = 8;
-                    break;
-                default:
-                    nGenre = 0;
-                    break;
-
-            }
-
-            return nGenre;
-        }
 		//-----------------
 		#endregion
-	}
+    }
 }

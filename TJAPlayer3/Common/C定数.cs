@@ -27,18 +27,7 @@ namespace TJAPlayer3
         BMSCROLL,
         HBSCROLL
     }
-    public enum Eジャンル
-    {
-        None = 0,
-        JPOP = 1,
-        ゲーム = 2,
-        ナムコ = 3,
-        クラシック = 4,
-        バラエティ = 5,
-        どうよう = 6,
-        ボーカロイド = 7,
-        アニメ = 8
-    }
+
     public enum EGame
     {
         OFF = 0,

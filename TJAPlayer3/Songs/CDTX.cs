@@ -1129,7 +1129,6 @@ namespace TJAPlayer3
         public double db再生速度;
         public E種別 e種別;
         public string GENRE;
-        public Eジャンル eジャンル;
         public bool HIDDENLEVEL;
         public STDGBVALUE<int> LEVEL;
         public int[] LEVELtaiko = new int[(int)Difficulty.Total] { -1, -1, -1, -1, -1, -1, -1 };
@@ -1301,7 +1300,6 @@ namespace TJAPlayer3
             this.COMMENT = "";
             this.PANEL = "";
             this.GENRE = "";
-            this.eジャンル = Eジャンル.None;
             this.PREVIEW = "";
             this.PREIMAGE = "";
             this.BACKGROUND = "";
