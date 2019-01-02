@@ -1,4 +1,4 @@
-# TJAPlayer3
+﻿# TJAPlayer3
 DTXManiaをいじってtja再生プログラムにしちゃった[TJAPlayer2fPC](https://github.com/kairera0467/TJAP2fPC)をForkして本家風に改造したアレ。
 
 この改造者[@aioilight_2nd](https://twitter.com/aioilight_2nd)はプログラミングが大変苦手なので、スパゲッティコードと化していると思います...すみません
@@ -11,7 +11,6 @@ https://aioilight.space/taiko/tjap3/
 
 ## How 2 Build
 - VisualStudio 2017 & C# 7.3
-- VC++ toolset
 - SlimDX用の署名
 
 ## 実装状況いろいろ
