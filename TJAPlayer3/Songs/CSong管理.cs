@@ -969,7 +969,10 @@ namespace TJAPlayer3
 						 string.Format("Random select from the songs which has the level about L{0}. Non-leveled songs may also selected.", i + 1);
 					itemRandom.ar難易度ラベル[ i ] = string.Format( "L{0}", i + 1 );
 				}
+				if(TJAPlayer3.ConfigIni.bランダムセレクトを使用する)
+                                { 
 				ノードリスト.Add( itemRandom );
+                                }
 
 				#region [ ログ出力 ]
 				//-----------------------------
@@ -1276,7 +1279,7 @@ namespace TJAPlayer3
 					}
 					#endregion
 					int nSumPlayCountN1 = 0, nSumPlayCountN2 = 0;
-//					for( int i = 0; i < 5; i++ )
+//					for( int i = 0; i <(int)Difficulty.Total; i++ )
 //					{
 						if( n1.arスコア[ nL12345 ] != null )
 						{
@@ -1637,7 +1640,7 @@ Debug.WriteLine( dBPM + ":" + c曲リストノード.strタイトル );
 				score.譜面情報.演奏回数.Drums = ini.stファイル.PlayCountDrums;
 				score.譜面情報.演奏回数.Guitar = ini.stファイル.PlayCountGuitar;
 				score.譜面情報.演奏回数.Bass = ini.stファイル.PlayCountBass;
-				for( int i = 0; i < 5; i++ )
+				for( int i = 0; i < (int)Difficulty.Total; i++ )
 					score.譜面情報.演奏履歴[ i ] = ini.stファイル.History[ i ];
 			}
 			catch (Exception e)

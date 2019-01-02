@@ -181,7 +181,9 @@ namespace TJAPlayer3
 				base.On活性化();
 
 				this.actステータスパネル.t選択曲が変更された();	// 最大ランクを更新
-			}
+                // Discord Presenceの更新
+                Discord.UpdatePresence("", Properties.Discord.Stage_SongSelect, TJAPlayer3.StartupTime);
+            }
 			finally
 			{
                 TJAPlayer3.ConfigIni.eScrollMode = EScrollMode.Normal;
@@ -756,6 +758,7 @@ namespace TJAPlayer3
 		public CActSortSongs actSortSongs;
 		private CActSelectQuickConfig actQuickConfig;
 
+                private int nGenreBack;
 		private bool bBGM再生済み;
 		private STキー反復用カウンタ ctキー反復用;
 		public CCounter ct登場時アニメ用共通;

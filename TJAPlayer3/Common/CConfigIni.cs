@@ -632,6 +632,7 @@ namespace TJAPlayer3
 		public STDGBVALUE<bool> bGraph;     // #24074 2011.01.23 add ikanick
 		public bool bWave再生位置自動調整機能有効;
 		public bool bストイックモード;
+		public bool bランダムセレクトを使用する;
 		public bool bランダムセレクトで子BOXを検索対象とする;
 		public bool bログ出力;
 		public bool b演奏情報を表示する;
@@ -868,6 +869,10 @@ namespace TJAPlayer3
         public bool ShinuchiMode; // 真打モード
         public bool FastRender; // 事前画像描画モード
         public int MusicPreTimeMs; // 音源再生前の待機時間ms
+        /// <summary>
+        /// DiscordのRitch Presenceに再生中の.tjaファイルの情報を送信するかどうか。
+        /// </summary>
+        public bool SendDiscordPlayingInformation;
 #if false
 		[StructLayout( LayoutKind.Sequential )]
 		public struct STAUTOPLAY								// C定数のEレーンとindexを一致させること
@@ -1266,6 +1271,7 @@ namespace TJAPlayer3
 			this.bWave再生位置自動調整機能有効 = false;
 			this.bBGM音を発声する = true;
 			this.bScoreIniを出力する = true;
+			this.bランダムセレクトを使用する = true;
 			this.bランダムセレクトで子BOXを検索対象とする = true;
 			this.n表示可能な最小コンボ数 = new STDGBVALUE<int>();
 			this.n表示可能な最小コンボ数.Drums = 3;
@@ -1419,6 +1425,7 @@ namespace TJAPlayer3
             ShinuchiMode = false;
             FastRender = true;
             MusicPreTimeMs = 1000; // 一秒
+            SendDiscordPlayingInformation = true;
             #region[ Ver.K追加 ]
             this.eLaneType = Eレーンタイプ.TypeA;
             this.bDirectShowMode = false;
@@ -1662,6 +1669,9 @@ namespace TJAPlayer3
             sw.WriteLine("; 最小表示コンボ数");
             sw.WriteLine("MinComboDrums={0}", this.n表示可能な最小コンボ数.Drums);
             sw.WriteLine();
+	                sw.WriteLine("; RANDOM SELECT を使用する (0:OFF, 1:ON)");
+                        sw.WriteLine("Random={0}", this.bランダムセレクトを使用する ? 1 : 0);
+                        sw.WriteLine();
 			sw.WriteLine( "; RANDOM SELECT で子BOXを検索対象に含める (0:OFF, 1:ON)" );
 			sw.WriteLine( "RandomFromSubBox={0}", this.bランダムセレクトで子BOXを検索対象とする ? 1 : 0 );
 			sw.WriteLine();
@@ -1718,7 +1728,11 @@ namespace TJAPlayer3
 			sw.WriteLine( "; when you get hiscore/hiskill.");								//
 			sw.WriteLine( "AutoResultCapture={0}", this.bIsAutoResultCapture? 1 : 0 );		//
 			sw.WriteLine();
-			sw.WriteLine( "; 再生速度変更を、ピッチ変更で行うかどうか(0:ピッチ変更, 1:タイムストレッチ" );	// #23664 2013.2.24 yyagi
+            sw.WriteLine("; Discordに再生中の譜面情報を送信する(0:OFF, 1:ON)");                        // #25399 2011.6.9 yyagi
+            sw.WriteLine("; Share Playing .tja file infomation on Discord.");                     //
+            sw.WriteLine("{0}={1}", nameof(SendDiscordPlayingInformation), SendDiscordPlayingInformation ? 1 : 0);       //
+            sw.WriteLine();
+            sw.WriteLine( "; 再生速度変更を、ピッチ変更で行うかどうか(0:ピッチ変更, 1:タイムストレッチ" );	// #23664 2013.2.24 yyagi
 			sw.WriteLine( "; (WASAPI/ASIO使用時のみ有効) " );
 			sw.WriteLine( "; Set \"0\" if you'd like to use pitch shift with PlaySpeed." );	//
 			sw.WriteLine( "; Set \"1\" for time stretch." );								//
@@ -2301,6 +2315,10 @@ namespace TJAPlayer3
 											{
 												this.bScoreIniを出力する = C変換.bONorOFF( str4[ 0 ] );
 											}
+											else if( str3.Equals( "Random" ) )
+											{
+												this.bランダムセレクトを使用する = C変換.bONorOFF( str4[ 0 ] );
+											}
 											else if( str3.Equals( "RandomFromSubBox" ) )
 											{
 												this.bランダムセレクトで子BOXを検索対象とする = C変換.bONorOFF( str4[ 0 ] );
@@ -2363,7 +2381,11 @@ namespace TJAPlayer3
 											{
 												this.bIsAutoResultCapture = C変換.bONorOFF( str4[ 0 ] );
 											}
-											else if ( str3.Equals( "TimeStretch" ) )				// #23664 2013.2.24 yyagi
+                                            else if (str3.Equals(nameof(SendDiscordPlayingInformation)))
+                                            {
+                                                SendDiscordPlayingInformation = C変換.bONorOFF(str4[0]);
+                                            }
+                                            else if ( str3.Equals( "TimeStretch" ) )				// #23664 2013.2.24 yyagi
 											{
 												this.bTimeStretch = C変換.bONorOFF( str4[ 0 ] );
 											}
