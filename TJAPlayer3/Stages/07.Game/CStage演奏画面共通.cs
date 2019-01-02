@@ -2908,12 +2908,12 @@ namespace TJAPlayer3
 				pChip.nバーからの距離dot.Drums = (int) ( time * ScrollSpeedDrums );
 				pChip.nバーからの距離dot.Guitar = (int) ( time * ScrollSpeedGuitar );
 				pChip.nバーからの距離dot.Bass = (int) ( time * ScrollSpeedBass );
-                pChip.nバーからの距離dot.Taiko = (int) ( ( time * pChip.dbBPM * pChip.dbSCROLL * (db現在の譜面スクロール速度.Drums + 1.5 ) ) / 628.7 );
+                pChip.nバーからの距離dot.Taiko = (int) (  time * pChip.dbBPM * pChip.dbSCROLL * (db現在の譜面スクロール速度.Drums + 1.0 )  / 502.8594 );
                 pChip.nバーからのノーツ末端距離dot.Drums = 0;
                 pChip.nバーからのノーツ末端距離dot.Guitar = 0;
                 pChip.nバーからのノーツ末端距離dot.Bass = 0;
                 if( pChip.nノーツ終了時刻ms != 0 )
-                    pChip.nバーからのノーツ末端距離dot.Taiko = (int) ( ( ( pChip.nノーツ終了時刻ms - n現在時刻ms) * pChip.dbBPM * pChip.dbSCROLL * (db現在の譜面スクロール速度.Drums + 1.5 ) ) / 628.7 );
+                    pChip.nバーからのノーツ末端距離dot.Taiko = (int) ( ( pChip.nノーツ終了時刻ms - n現在時刻ms) * pChip.dbBPM * pChip.dbSCROLL * (db現在の譜面スクロール速度.Drums + 1 ) / 502.8594 );
 
                 if( configIni.eScrollMode == EScrollMode.BMSCROLL || configIni.eScrollMode == EScrollMode.HBSCROLL )
                 {
@@ -2924,9 +2924,9 @@ namespace TJAPlayer3
 
                     var dbSCROLL = configIni.eScrollMode == EScrollMode.BMSCROLL ? 1.0 : pChip.dbSCROLL;
 
-                    pChip.nバーからの距離dot.Taiko = (int)( ( ( pChip.fBMSCROLLTime * NOTE_GAP ) - ( play_bpm_time * NOTE_GAP ) ) * dbSCROLL * ( db現在の譜面スクロール速度.Drums + 1.5 ) );
+                    pChip.nバーからの距離dot.Taiko = (int)( 3 * 0.8335 * ( ( pChip.fBMSCROLLTime * NOTE_GAP ) - ( play_bpm_time * NOTE_GAP ) ) * dbSCROLL * ( db現在の譜面スクロール速度.Drums + 1 ) / 2 );
                     if( pChip.nノーツ終了時刻ms != 0 )
-                        pChip.nバーからのノーツ末端距離dot.Taiko = (int)( ( ( pChip.fBMSCROLLTime_end * NOTE_GAP) - ( play_bpm_time * NOTE_GAP ) ) * pChip.dbSCROLL * ( db現在の譜面スクロール速度.Drums + 1.5 ) );
+                        pChip.nバーからのノーツ末端距離dot.Taiko = (int)( 3 * 0.8335 * ( ( pChip.fBMSCROLLTime_end * NOTE_GAP) - ( play_bpm_time * NOTE_GAP ) ) * pChip.dbSCROLL * ( db現在の譜面スクロール速度.Drums + 1 ) / 2 );
                 }
 
 				int instIndex = (int) pChip.e楽器パート;
