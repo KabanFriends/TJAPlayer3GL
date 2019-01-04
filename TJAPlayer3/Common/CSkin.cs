@@ -910,11 +910,11 @@ namespace TJAPlayer3
                             //-----------------------------
                             else if (strCommand == "ScrollFieldP1Y")
                             {
-                                this.nScrollFieldY[0] = C変換.n値を文字列から取得して返す(strParam, 192);
+                                this.Game_Lane_Field_Y[0] = C変換.n値を文字列から取得して返す(strParam, 192);
                             }
                             else if (strCommand == "ScrollFieldP2Y")
                             {
-                                this.nScrollFieldY[1] = C変換.n値を文字列から取得して返す(strParam, 192);
+                                this.Game_Lane_Field_Y[1] = C変換.n値を文字列から取得して返す(strParam, 192);
                             }
                             else if (strCommand == "SENotesP1Y")
                             {
@@ -926,11 +926,11 @@ namespace TJAPlayer3
                             }
                             else if (strCommand == "JudgePointP1Y")
                             {
-                                this.nJudgePointY[0] = C変換.n値を文字列から取得して返す(strParam, this.nJudgePointY[0]);
+                                this.Game_Lane_JudgePoint_Y[0] = C変換.n値を文字列から取得して返す(strParam, this.Game_Lane_JudgePoint_Y[0]);
                             }
                             else if (strCommand == "JudgePointP2Y")
                             {
-                                this.nJudgePointY[1] = C変換.n値を文字列から取得して返す(strParam, this.nJudgePointY[1]);
+                                this.Game_Lane_JudgePoint_Y[1] = C変換.n値を文字列から取得して返す(strParam, this.Game_Lane_JudgePoint_Y[1]);
                             }
 
                             else if (strCommand == "DiffDispMode")
@@ -1165,6 +1165,7 @@ namespace TJAPlayer3
                             }
                             #endregion
                             #region Game
+
                             else if (strCommand == "Game_Notes_Anime")
                             {
                                 Game_Notes_Anime = C変換.bONorOFF(strParam[0]);
@@ -1446,6 +1447,14 @@ namespace TJAPlayer3
                             }
                             #endregion
                             #region Taiko
+                            else if (strCommand == nameof(Game_Taiko_Background_X))
+                            {
+                                Game_Taiko_Background_X = strParam.Split(',').Select(int.Parse).ToArray();
+                            }
+                            else if (strCommand == nameof(Game_Taiko_Background_Y))
+                            {
+                                Game_Taiko_Background_Y = strParam.Split(',').Select(int.Parse).ToArray();
+                            }
                             else if (strCommand == "Game_Taiko_NamePlate_X")
                             {
                                 string[] strSplit = strParam.Split(',');
@@ -1939,6 +1948,33 @@ namespace TJAPlayer3
                                 Game_Effect_FireWorks_Timing = int.Parse(strParam);
                             }
                             #endregion
+                            #region Lane
+                            else if (strCommand == nameof(Game_Lane_Field_X))
+                            {
+                                Game_Lane_Field_X = strParam.Split(',').Select(int.Parse).ToArray();
+                            }
+                            else if (strCommand == nameof(Game_Lane_Field_Y))
+                            {
+                                Game_Lane_Field_Y = strParam.Split(',').Select(int.Parse).ToArray();
+                            }
+                            else if (strCommand == nameof(Game_Lane_Background_X))
+                            {
+                                Game_Lane_Background_X = strParam.Split(',').Select(int.Parse).ToArray();
+                            }
+                            //else if (strCommand == nameof(nScrollFieldBGY))
+                            //{
+                            //    nScrollFieldBGY = strParam.Split(',').Select(int.Parse).ToArray();
+                            //}
+                            else if (strCommand == nameof(Game_Lane_JudgePoint_X))
+                            {
+                                Game_Lane_JudgePoint_X = strParam.Split(',').Select(int.Parse).ToArray();
+                            }
+                            else if (strCommand == nameof(Game_Lane_JudgePoint_Y))
+                            {
+                                Game_Lane_JudgePoint_Y = strParam.Split(',').Select(int.Parse).ToArray();
+                            }
+
+                            #endregion
                             #region Runner
                             else if (strCommand == "Game_Runner_Size")
                             {
@@ -2258,24 +2294,13 @@ namespace TJAPlayer3
 
         #region[ 座標 ]
         //2017.08.11 kairera0467 DP実用化に向けてint配列に変更
-
-        //フィールド位置　Xは判定枠部分の位置。Yはフィールドの最上部の座標。
-        //現時点ではノーツ画像、Senotes画像、判定枠が連動する。
-        //Xは中央基準描画、Yは左上基準描画
-        public int[] nScrollFieldX = new int[] { 414, 414 };
-        public int[] nScrollFieldY = new int[] { 192, 368 };
-
-        //中心座標指定
-        public int[] nJudgePointX = new int[] { 413, 413, 413, 413 };
-        public int[] nJudgePointY = new int[] { 256, 433, 0, 0 };
+        //2019.01.05 rhimm 自由化のため、レーン座標・判定枠関連を 新・SkinConfig>Lane 下に移動
 
         //フィールド背景画像
         //ScrollField座標への追従設定が可能。
         //分岐背景、ゴーゴー背景が連動する。(全て同じ大きさ、位置で作成すること。)
         //左上基準描画
         public bool bFieldBgPointOverride = false;
-        public int[] nScrollFieldBGX = new int[] { 333, 333, 333, 333 };
-        public int[] nScrollFieldBGY = new int[] { 192, 368, 0, 0 };
 
         //SEnotes
         //音符座標に加算
@@ -2485,6 +2510,8 @@ namespace TJAPlayer3
         public int[] Game_Score_Size = new int[] { 24, 40 };
         #endregion
         #region Taiko
+        public int[] Game_Taiko_Background_X = new int[] { 0, 0 };
+        public int[] Game_Taiko_Background_Y = new int[] { 184, 360 };
         public int[] Game_Taiko_NamePlate_X = new int[] { 0, 0 };
         public int[] Game_Taiko_NamePlate_Y = new int[] { 288, 368 };
         public int[] Game_Taiko_PlayerNumber_X = new int[] { 4, 4 };
@@ -2576,6 +2603,23 @@ namespace TJAPlayer3
         public bool Game_Effect_Fire_AddBlend = true;
         public bool Game_Effect_GoGoSplash_AddBlend = true;
         public int Game_Effect_FireWorks_Timing = 8;
+        #endregion
+        #region Lane
+
+        //フィールド位置　Xは判定枠部分の位置。Yはフィールドの最上部の座標。
+        //現時点ではノーツ画像、Senotes画像、判定枠が連動する。
+        //Xは中央基準描画、Yは左上基準描画
+        public int[] Game_Lane_Field_X = new int[] { 414, 414 };
+        public int[] Game_Lane_Field_Y = new int[] { 192, 368 };
+        //中心座標指定
+        public int[] Game_Lane_JudgePoint_X = new int[] { 413, 413, 413, 413 };     //これ使われてないな(rhimm)
+        public int[] Game_Lane_JudgePoint_Y = new int[] { 256, 433, 0, 0 };
+        //フィールド背景画像
+        //ScrollField座標への追従設定が可能。
+        //分岐背景、ゴーゴー背景が連動する。(全て同じ大きさ、位置で作成すること。)
+        //左上基準描画
+        public int[] Game_Lane_Background_X = new int[] { 333, 333, 333, 333 };
+        public int[] nScrollFieldBGY = new int[] { 192, 368, 0, 0 };    //これ使われてないな(rhimm)
         #endregion
         #region Runner
         public int[] Game_Runner_Size = new int[] { 60, 125 };
