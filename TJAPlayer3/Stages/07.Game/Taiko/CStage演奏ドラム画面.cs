@@ -2031,12 +2031,12 @@ namespace TJAPlayer3
                     if( pChip.bBranch )
                     {
                         //this.tx小節線_branch.t2D描画( CDTXMania.app.Device, x - 3, y, new Rectangle( 0, 0, 3, 130 ) );
-                        TJAPlayer3.Tx.Bar_Branch.t3D描画( TJAPlayer3.app.Device, mat, new Rectangle( 0, 0, 3, 130 ) );
+                        TJAPlayer3.Tx.Bar_Branch.t3D描画( TJAPlayer3.app.Device, mat, new Rectangle( 0, 0, TJAPlayer3.Skin.Game_Bar_Width, TJAPlayer3.Skin.Game_Bar_Height ) );
                     }
                     else
                     {
                         //this.tx小節線.t2D描画( CDTXMania.app.Device, x - 3, y, new Rectangle( 0, 0, 3, 130 ) );
-                        TJAPlayer3.Tx.Bar.t3D描画( TJAPlayer3.app.Device, mat, new Rectangle( 0, 0, 3, 130 ) );
+                        TJAPlayer3.Tx.Bar.t3D描画( TJAPlayer3.app.Device, mat, new Rectangle( 0, 0, TJAPlayer3.Skin.Game_Bar_Width, TJAPlayer3.Skin.Game_Bar_Height) );
                     }
                 }
 			}

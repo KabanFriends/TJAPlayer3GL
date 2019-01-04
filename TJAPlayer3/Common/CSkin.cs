@@ -1181,7 +1181,14 @@ namespace TJAPlayer3
                             {
                                 Game_JudgeFrame_AddBlend = C変換.bONorOFF(strParam[0]);
                             }
-
+                            else if (strCommand == nameof(Game_Bar_Width))
+                            {
+                                Game_Bar_Width = int.Parse(strParam);
+                            }
+                            else if (strCommand == nameof(Game_Bar_Height))
+                            {
+                                Game_Bar_Height = int.Parse(strParam);
+                            }
                             #region CourseSymbol
                             else if (strCommand == "Game_CourseSymbol_X")
                             {
@@ -2404,6 +2411,8 @@ namespace TJAPlayer3
         public string Game_StageText = "1曲目";
         public RollColorMode Game_RollColorMode = RollColorMode.All;
         public bool Game_JudgeFrame_AddBlend = true;
+        public int Game_Bar_Width = 3;
+        public int Game_Bar_Height = 130;
         #region Chara
         public int[] Game_Chara_X = new int[] { 0, 0 };
         public int[] Game_Chara_Y = new int[] { 0, 537 };
