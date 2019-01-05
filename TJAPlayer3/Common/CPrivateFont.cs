@@ -1,16 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.IO;
-using System.Runtime.InteropServices;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Diagnostics;
-using System.Drawing.Imaging;
-using SlimDX;
-using FDK;
 using FDK.ExtensionMethods;
-using System.Linq;
 
 namespace TJAPlayer3
 {
@@ -447,7 +440,7 @@ namespace TJAPlayer3
 
 
                 //できるだけ正確な値を計算しておきたい...!
-                Rectangle rect正確なサイズ = MeasureStringPrecisely( gCal, strName[ i ], this._font, strSize, sFormat );
+                Rectangle rect正確なサイズ = CPreciseStringMeasurer.MeasureStringPrecisely( gCal, strName[ i ], this._font, strSize, sFormat );
                 int n余白サイズ = strSize.Height - rect正確なサイズ.Height;
 
                 Rectangle rect = new Rectangle( 0, -n余白サイズ + 2, 46, ( strSize.Height + 16 ));
@@ -489,7 +482,7 @@ namespace TJAPlayer3
                 sFormat.Alignment = StringAlignment.Near;	// 画面中央（水平方向位置）
 
                 //できるだけ正確な値を計算しておきたい...!
-                Rectangle rect正確なサイズ = MeasureStringPrecisely(gCal, strName[i], this._font, strSize, sFormat);
+                Rectangle rect正確なサイズ = CPreciseStringMeasurer.MeasureStringPrecisely(gCal, strName[i], this._font, strSize, sFormat);
                 int n余白サイズ = strSize.Height - rect正確なサイズ.Height;
 
                 //Bitmap bmpV = new Bitmap( 36, ( strSize.Height + 12 ) - 6 );
@@ -817,267 +810,6 @@ namespace TJAPlayer3
         //}
 
 
-        //------------------------------------------------
-        //使用:http://dobon.net/vb/dotnet/graphics/measurestring.html
-
-	    /// <summary>
-	    /// Graphics.DrawStringで文字列を描画した時の大きさと位置を正確に計測する
-	    /// </summary>
-	    /// <param name="g">文字列を描画するGraphics</param>
-	    /// <param name="text">描画する文字列</param>
-	    /// <param name="font">描画に使用するフォント</param>
-	    /// <param name="proposedSize">これ以上大きいことはないというサイズ。
-	    /// できるだけ小さくすること。</param>
-	    /// <param name="stringFormat">描画に使用するStringFormat</param>
-	    /// <returns>文字列が描画される範囲。
-	    /// 見つからなかった時は、Rectangle.Empty。</returns>
-	    private static Rectangle MeasureStringPrecisely(Graphics g,
-	        string text, Font font, Size proposedSize, StringFormat stringFormat)
-	    {
-	        var measureStringPreciselyCacheKey = new MeasureStringPreciselyCacheKey(text, font, proposedSize, stringFormat.Alignment);
-	        if (!MeasureStringPreciselyCache.TryGetValue(measureStringPreciselyCacheKey, out var result))
-	        {
-	            result = MeasureStringPreciselyUncached(g, text, font, proposedSize, stringFormat);
-	            MeasureStringPreciselyCache.Add(measureStringPreciselyCacheKey, result);
-	        }
-
-	        return result;
-	    }
-
-        private static readonly Dictionary<MeasureStringPreciselyCacheKey, Rectangle> MeasureStringPreciselyCache =
-            new Dictionary<MeasureStringPreciselyCacheKey, Rectangle>();
-
-	    private sealed class MeasureStringPreciselyCacheKey : IEquatable<MeasureStringPreciselyCacheKey>
-	    {
-	        private readonly string _text;
-	        private readonly Font _font;
-	        private readonly Size _size;
-	        private readonly StringAlignment _alignment;
-
-	        public MeasureStringPreciselyCacheKey(string text, Font font, Size size, StringAlignment alignment)
-	        {
-	            _text = text;
-	            _font = font;
-	            _size = size;
-	            _alignment = alignment;
-	        }
-
-	        public bool Equals(MeasureStringPreciselyCacheKey other)
-	        {
-	            if (ReferenceEquals(null, other)) return false;
-	            if (ReferenceEquals(this, other)) return true;
-	            return string.Equals(_text, other._text) && _font.Equals(other._font) && _size.Equals(other._size) && _alignment == other._alignment;
-	        }
-
-	        public override bool Equals(object obj)
-	        {
-	            if (ReferenceEquals(null, obj)) return false;
-	            if (ReferenceEquals(this, obj)) return true;
-	            return obj is MeasureStringPreciselyCacheKey other && Equals(other);
-	        }
-
-	        public override int GetHashCode()
-	        {
-	            unchecked
-	            {
-	                var hashCode = _text.GetHashCode();
-	                hashCode = (hashCode * 397) ^ _font.GetHashCode();
-	                hashCode = (hashCode * 397) ^ _size.GetHashCode();
-	                hashCode = (hashCode * 397) ^ (int) _alignment;
-	                return hashCode;
-	            }
-	        }
-
-	        public static bool operator ==(MeasureStringPreciselyCacheKey left, MeasureStringPreciselyCacheKey right)
-	        {
-	            return Equals(left, right);
-	        }
-
-	        public static bool operator !=(MeasureStringPreciselyCacheKey left, MeasureStringPreciselyCacheKey right)
-	        {
-	            return !Equals(left, right);
-	        }
-	    }
-
-	    private static Rectangle MeasureStringPreciselyUncached(Graphics g,
-            string text, Font font, Size proposedSize, StringFormat stringFormat)
-        {
-            //解像度を引き継いで、Bitmapを作成する
-            using (var bmp = new DirectBitmap(proposedSize.Width, proposedSize.Height))
-            {
-                Graphics bmpGraphics = Graphics.FromImage(bmp.Bitmap);
-                //Graphicsのプロパティを引き継ぐ
-                bmpGraphics.TextRenderingHint = g.TextRenderingHint;
-                bmpGraphics.TextContrast = g.TextContrast;
-                bmpGraphics.PixelOffsetMode = g.PixelOffsetMode;
-                //文字列の描かれていない部分の色を取得する
-                Color backColor = bmp.GetPixel(0, 0);
-                //実際にBitmapに文字列を描画する
-                bmpGraphics.DrawString(text, font, Brushes.Black,
-                    new RectangleF(0f, 0f, proposedSize.Width, proposedSize.Height),
-                    stringFormat);
-                bmpGraphics.Dispose();
-                //文字列が描画されている範囲を計測する
-                return MeasureForegroundArea(bmp, backColor);
-            }
-        }
-
-	    private class DirectBitmap : IDisposable
-	    {
-	        public Bitmap Bitmap { get; private set; }
-	        public Int32[] Bits { get; private set; }
-	        public bool Disposed { get; private set; }
-	        public int Height { get; private set; }
-	        public int Width { get; private set; }
-
-	        protected GCHandle BitsHandle { get; private set; }
-
-	        public DirectBitmap(int width, int height)
-	        {
-	            Width = width;
-	            Height = height;
-	            Bits = new Int32[width * height];
-	            BitsHandle = GCHandle.Alloc(Bits, GCHandleType.Pinned);
-	            Bitmap = new Bitmap(width, height, width * 4, PixelFormat.Format32bppPArgb, BitsHandle.AddrOfPinnedObject());
-	        }
-
-	        public void ClearTo(Color colour)
-	        {
-	            for (int i = 0; i < Bits.Length; i++)
-	            {
-	                Bits[i] = colour.ToArgb();
-	            }
-	        }
-
-	        public void SetPixel(int x, int y, Color colour)
-	        {
-	            int index = x + (y * Width);
-	            int col = colour.ToArgb();
-
-	            Bits[index] = col;
-	        }
-
-	        public Color GetPixel(int x, int y)
-	        {
-	            int index = x + (y * Width);
-	            int col = Bits[index];
-	            Color result = Color.FromArgb(col);
-
-	            return result;
-	        }
-
-	        public void Dispose()
-	        {
-	            if (Disposed) return;
-	            Disposed = true;
-	            Bitmap.Dispose();
-	            BitsHandle.Free();
-	        }
-	    }
-
-        /// <summary>
-        /// 指定されたBitmapで、backColor以外の色が使われている範囲を計測する
-        /// </summary>
-        private static Rectangle MeasureForegroundArea(DirectBitmap bmp, Color backColor)
-        {
-            int backColorArgb = backColor.ToArgb();
-            int maxWidth = bmp.Width;
-            int maxHeight = bmp.Height;
-
-            //左側の空白部分を計測する
-            int leftPosition = -1;
-            for (int x = 0; x < maxWidth; x++)
-            {
-                for (int y = 0; y < maxHeight; y++)
-                {
-                    //違う色を見つけたときは、位置を決定する
-                    if (bmp.GetPixel(x, y).ToArgb() != backColorArgb)
-                    {
-                        leftPosition = x;
-                        break;
-                    }
-                }
-                if (0 <= leftPosition)
-                {
-                    break;
-                }
-            }
-            //違う色が見つからなかった時
-            if (leftPosition < 0)
-            {
-                return Rectangle.Empty;
-            }
-
-            //右側の空白部分を計測する
-            int rightPosition = -1;
-            for (int x = maxWidth - 1; leftPosition < x; x--)
-            {
-                for (int y = 0; y < maxHeight; y++)
-                {
-                    if (bmp.GetPixel(x, y).ToArgb() != backColorArgb)
-                    {
-                        rightPosition = x;
-                        break;
-                    }
-                }
-                if (0 <= rightPosition)
-                {
-                    break;
-                }
-            }
-            if (rightPosition < 0)
-            {
-                rightPosition = leftPosition;
-            }
-
-            //上の空白部分を計測する
-            int topPosition = -1;
-            for (int y = 0; y < maxHeight; y++)
-            {
-                for (int x = leftPosition; x <= rightPosition; x++)
-                {
-                    if (bmp.GetPixel(x, y).ToArgb() != backColorArgb)
-                    {
-                        topPosition = y;
-                        break;
-                    }
-                }
-                if (0 <= topPosition)
-                {
-                    break;
-                }
-            }
-            if (topPosition < 0)
-            {
-                return Rectangle.Empty;
-            }
-
-            //下の空白部分を計測する
-            int bottomPosition = -1;
-            for (int y = maxHeight - 1; topPosition < y; y--)
-            {
-                for (int x = leftPosition; x <= rightPosition; x++)
-                {
-                    if (bmp.GetPixel(x, y).ToArgb() != backColorArgb)
-                    {
-                        bottomPosition = y;
-                        break;
-                    }
-                }
-                if (0 <= bottomPosition)
-                {
-                    break;
-                }
-            }
-            if (bottomPosition < 0)
-            {
-                bottomPosition = topPosition;
-            }
-
-            //結果を返す
-            return new Rectangle(leftPosition, topPosition,
-                rightPosition - leftPosition, bottomPosition - topPosition);
-        }
 
         //------------------------------------------------
 
