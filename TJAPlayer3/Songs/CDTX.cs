@@ -253,6 +253,7 @@ namespace TJAPlayer3
         {
             public double db移動時間;
             public int n移動距離px;
+            public int n移動距離Ypx;
             public int n移動方向; //移動方向は0(左)、1(右)の2つだけ。
             public int n内部番号;
             public int n表記上の番号;
@@ -264,6 +265,7 @@ namespace TJAPlayer3
                 {
                     builder.Append(string.Format("CJPOSSCROLL{0}(内部{1})", CDTX.tZZ(this.n表記上の番号), this.n内部番号));
                 }
+
                 else
                 {
                     builder.Append(string.Format("CJPOSSCROLL{0}", CDTX.tZZ(this.n表記上の番号)));
@@ -3768,26 +3770,65 @@ namespace TJAPlayer3
             }
             else if (command == "#JPOSSCROLL")
             {
-                strArray = argument.Split(chDelimiter);
-                WarnSplitLength("#JPOSSCROLL", strArray, 3);
-                double db移動時刻 = Convert.ToDouble(strArray[0]);
-                int n移動px = Convert.ToInt32(strArray[1]);
-                int n移動方向 = Convert.ToInt32(strArray[2]);
+                //SCROLL同様、iが含まれれば二次元移動するJPOSSCROLLとみなす
+                if (argument.IndexOf('i') != -1)
+                {
+                    StringBuilder rep = new StringBuilder(argument);
+                    rep.Replace("+", " ");
+                    rep.Replace(" -", "-");
+                    rep.Replace("-", " -");
+                    rep.Replace("i", "");
+                    
+                    string reparg = rep.ToString();
+                    strArray = reparg.Split(chDelimiter);
 
-                //チップ追加して割り込んでみる。
-                var chip = new CChip();
+                    //int[] nComplexNum = new int[2];
+                    //this.tParsedComplexNumber_JPOS(argument, ref nComplexNum);
 
-                chip.nチャンネル番号 = 0xE2;
-                chip.n発声位置 = ((this.n現在の小節数) * 384) - 1;
-                chip.n発声時刻ms = (int)this.dbNowTime;
-                chip.n整数値_内部番号 = 0;
-                chip.nコース = this.n現在のコース;
+                    WarnSplitLength("#JPOSSCROLL", strArray, 4);
+                    double db移動時刻 = Convert.ToDouble(strArray[0]);
+                    int n移動px = Convert.ToInt32(strArray[1]);
+                    int n移動Ypx = Convert.ToInt32(strArray[2]);
+                    int n移動方向 = Convert.ToInt32(strArray[3]);
 
-                // チップを配置。
+                    //チップ追加して割り込んでみる。
+                    var chip = new CChip();
 
-                this.listJPOSSCROLL.Add(this.n内部番号JSCROLL1to, new CJPOSSCROLL() { n内部番号 = this.n内部番号JSCROLL1to, n表記上の番号 = 0, db移動時間 = db移動時刻, n移動距離px = n移動px, n移動方向 = n移動方向 });
-                this.listChip.Add(chip);
-                this.n内部番号JSCROLL1to++;
+                    chip.nチャンネル番号 = 0xE2;
+                    chip.n発声位置 = ((this.n現在の小節数) * 384) - 1;
+                    chip.n発声時刻ms = (int)this.dbNowTime;
+                    chip.n整数値_内部番号 = 0;
+                    chip.nコース = this.n現在のコース;
+
+                    // チップを配置。
+
+                    this.listJPOSSCROLL.Add(this.n内部番号JSCROLL1to, new CJPOSSCROLL() { n内部番号 = this.n内部番号JSCROLL1to, n表記上の番号 = 0, db移動時間 = db移動時刻, n移動距離px = n移動px, n移動距離Ypx = n移動Ypx, n移動方向 = n移動方向 });
+                    this.listChip.Add(chip);
+                    this.n内部番号JSCROLL1to++;
+                }
+                else
+                {
+                    strArray = argument.Split(chDelimiter);
+                    WarnSplitLength("#JPOSSCROLL", strArray, 3);
+                    double db移動時刻 = Convert.ToDouble(strArray[0]);
+                    int n移動px = Convert.ToInt32(strArray[1]);
+                    int n移動方向 = Convert.ToInt32(strArray[2]);
+
+                    //チップ追加して割り込んでみる。
+                    var chip = new CChip();
+
+                    chip.nチャンネル番号 = 0xE2;
+                    chip.n発声位置 = ((this.n現在の小節数) * 384) - 1;
+                    chip.n発声時刻ms = (int)this.dbNowTime;
+                    chip.n整数値_内部番号 = 0;
+                    chip.nコース = this.n現在のコース;
+
+                    // チップを配置。
+
+                    this.listJPOSSCROLL.Add(this.n内部番号JSCROLL1to, new CJPOSSCROLL() { n内部番号 = this.n内部番号JSCROLL1to, n表記上の番号 = 0, db移動時間 = db移動時刻, n移動距離px = n移動px, n移動距離Ypx = 0, n移動方向 = n移動方向 });
+                    this.listChip.Add(chip);
+                    this.n内部番号JSCROLL1to++;
+                }
             }
             else if (command == "#SENOTECHANGE")
             {

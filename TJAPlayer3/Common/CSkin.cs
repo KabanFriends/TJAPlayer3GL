@@ -907,15 +907,15 @@ namespace TJAPlayer3
                             #endregion
 
                             #region[ 演奏 ]
-                            //-----------------------------
-                            else if (strCommand == "ScrollFieldP1Y")
-                            {
-                                this.Game_Lane_Field_Y[0] = C変換.n値を文字列から取得して返す(strParam, 192);
-                            }
-                            else if (strCommand == "ScrollFieldP2Y")
-                            {
-                                this.Game_Lane_Field_Y[1] = C変換.n値を文字列から取得して返す(strParam, 192);
-                            }
+                            //新・SkinConfig　レーン下に移動
+                            //else if (strCommand == "ScrollFieldP1Y")
+                            //{
+                            //    this.Game_Lane_Field_Y[0] = C変換.n値を文字列から取得して返す(strParam, 192);
+                            //}
+                            //else if (strCommand == "ScrollFieldP2Y")
+                            //{
+                            //    this.Game_Lane_Field_Y[1] = C変換.n値を文字列から取得して返す(strParam, 192);
+                            //}
                             else if (strCommand == "SENotesP1Y")
                             {
                                 this.nSENotesY[0] = C変換.n値を文字列から取得して返す(strParam, this.nSENotesY[0]);
@@ -1961,6 +1961,10 @@ namespace TJAPlayer3
                             {
                                 Game_Lane_Background_X = strParam.Split(',').Select(int.Parse).ToArray();
                             }
+                            else if (strCommand == nameof(Game_Lane_Background_Y))
+                            {
+                                Game_Lane_Background_Y = strParam.Split(',').Select(int.Parse).ToArray();
+                            }
                             //else if (strCommand == nameof(nScrollFieldBGY))
                             //{
                             //    nScrollFieldBGY = strParam.Split(',').Select(int.Parse).ToArray();
@@ -2619,7 +2623,7 @@ namespace TJAPlayer3
         //分岐背景、ゴーゴー背景が連動する。(全て同じ大きさ、位置で作成すること。)
         //左上基準描画
         public int[] Game_Lane_Background_X = new int[] { 333, 333, 333, 333 };
-        public int[] nScrollFieldBGY = new int[] { 192, 368, 0, 0 };    //これ使われてないな(rhimm)
+        public int[] Game_Lane_Background_Y = new int[] { 192, 368, 0, 0 };    //これ使われてないな(rhimm)
         #endregion
         #region Runner
         public int[] Game_Runner_Size = new int[] { 60, 125 };

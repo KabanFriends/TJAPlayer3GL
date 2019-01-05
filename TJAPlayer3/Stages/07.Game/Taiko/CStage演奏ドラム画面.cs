@@ -1427,6 +1427,7 @@ namespace TJAPlayer3
                     }
                     #endregion
 
+
                     if( pChip.dbSCROLL_Y != 0.0 )
                     {
                         y = TJAPlayer3.Skin.Game_Lane_Field_Y[ nPlayer ];
