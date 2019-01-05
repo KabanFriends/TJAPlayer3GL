@@ -924,14 +924,14 @@ namespace TJAPlayer3
                             {
                                 this.nSENotesY[1] = C変換.n値を文字列から取得して返す(strParam, this.nSENotesY[1]);
                             }
-                            else if (strCommand == "JudgePointP1Y")
-                            {
-                                this.Game_Lane_JudgePoint_Y[0] = C変換.n値を文字列から取得して返す(strParam, this.Game_Lane_JudgePoint_Y[0]);
-                            }
-                            else if (strCommand == "JudgePointP2Y")
-                            {
-                                this.Game_Lane_JudgePoint_Y[1] = C変換.n値を文字列から取得して返す(strParam, this.Game_Lane_JudgePoint_Y[1]);
-                            }
+                            //else if (strCommand == "JudgePointP1Y")
+                            //{
+                            //    this.Game_Lane_JudgePoint_Y[0] = C変換.n値を文字列から取得して返す(strParam, this.Game_Lane_JudgePoint_Y[0]);
+                            //}
+                            //else if (strCommand == "JudgePointP2Y")
+                            //{
+                            //    this.Game_Lane_JudgePoint_Y[1] = C変換.n値を文字列から取得して返す(strParam, this.Game_Lane_JudgePoint_Y[1]);
+                            //}
 
                             else if (strCommand == "DiffDispMode")
                             {
@@ -2617,13 +2617,14 @@ namespace TJAPlayer3
         public int[] Game_Lane_Field_Y = new int[] { 192, 368 };
         //中心座標指定
         public int[] Game_Lane_JudgePoint_X = new int[] { 413, 413, 413, 413 };     //これ使われてないな(rhimm)
-        public int[] Game_Lane_JudgePoint_Y = new int[] { 256, 433, 0, 0 };
+        public int[] Game_Lane_JudgePoint_Y = new int[] { 256, 433, 0, 0 };         //これも使わない方針(rhimm)
         //フィールド背景画像
         //ScrollField座標への追従設定が可能。
         //分岐背景、ゴーゴー背景が連動する。(全て同じ大きさ、位置で作成すること。)
         //左上基準描画
         public int[] Game_Lane_Background_X = new int[] { 333, 333, 333, 333 };
-        public int[] Game_Lane_Background_Y = new int[] { 192, 368, 0, 0 };    //これ使われてないな(rhimm)
+        public int[] Game_Lane_Background_Y = new int[] { 192, 368, 0, 0 };
+        //JudgePointの変わりにこれとこれに判定枠テクスチャサイズの半分を足した値を使っていきたい(rhimm)
         #endregion
         #region Runner
         public int[] Game_Runner_Size = new int[] { 60, 125 };

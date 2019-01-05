@@ -3773,6 +3773,9 @@ namespace TJAPlayer3
                 //SCROLL同様、iが含まれれば二次元移動するJPOSSCROLLとみなす
                 if (argument.IndexOf('i') != -1)
                 {
+                    //スクロールと記入方法を揃えるために、文字を置換しまくる・・・
+                    //「#JPOSSCROLL 3 100 100i 0」のように、「+」を省略して間にスペースを入れても
+                    //反応してくれます・・・たぶん(20190105 rhimm)
                     StringBuilder rep = new StringBuilder(argument);
                     rep.Replace("+", " ");
                     rep.Replace(" -", "-");
@@ -3781,9 +3784,6 @@ namespace TJAPlayer3
                     
                     string reparg = rep.ToString();
                     strArray = reparg.Split(chDelimiter);
-
-                    //int[] nComplexNum = new int[2];
-                    //this.tParsedComplexNumber_JPOS(argument, ref nComplexNum);
 
                     WarnSplitLength("#JPOSSCROLL", strArray, 4);
                     double db移動時刻 = Convert.ToDouble(strArray[0]);
