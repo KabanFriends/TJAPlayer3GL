@@ -431,6 +431,8 @@ namespace TJAPlayer3
 
             #region[ キャンバスの大きさ予測 ]
             //大きさを計算していく。
+		    Bitmap bmpDummy = new Bitmap( 1, 1 );
+		    Graphics gCal = Graphics.FromImage( bmpDummy );
             int nHeight = 0;
             for( int i = 0; i < strName.Length; i++ )
             {
@@ -445,8 +447,6 @@ namespace TJAPlayer3
 
 
                 //できるだけ正確な値を計算しておきたい...!
-                Bitmap bmpDummy = new Bitmap( 150, 150 ); //とりあえず150
-                Graphics gCal = Graphics.FromImage( bmpDummy );
                 Rectangle rect正確なサイズ = MeasureStringPrecisely( gCal, strName[ i ], this._font, strSize, sFormat );
                 int n余白サイズ = strSize.Height - rect正確なサイズ.Height;
 
@@ -460,10 +460,6 @@ namespace TJAPlayer3
                 else if( strName[ i ] == " " )
                 { nHeight += ( 12 ); }
                 else { nHeight += ( rect正確なサイズ.Height ) + 10; }
-
-                //念のため解放
-                bmpDummy.Dispose();
-                gCal.Dispose();
 
                 //stream.WriteLine( "文字の大きさ{0},大きさ合計{1}", ( rect正確なサイズ.Height ) + 6, nHeight );
                 
@@ -493,8 +489,6 @@ namespace TJAPlayer3
                 sFormat.Alignment = StringAlignment.Near;	// 画面中央（水平方向位置）
 
                 //できるだけ正確な値を計算しておきたい...!
-                Bitmap bmpDummy = new Bitmap(150, 150); //とりあえず150
-                Graphics gCal = Graphics.FromImage(bmpDummy);
                 Rectangle rect正確なサイズ = MeasureStringPrecisely(gCal, strName[i], this._font, strSize, sFormat);
                 int n余白サイズ = strSize.Height - rect正確なサイズ.Height;
 
@@ -647,7 +641,6 @@ namespace TJAPlayer3
                 nNowPos += bmpV.Size.Height - 6;
 
                 if( bmpV != null ) bmpV.Dispose(); bmpV = null;
-                if( gCal != null ) gCal.Dispose(); gCal = null;
 
                 //bmpCambus.Save( "test.png" );
                 //if( this._pt < 20 )
@@ -663,6 +656,10 @@ namespace TJAPlayer3
             //stream.Close();
 
             if( Gcambus != null ) Gcambus.Dispose();
+
+		    //念のため解放
+		    bmpDummy.Dispose();
+		    gCal.Dispose();
 
 			//return bmp;
             return bmpCambus;
