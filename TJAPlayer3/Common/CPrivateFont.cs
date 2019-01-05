@@ -822,18 +822,86 @@ namespace TJAPlayer3
         //------------------------------------------------
         //使用:http://dobon.net/vb/dotnet/graphics/measurestring.html
 
-        /// <summary>
-        /// Graphics.DrawStringで文字列を描画した時の大きさと位置を正確に計測する
-        /// </summary>
-        /// <param name="g">文字列を描画するGraphics</param>
-        /// <param name="text">描画する文字列</param>
-        /// <param name="font">描画に使用するフォント</param>
-        /// <param name="proposedSize">これ以上大きいことはないというサイズ。
-        /// できるだけ小さくすること。</param>
-        /// <param name="stringFormat">描画に使用するStringFormat</param>
-        /// <returns>文字列が描画される範囲。
-        /// 見つからなかった時は、Rectangle.Empty。</returns>
-        public Rectangle MeasureStringPrecisely(Graphics g,
+	    /// <summary>
+	    /// Graphics.DrawStringで文字列を描画した時の大きさと位置を正確に計測する
+	    /// </summary>
+	    /// <param name="g">文字列を描画するGraphics</param>
+	    /// <param name="text">描画する文字列</param>
+	    /// <param name="font">描画に使用するフォント</param>
+	    /// <param name="proposedSize">これ以上大きいことはないというサイズ。
+	    /// できるだけ小さくすること。</param>
+	    /// <param name="stringFormat">描画に使用するStringFormat</param>
+	    /// <returns>文字列が描画される範囲。
+	    /// 見つからなかった時は、Rectangle.Empty。</returns>
+	    public Rectangle MeasureStringPrecisely(Graphics g,
+	        string text, Font font, Size proposedSize, StringFormat stringFormat)
+	    {
+	        var measureStringPreciselyCacheKey = new MeasureStringPreciselyCacheKey(text, font, proposedSize, stringFormat.Alignment);
+	        if (!MeasureStringPreciselyCache.TryGetValue(measureStringPreciselyCacheKey, out var result))
+	        {
+	            result = MeasureStringPreciselyUncached(g, text, font, proposedSize, stringFormat);
+	            MeasureStringPreciselyCache.Add(measureStringPreciselyCacheKey, result);
+	        }
+
+	        return result;
+	    }
+
+        private static readonly Dictionary<MeasureStringPreciselyCacheKey, Rectangle> MeasureStringPreciselyCache =
+            new Dictionary<MeasureStringPreciselyCacheKey, Rectangle>();
+
+	    private sealed class MeasureStringPreciselyCacheKey : IEquatable<MeasureStringPreciselyCacheKey>
+	    {
+	        private readonly string _text;
+	        private readonly Font _font;
+	        private readonly Size _size;
+	        private readonly StringAlignment _alignment;
+
+	        public MeasureStringPreciselyCacheKey(string text, Font font, Size size, StringAlignment alignment)
+	        {
+	            _text = text;
+	            _font = font;
+	            _size = size;
+	            _alignment = alignment;
+	        }
+
+	        public bool Equals(MeasureStringPreciselyCacheKey other)
+	        {
+	            if (ReferenceEquals(null, other)) return false;
+	            if (ReferenceEquals(this, other)) return true;
+	            return string.Equals(_text, other._text) && _font.Equals(other._font) && _size.Equals(other._size) && _alignment == other._alignment;
+	        }
+
+	        public override bool Equals(object obj)
+	        {
+	            if (ReferenceEquals(null, obj)) return false;
+	            if (ReferenceEquals(this, obj)) return true;
+	            return obj is MeasureStringPreciselyCacheKey other && Equals(other);
+	        }
+
+	        public override int GetHashCode()
+	        {
+	            unchecked
+	            {
+	                var hashCode = _text.GetHashCode();
+	                hashCode = (hashCode * 397) ^ _font.GetHashCode();
+	                hashCode = (hashCode * 397) ^ _size.GetHashCode();
+	                hashCode = (hashCode * 397) ^ (int) _alignment;
+	                return hashCode;
+	            }
+	        }
+
+	        public static bool operator ==(MeasureStringPreciselyCacheKey left, MeasureStringPreciselyCacheKey right)
+	        {
+	            return Equals(left, right);
+	        }
+
+	        public static bool operator !=(MeasureStringPreciselyCacheKey left, MeasureStringPreciselyCacheKey right)
+	        {
+	            return !Equals(left, right);
+	        }
+	    }
+
+	    private Rectangle MeasureStringPreciselyUncached(Graphics g,
             string text, Font font, Size proposedSize, StringFormat stringFormat)
         {
             //解像度を引き継いで、Bitmapを作成する
