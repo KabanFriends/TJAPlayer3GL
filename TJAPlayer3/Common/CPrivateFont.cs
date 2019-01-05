@@ -446,7 +446,7 @@ namespace TJAPlayer3
                 //できるだけ正確な値を計算しておきたい...!
                 Bitmap bmpDummy = new Bitmap( 150, 150 ); //とりあえず150
                 Graphics gCal = Graphics.FromImage( bmpDummy );
-                Rectangle rect正確なサイズ = this.MeasureStringPrecisely( gCal, strName[ i ], this._font, strSize, sFormat );
+                Rectangle rect正確なサイズ = MeasureStringPrecisely( gCal, strName[ i ], this._font, strSize, sFormat );
                 int n余白サイズ = strSize.Height - rect正確なサイズ.Height;
 
                 Rectangle rect = new Rectangle( 0, -n余白サイズ + 2, 46, ( strSize.Height + 16 ));
@@ -494,7 +494,7 @@ namespace TJAPlayer3
                 //できるだけ正確な値を計算しておきたい...!
                 Bitmap bmpDummy = new Bitmap(150, 150); //とりあえず150
                 Graphics gCal = Graphics.FromImage(bmpDummy);
-                Rectangle rect正確なサイズ = this.MeasureStringPrecisely(gCal, strName[i], this._font, strSize, sFormat);
+                Rectangle rect正確なサイズ = MeasureStringPrecisely(gCal, strName[i], this._font, strSize, sFormat);
                 int n余白サイズ = strSize.Height - rect正確なサイズ.Height;
 
                 //Bitmap bmpV = new Bitmap( 36, ( strSize.Height + 12 ) - 6 );
@@ -833,7 +833,7 @@ namespace TJAPlayer3
 	    /// <param name="stringFormat">描画に使用するStringFormat</param>
 	    /// <returns>文字列が描画される範囲。
 	    /// 見つからなかった時は、Rectangle.Empty。</returns>
-	    public Rectangle MeasureStringPrecisely(Graphics g,
+	    private static Rectangle MeasureStringPrecisely(Graphics g,
 	        string text, Font font, Size proposedSize, StringFormat stringFormat)
 	    {
 	        var measureStringPreciselyCacheKey = new MeasureStringPreciselyCacheKey(text, font, proposedSize, stringFormat.Alignment);
@@ -901,7 +901,7 @@ namespace TJAPlayer3
 	        }
 	    }
 
-	    private Rectangle MeasureStringPreciselyUncached(Graphics g,
+	    private static Rectangle MeasureStringPreciselyUncached(Graphics g,
             string text, Font font, Size proposedSize, StringFormat stringFormat)
         {
             //解像度を引き継いで、Bitmapを作成する
@@ -929,7 +929,7 @@ namespace TJAPlayer3
         /// <summary>
         /// 指定されたBitmapで、backColor以外の色が使われている範囲を計測する
         /// </summary>
-        private Rectangle MeasureForegroundArea(Bitmap bmp, Color backColor)
+        private static Rectangle MeasureForegroundArea(Bitmap bmp, Color backColor)
         {
             int backColorArgb = backColor.ToArgb();
             int maxWidth = bmp.Width;
