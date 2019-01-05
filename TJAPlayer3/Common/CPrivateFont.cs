@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Diagnostics;
+using System.Drawing.Imaging;
 using SlimDX;
 using FDK;
 using FDK.ExtensionMethods;
@@ -905,31 +906,82 @@ namespace TJAPlayer3
             string text, Font font, Size proposedSize, StringFormat stringFormat)
         {
             //解像度を引き継いで、Bitmapを作成する
-            Bitmap bmp = new Bitmap(proposedSize.Width, proposedSize.Height, g);
-            //BitmapのGraphicsを作成する
-            Graphics bmpGraphics = Graphics.FromImage(bmp);
-            //Graphicsのプロパティを引き継ぐ
-            bmpGraphics.TextRenderingHint = g.TextRenderingHint;
-            bmpGraphics.TextContrast = g.TextContrast;
-            bmpGraphics.PixelOffsetMode = g.PixelOffsetMode;
-            //文字列の描かれていない部分の色を取得する
-            Color backColor = bmp.GetPixel(0, 0);
-            //実際にBitmapに文字列を描画する
-            bmpGraphics.DrawString(text, font, Brushes.Black,
-                new RectangleF(0f, 0f, proposedSize.Width, proposedSize.Height),
-                stringFormat);
-            bmpGraphics.Dispose();
-            //文字列が描画されている範囲を計測する
-            Rectangle resultRect = MeasureForegroundArea(bmp, backColor);
-            bmp.Dispose();
-
-            return resultRect;
+            using (var bmp = new DirectBitmap(proposedSize.Width, proposedSize.Height))
+            {
+                Graphics bmpGraphics = Graphics.FromImage(bmp.Bitmap);
+                //Graphicsのプロパティを引き継ぐ
+                bmpGraphics.TextRenderingHint = g.TextRenderingHint;
+                bmpGraphics.TextContrast = g.TextContrast;
+                bmpGraphics.PixelOffsetMode = g.PixelOffsetMode;
+                //文字列の描かれていない部分の色を取得する
+                Color backColor = bmp.GetPixel(0, 0);
+                //実際にBitmapに文字列を描画する
+                bmpGraphics.DrawString(text, font, Brushes.Black,
+                    new RectangleF(0f, 0f, proposedSize.Width, proposedSize.Height),
+                    stringFormat);
+                bmpGraphics.Dispose();
+                //文字列が描画されている範囲を計測する
+                return MeasureForegroundArea(bmp, backColor);
+            }
         }
+
+	    private class DirectBitmap : IDisposable
+	    {
+	        public Bitmap Bitmap { get; private set; }
+	        public Int32[] Bits { get; private set; }
+	        public bool Disposed { get; private set; }
+	        public int Height { get; private set; }
+	        public int Width { get; private set; }
+
+	        protected GCHandle BitsHandle { get; private set; }
+
+	        public DirectBitmap(int width, int height)
+	        {
+	            Width = width;
+	            Height = height;
+	            Bits = new Int32[width * height];
+	            BitsHandle = GCHandle.Alloc(Bits, GCHandleType.Pinned);
+	            Bitmap = new Bitmap(width, height, width * 4, PixelFormat.Format32bppPArgb, BitsHandle.AddrOfPinnedObject());
+	        }
+
+	        public void ClearTo(Color colour)
+	        {
+	            for (int i = 0; i < Bits.Length; i++)
+	            {
+	                Bits[i] = colour.ToArgb();
+	            }
+	        }
+
+	        public void SetPixel(int x, int y, Color colour)
+	        {
+	            int index = x + (y * Width);
+	            int col = colour.ToArgb();
+
+	            Bits[index] = col;
+	        }
+
+	        public Color GetPixel(int x, int y)
+	        {
+	            int index = x + (y * Width);
+	            int col = Bits[index];
+	            Color result = Color.FromArgb(col);
+
+	            return result;
+	        }
+
+	        public void Dispose()
+	        {
+	            if (Disposed) return;
+	            Disposed = true;
+	            Bitmap.Dispose();
+	            BitsHandle.Free();
+	        }
+	    }
 
         /// <summary>
         /// 指定されたBitmapで、backColor以外の色が使われている範囲を計測する
         /// </summary>
-        private static Rectangle MeasureForegroundArea(Bitmap bmp, Color backColor)
+        private static Rectangle MeasureForegroundArea(DirectBitmap bmp, Color backColor)
         {
             int backColorArgb = backColor.ToArgb();
             int maxWidth = bmp.Width;
