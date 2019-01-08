@@ -1612,6 +1612,14 @@ namespace TJAPlayer3
                             }
                             #endregion
                             #region Gauge
+                            else if (strCommand == nameof(Game_Gauge_X))
+                            {
+                                Game_Gauge_X = strParam.Split(',').Select(int.Parse).ToArray();
+                            }
+                            else if (strCommand == nameof(Game_Gauge_Y))
+                            {
+                                Game_Gauge_Y = strParam.Split(',').Select(int.Parse).ToArray();
+                            }
                             else if (strCommand == "Game_Gauge_Rainbow_Timer")
                             {
                                 if (int.Parse(strParam) != 0)
@@ -2533,6 +2541,8 @@ namespace TJAPlayer3
         public int[] Game_Taiko_Combo_Text_Size = new int[] { 100, 50 };
         #endregion
         #region Gauge
+        public int[] Game_Gauge_X = new int[] { 492, 492 };
+        public int[] Game_Gauge_Y = new int[] { 144, 532 };
         public int Game_Gauge_Rainbow_Ptn;
         public int Game_Gauge_Rainbow_Timer = 50;
         #endregion
