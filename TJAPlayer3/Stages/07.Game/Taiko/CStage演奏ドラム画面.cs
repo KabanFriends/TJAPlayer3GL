@@ -1691,32 +1691,32 @@ namespace TJAPlayer3
                     }
                 }
 
-                int x = 349 + pChip.nバーからの距離dot.Taiko + 10;
-                int x末端 = 349 + pChip.nバーからのノーツ末端距離dot.Taiko + 10;
+                int x = TJAPlayer3.Skin.Game_Lane_Field_X[nPlayer] - (130 / 2) + pChip.nバーからの距離dot.Taiko + 10;
+                int x末端 = TJAPlayer3.Skin.Game_Lane_Field_X[nPlayer] - (130 / 2) + pChip.nバーからのノーツ末端距離dot.Taiko + 10;
                 int y = TJAPlayer3.Skin.Game_Lane_Field_Y[ nPlayer ];
 
                 if( pChip.nチャンネル番号 >= 0x15 && pChip.nチャンネル番号 <= 0x17 )
                 {
                     if( pChip.nノーツ移動開始時刻ms != 0 && ( CSound管理.rc演奏用タイマ.n現在時刻ms < pChip.n発声時刻ms - pChip.nノーツ移動開始時刻ms ) )
                     {
-                        x = 349 + nノート座標;
-                        x末端 = 349 + nノート末端座標;
+                        x = TJAPlayer3.Skin.Game_Lane_Field_X[nPlayer] - (130 / 2) + nノート座標;
+                        x末端 = TJAPlayer3.Skin.Game_Lane_Field_X[nPlayer] - (130 / 2) + nノート末端座標;
                     }
                     else
                     {
-                        x = 349 + pChip.nバーからの距離dot.Taiko + 10;
-                        x末端 = 349 + pChip.nバーからのノーツ末端距離dot.Taiko + 10;
+                        x = TJAPlayer3.Skin.Game_Lane_Field_X[nPlayer] - (130 / 2) + pChip.nバーからの距離dot.Taiko + 10;
+                        x末端 = TJAPlayer3.Skin.Game_Lane_Field_X[nPlayer] - (130 / 2) + pChip.nバーからのノーツ末端距離dot.Taiko + 10;
                     }
                 }
                 else if( pChip.nチャンネル番号 == 0x18 )
                 {
                     if( pChip.nノーツ移動開始時刻ms != 0 && ( CSound管理.rc演奏用タイマ.n現在時刻ms < n先頭発声位置 - pChip.nノーツ移動開始時刻ms ) )
                     {
-                        x = 349 + nノート座標;
+                        x = TJAPlayer3.Skin.Game_Lane_Field_X[nPlayer] - (130 / 2) + nノート座標;
                     }
                     else
                     {
-                        x = 349 + pChip.nバーからの距離dot.Taiko + 10;
+                        x = TJAPlayer3.Skin.Game_Lane_Field_X[nPlayer] - (130 / 2) + pChip.nバーからの距離dot.Taiko + 10;
                     }
                 }
 
@@ -1927,7 +1927,7 @@ namespace TJAPlayer3
                         if( pChip.nチャンネル番号 == 0x17 )
                         {
                             if( pChip.n発声時刻ms < CSound管理.rc演奏用タイマ.n現在時刻ms && pChip.nノーツ終了時刻ms > CSound管理.rc演奏用タイマ.n現在時刻ms )
-                                x = 349;
+                                x = TJAPlayer3.Skin.Game_Lane_Field_X[nPlayer] - (130 / 2);
                             if( TJAPlayer3.ConfigIni.eSTEALTH != Eステルスモード.DORON )
                                 TJAPlayer3.Tx.Notes.t2D描画( TJAPlayer3.app.Device, x, y, new Rectangle( 1430, num9, 260, 130 ) );
 
@@ -1999,7 +1999,7 @@ namespace TJAPlayer3
             if( pChip.dbSCROLL_Y != 0.0 )
             {
                 y = TJAPlayer3.Skin.Game_Lane_Field_Y[ nPlayer ];
-                y += (int) ( ( ( pChip.n発声時刻ms - CSound管理.rc演奏用タイマ.n現在時刻 ) * pChip.dbBPM * pChip.dbSCROLL_Y * ( this.act譜面スクロール速度.db現在の譜面スクロール速度.Drums + 1.5 ) ) / 628.7 );
+                y += (int) ( ( ( pChip.n発声時刻ms - CSound管理.rc演奏用タイマ.n現在時刻 ) * pChip.dbBPM * pChip.dbSCROLL_Y * ( this.act譜面スクロール速度.db現在の譜面スクロール速度.Drums + 1 )) / 502.8594);
             }
 
 			if ( !pChip.bHit && pChip.n発声時刻ms > CSound管理.rc演奏用タイマ.n現在時刻 )
