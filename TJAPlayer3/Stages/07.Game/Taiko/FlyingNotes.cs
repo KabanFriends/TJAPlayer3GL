@@ -32,13 +32,13 @@ namespace TJAPlayer3
                         Flying[i].Lane = nLane;
                         Flying[i].Player = nPlayer;
                         Flying[i].X = StartPointX[nPlayer];
-                        Flying[i].Y = TJAPlayer3.Skin.Game_Effect_FlyingNotes_StartPoint_Y[nPlayer];
+                        Flying[i].Y = StartPointY[nPlayer];
                         Flying[i].StartPointX = StartPointX[nPlayer];
-                        Flying[i].StartPointY = TJAPlayer3.Skin.Game_Effect_FlyingNotes_StartPoint_Y[nPlayer];
+                        Flying[i].StartPointY = StartPointY[nPlayer];
                         Flying[i].OldValue = 0;
                         Flying[i].IsRoll = isRoll;
                         // 角度の決定
-                        Flying[i].Height = Math.Abs(TJAPlayer3.Skin.Game_Effect_FlyingNotes_EndPoint_Y[nPlayer] - TJAPlayer3.Skin.Game_Effect_FlyingNotes_StartPoint_Y[nPlayer]);
+                        Flying[i].Height = Math.Abs(TJAPlayer3.Skin.Game_Effect_FlyingNotes_EndPoint_Y[nPlayer] - StartPointY[nPlayer]);
                         Flying[i].Width = Math.Abs((TJAPlayer3.Skin.Game_Effect_FlyingNotes_EndPoint_X[nPlayer] - StartPointX[nPlayer])) / 2;
                         //Console.WriteLine("{0}, {1}", width2P, height2P);
                         Flying[i].Theta = ((Math.Atan2(Flying[i].Height, Flying[i].Width) * 180.0) / Math.PI);
@@ -46,7 +46,7 @@ namespace TJAPlayer3
                         //Flying[i].Counter = new CCounter(0, 200000, CDTXMania.Skin.Game_Effect_FlyingNotes_Timer, CDTXMania.Timer);
 
                         Flying[i].IncreaseX = (1.00 * Math.Abs((TJAPlayer3.Skin.Game_Effect_FlyingNotes_EndPoint_X[nPlayer] - StartPointX[nPlayer]))) / (180);
-                        Flying[i].IncreaseY = (1.00 * Math.Abs((TJAPlayer3.Skin.Game_Effect_FlyingNotes_EndPoint_Y[nPlayer] - TJAPlayer3.Skin.Game_Effect_FlyingNotes_StartPoint_Y[nPlayer]))) / (180);
+                        Flying[i].IncreaseY = (1.00 * Math.Abs((TJAPlayer3.Skin.Game_Effect_FlyingNotes_EndPoint_Y[nPlayer] - StartPointY[nPlayer]))) / (180);
                         break;
                     }
                 }
@@ -66,6 +66,10 @@ namespace TJAPlayer3
             for (int i = 0; i < 2; i++)
             {
                 StartPointX[i] = TJAPlayer3.Skin.Game_Effect_FlyingNotes_StartPoint_X[i];
+            }
+            for (int i = 0; i < 2; i++)
+            {
+                StartPointY[i] = TJAPlayer3.Skin.Game_Effect_FlyingNotes_StartPoint_Y[i];
             }
             base.On活性化();
 		}
@@ -186,6 +190,7 @@ namespace TJAPlayer3
         private Status[] Flying = new Status[128];
 
         public readonly int[] StartPointX = new int[2];
+        public readonly int[] StartPointY = new int[2];
 
         //-----------------
         #endregion
