@@ -243,9 +243,9 @@ namespace TJAPlayer3
                             {
                                 if (TJAPlayer3.Tx.Lane_Base[0] != null && TJAPlayer3.Tx.Lane_Base[1] != null)
                                 {
-                                    TJAPlayer3.Tx.Lane_Base[0].t2D描画(TJAPlayer3.app.Device, 333, TJAPlayer3.Skin.Game_Lane_Background_Y[i]);
+                                    TJAPlayer3.Tx.Lane_Base[0].t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Lane_Background_X[i], TJAPlayer3.Skin.Game_Lane_Background_Y[i]);
                                     TJAPlayer3.Tx.Lane_Base[1].n透明度 = this.stBranch[i].nBranchレイヤー透明度;
-                                    TJAPlayer3.Tx.Lane_Base[1].t2D描画(TJAPlayer3.app.Device, 333, TJAPlayer3.Skin.Game_Lane_Background_Y[i]);
+                                    TJAPlayer3.Tx.Lane_Base[1].t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Lane_Background_X[i], TJAPlayer3.Skin.Game_Lane_Background_Y[i]);
                                 }
                             }
                             //普通→達人
@@ -257,8 +257,8 @@ namespace TJAPlayer3
                                 }
                                 if (TJAPlayer3.Tx.Lane_Base[0] != null && TJAPlayer3.Tx.Lane_Base[2] != null)
                                 {
-                                    TJAPlayer3.Tx.Lane_Base[0].t2D描画(TJAPlayer3.app.Device, 333, TJAPlayer3.Skin.Game_Lane_Background_Y[i]);
-                                    TJAPlayer3.Tx.Lane_Base[2].t2D描画(TJAPlayer3.app.Device, 333, TJAPlayer3.Skin.Game_Lane_Background_Y[i]);
+                                    TJAPlayer3.Tx.Lane_Base[0].t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Lane_Background_X[i], TJAPlayer3.Skin.Game_Lane_Background_Y[i]);
+                                    TJAPlayer3.Tx.Lane_Base[2].t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Lane_Background_X[i], TJAPlayer3.Skin.Game_Lane_Background_Y[i]);
                                     TJAPlayer3.Tx.Lane_Base[2].n透明度 = this.stBranch[i].nBranchレイヤー透明度;
                                 }
                             }
@@ -268,8 +268,8 @@ namespace TJAPlayer3
                             {
                                 if (TJAPlayer3.Tx.Lane_Base[1] != null && TJAPlayer3.Tx.Lane_Base[2] != null)
                                 {
-                                    TJAPlayer3.Tx.Lane_Base[1].t2D描画(TJAPlayer3.app.Device, 333, TJAPlayer3.Skin.Game_Lane_Background_Y[i]);
-                                    TJAPlayer3.Tx.Lane_Base[2].t2D描画(TJAPlayer3.app.Device, 333, TJAPlayer3.Skin.Game_Lane_Background_Y[i]);
+                                    TJAPlayer3.Tx.Lane_Base[1].t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Lane_Background_X[i], TJAPlayer3.Skin.Game_Lane_Background_Y[i]);
+                                    TJAPlayer3.Tx.Lane_Base[2].t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Lane_Background_X[i], TJAPlayer3.Skin.Game_Lane_Background_Y[i]);
                                     TJAPlayer3.Tx.Lane_Base[2].n透明度 = this.stBranch[i].nBranchレイヤー透明度;
                                 }
                             }
@@ -279,8 +279,8 @@ namespace TJAPlayer3
                             {
                                 if (TJAPlayer3.Tx.Lane_Base[1] != null && TJAPlayer3.Tx.Lane_Base[0] != null)
                                 {
-                                    TJAPlayer3.Tx.Lane_Base[1].t2D描画(TJAPlayer3.app.Device, 333, TJAPlayer3.Skin.Game_Lane_Background_Y[i]);
-                                    TJAPlayer3.Tx.Lane_Base[0].t2D描画(TJAPlayer3.app.Device, 333, TJAPlayer3.Skin.Game_Lane_Background_Y[i]);
+                                    TJAPlayer3.Tx.Lane_Base[1].t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Lane_Background_X[i], TJAPlayer3.Skin.Game_Lane_Background_Y[i]);
+                                    TJAPlayer3.Tx.Lane_Base[0].t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Lane_Background_X[i], TJAPlayer3.Skin.Game_Lane_Background_Y[i]);
                                     TJAPlayer3.Tx.Lane_Base[0].n透明度 = this.stBranch[i].nBranchレイヤー透明度;
                                 }
                             }
@@ -290,8 +290,8 @@ namespace TJAPlayer3
                             {
                                 if (TJAPlayer3.Tx.Lane_Base[2] != null && TJAPlayer3.Tx.Lane_Base[0] != null)
                                 {
-                                    TJAPlayer3.Tx.Lane_Base[2].t2D描画(TJAPlayer3.app.Device, 333, TJAPlayer3.Skin.Game_Lane_Background_Y[i]);
-                                    TJAPlayer3.Tx.Lane_Base[0].t2D描画(TJAPlayer3.app.Device, 333, TJAPlayer3.Skin.Game_Lane_Background_Y[i]);
+                                    TJAPlayer3.Tx.Lane_Base[2].t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Lane_Background_X[i], TJAPlayer3.Skin.Game_Lane_Background_Y[i]);
+                                    TJAPlayer3.Tx.Lane_Base[0].t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Lane_Background_X[i], TJAPlayer3.Skin.Game_Lane_Background_Y[i]);
                                     TJAPlayer3.Tx.Lane_Base[0].n透明度 = this.stBranch[i].nBranchレイヤー透明度;
                                 }
                             }
@@ -357,15 +357,15 @@ namespace TJAPlayer3
                             {
                                 case 0:
                                     TJAPlayer3.Tx.Lane_Text[0].n透明度 = 255;
-                                    TJAPlayer3.Tx.Lane_Text[0].t2D描画(TJAPlayer3.app.Device, 333, TJAPlayer3.Skin.Game_Lane_Background_Y[i]);
+                                    TJAPlayer3.Tx.Lane_Text[0].t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Lane_Background_X[i], TJAPlayer3.Skin.Game_Lane_Background_Y[i]);
                                     break;
                                 case 1:
                                     TJAPlayer3.Tx.Lane_Text[1].n透明度 = 255;
-                                    TJAPlayer3.Tx.Lane_Text[1].t2D描画(TJAPlayer3.app.Device, 333, TJAPlayer3.Skin.Game_Lane_Background_Y[i]);
+                                    TJAPlayer3.Tx.Lane_Text[1].t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Lane_Background_X[i], TJAPlayer3.Skin.Game_Lane_Background_Y[i]);
                                     break;
                                 case 2:
                                     TJAPlayer3.Tx.Lane_Text[2].n透明度 = 255;
-                                    TJAPlayer3.Tx.Lane_Text[2].t2D描画(TJAPlayer3.app.Device, 333, TJAPlayer3.Skin.Game_Lane_Background_Y[i]);
+                                    TJAPlayer3.Tx.Lane_Text[2].t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Lane_Background_X[i], TJAPlayer3.Skin.Game_Lane_Background_Y[i]);
                                     break;
                             }
                         }
@@ -384,14 +384,14 @@ namespace TJAPlayer3
                                 if (this.stBranch[i].ct分岐アニメ進行.n現在の値 < 60)
                                 {
                                     this.stBranch[i].nY = this.stBranch[i].ct分岐アニメ進行.n現在の値 / 2;
-                                    TJAPlayer3.Tx.Lane_Text[0].t2D描画(TJAPlayer3.app.Device, 333, TJAPlayer3.Skin.Game_Lane_Background_Y[i] + this.stBranch[i].nY);
+                                    TJAPlayer3.Tx.Lane_Text[0].t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Lane_Background_X[i], TJAPlayer3.Skin.Game_Lane_Background_Y[i] + this.stBranch[i].nY);
                                     TJAPlayer3.Tx.Lane_Text[1].n透明度 = 255;
-                                    TJAPlayer3.Tx.Lane_Text[1].t2D描画(TJAPlayer3.app.Device, 333, (TJAPlayer3.Skin.Game_Lane_Background_Y[i] - 30) + this.stBranch[i].nY);
+                                    TJAPlayer3.Tx.Lane_Text[1].t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Lane_Background_X[i], (TJAPlayer3.Skin.Game_Lane_Background_Y[i] - 30) + this.stBranch[i].nY);
                                 }
                                 else
                                 {
                                     TJAPlayer3.Tx.Lane_Text[1].n透明度 = 255;
-                                    TJAPlayer3.Tx.Lane_Text[1].t2D描画(TJAPlayer3.app.Device, 333, TJAPlayer3.Skin.Game_Lane_Background_Y[i]);
+                                    TJAPlayer3.Tx.Lane_Text[1].t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Lane_Background_X[i], TJAPlayer3.Skin.Game_Lane_Background_Y[i]);
                                 }
 
                             }
@@ -405,9 +405,9 @@ namespace TJAPlayer3
                                 if (this.stBranch[i].ct分岐アニメ進行.n現在の値 < 60)
                                 {
                                     this.stBranch[i].nY = this.stBranch[i].ct分岐アニメ進行.n現在の値 / 2;
-                                    TJAPlayer3.Tx.Lane_Text[0].t2D描画(TJAPlayer3.app.Device, 333, (TJAPlayer3.Skin.Game_Lane_Background_Y[i] - 12) + this.stBranch[i].nY);
+                                    TJAPlayer3.Tx.Lane_Text[0].t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Lane_Background_X[i], (TJAPlayer3.Skin.Game_Lane_Background_Y[i] - 12) + this.stBranch[i].nY);
                                     TJAPlayer3.Tx.Lane_Text[0].n透明度 = this.stBranch[i].ct分岐アニメ進行.n現在の値 > 100 ? 0 : (255 - ((this.stBranch[i].ct分岐アニメ進行.n現在の値 * 0xff) / 100));
-                                    TJAPlayer3.Tx.Lane_Text[1].t2D描画(TJAPlayer3.app.Device, 333, (TJAPlayer3.Skin.Game_Lane_Background_Y[i] - 20) + this.stBranch[i].nY);
+                                    TJAPlayer3.Tx.Lane_Text[1].t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Lane_Background_X[i], (TJAPlayer3.Skin.Game_Lane_Background_Y[i] - 20) + this.stBranch[i].nY);
                                 }
                                 //if( this.stBranch[ i ].ct分岐アニメ進行.n現在の値 >= 5 && this.stBranch[ i ].ct分岐アニメ進行.n現在の値 < 60 )
                                 //{
@@ -419,21 +419,21 @@ namespace TJAPlayer3
                                 else if (this.stBranch[i].ct分岐アニメ進行.n現在の値 >= 60 && this.stBranch[i].ct分岐アニメ進行.n現在の値 < 150)
                                 {
                                     this.stBranch[i].nY = 21;
-                                    TJAPlayer3.Tx.Lane_Text[1].t2D描画(TJAPlayer3.app.Device, 333, TJAPlayer3.Skin.Game_Lane_Background_Y[i]);
+                                    TJAPlayer3.Tx.Lane_Text[1].t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Lane_Background_X[i], TJAPlayer3.Skin.Game_Lane_Background_Y[i]);
                                     TJAPlayer3.Tx.Lane_Text[1].n透明度 = 255;
                                     TJAPlayer3.Tx.Lane_Text[2].n透明度 = 255;
                                 }
                                 else if (this.stBranch[i].ct分岐アニメ進行.n現在の値 >= 150 && this.stBranch[i].ct分岐アニメ進行.n現在の値 < 210)
                                 {
                                     this.stBranch[i].nY = ((this.stBranch[i].ct分岐アニメ進行.n現在の値 - 150) / 2);
-                                    TJAPlayer3.Tx.Lane_Text[1].t2D描画(TJAPlayer3.app.Device, 333, TJAPlayer3.Skin.Game_Lane_Background_Y[i] + this.stBranch[i].nY);
+                                    TJAPlayer3.Tx.Lane_Text[1].t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Lane_Background_X[i], TJAPlayer3.Skin.Game_Lane_Background_Y[i] + this.stBranch[i].nY);
                                     TJAPlayer3.Tx.Lane_Text[1].n透明度 = this.stBranch[i].ct分岐アニメ進行.n現在の値 > 100 ? 0 : (255 - ((this.stBranch[i].ct分岐アニメ進行.n現在の値 * 0xff) / 100));
-                                    TJAPlayer3.Tx.Lane_Text[2].t2D描画(TJAPlayer3.app.Device, 333, (TJAPlayer3.Skin.Game_Lane_Background_Y[i] - 20) + this.stBranch[i].nY);
+                                    TJAPlayer3.Tx.Lane_Text[2].t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Lane_Background_X[i], (TJAPlayer3.Skin.Game_Lane_Background_Y[i] - 20) + this.stBranch[i].nY);
                                 }
                                 else
                                 {
                                     TJAPlayer3.Tx.Lane_Text[2].n透明度 = 255;
-                                    TJAPlayer3.Tx.Lane_Text[2].t2D描画(TJAPlayer3.app.Device, 333, TJAPlayer3.Skin.Game_Lane_Background_Y[i]);
+                                    TJAPlayer3.Tx.Lane_Text[2].t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Lane_Background_X[i], TJAPlayer3.Skin.Game_Lane_Background_Y[i]);
                                 }
                             }
                             #endregion
@@ -449,12 +449,12 @@ namespace TJAPlayer3
                                 if (this.stBranch[i].ct分岐アニメ進行.n現在の値 < 60)
                                 {
                                     this.stBranch[i].nY = this.stBranch[i].ct分岐アニメ進行.n現在の値 / 2;
-                                    TJAPlayer3.Tx.Lane_Text[1].t2D描画(TJAPlayer3.app.Device, 333, TJAPlayer3.Skin.Game_Lane_Background_Y[i] + this.stBranch[i].nY);
-                                    TJAPlayer3.Tx.Lane_Text[2].t2D描画(TJAPlayer3.app.Device, 333, (TJAPlayer3.Skin.Game_Lane_Background_Y[i] - 20) + this.stBranch[i].nY);
+                                    TJAPlayer3.Tx.Lane_Text[1].t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Lane_Background_X[i], TJAPlayer3.Skin.Game_Lane_Background_Y[i] + this.stBranch[i].nY);
+                                    TJAPlayer3.Tx.Lane_Text[2].t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Lane_Background_X[i], (TJAPlayer3.Skin.Game_Lane_Background_Y[i] - 20) + this.stBranch[i].nY);
                                 }
                                 else
                                 {
-                                    TJAPlayer3.Tx.Lane_Text[2].t2D描画(TJAPlayer3.app.Device, 333, TJAPlayer3.Skin.Game_Lane_Background_Y[i]);
+                                    TJAPlayer3.Tx.Lane_Text[2].t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Lane_Background_X[i], TJAPlayer3.Skin.Game_Lane_Background_Y[i]);
                                 }
                             }
                             #endregion
@@ -469,12 +469,12 @@ namespace TJAPlayer3
                                 if (this.stBranch[i].ct分岐アニメ進行.n現在の値 < 60)
                                 {
                                     this.stBranch[i].nY = this.stBranch[i].ct分岐アニメ進行.n現在の値 / 2;
-                                    TJAPlayer3.Tx.Lane_Text[1].t2D描画(TJAPlayer3.app.Device, 333, TJAPlayer3.Skin.Game_Lane_Background_Y[i] - this.stBranch[i].nY);
-                                    TJAPlayer3.Tx.Lane_Text[0].t2D描画(TJAPlayer3.app.Device, 333, (TJAPlayer3.Skin.Game_Lane_Background_Y[i] + 30) - this.stBranch[i].nY);
+                                    TJAPlayer3.Tx.Lane_Text[1].t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Lane_Background_X[i], TJAPlayer3.Skin.Game_Lane_Background_Y[i] - this.stBranch[i].nY);
+                                    TJAPlayer3.Tx.Lane_Text[0].t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Lane_Background_X[i], (TJAPlayer3.Skin.Game_Lane_Background_Y[i] + 30) - this.stBranch[i].nY);
                                 }
                                 else
                                 {
-                                    TJAPlayer3.Tx.Lane_Text[0].t2D描画(TJAPlayer3.app.Device, 333, TJAPlayer3.Skin.Game_Lane_Background_Y[i]);
+                                    TJAPlayer3.Tx.Lane_Text[0].t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Lane_Background_X[i], TJAPlayer3.Skin.Game_Lane_Background_Y[i]);
                                 }
                             }
                             #endregion
@@ -489,27 +489,27 @@ namespace TJAPlayer3
                                 {
                                     this.stBranch[i].nY = this.stBranch[i].ct分岐アニメ進行.n現在の値 / 2;
                                     TJAPlayer3.Tx.Lane_Text[2].n透明度 = this.stBranch[i].ct分岐アニメ進行.n現在の値 > 100 ? 0 : (255 - ((this.stBranch[i].ct分岐アニメ進行.n現在の値 * 0xff) / 60));
-                                    TJAPlayer3.Tx.Lane_Text[2].t2D描画(TJAPlayer3.app.Device, 333, TJAPlayer3.Skin.Game_Lane_Background_Y[i] - this.stBranch[i].nY);
-                                    TJAPlayer3.Tx.Lane_Text[1].t2D描画(TJAPlayer3.app.Device, 333, (TJAPlayer3.Skin.Game_Lane_Background_Y[i] + 30) - this.stBranch[i].nY);
+                                    TJAPlayer3.Tx.Lane_Text[2].t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Lane_Background_X[i], TJAPlayer3.Skin.Game_Lane_Background_Y[i] - this.stBranch[i].nY);
+                                    TJAPlayer3.Tx.Lane_Text[1].t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Lane_Background_X[i], (TJAPlayer3.Skin.Game_Lane_Background_Y[i] + 30) - this.stBranch[i].nY);
                                 }
                                 else if (this.stBranch[i].ct分岐アニメ進行.n現在の値 >= 60 && this.stBranch[i].ct分岐アニメ進行.n現在の値 < 150)
                                 {
                                     this.stBranch[i].nY = 21;
-                                    TJAPlayer3.Tx.Lane_Text[1].t2D描画(TJAPlayer3.app.Device, 333, TJAPlayer3.Skin.Game_Lane_Background_Y[i]);
+                                    TJAPlayer3.Tx.Lane_Text[1].t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Lane_Background_X[i], TJAPlayer3.Skin.Game_Lane_Background_Y[i]);
                                     TJAPlayer3.Tx.Lane_Text[1].n透明度 = 255;
                                     TJAPlayer3.Tx.Lane_Text[2].n透明度 = 255;
                                 }
                                 else if (this.stBranch[i].ct分岐アニメ進行.n現在の値 >= 150 && this.stBranch[i].ct分岐アニメ進行.n現在の値 < 210)
                                 {
                                     this.stBranch[i].nY = ((this.stBranch[i].ct分岐アニメ進行.n現在の値 - 150) / 2);
-                                    TJAPlayer3.Tx.Lane_Text[1].t2D描画(TJAPlayer3.app.Device, 333, TJAPlayer3.Skin.Game_Lane_Background_Y[i] - this.stBranch[i].nY);
+                                    TJAPlayer3.Tx.Lane_Text[1].t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Lane_Background_X[i], TJAPlayer3.Skin.Game_Lane_Background_Y[i] - this.stBranch[i].nY);
                                     TJAPlayer3.Tx.Lane_Text[1].n透明度 = this.stBranch[i].ct分岐アニメ進行.n現在の値 > 100 ? 0 : (255 - ((this.stBranch[i].ct分岐アニメ進行.n現在の値 * 0xff) / 100));
-                                    TJAPlayer3.Tx.Lane_Text[0].t2D描画(TJAPlayer3.app.Device, 333, (TJAPlayer3.Skin.Game_Lane_Background_Y[i] + 30) - this.stBranch[i].nY);
+                                    TJAPlayer3.Tx.Lane_Text[0].t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Lane_Background_X[i], (TJAPlayer3.Skin.Game_Lane_Background_Y[i] + 30) - this.stBranch[i].nY);
                                 }
                                 else if (this.stBranch[i].ct分岐アニメ進行.n現在の値 >= 210)
                                 {
                                     TJAPlayer3.Tx.Lane_Text[0].n透明度 = 255;
-                                    TJAPlayer3.Tx.Lane_Text[0].t2D描画(TJAPlayer3.app.Device, 333, TJAPlayer3.Skin.Game_Lane_Background_Y[i]);
+                                    TJAPlayer3.Tx.Lane_Text[0].t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Lane_Background_X[i], TJAPlayer3.Skin.Game_Lane_Background_Y[i]);
                                 }
                             }
                             if (this.stBranch[i].nBefore == 2 && this.stBranch[i].nAfter == 1)
@@ -522,12 +522,12 @@ namespace TJAPlayer3
                                 if (this.stBranch[i].ct分岐アニメ進行.n現在の値 < 60)
                                 {
                                     this.stBranch[i].nY = this.stBranch[i].ct分岐アニメ進行.n現在の値 / 2;
-                                    TJAPlayer3.Tx.Lane_Text[2].t2D描画(TJAPlayer3.app.Device, 333, TJAPlayer3.Skin.Game_Lane_Background_Y[i] - this.stBranch[i].nY);
-                                    TJAPlayer3.Tx.Lane_Text[1].t2D描画(TJAPlayer3.app.Device, 333, (TJAPlayer3.Skin.Game_Lane_Background_Y[i] + 30) - this.stBranch[i].nY);
+                                    TJAPlayer3.Tx.Lane_Text[2].t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Lane_Background_X[i], TJAPlayer3.Skin.Game_Lane_Background_Y[i] - this.stBranch[i].nY);
+                                    TJAPlayer3.Tx.Lane_Text[1].t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Lane_Background_X[i], (TJAPlayer3.Skin.Game_Lane_Background_Y[i] + 30) - this.stBranch[i].nY);
                                 }
                                 else
                                 {
-                                    TJAPlayer3.Tx.Lane_Text[1].t2D描画(TJAPlayer3.app.Device, 333, TJAPlayer3.Skin.Game_Lane_Background_Y[i]);
+                                    TJAPlayer3.Tx.Lane_Text[1].t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Lane_Background_X[i], TJAPlayer3.Skin.Game_Lane_Background_Y[i]);
                                 }
 
                             }
@@ -547,15 +547,15 @@ namespace TJAPlayer3
                             {
                                 case 0:
                                     TJAPlayer3.Tx.Lane_Text[0].n透明度 = 255;
-                                    TJAPlayer3.Tx.Lane_Text[0].t2D描画(TJAPlayer3.app.Device, 333, 192);
+                                    TJAPlayer3.Tx.Lane_Text[0].t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Lane_Background_X[i], 192);
                                     break;
                                 case 1:
                                     TJAPlayer3.Tx.Lane_Text[1].n透明度 = 255;
-                                    TJAPlayer3.Tx.Lane_Text[1].t2D描画(TJAPlayer3.app.Device, 333, 192);
+                                    TJAPlayer3.Tx.Lane_Text[1].t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Lane_Background_X[i], 192);
                                     break;
                                 case 2:
                                     TJAPlayer3.Tx.Lane_Text[2].n透明度 = 255;
-                                    TJAPlayer3.Tx.Lane_Text[2].t2D描画(TJAPlayer3.app.Device, 333, 192);
+                                    TJAPlayer3.Tx.Lane_Text[2].t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Lane_Background_X[i], 192);
                                     break;
                             }
                         }
@@ -567,15 +567,15 @@ namespace TJAPlayer3
                             //普通→玄人
                             if (this.stBranch[i].nBefore == 0 && this.stBranch[i].nAfter == 1)
                             {
-                                TJAPlayer3.Tx.Lane_Text[0].t2D描画(TJAPlayer3.app.Device, 333, 192 - this.stBranch[i].nY座標);
-                                TJAPlayer3.Tx.Lane_Text[1].t2D描画(TJAPlayer3.app.Device, 333, 212 - this.stBranch[i].nY座標);
+                                TJAPlayer3.Tx.Lane_Text[0].t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Lane_Background_X[i], 192 - this.stBranch[i].nY座標);
+                                TJAPlayer3.Tx.Lane_Text[1].t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Lane_Background_X[i], 212 - this.stBranch[i].nY座標);
                                 TJAPlayer3.Tx.Lane_Text[0].n透明度 = this.stBranch[i].nBranchレイヤー透明度;
                             }
                             //普通→達人
                             if (this.stBranch[i].nBefore == 0 && this.stBranch[i].nAfter == 2)
                             {
-                                TJAPlayer3.Tx.Lane_Text[0].t2D描画(TJAPlayer3.app.Device, 333, 192 - this.stBranch[i].nY座標);
-                                TJAPlayer3.Tx.Lane_Text[2].t2D描画(TJAPlayer3.app.Device, 333, 212 - this.stBranch[i].nY座標);
+                                TJAPlayer3.Tx.Lane_Text[0].t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Lane_Background_X[i], 192 - this.stBranch[i].nY座標);
+                                TJAPlayer3.Tx.Lane_Text[2].t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Lane_Background_X[i], 212 - this.stBranch[i].nY座標);
                                 TJAPlayer3.Tx.Lane_Text[0].n透明度 = this.stBranch[i].nBranchレイヤー透明度;
                             }
                             #endregion
@@ -583,30 +583,30 @@ namespace TJAPlayer3
                             //玄人→達人
                             if (this.stBranch[i].nBefore == 1 && this.stBranch[i].nAfter == 2)
                             {
-                                TJAPlayer3.Tx.Lane_Text[1].t2D描画(TJAPlayer3.app.Device, 333, 192 - this.stBranch[i].nY座標);
-                                TJAPlayer3.Tx.Lane_Text[2].t2D描画(TJAPlayer3.app.Device, 333, 212 - this.stBranch[i].nY座標);
+                                TJAPlayer3.Tx.Lane_Text[1].t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Lane_Background_X[i], 192 - this.stBranch[i].nY座標);
+                                TJAPlayer3.Tx.Lane_Text[2].t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Lane_Background_X[i], 212 - this.stBranch[i].nY座標);
                                 TJAPlayer3.Tx.Lane_Text[1].n透明度 = this.stBranch[i].nBranchレイヤー透明度;
                             }
                             #endregion
                             #region[ 玄人譜面_レベルダウン ]
                             if (this.stBranch[i].nBefore == 1 && this.stBranch[i].nAfter == 0)
                             {
-                                TJAPlayer3.Tx.Lane_Text[1].t2D描画(TJAPlayer3.app.Device, 333, 192 + this.stBranch[i].nY座標);
-                                TJAPlayer3.Tx.Lane_Text[0].t2D描画(TJAPlayer3.app.Device, 333, 168 + this.stBranch[i].nY座標);
+                                TJAPlayer3.Tx.Lane_Text[1].t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Lane_Background_X[i], 192 + this.stBranch[i].nY座標);
+                                TJAPlayer3.Tx.Lane_Text[0].t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Lane_Background_X[i], 168 + this.stBranch[i].nY座標);
                                 TJAPlayer3.Tx.Lane_Text[1].n透明度 = this.stBranch[i].nBranchレイヤー透明度;
                             }
                             #endregion
                             #region[ 達人譜面_レベルダウン ]
                             if (this.stBranch[i].nBefore == 2 && this.stBranch[i].nAfter == 0)
                             {
-                                TJAPlayer3.Tx.Lane_Text[2].t2D描画(TJAPlayer3.app.Device, 333, 192 + this.stBranch[i].nY座標);
-                                TJAPlayer3.Tx.Lane_Text[0].t2D描画(TJAPlayer3.app.Device, 333, 168 + this.stBranch[i].nY座標);
+                                TJAPlayer3.Tx.Lane_Text[2].t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Lane_Background_X[i], 192 + this.stBranch[i].nY座標);
+                                TJAPlayer3.Tx.Lane_Text[0].t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Lane_Background_X[i], 168 + this.stBranch[i].nY座標);
                                 TJAPlayer3.Tx.Lane_Text[2].n透明度 = this.stBranch[i].nBranchレイヤー透明度;
                             }
                             if (this.stBranch[i].nBefore == 2 && this.stBranch[i].nAfter == 1)
                             {
-                                TJAPlayer3.Tx.Lane_Text[2].t2D描画(TJAPlayer3.app.Device, 333, 192 + this.stBranch[i].nY座標);
-                                TJAPlayer3.Tx.Lane_Text[1].t2D描画(TJAPlayer3.app.Device, 333, 168 + this.stBranch[i].nY座標);
+                                TJAPlayer3.Tx.Lane_Text[2].t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Lane_Background_X[i], 192 + this.stBranch[i].nY座標);
+                                TJAPlayer3.Tx.Lane_Text[1].t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Lane_Background_X[i], 168 + this.stBranch[i].nY座標);
                                 TJAPlayer3.Tx.Lane_Text[2].n透明度 = this.stBranch[i].nBranchレイヤー透明度;
                             }
                             #endregion
@@ -620,10 +620,10 @@ namespace TJAPlayer3
 
             if (TJAPlayer3.Tx.Lane_Background_Sub != null)
             {
-                TJAPlayer3.Tx.Lane_Background_Sub.t2D描画(TJAPlayer3.app.Device, 333, 326);
+                TJAPlayer3.Tx.Lane_Background_Sub.t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Lane_Background_X[0], 134 + TJAPlayer3.Skin.Game_Lane_Background_Y[0]);
                 if (TJAPlayer3.stage演奏ドラム画面.bDoublePlay)
                 {
-                    TJAPlayer3.Tx.Lane_Background_Sub.t2D描画(TJAPlayer3.app.Device, 333, 502);
+                    TJAPlayer3.Tx.Lane_Background_Sub.t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Lane_Background_X[1], 134 + TJAPlayer3.Skin.Game_Lane_Background_Y[0]);
                 }
             }
 
