@@ -362,6 +362,10 @@ namespace TJAPlayer3
                     TJAPlayer3.act文字コンソール.tPrint(0, 32, C文字コンソール.Eフォント種別.赤, "BMSCROLL : ON");
                 else if (TJAPlayer3.ConfigIni.eScrollMode == EScrollMode.HBSCROLL)
                     TJAPlayer3.act文字コンソール.tPrint(0, 32, C文字コンソール.Eフォント種別.赤, "HBSCROLL : ON");
+                if (TJAPlayer3.ConfigIni.eGaugeMode == EGaugeMode.Groove)
+                    TJAPlayer3.act文字コンソール.tPrint(0, 48, C文字コンソール.Eフォント種別.赤, "GAUGE : GROOVE");
+                else if (TJAPlayer3.ConfigIni.eGaugeMode == EGaugeMode.Hard)
+                    TJAPlayer3.act文字コンソール.tPrint(0, 48, C文字コンソール.Eフォント種別.赤, "GAUGE : HARD");
                 #endregion
 
                 //this.actステータスパネル.On進行描画();
@@ -487,9 +491,29 @@ namespace TJAPlayer3
                                     break;
                             }
 						}
-						#endregion
+                        #endregion
+                        #region F7 ゲージモード
+                        if (TJAPlayer3.Input管理.Keyboard.bキーが押された((int)SlimDX.DirectInput.Key.F7))
+                        {
+                            TJAPlayer3.Skin.sound変更音.t再生する();
+                            TJAPlayer3.ConfigIni.bゲージモードを上書き = true;
+                            switch ((int)TJAPlayer3.ConfigIni.eGaugeMode)
+                            {
+                                case 0:
+                                    TJAPlayer3.ConfigIni.eGaugeMode = EGaugeMode.Groove;
+                                    break;
+                                case 1:
+                                    TJAPlayer3.ConfigIni.eGaugeMode = EGaugeMode.Hard;
+                                    break;
+                                case 2:
+                                    TJAPlayer3.ConfigIni.eGaugeMode = EGaugeMode.Normal;
+                                    TJAPlayer3.ConfigIni.bゲージモードを上書き = false;
+                                    break;
+                            }
+                        }
+                        #endregion
 
-						if ( this.act曲リスト.r現在選択中の曲 != null )
+                        if ( this.act曲リスト.r現在選択中の曲 != null )
 						{
                             #region [ Decide ]
                             if ((TJAPlayer3.Pad.b押されたDGB(Eパッド.Decide) || (TJAPlayer3.Pad.b押されたDGB(Eパッド.LRed) || TJAPlayer3.Pad.b押されたDGB(Eパッド.RRed)) ||

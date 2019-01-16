@@ -66,7 +66,7 @@ namespace TJAPlayer3
 		}
 		public bool IsFailed( E楽器パート part )	// 閉店状態になったかどうか
 		{
-			if ( bRisky ) {
+			if ( bRisky) {
 				return ( nRiskyTimes <= 0 );
 			}
 			return this.db現在のゲージ値[ (int) part ] <= GAUGE_MIN;
@@ -119,6 +119,7 @@ namespace TJAPlayer3
 				}
 			}
 		}
+    
 
 		/// <summary>
 		/// ゲージの初期化
@@ -126,15 +127,34 @@ namespace TJAPlayer3
 		/// <param name="nRiskyTimes_Initial_">Riskyの初期値(0でRisky未使用)</param>
 		public void Init(int nRiskyTimes_InitialVal )		// ゲージ初期化
 		{
-			//ダメージ値の計算は太鼓の達人譜面Wikiのものを参考にしました。
+            //ダメージ値の計算は太鼓の達人譜面Wikiのものを参考にしました。
+            if (TJAPlayer3.ConfigIni.eGaugeMode == EGaugeMode.Hard)
+            {
+                for (int i = 0; i < 4; i++)
+                {
+                    this.db現在のゲージ値[i] = 100.0;
+                }
 
-			for ( int i = 0; i < 4; i++ )
-			{
-                this.db現在のゲージ値[ i ] = 0;
-			}
+                this.dbゲージ値 = 100.0;
+            }
+            else if (TJAPlayer3.ConfigIni.eGaugeMode == EGaugeMode.Groove)
+            {
+                for (int i = 0; i < 4; i++)
+                {
+                    this.db現在のゲージ値[i] = 22.0;
+                }
 
-            this.dbゲージ値 = 0;
+                this.dbゲージ値 = 22.0;
+            }
+            else
+            {
+                for (int i = 0; i < 4; i++)
+                {
+                    this.db現在のゲージ値[i] = 0;
+                }
 
+                this.dbゲージ値 = 0;
+            }
             //ゲージのMAXまでの最低コンボ数を計算
             float dbGaugeMaxComboValue = 0;
             float[] dbGaugeMaxComboValue_branch = new float[3];
@@ -316,43 +336,98 @@ namespace TJAPlayer3
 				case E判定.Perfect:
 				case E判定.Great:
                     {
-                        if( TJAPlayer3.DTX.bチップがある.Branch )
+                        if (TJAPlayer3.ConfigIni.eGaugeMode == EGaugeMode.Hard)
                         {
-                            fDamage = this.dbゲージ増加量_Branch[ nコース, 0 ];
+                            fDamage = 0.24f;
                         }
+                        else if (TJAPlayer3.ConfigIni.eGaugeMode == EGaugeMode.Groove)
+                        { 
+                            if (TJAPlayer3.DTX.bチップがある.Branch)
+                            {
+                                fDamage = 2.5f * this.dbゲージ増加量_Branch[nコース, 0];
+                            }
+                            else
+                                fDamage = 2.5f * this.dbゲージ増加量[0];
+                        }       
                         else
-					        fDamage = this.dbゲージ増加量[ 0 ];
+                        {
+                            if (TJAPlayer3.DTX.bチップがある.Branch)
+                            {
+                                fDamage = this.dbゲージ増加量_Branch[nコース, 0];
+                            }
+                            else
+                                fDamage = this.dbゲージ増加量[0];
+                        }
                     }
                     break;
 				case E判定.Good:
                     {
-                        if( TJAPlayer3.DTX.bチップがある.Branch )
+                        if (TJAPlayer3.ConfigIni.eGaugeMode == EGaugeMode.Hard)
                         {
-                            fDamage = this.dbゲージ増加量_Branch[ nコース, 1 ];
+                            fDamage = 0f;
+                        }
+                        else if (TJAPlayer3.ConfigIni.eGaugeMode == EGaugeMode.Groove)
+                        {
+                            if (TJAPlayer3.DTX.bチップがある.Branch)
+                            {
+                                fDamage = 2.5f * this.dbゲージ増加量_Branch[nコース, 1];
+                            }
+                            else
+                                fDamage = 2.5f * this.dbゲージ増加量[1];
                         }
                         else
-					        fDamage = this.dbゲージ増加量[ 1 ];
+                        {
+                            if (TJAPlayer3.DTX.bチップがある.Branch)
+                            {
+                                fDamage = this.dbゲージ増加量_Branch[nコース, 1];
+                            }
+                            else
+                                fDamage = this.dbゲージ増加量[1];
+                        }
                     }
 					break;
 				case E判定.Poor:
 				case E判定.Miss:
                     {
-                        if( TJAPlayer3.DTX.bチップがある.Branch )
+                        if (TJAPlayer3.ConfigIni.eGaugeMode == EGaugeMode.Hard)
                         {
-                            fDamage = this.dbゲージ増加量_Branch[ nコース, 2 ];
+                            if (this.db現在のゲージ値[player] < 30)
+                                 { fDamage = -3.6f; }
+                            else { fDamage = -7.2f; }
+
+                            if (this.bRisky)
+                            {
+                                this.nRiskyTimes--;
+                            }
+                        }
+                        else if(TJAPlayer3.ConfigIni.eGaugeMode == EGaugeMode.Groove)
+                        {
+                            fDamage = -6.0f;
+
+                            if (this.bRisky)
+                            {
+                                this.nRiskyTimes--;
+                            }
                         }
                         else
-					        fDamage = this.dbゲージ増加量[ 2 ];
-                        
-
-                        if( fDamage >= 0 )
                         {
-                            fDamage = -fDamage;
-                        }
+                            if (TJAPlayer3.DTX.bチップがある.Branch)
+                            {
+                                fDamage = this.dbゲージ増加量_Branch[nコース, 2];
+                            }
+                            else
+                                fDamage = this.dbゲージ増加量[2];
 
-                        if( this.bRisky )
-                        {
-                            this.nRiskyTimes--;
+
+                            if (fDamage >= 0)
+                            {
+                                fDamage = -fDamage;
+                            }
+
+                            if (this.bRisky)
+                            {
+                                this.nRiskyTimes--;
+                            }
                         }
                     }
 
@@ -443,7 +518,7 @@ namespace TJAPlayer3
 		public double[] db現在のゲージ値 = new double[ 4 ];
         protected CCounter ct炎;
         protected CCounter ct虹アニメ;
-	protected CCounter ct虹透明度;
+	    protected CCounter ct虹透明度;
         //protected CTexture txゲージ;
         //      protected CTexture txゲージ背景;
         //protected CTexture txゲージ2P;

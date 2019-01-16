@@ -359,9 +359,15 @@ namespace TJAPlayer3
             Gauge = new CTexture[2];
             Gauge[0] = TxC(GAME + GAUGE + @"1P.png");
             Gauge[1] = TxC(GAME + GAUGE + @"2P.png");
+            Gauge_Hard = new CTexture[2];
+            Gauge_Hard[0] = TxC(GAME + GAUGE + @"1P_Hard.png");
+            Gauge_Hard[1] = TxC(GAME + GAUGE + @"2P_Hard.png");
             Gauge_Base = new CTexture[2];
             Gauge_Base[0] = TxC(GAME + GAUGE + @"1P_Base.png");
             Gauge_Base[1] = TxC(GAME + GAUGE + @"2P_Base.png");
+            Gauge_Hard_Base = new CTexture[2];
+            Gauge_Hard_Base[0] = TxC(GAME + GAUGE + @"1P_Hard_Base.png");
+            Gauge_Hard_Base[1] = TxC(GAME + GAUGE + @"2P_Hard_Base.png");
             Gauge_Line = new CTexture[2];
             Gauge_Line[0] = TxC(GAME + GAUGE + @"1P_Line.png");
             Gauge_Line[1] = TxC(GAME + GAUGE + @"2P_Line.png");
@@ -712,8 +718,12 @@ namespace TJAPlayer3
             #region ゲージ
             TJAPlayer3.tテクスチャの解放(ref Gauge[0]);
             TJAPlayer3.tテクスチャの解放(ref Gauge[1]);
+            TJAPlayer3.tテクスチャの解放(ref Gauge_Hard[0]);
+            TJAPlayer3.tテクスチャの解放(ref Gauge_Hard[1]);
             TJAPlayer3.tテクスチャの解放(ref Gauge_Base[0]);
             TJAPlayer3.tテクスチャの解放(ref Gauge_Base[1]);
+            TJAPlayer3.tテクスチャの解放(ref Gauge_Hard_Base[0]);
+            TJAPlayer3.tテクスチャの解放(ref Gauge_Hard_Base[1]);
             TJAPlayer3.tテクスチャの解放(ref Gauge_Line[0]);
             TJAPlayer3.tテクスチャの解放(ref Gauge_Line[1]);
             for (int i = 0; i < TJAPlayer3.Skin.Game_Gauge_Rainbow_Ptn; i++)
@@ -952,7 +962,9 @@ namespace TJAPlayer3
         #endregion
         #region ゲージ
         public CTexture[] Gauge,
+            Gauge_Hard,
             Gauge_Base,
+            Gauge_Hard_Base,
             Gauge_Line,
             Gauge_Rainbow,
             Gauge_Soul_Explosion;

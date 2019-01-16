@@ -28,6 +28,13 @@ namespace TJAPlayer3
         HBSCROLL
     }
 
+    public enum EGaugeMode
+    {
+        Normal,
+        Groove,
+        Hard
+    }
+
     public enum EGame
     {
         OFF = 0,

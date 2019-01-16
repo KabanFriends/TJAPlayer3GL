@@ -402,7 +402,22 @@ namespace TJAPlayer3
 					TJAPlayer3.DTX.t全チップの再生停止();
 					base.eフェーズID = CStage.Eフェーズ.演奏_STAGE_FAILED;
 				}
-                if( !String.IsNullOrEmpty( TJAPlayer3.DTX.strBGIMAGE_PATH ) || ( TJAPlayer3.DTX.listAVI.Count == 0 ) ) //背景動画があったら背景画像を描画しない。
+
+                //ハードゲージの閉店
+                for (int i = 0; i < TJAPlayer3.ConfigIni.nPlayerCount; i++)
+                {
+                    if (TJAPlayer3.ConfigIni.eGaugeMode == EGaugeMode.Hard && (base.eフェーズID == CStage.Eフェーズ.共通_通常状態))
+                    {
+                        if (this.actGauge.db現在のゲージ値[i] <= 0.0f)
+                        {
+                            this.actStageFailed.Start();
+                            TJAPlayer3.DTX.t全チップの再生停止();
+                            base.eフェーズID = CStage.Eフェーズ.演奏_STAGE_FAILED;
+                        }
+                    }
+                }
+
+                if ( !String.IsNullOrEmpty( TJAPlayer3.DTX.strBGIMAGE_PATH ) || ( TJAPlayer3.DTX.listAVI.Count == 0 ) ) //背景動画があったら背景画像を描画しない。
                 {
 				    this.t進行描画_背景();
                 }
