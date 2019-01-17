@@ -410,9 +410,10 @@ namespace TJAPlayer3
                     {
                         if (this.actGauge.db現在のゲージ値[i] <= 0.0f)
                         {
-                            this.actStageFailed.Start();
                             TJAPlayer3.DTX.t全チップの再生停止();
-                            base.eフェーズID = CStage.Eフェーズ.演奏_STAGE_FAILED;
+                            this.eフェードアウト完了時の戻り値 = E演奏画面の戻り値.ステージ失敗_ハード;
+                            base.eフェーズID = CStage.Eフェーズ.演奏_STAGE_FAILED_ハード;
+                            this.actFOClear.tフェードアウト開始();
                         }
                     }
                 }

@@ -1374,21 +1374,104 @@ for (int i = 0; i < 3; i++) {
 									this.tガベージコレクションを実行する();
 								}
 								break;
-								//-----------------------------
-								#endregion
+                            //-----------------------------
+                            #endregion
 
-							case (int) E演奏画面の戻り値.ステージクリア:
-								#region [ 演奏クリア ]
-								//-----------------------------
-								CScoreIni.C演奏記録 c演奏記録_Drums;
-								stage演奏ドラム画面.t演奏結果を格納する( out c演奏記録_Drums );
+                            case (int) E演奏画面の戻り値.ステージ失敗_ハード:
+                                #region 演奏失敗(ハードゲージ)
+                                //-----------------------------
+                                CScoreIni.C演奏記録 c演奏記録_Drums;
+                                stage演奏ドラム画面.t演奏結果を格納する(out c演奏記録_Drums);
 
                                 double ps = 0.0, gs = 0.0;
+                                if (!c演奏記録_Drums.b全AUTOである && c演奏記録_Drums.n全チップ数 > 0)
+                                {
+                                    ps = c演奏記録_Drums.db演奏型スキル値;
+                                    gs = c演奏記録_Drums.dbゲーム型スキル値;
+                                }
+                                string str = "Failed";
+                                switch (CScoreIni.t総合ランク値を計算して返す(c演奏記録_Drums, null, null))
+                                {
+                                    case (int)CScoreIni.ERANK.SS:
+                                        str = string.Format("Failed (SS: {0:F2})", ps);
+                                        break;
+
+                                    case (int)CScoreIni.ERANK.S:
+                                        str = string.Format("Failed (S: {0:F2})", ps);
+                                        break;
+
+                                    case (int)CScoreIni.ERANK.A:
+                                        str = string.Format("Failed (A: {0:F2})", ps);
+                                        break;
+
+                                    case (int)CScoreIni.ERANK.B:
+                                        str = string.Format("Failed (B: {0:F2})", ps);
+                                        break;
+
+                                    case (int)CScoreIni.ERANK.C:
+                                        str = string.Format("Failed (C: {0:F2})", ps);
+                                        break;
+
+                                    case (int)CScoreIni.ERANK.D:
+                                        str = string.Format("Failed (D: {0:F2})", ps);
+                                        break;
+
+                                    case (int)CScoreIni.ERANK.E:
+                                        str = string.Format("Failed (E: {0:F2})", ps);
+                                        break;
+
+                                    case (int)CScoreIni.ERANK.UNKNOWN:  // #23534 2010.10.28 yyagi add: 演奏チップが0個のとき
+                                        str = "Failed (GAUGE:HARD)";
+                                        break;
+                                }
+
+                                scoreIni = this.tScoreIniへBGMAdjustとHistoryとPlayCountを更新(str);
+
+                                #region [ プラグイン On演奏失敗() の呼び出し ]
+                                //---------------------
+                                foreach (STPlugin pg in this.listプラグイン)
+                                {
+                                    Directory.SetCurrentDirectory(pg.strプラグインフォルダ);
+                                    pg.plugin.On演奏失敗(scoreIni);
+                                    Directory.SetCurrentDirectory(TJAPlayer3.strEXEのあるフォルダ);
+                                }
+                                //---------------------
+                                #endregion
+
+                                r現在のステージ.On非活性化();
+                                Trace.TraceInformation("----------------------");
+                                Trace.TraceInformation("■ 結果");
+                                stage結果.st演奏記録.Drums = c演奏記録_Drums;
+                                stage結果.On活性化();
+                                r直前のステージ = r現在のステージ;
+                                r現在のステージ = stage結果;
+
+                                #region [ プラグイン Onステージ変更() の呼び出し ]
+                                //---------------------
+                                foreach (STPlugin pg in this.listプラグイン)
+                                {
+                                    Directory.SetCurrentDirectory(pg.strプラグインフォルダ);
+                                    pg.plugin.Onステージ変更();
+                                    Directory.SetCurrentDirectory(TJAPlayer3.strEXEのあるフォルダ);
+                                }
+                                //---------------------
+                                #endregion
+
+                                break;
+                            #endregion
+
+                            case (int) E演奏画面の戻り値.ステージクリア:
+								#region [ 演奏クリア ]
+								//-----------------------------
+								stage演奏ドラム画面.t演奏結果を格納する( out c演奏記録_Drums );
+
+                                ps = 0.0;
+                                gs = 0.0;
 								if ( !c演奏記録_Drums.b全AUTOである && c演奏記録_Drums.n全チップ数 > 0) {
 									ps = c演奏記録_Drums.db演奏型スキル値;
 									gs = c演奏記録_Drums.dbゲーム型スキル値;
 								}
-								string str = "Cleared";
+								str = "Cleared";
 								switch( CScoreIni.t総合ランク値を計算して返す( c演奏記録_Drums, null, null ) )
 								{
 									case (int)CScoreIni.ERANK.SS:
