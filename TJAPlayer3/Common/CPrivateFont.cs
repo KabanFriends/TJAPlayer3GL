@@ -1,15 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.IO;
-using System.Runtime.InteropServices;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Diagnostics;
-using SlimDX;
-using FDK;
 using FDK.ExtensionMethods;
-using System.Linq;
 
 namespace TJAPlayer3
 {
@@ -430,6 +424,8 @@ namespace TJAPlayer3
 
             #region[ キャンバスの大きさ予測 ]
             //大きさを計算していく。
+		    Bitmap bmpDummy = new Bitmap( 1, 1 );
+		    Graphics gCal = Graphics.FromImage( bmpDummy );
             int nHeight = 0;
             for( int i = 0; i < strName.Length; i++ )
             {
@@ -444,9 +440,7 @@ namespace TJAPlayer3
 
 
                 //できるだけ正確な値を計算しておきたい...!
-                Bitmap bmpDummy = new Bitmap( 150, 150 ); //とりあえず150
-                Graphics gCal = Graphics.FromImage( bmpDummy );
-                Rectangle rect正確なサイズ = this.MeasureStringPrecisely( gCal, strName[ i ], this._font, strSize, sFormat );
+                Rectangle rect正確なサイズ = CPreciseStringMeasurer.MeasureStringPrecisely( gCal, strName[ i ], this._font, strSize, sFormat );
                 int n余白サイズ = strSize.Height - rect正確なサイズ.Height;
 
                 Rectangle rect = new Rectangle( 0, -n余白サイズ + 2, 46, ( strSize.Height + 16 ));
@@ -459,10 +453,6 @@ namespace TJAPlayer3
                 else if( strName[ i ] == " " )
                 { nHeight += ( 12 ); }
                 else { nHeight += ( rect正確なサイズ.Height ) + 10; }
-
-                //念のため解放
-                bmpDummy.Dispose();
-                gCal.Dispose();
 
                 //stream.WriteLine( "文字の大きさ{0},大きさ合計{1}", ( rect正確なサイズ.Height ) + 6, nHeight );
                 
@@ -492,9 +482,7 @@ namespace TJAPlayer3
                 sFormat.Alignment = StringAlignment.Near;	// 画面中央（水平方向位置）
 
                 //できるだけ正確な値を計算しておきたい...!
-                Bitmap bmpDummy = new Bitmap(150, 150); //とりあえず150
-                Graphics gCal = Graphics.FromImage(bmpDummy);
-                Rectangle rect正確なサイズ = this.MeasureStringPrecisely(gCal, strName[i], this._font, strSize, sFormat);
+                Rectangle rect正確なサイズ = CPreciseStringMeasurer.MeasureStringPrecisely(gCal, strName[i], this._font, strSize, sFormat);
                 int n余白サイズ = strSize.Height - rect正確なサイズ.Height;
 
                 //Bitmap bmpV = new Bitmap( 36, ( strSize.Height + 12 ) - 6 );
@@ -646,7 +634,6 @@ namespace TJAPlayer3
                 nNowPos += bmpV.Size.Height - 6;
 
                 if( bmpV != null ) bmpV.Dispose(); bmpV = null;
-                if( gCal != null ) gCal.Dispose(); gCal = null;
 
                 //bmpCambus.Save( "test.png" );
                 //if( this._pt < 20 )
@@ -662,6 +649,10 @@ namespace TJAPlayer3
             //stream.Close();
 
             if( Gcambus != null ) Gcambus.Dispose();
+
+		    //念のため解放
+		    bmpDummy.Dispose();
+		    gCal.Dispose();
 
 			//return bmp;
             return bmpCambus;
@@ -819,153 +810,6 @@ namespace TJAPlayer3
         //}
 
 
-        //------------------------------------------------
-        //使用:http://dobon.net/vb/dotnet/graphics/measurestring.html
-
-        /// <summary>
-        /// Graphics.DrawStringで文字列を描画した時の大きさと位置を正確に計測する
-        /// </summary>
-        /// <param name="g">文字列を描画するGraphics</param>
-        /// <param name="text">描画する文字列</param>
-        /// <param name="font">描画に使用するフォント</param>
-        /// <param name="proposedSize">これ以上大きいことはないというサイズ。
-        /// できるだけ小さくすること。</param>
-        /// <param name="stringFormat">描画に使用するStringFormat</param>
-        /// <returns>文字列が描画される範囲。
-        /// 見つからなかった時は、Rectangle.Empty。</returns>
-        public Rectangle MeasureStringPrecisely(Graphics g,
-            string text, Font font, Size proposedSize, StringFormat stringFormat)
-        {
-            //解像度を引き継いで、Bitmapを作成する
-            Bitmap bmp = new Bitmap(proposedSize.Width, proposedSize.Height, g);
-            //BitmapのGraphicsを作成する
-            Graphics bmpGraphics = Graphics.FromImage(bmp);
-            //Graphicsのプロパティを引き継ぐ
-            bmpGraphics.TextRenderingHint = g.TextRenderingHint;
-            bmpGraphics.TextContrast = g.TextContrast;
-            bmpGraphics.PixelOffsetMode = g.PixelOffsetMode;
-            //文字列の描かれていない部分の色を取得する
-            Color backColor = bmp.GetPixel(0, 0);
-            //実際にBitmapに文字列を描画する
-            bmpGraphics.DrawString(text, font, Brushes.Black,
-                new RectangleF(0f, 0f, proposedSize.Width, proposedSize.Height),
-                stringFormat);
-            bmpGraphics.Dispose();
-            //文字列が描画されている範囲を計測する
-            Rectangle resultRect = MeasureForegroundArea(bmp, backColor);
-            bmp.Dispose();
-
-            return resultRect;
-        }
-
-        /// <summary>
-        /// 指定されたBitmapで、backColor以外の色が使われている範囲を計測する
-        /// </summary>
-        private Rectangle MeasureForegroundArea(Bitmap bmp, Color backColor)
-        {
-            int backColorArgb = backColor.ToArgb();
-            int maxWidth = bmp.Width;
-            int maxHeight = bmp.Height;
-
-            //左側の空白部分を計測する
-            int leftPosition = -1;
-            for (int x = 0; x < maxWidth; x++)
-            {
-                for (int y = 0; y < maxHeight; y++)
-                {
-                    //違う色を見つけたときは、位置を決定する
-                    if (bmp.GetPixel(x, y).ToArgb() != backColorArgb)
-                    {
-                        leftPosition = x;
-                        break;
-                    }
-                }
-                if (0 <= leftPosition)
-                {
-                    break;
-                }
-            }
-            //違う色が見つからなかった時
-            if (leftPosition < 0)
-            {
-                return Rectangle.Empty;
-            }
-
-            //右側の空白部分を計測する
-            int rightPosition = -1;
-            for (int x = maxWidth - 1; leftPosition < x; x--)
-            {
-                for (int y = 0; y < maxHeight; y++)
-                {
-                    if (bmp.GetPixel(x, y).ToArgb() != backColorArgb)
-                    {
-                        rightPosition = x;
-                        break;
-                    }
-                }
-                if (0 <= rightPosition)
-                {
-                    break;
-                }
-            }
-            if (rightPosition < 0)
-            {
-                rightPosition = leftPosition;
-            }
-
-            //上の空白部分を計測する
-            int topPosition = -1;
-            for (int y = 0; y < maxHeight; y++)
-            {
-                for (int x = leftPosition; x <= rightPosition; x++)
-                {
-                    if (bmp.GetPixel(x, y).ToArgb() != backColorArgb)
-                    {
-                        topPosition = y;
-                        break;
-                    }
-                }
-                if (0 <= topPosition)
-                {
-                    break;
-                }
-            }
-            if (topPosition < 0)
-            {
-                return Rectangle.Empty;
-            }
-
-            //下の空白部分を計測する
-            int bottomPosition = -1;
-            for (int y = maxHeight - 1; topPosition < y; y--)
-            {
-                for (int x = leftPosition; x <= rightPosition; x++)
-                {
-                    if (bmp.GetPixel(x, y).ToArgb() != backColorArgb)
-                    {
-                        bottomPosition = y;
-                        break;
-                    }
-                }
-                if (0 <= bottomPosition)
-                {
-                    break;
-                }
-            }
-            if (bottomPosition < 0)
-            {
-                bottomPosition = topPosition;
-            }
-
-            //結果を返す
-            return new Rectangle(leftPosition, topPosition,
-                rightPosition - leftPosition, bottomPosition - topPosition);
-        }
-
-        private Rectangle MeasureForegroundArea(Bitmap bmp)
-        {
-            return MeasureForegroundArea(bmp, bmp.GetPixel(0, 0));
-        }
 
         //------------------------------------------------
 
