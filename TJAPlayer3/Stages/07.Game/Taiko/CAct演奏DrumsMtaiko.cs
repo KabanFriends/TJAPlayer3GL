@@ -147,15 +147,15 @@ namespace TJAPlayer3
 
             //if(CDTXMania.Tx.Taiko_Frame[ 0 ] != null )
                // CDTXMania.Tx.Taiko_Frame[ 0 ].t2D描画( CDTXMania.app.Device, 0, 184 );
-            if(TJAPlayer3.Tx.Taiko_Background[0] != null )
-                TJAPlayer3.Tx.Taiko_Background[0].t2D描画( TJAPlayer3.app.Device, 0, 184 );
+            if(TJAPlayer3.Tx.Taiko_Background[0] != null ) 
+                TJAPlayer3.Tx.Taiko_Background[0].t2D描画( TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Taiko_Background_X[0], TJAPlayer3.Skin.Game_Taiko_Background_Y[0] );
 
             if ( TJAPlayer3.stage演奏ドラム画面.bDoublePlay )
             {
                 //if(CDTXMania.Tx.Taiko_Frame[ 1 ] != null )
                     //CDTXMania.Tx.Taiko_Frame[ 1 ].t2D描画( CDTXMania.app.Device, 0, 360 );
                 if(TJAPlayer3.Tx.Taiko_Background[1] != null )
-                    TJAPlayer3.Tx.Taiko_Background[1].t2D描画( TJAPlayer3.app.Device, 0, 360 );
+                    TJAPlayer3.Tx.Taiko_Background[1].t2D描画( TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Taiko_Background_X[1], TJAPlayer3.Skin.Game_Taiko_Background_Y[1]);
             }
             
             if(TJAPlayer3.Tx.Taiko_Base != null )
