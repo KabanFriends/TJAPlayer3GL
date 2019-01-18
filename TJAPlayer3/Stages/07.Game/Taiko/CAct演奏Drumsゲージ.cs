@@ -272,7 +272,7 @@ namespace TJAPlayer3
                         {
                             if (TJAPlayer3.Tx.Gauge_ExHard[1] != null)
                             {
-                                TJAPlayer3.Tx.Gauge_ExHard[1].t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Gauge_X[1], TJAPlayer3.Skin.Game_Gauge_Y[1], new Rectangle(0, 0, nRectX, 44));
+                                TJAPlayer3.Tx.Gauge_ExHard[1].t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Gauge_X[1], TJAPlayer3.Skin.Game_Gauge_Y[1], new Rectangle(0, 0, nRectX2P, 44));
                                 if (TJAPlayer3.Tx.Gauge_Line_Hard[1] != null)
                                     TJAPlayer3.Tx.Gauge_Line_Hard[1].t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Gauge_X[1], TJAPlayer3.Skin.Game_Gauge_Y[1]);
                                 else if (TJAPlayer3.Tx.Gauge_Line[1] != null)
@@ -280,7 +280,7 @@ namespace TJAPlayer3
                             }
                             else if (TJAPlayer3.Tx.Gauge_Hard[1] != null)
                             {
-                                TJAPlayer3.Tx.Gauge_Hard[1].t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Gauge_X[1], TJAPlayer3.Skin.Game_Gauge_Y[1], new Rectangle(0, 0, nRectX, 44));
+                                TJAPlayer3.Tx.Gauge_Hard[1].t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Gauge_X[1], TJAPlayer3.Skin.Game_Gauge_Y[1], new Rectangle(0, 0, nRectX2P, 44));
                                 if (TJAPlayer3.Tx.Gauge_Line_Hard[1] != null)
                                     TJAPlayer3.Tx.Gauge_Line_Hard[1].t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Gauge_X[1], TJAPlayer3.Skin.Game_Gauge_Y[1]);
                                 else if (TJAPlayer3.Tx.Gauge_Line[1] != null)
@@ -288,7 +288,7 @@ namespace TJAPlayer3
                             }
                             else if (TJAPlayer3.Tx.Gauge[1] != null)
                             {
-                                TJAPlayer3.Tx.Gauge[1].t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Gauge_X[1], TJAPlayer3.Skin.Game_Gauge_Y[1], new Rectangle(0, 0, nRectX, 44));
+                                TJAPlayer3.Tx.Gauge[1].t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Gauge_X[1], TJAPlayer3.Skin.Game_Gauge_Y[1], new Rectangle(0, 0, nRectX2P, 44));
                                 if (TJAPlayer3.Tx.Gauge_Line[1] != null)
                                     TJAPlayer3.Tx.Gauge_Line[1].t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Gauge_X[1], TJAPlayer3.Skin.Game_Gauge_Y[1]);
                             }
@@ -334,7 +334,7 @@ namespace TJAPlayer3
                         {
                             if (TJAPlayer3.Tx.Gauge_Hard[1] != null)
                             {
-                                TJAPlayer3.Tx.Gauge_Hard[1].t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Gauge_X[1], TJAPlayer3.Skin.Game_Gauge_Y[1], new Rectangle(0, 0, nRectX, 44));
+                                TJAPlayer3.Tx.Gauge_Hard[1].t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Gauge_X[1], TJAPlayer3.Skin.Game_Gauge_Y[1], new Rectangle(0, 0, nRectX2P, 44));
                                 if (TJAPlayer3.Tx.Gauge_Line_Hard[1] != null)
                                     TJAPlayer3.Tx.Gauge_Line_Hard[1].t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Gauge_X[1], TJAPlayer3.Skin.Game_Gauge_Y[1]);
                                 else if (TJAPlayer3.Tx.Gauge_Line[1] != null)
@@ -342,7 +342,7 @@ namespace TJAPlayer3
                             }
                             else if (TJAPlayer3.Tx.Gauge[1] != null)
                             {
-                                TJAPlayer3.Tx.Gauge[1].t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Gauge_X[1], TJAPlayer3.Skin.Game_Gauge_Y[1], new Rectangle(0, 0, nRectX, 44));
+                                TJAPlayer3.Tx.Gauge[1].t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Gauge_X[1], TJAPlayer3.Skin.Game_Gauge_Y[1], new Rectangle(0, 0, nRectX2P, 44));
                                 if (TJAPlayer3.Tx.Gauge_Line[1] != null)
                                     TJAPlayer3.Tx.Gauge_Line[1].t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Gauge_X[1], TJAPlayer3.Skin.Game_Gauge_Y[1]);
                             }
