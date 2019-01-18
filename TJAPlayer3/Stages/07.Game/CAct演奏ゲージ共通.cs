@@ -344,10 +344,10 @@ namespace TJAPlayer3
                         { 
                             if (TJAPlayer3.DTX.bチップがある.Branch)
                             {
-                                fDamage = 2.5f * this.dbゲージ増加量_Branch[nコース, 0];
+                                fDamage = 3.0f * this.dbゲージ増加量_Branch[nコース, 0];
                             }
                             else
-                                fDamage = 2.5f * this.dbゲージ増加量[0];
+                                fDamage = 3.0f * this.dbゲージ増加量[0];
                         }       
                         else
                         {
@@ -370,10 +370,10 @@ namespace TJAPlayer3
                         {
                             if (TJAPlayer3.DTX.bチップがある.Branch)
                             {
-                                fDamage = 2.5f * this.dbゲージ増加量_Branch[nコース, 1];
+                                fDamage = 3.0f * this.dbゲージ増加量_Branch[nコース, 1];
                             }
                             else
-                                fDamage = 2.5f * this.dbゲージ増加量[1];
+                                fDamage = 3.0f * this.dbゲージ増加量[1];
                         }
                         else
                         {
@@ -395,19 +395,15 @@ namespace TJAPlayer3
                                  { fDamage = -3.6f; }
                             else { fDamage = -7.2f; }
 
-                            if (this.bRisky)
-                            {
-                                this.nRiskyTimes--;
-                            }
                         }
                         else if(TJAPlayer3.ConfigIni.eGaugeMode == EGaugeMode.Groove)
                         {
-                            fDamage = -6.0f;
-
-                            if (this.bRisky)
+                            if (TJAPlayer3.DTX.bチップがある.Branch)
                             {
-                                this.nRiskyTimes--;
+                                fDamage = 24.0f * this.dbゲージ増加量_Branch[nコース, 2];
                             }
+                            else
+                                fDamage = 24.0f * this.dbゲージ増加量[2];
                         }
                         else
                         {
@@ -417,18 +413,17 @@ namespace TJAPlayer3
                             }
                             else
                                 fDamage = this.dbゲージ増加量[2];
-
-
-                            if (fDamage >= 0)
-                            {
-                                fDamage = -fDamage;
-                            }
-
-                            if (this.bRisky)
-                            {
-                                this.nRiskyTimes--;
-                            }
                         }
+
+                        if (fDamage >= 0)
+                        {
+                            fDamage = -fDamage;
+                        }
+                        if (this.bRisky)
+                        {
+                            this.nRiskyTimes--;
+                        }
+
                     }
 
 					break;
