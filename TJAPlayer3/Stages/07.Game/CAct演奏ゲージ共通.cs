@@ -344,10 +344,10 @@ namespace TJAPlayer3
                         { 
                             if (TJAPlayer3.DTX.bチップがある.Branch)
                             {
-                                fDamage = 3.0f * this.dbゲージ増加量_Branch[nコース, 0];
+                                fDamage = 4.5f * this.dbゲージ増加量_Branch[nコース, 0];
                             }
                             else
-                                fDamage = 3.0f * this.dbゲージ増加量[0];
+                                fDamage = 4.5f * this.dbゲージ増加量[0];
                         }       
                         else
                         {
@@ -370,10 +370,10 @@ namespace TJAPlayer3
                         {
                             if (TJAPlayer3.DTX.bチップがある.Branch)
                             {
-                                fDamage = 3.0f * this.dbゲージ増加量_Branch[nコース, 1];
+                                fDamage = 4.5f * this.dbゲージ増加量_Branch[nコース, 1];
                             }
                             else
-                                fDamage = 3.0f * this.dbゲージ増加量[1];
+                                fDamage = 4.5f * this.dbゲージ増加量[1];
                         }
                         else
                         {
@@ -387,23 +387,51 @@ namespace TJAPlayer3
                     }
 					break;
 				case E判定.Poor:
-				case E判定.Miss:
                     {
                         if (TJAPlayer3.ConfigIni.eGaugeMode == EGaugeMode.Hard)
                         {
                             if (this.db現在のゲージ値[player] < 30)
-                                 { fDamage = -3.6f; }
-                            else { fDamage = -7.2f; }
+                            { fDamage = -2.5f; }
+                            else { fDamage = -5.0f; }
+
+                        }
+                        else if (TJAPlayer3.ConfigIni.eGaugeMode == EGaugeMode.Groove)
+                        {
+                            fDamage = 2.0f;
+                        }
+                        else
+                        {
+                            if (TJAPlayer3.DTX.bチップがある.Branch)
+                            {
+                                fDamage = this.dbゲージ増加量_Branch[nコース, 2];
+                            }
+                            else
+                                fDamage = this.dbゲージ増加量[2];
+                        }
+
+                        if (fDamage >= 0)
+                        {
+                            fDamage = -fDamage;
+                        }
+                        if (this.bRisky)
+                        {
+                            this.nRiskyTimes--;
+                        }
+
+                    }
+                    break;
+                case E判定.Miss:
+                    {
+                        if (TJAPlayer3.ConfigIni.eGaugeMode == EGaugeMode.Hard)
+                        {
+                            if (this.db現在のゲージ値[player] < 30)
+                                 { fDamage = -4.5f; }
+                            else { fDamage = -9.0f; }
 
                         }
                         else if(TJAPlayer3.ConfigIni.eGaugeMode == EGaugeMode.Groove)
                         {
-                            if (TJAPlayer3.DTX.bチップがある.Branch)
-                            {
-                                fDamage = 24.0f * this.dbゲージ増加量_Branch[nコース, 2];
-                            }
-                            else
-                                fDamage = 24.0f * this.dbゲージ増加量[2];
+                            fDamage = -6.0f;
                         }
                         else
                         {
