@@ -249,7 +249,6 @@ namespace TJAPlayer3
                 #region[ ゲージ本体 ]
 
                 //ハードゲージ用のゲージ画像の分岐(ゲージ本体のコードを使いまわしたいので)
-                CTexture Gauge = new CTexture();
                 if (TJAPlayer3.Tx.Result_Gauge_Hard != null && TJAPlayer3.ConfigIni.eGaugeMode == EGaugeMode.Hard)
                     Gauge = TJAPlayer3.Tx.Result_Gauge_Hard;
                 else
@@ -429,11 +428,12 @@ namespace TJAPlayer3
 		private bool bフルコンボ音再生済み;
 		private CCounter ct表示用;
 		private readonly Point[] ptFullCombo位置;
-		private CSound sdDTXで指定されたフルコンボ音;
+        private CSound sdDTXで指定されたフルコンボ音;
 		private readonly ST文字位置[] st小文字位置;
 		private readonly ST文字位置[] st大文字位置;
         private ST文字位置[] stScoreFont;
 
+        private CTexture Gauge = null;
         private CTexture Dan_Plate;
 
 		private void t小文字表示( int x, int y, string str )

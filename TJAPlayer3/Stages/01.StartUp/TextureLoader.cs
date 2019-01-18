@@ -365,12 +365,15 @@ namespace TJAPlayer3
             Gauge_Base = new CTexture[2];
             Gauge_Base[0] = TxC(GAME + GAUGE + @"1P_Base.png");
             Gauge_Base[1] = TxC(GAME + GAUGE + @"2P_Base.png");
-            Gauge_Hard_Base = new CTexture[2];
-            Gauge_Hard_Base[0] = TxC(GAME + GAUGE + @"1P_Hard_Base.png");
-            Gauge_Hard_Base[1] = TxC(GAME + GAUGE + @"2P_Hard_Base.png");
+            Gauge_Base_Hard = new CTexture[2];
+            Gauge_Base_Hard[0] = TxC(GAME + GAUGE + @"1P_Base_Hard.png");
+            Gauge_Base_Hard[1] = TxC(GAME + GAUGE + @"2P_Base_Hard.png");
             Gauge_Line = new CTexture[2];
             Gauge_Line[0] = TxC(GAME + GAUGE + @"1P_Line.png");
             Gauge_Line[1] = TxC(GAME + GAUGE + @"2P_Line.png");
+            Gauge_Line_Hard = new CTexture[2];
+            Gauge_Line_Hard[0] = TxC(GAME + GAUGE + @"1P_Line_Hard.png");
+            Gauge_Line_Hard[1] = TxC(GAME + GAUGE + @"2P_Line_Hard.png");
             TJAPlayer3.Skin.Game_Gauge_Rainbow_Ptn = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path(BASE + GAME + GAUGE + @"Rainbow\"));
             if (TJAPlayer3.Skin.Game_Gauge_Rainbow_Ptn != 0)
             {
@@ -724,10 +727,12 @@ namespace TJAPlayer3
             TJAPlayer3.tテクスチャの解放(ref Gauge_Hard[1]);
             TJAPlayer3.tテクスチャの解放(ref Gauge_Base[0]);
             TJAPlayer3.tテクスチャの解放(ref Gauge_Base[1]);
-            TJAPlayer3.tテクスチャの解放(ref Gauge_Hard_Base[0]);
-            TJAPlayer3.tテクスチャの解放(ref Gauge_Hard_Base[1]);
+            TJAPlayer3.tテクスチャの解放(ref Gauge_Base_Hard[0]);
+            TJAPlayer3.tテクスチャの解放(ref Gauge_Base_Hard[1]);
             TJAPlayer3.tテクスチャの解放(ref Gauge_Line[0]);
             TJAPlayer3.tテクスチャの解放(ref Gauge_Line[1]);
+            TJAPlayer3.tテクスチャの解放(ref Gauge_Line_Hard[0]);
+            TJAPlayer3.tテクスチャの解放(ref Gauge_Line_Hard[1]);
             for (int i = 0; i < TJAPlayer3.Skin.Game_Gauge_Rainbow_Ptn; i++)
             {
                 TJAPlayer3.tテクスチャの解放(ref Gauge_Rainbow[i]);
@@ -968,8 +973,9 @@ namespace TJAPlayer3
         public CTexture[] Gauge,
             Gauge_Hard,
             Gauge_Base,
-            Gauge_Hard_Base,
+            Gauge_Base_Hard,
             Gauge_Line,
+            Gauge_Line_Hard,
             Gauge_Rainbow,
             Gauge_Soul_Explosion;
         public CTexture Gauge_Soul,
