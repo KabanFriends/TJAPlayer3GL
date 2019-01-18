@@ -799,14 +799,14 @@ namespace TJAPlayer3
 
                         Matrix mat = Matrix.Identity;
                         mat *= Matrix.Scaling(f倍率, f倍率, 1.0f);
-                        mat *= Matrix.Translation(TJAPlayer3.Skin.Game_Lane_Field_X[i] - SampleFramework.GameWindowSize.Width / 2.0f, -(TJAPlayer3.Skin.Game_Lane_Field_Y[i] + (TJAPlayer3.Tx.Judge_Frame.szテクスチャサイズ.Height / 2) - SampleFramework.GameWindowSize.Height / 2.0f), 0f);
+                        mat *= Matrix.Translation(TJAPlayer3.Skin.Game_Lane_Field_X[i] - SampleFramework.GameWindowSize.Width / 2.0f, -(TJAPlayer3.Skin.Game_Lane_Field_Y[i] + (130 / 2) - SampleFramework.GameWindowSize.Height / 2.0f), 0f);
 
                         //this.txゴーゴー炎.b加算合成 = true;
 
                         //this.ctゴーゴー.n現在の値 = 6;
                         if (this.ctゴーゴー.b終了値に達した)
                         {
-                            TJAPlayer3.Tx.Effects_Fire.t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Lane_Field_X[i] - 180, TJAPlayer3.Skin.Game_Lane_Field_Y[i] + (TJAPlayer3.Tx.Judge_Frame.szテクスチャサイズ.Height / 2) - (TJAPlayer3.Tx.Effects_Fire.szテクスチャサイズ.Height / 2), new Rectangle(360 * (this.ctゴーゴー炎.n現在の値), 0, 360, 370));
+                            TJAPlayer3.Tx.Effects_Fire.t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Lane_Field_X[i] - 180, TJAPlayer3.Skin.Game_Lane_Field_Y[i] + (130 / 2) - (TJAPlayer3.Tx.Effects_Fire.szテクスチャサイズ.Height / 2), new Rectangle(360 * (this.ctゴーゴー炎.n現在の値), 0, 360, 370));
                         }
                         else
                         {
