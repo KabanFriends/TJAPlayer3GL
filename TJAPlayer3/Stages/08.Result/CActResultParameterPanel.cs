@@ -240,16 +240,32 @@ namespace TJAPlayer3
                 //nRectX = CDTXMania.stage結果.st演奏記録.Drums.fゲージ >= 80.0f ? 80 : nRectX;
 
 
-                //ハードゲージ用のBase
-                if(TJAPlayer3.Tx.Result_Gauge_Base_Hard != null && TJAPlayer3.ConfigIni.eGaugeMode == EGaugeMode.Hard)
-                    TJAPlayer3.Tx.Result_Gauge_Base_Hard.t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.nResultGaugeBaseP1X, TJAPlayer3.Skin.nResultGaugeBaseP1Y, new Rectangle(0, 0, 691, 47));
+                //ハード/EXハードゲージ用のBase
+                if (TJAPlayer3.ConfigIni.eGaugeMode == EGaugeMode.ExHard)
+                {
+                    if (TJAPlayer3.Tx.Result_Gauge_Base_ExHard != null)
+                        TJAPlayer3.Tx.Result_Gauge_Base_ExHard.t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.nResultGaugeBaseP1X, TJAPlayer3.Skin.nResultGaugeBaseP1Y, new Rectangle(0, 0, 691, 47));
+                    else if (TJAPlayer3.Tx.Result_Gauge_Base_Hard != null)
+                        TJAPlayer3.Tx.Result_Gauge_Base_Hard.t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.nResultGaugeBaseP1X, TJAPlayer3.Skin.nResultGaugeBaseP1Y, new Rectangle(0, 0, 691, 47));
+                    else
+                        TJAPlayer3.Tx.Result_Gauge_Base.t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.nResultGaugeBaseP1X, TJAPlayer3.Skin.nResultGaugeBaseP1Y, new Rectangle(0, 0, 691, 47));
+                }
+                else if (TJAPlayer3.ConfigIni.eGaugeMode == EGaugeMode.Hard)
+                {
+                    if (TJAPlayer3.Tx.Result_Gauge_Base_Hard != null)
+                        TJAPlayer3.Tx.Result_Gauge_Base_Hard.t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.nResultGaugeBaseP1X, TJAPlayer3.Skin.nResultGaugeBaseP1Y, new Rectangle(0, 0, 691, 47));
+                    else
+                        TJAPlayer3.Tx.Result_Gauge_Base_Hard.t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.nResultGaugeBaseP1X, TJAPlayer3.Skin.nResultGaugeBaseP1Y, new Rectangle(0, 0, 691, 47));
+                }
                 else
-                    TJAPlayer3.Tx.Result_Gauge_Base.t2D描画( TJAPlayer3.app.Device, TJAPlayer3.Skin.nResultGaugeBaseP1X, TJAPlayer3.Skin.nResultGaugeBaseP1Y, new Rectangle( 0, 0, 691, 47 ) );
-                
+                        TJAPlayer3.Tx.Result_Gauge_Base.t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.nResultGaugeBaseP1X, TJAPlayer3.Skin.nResultGaugeBaseP1Y, new Rectangle(0, 0, 691, 47));
+
                 #region[ ゲージ本体 ]
 
                 //ハードゲージ用のゲージ画像の分岐(ゲージ本体のコードを使いまわしたいので)
-                if (TJAPlayer3.Tx.Result_Gauge_Hard != null && TJAPlayer3.ConfigIni.eGaugeMode == EGaugeMode.Hard)
+                if (TJAPlayer3.Tx.Result_Gauge_ExHard != null && TJAPlayer3.ConfigIni.eGaugeMode == EGaugeMode.ExHard)
+                    Gauge = TJAPlayer3.Tx.Result_Gauge_ExHard;
+                else if (TJAPlayer3.Tx.Result_Gauge_Hard != null && (TJAPlayer3.ConfigIni.eGaugeMode == EGaugeMode.Hard || TJAPlayer3.ConfigIni.eGaugeMode == EGaugeMode.ExHard))
                     Gauge = TJAPlayer3.Tx.Result_Gauge_Hard;
                 else
                     Gauge = TJAPlayer3.Tx.Result_Gauge;

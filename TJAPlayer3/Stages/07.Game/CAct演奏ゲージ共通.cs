@@ -128,7 +128,7 @@ namespace TJAPlayer3
 		public void Init(int nRiskyTimes_InitialVal )		// ゲージ初期化
 		{
             //ダメージ値の計算は太鼓の達人譜面Wikiのものを参考にしました。
-            if (TJAPlayer3.ConfigIni.eGaugeMode == EGaugeMode.Hard)
+            if (TJAPlayer3.ConfigIni.eGaugeMode == EGaugeMode.Hard || TJAPlayer3.ConfigIni.eGaugeMode == EGaugeMode.ExHard)
             {
                 for (int i = 0; i < 4; i++)
                 {
@@ -336,7 +336,7 @@ namespace TJAPlayer3
 				case E判定.Perfect:
 				case E判定.Great:
                     {
-                        if (TJAPlayer3.ConfigIni.eGaugeMode == EGaugeMode.Hard)
+                        if (TJAPlayer3.ConfigIni.eGaugeMode == EGaugeMode.Hard || TJAPlayer3.ConfigIni.eGaugeMode == EGaugeMode.ExHard)
                         {
                             fDamage = 0.24f;
                         }
@@ -362,7 +362,7 @@ namespace TJAPlayer3
                     break;
 				case E判定.Good:
                     {
-                        if (TJAPlayer3.ConfigIni.eGaugeMode == EGaugeMode.Hard)
+                        if (TJAPlayer3.ConfigIni.eGaugeMode == EGaugeMode.Hard || TJAPlayer3.ConfigIni.eGaugeMode == EGaugeMode.ExHard)
                         {
                             fDamage = 0f;
                         }
@@ -388,12 +388,15 @@ namespace TJAPlayer3
 					break;
 				case E判定.Poor:
                     {
-                        if (TJAPlayer3.ConfigIni.eGaugeMode == EGaugeMode.Hard)
+                        if (TJAPlayer3.ConfigIni.eGaugeMode == EGaugeMode.ExHard)
+                        {
+                            fDamage = -10.0f;
+                        }
+                        else if (TJAPlayer3.ConfigIni.eGaugeMode == EGaugeMode.Hard)
                         {
                             if (this.db現在のゲージ値[player] < 30)
                             { fDamage = -2.5f; }
                             else { fDamage = -5.0f; }
-
                         }
                         else if (TJAPlayer3.ConfigIni.eGaugeMode == EGaugeMode.Groove)
                         {
@@ -422,7 +425,11 @@ namespace TJAPlayer3
                     break;
                 case E判定.Miss:
                     {
-                        if (TJAPlayer3.ConfigIni.eGaugeMode == EGaugeMode.Hard)
+                        if (TJAPlayer3.ConfigIni.eGaugeMode == EGaugeMode.ExHard)
+                        {
+                            fDamage = -18.0f;
+                        }
+                        else if (TJAPlayer3.ConfigIni.eGaugeMode == EGaugeMode.Hard)
                         {
                             if (this.db現在のゲージ値[player] < 30)
                                  { fDamage = -4.5f; }

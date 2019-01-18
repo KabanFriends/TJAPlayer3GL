@@ -2594,7 +2594,7 @@ namespace TJAPlayer3
                                             }
                                             else if( str3.Equals( "GaugeMode" ))
                                             {
-                                                this.eGaugeMode = (EGaugeMode)C変換.n値を文字列から取得して範囲内に丸めて返す(str4, 0, 2, 0);
+                                                this.eGaugeMode = (EGaugeMode)C変換.n値を文字列から取得して範囲内に丸めて返す(str4, 0, 3, 0);
                                             }
                                             /*
 											else if( str3.Equals( "DrumsGraph" ) )  // #24074 2011.01.23 addikanick

@@ -47,7 +47,7 @@ namespace TJAPlayer3
                 //EndModeチェックのタイミングでは常にクリアになってもいい気がするけど、一応↓
                 for (int i = 0; i < TJAPlayer3.ConfigIni.nPlayerCount; i++)
                 {
-                    if (TJAPlayer3.ConfigIni.eGaugeMode == EGaugeMode.Hard)
+                    if (TJAPlayer3.ConfigIni.eGaugeMode == EGaugeMode.Hard || TJAPlayer3.ConfigIni.eGaugeMode == EGaugeMode.ExHard)
                     {
                         if (TJAPlayer3.stage演奏ドラム画面.actGauge.db現在のゲージ値[i] > 0)
                             this.Mode[i] = EndMode.StageCleared;

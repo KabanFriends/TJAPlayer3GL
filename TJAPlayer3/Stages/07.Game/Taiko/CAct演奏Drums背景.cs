@@ -122,7 +122,7 @@ namespace TJAPlayer3
                 }
                 if (this.ct上背景スクロール用タイマー[i] != null)
                 {
-                    if (TJAPlayer3.stage演奏ドラム画面.bIsAlreadyCleared[i] && TJAPlayer3.ConfigIni.eGaugeMode != EGaugeMode.Hard)
+                    if (TJAPlayer3.stage演奏ドラム画面.bIsAlreadyCleared[i] && TJAPlayer3.ConfigIni.eGaugeMode != EGaugeMode.Hard && TJAPlayer3.ConfigIni.eGaugeMode != EGaugeMode.ExHard)
                         TJAPlayer3.Tx.Background_Up_Clear[i].n透明度 = ((this.ct上背景クリアインタイマー[i].n現在の値 * 0xff) / 100);
                     else
                         TJAPlayer3.Tx.Background_Up_Clear[i].n透明度 = 0;
@@ -149,7 +149,7 @@ namespace TJAPlayer3
                         TJAPlayer3.Tx.Background_Down.t2D描画( TJAPlayer3.app.Device, 0, 360 );
                     }
                 }
-                if(TJAPlayer3.stage演奏ドラム画面.bIsAlreadyCleared[0] && TJAPlayer3.ConfigIni.eGaugeMode != EGaugeMode.Hard)
+                if(TJAPlayer3.stage演奏ドラム画面.bIsAlreadyCleared[0] && TJAPlayer3.ConfigIni.eGaugeMode != EGaugeMode.Hard && TJAPlayer3.ConfigIni.eGaugeMode != EGaugeMode.ExHard)
                 {
                     if( TJAPlayer3.Tx.Background_Down_Clear != null && TJAPlayer3.Tx.Background_Down_Scroll != null )
                     {

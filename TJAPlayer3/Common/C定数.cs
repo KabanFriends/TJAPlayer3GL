@@ -32,7 +32,8 @@ namespace TJAPlayer3
     {
         Normal,
         Groove,
-        Hard
+        Hard,
+        ExHard
     }
 
     public enum EGame

@@ -366,6 +366,9 @@ namespace TJAPlayer3
                     TJAPlayer3.act文字コンソール.tPrint(0, 48, C文字コンソール.Eフォント種別.赤, "GAUGE : GROOVE");
                 else if (TJAPlayer3.ConfigIni.eGaugeMode == EGaugeMode.Hard)
                     TJAPlayer3.act文字コンソール.tPrint(0, 48, C文字コンソール.Eフォント種別.赤, "GAUGE : HARD");
+                else if (TJAPlayer3.ConfigIni.eGaugeMode == EGaugeMode.ExHard)
+                    TJAPlayer3.act文字コンソール.tPrint(0, 48, C文字コンソール.Eフォント種別.赤, "GAUGE : EXHARD");
+
                 #endregion
 
                 //this.actステータスパネル.On進行描画();
@@ -506,6 +509,9 @@ namespace TJAPlayer3
                                     TJAPlayer3.ConfigIni.eGaugeMode = EGaugeMode.Hard;
                                     break;
                                 case 2:
+                                    TJAPlayer3.ConfigIni.eGaugeMode = EGaugeMode.ExHard;
+                                    break;
+                                case 3:
                                     TJAPlayer3.ConfigIni.eGaugeMode = EGaugeMode.Normal;
                                     TJAPlayer3.ConfigIni.bゲージモードを上書き = false;
                                     break;

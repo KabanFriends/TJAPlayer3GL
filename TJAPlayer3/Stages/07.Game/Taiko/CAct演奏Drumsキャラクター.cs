@@ -97,7 +97,7 @@ namespace TJAPlayer3
             if (ctChara_GoGo != null || TJAPlayer3.Skin.Game_Chara_Ptn_GoGo != 0) ctChara_GoGo.t進行LoopDb();
             if (ctChara_Clear != null || TJAPlayer3.Skin.Game_Chara_Ptn_Clear != 0) ctChara_Clear.t進行LoopDb();
 
-            if (TJAPlayer3.ConfigIni.eGaugeMode != EGaugeMode.Hard)
+            if (TJAPlayer3.ConfigIni.eGaugeMode != EGaugeMode.Hard && TJAPlayer3.ConfigIni.eGaugeMode != EGaugeMode.ExHard)
             {
                 if (this.ctキャラクターアクション_10コンボ != null || TJAPlayer3.Skin.Game_Chara_Ptn_10combo != 0) this.ctキャラクターアクション_10コンボ.t進行db();
                 if (this.ctキャラクターアクション_10コンボMAX != null || TJAPlayer3.Skin.Game_Chara_Ptn_10combo_Max != 0) this.ctキャラクターアクション_10コンボMAX.t進行db();
@@ -117,12 +117,12 @@ namespace TJAPlayer3
             {
                 if ( !TJAPlayer3.stage演奏ドラム画面.bIsGOGOTIME[ 0 ] )
                 {
-                    if( TJAPlayer3.stage演奏ドラム画面.actGauge.db現在のゲージ値[ 0 ] >= 100.0 && TJAPlayer3.Skin.Game_Chara_Ptn_Clear != 0 && TJAPlayer3.ConfigIni.eGaugeMode != EGaugeMode.Hard )
+                    if( TJAPlayer3.stage演奏ドラム画面.actGauge.db現在のゲージ値[ 0 ] >= 100.0 && TJAPlayer3.Skin.Game_Chara_Ptn_Clear != 0 && TJAPlayer3.ConfigIni.eGaugeMode != EGaugeMode.Hard && TJAPlayer3.ConfigIni.eGaugeMode != EGaugeMode.ExHard)
                     {
                         if(TJAPlayer3.Skin.Game_Chara_Ptn_Clear != 0)
                             TJAPlayer3.Tx.Chara_Normal_Maxed[ this.arクリアモーション番号[(int)this.ctChara_Clear.db現在の値] ].t2D描画( TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Chara_X[0], TJAPlayer3.Skin.Game_Chara_Y[0] );
                     }
-                    else if( TJAPlayer3.stage演奏ドラム画面.actGauge.db現在のゲージ値[ 0 ] >= 80.0 && TJAPlayer3.Skin.Game_Chara_Ptn_Clear != 0 && TJAPlayer3.ConfigIni.eGaugeMode != EGaugeMode.Hard )
+                    else if( TJAPlayer3.stage演奏ドラム画面.actGauge.db現在のゲージ値[ 0 ] >= 80.0 && TJAPlayer3.Skin.Game_Chara_Ptn_Clear != 0 && TJAPlayer3.ConfigIni.eGaugeMode != EGaugeMode.Hard && TJAPlayer3.ConfigIni.eGaugeMode != EGaugeMode.ExHard)
                     {
                         if(TJAPlayer3.Skin.Game_Chara_Ptn_Clear != 0)
                         {
@@ -139,7 +139,7 @@ namespace TJAPlayer3
                 }
                 else
                 {
-                    if( TJAPlayer3.stage演奏ドラム画面.actGauge.db現在のゲージ値[ 0 ] >= 100.0 && TJAPlayer3.Skin.Game_Chara_Ptn_GoGo != 0 && TJAPlayer3.ConfigIni.eGaugeMode != EGaugeMode.Hard )
+                    if( TJAPlayer3.stage演奏ドラム画面.actGauge.db現在のゲージ値[ 0 ] >= 100.0 && TJAPlayer3.Skin.Game_Chara_Ptn_GoGo != 0 && TJAPlayer3.ConfigIni.eGaugeMode != EGaugeMode.Hard && TJAPlayer3.ConfigIni.eGaugeMode != EGaugeMode.ExHard)
                     {
                         if(TJAPlayer3.Skin.Game_Chara_Ptn_GoGo != 0)
                             TJAPlayer3.Tx.Chara_GoGoTime_Maxed[this.arゴーゴーモーション番号[(int)this.ctChara_GoGo.db現在の値] ].t2D描画( TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Chara_X[0], TJAPlayer3.Skin.Game_Chara_Y[0] );

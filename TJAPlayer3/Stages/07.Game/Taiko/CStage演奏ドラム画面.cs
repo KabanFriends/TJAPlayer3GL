@@ -406,7 +406,7 @@ namespace TJAPlayer3
                 //ハードゲージの閉店
                 for (int i = 0; i < TJAPlayer3.ConfigIni.nPlayerCount; i++)
                 {
-                    if (TJAPlayer3.ConfigIni.eGaugeMode == EGaugeMode.Hard && (base.eフェーズID == CStage.Eフェーズ.共通_通常状態))
+                    if ((TJAPlayer3.ConfigIni.eGaugeMode == EGaugeMode.Hard || TJAPlayer3.ConfigIni.eGaugeMode == EGaugeMode.ExHard) && (base.eフェーズID == CStage.Eフェーズ.共通_通常状態))
                     {
                         if (this.actGauge.db現在のゲージ値[i] <= 0.0f)
                         {
