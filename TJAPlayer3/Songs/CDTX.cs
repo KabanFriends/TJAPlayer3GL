@@ -4218,15 +4218,17 @@ namespace TJAPlayer3
         /// <param name="InputText"></param>
         private void t難易度別ヘッダ(string InputText)
         {
-            if (InputText.Equals("#HBSCROLL") && TJAPlayer3.ConfigIni.bスクロールモードを上書き == false)
+            if (TJAPlayer3.actEnumSongs.b活性化してない)
             {
-                TJAPlayer3.ConfigIni.eScrollMode = EScrollMode.HBSCROLL;
+                if (InputText.Equals("#HBSCROLL") && TJAPlayer3.ConfigIni.bスクロールモードを上書き == false)
+                {
+                    TJAPlayer3.ConfigIni.eScrollMode = EScrollMode.HBSCROLL;
+                }
+                if (InputText.Equals("#BMSCROLL") && TJAPlayer3.ConfigIni.bスクロールモードを上書き == false)
+                {
+                    TJAPlayer3.ConfigIni.eScrollMode = EScrollMode.BMSCROLL;
+                }
             }
-            if (InputText.Equals("#BMSCROLL") && TJAPlayer3.ConfigIni.bスクロールモードを上書き == false)
-            {
-                TJAPlayer3.ConfigIni.eScrollMode = EScrollMode.BMSCROLL;
-            }
-
 
             string[] strArray = InputText.Split(new char[] { ':' });
             string strCommandName = "";
