@@ -623,7 +623,7 @@ namespace TJAPlayer3
                 TJAPlayer3.Tx.Lane_Background_Sub.t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Lane_Background_X[0], 134 + TJAPlayer3.Skin.Game_Lane_Background_Y[0]);
                 if (TJAPlayer3.stage演奏ドラム画面.bDoublePlay)
                 {
-                    TJAPlayer3.Tx.Lane_Background_Sub.t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Lane_Background_X[1], 134 + TJAPlayer3.Skin.Game_Lane_Background_Y[0]);
+                    TJAPlayer3.Tx.Lane_Background_Sub.t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Lane_Background_X[1], 134 + TJAPlayer3.Skin.Game_Lane_Background_Y[1]);
                 }
             }
 
