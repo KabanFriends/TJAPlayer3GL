@@ -282,14 +282,14 @@ namespace TJAPlayer3
                     }
                     #region[ 「クリア」文字 ]
                     //1038 - 492 = 546
-                    //554 - 532 = 12
+                    //554 - 532 = 12 //22じゃタワケ
                     if( this.db現在のゲージ値[ 1 ] >= 80.0 )
                     {
-                        TJAPlayer3.Tx.Gauge[1].t2D描画( TJAPlayer3.app.Device, 546 + TJAPlayer3.Skin.Game_Gauge_X[1], 12 + TJAPlayer3.Skin.Game_Gauge_Y[1], new Rectangle( 0, 44, 58, 24 ) );
+                        TJAPlayer3.Tx.Gauge[1].t2D描画( TJAPlayer3.app.Device, 546 + TJAPlayer3.Skin.Game_Gauge_X[1], 22 + TJAPlayer3.Skin.Game_Gauge_Y[1], new Rectangle( 0, 44, 58, 24 ) );
                     }
                     else
                     {
-                        TJAPlayer3.Tx.Gauge[1].t2D描画( TJAPlayer3.app.Device, 546 + TJAPlayer3.Skin.Game_Gauge_X[1], 12 + TJAPlayer3.Skin.Game_Gauge_Y[1], new Rectangle( 58, 44, 58, 24 ) );
+                        TJAPlayer3.Tx.Gauge[1].t2D描画( TJAPlayer3.app.Device, 546 + TJAPlayer3.Skin.Game_Gauge_X[1], 22 + TJAPlayer3.Skin.Game_Gauge_Y[1], new Rectangle( 58, 44, 58, 24 ) );
                     }
                     #endregion
                 }
