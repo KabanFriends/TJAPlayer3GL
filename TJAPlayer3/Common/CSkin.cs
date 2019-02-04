@@ -1455,6 +1455,14 @@ namespace TJAPlayer3
                             {
                                 Game_Taiko_Background_Y = strParam.Split(',').Select(int.Parse).ToArray();
                             }
+                            else if (strCommand == nameof(Game_Taiko_Frame_X))
+                            {
+                                Game_Taiko_Frame_X = strParam.Split(',').Select(int.Parse).ToArray();
+                            }
+                            else if (strCommand == nameof(Game_Taiko_Frame_Y))
+                            {
+                                Game_Taiko_Frame_Y = strParam.Split(',').Select(int.Parse).ToArray();
+                            }
                             else if (strCommand == "Game_Taiko_NamePlate_X")
                             {
                                 string[] strSplit = strParam.Split(',');
@@ -2524,6 +2532,8 @@ namespace TJAPlayer3
         #region Taiko
         public int[] Game_Taiko_Background_X = new int[] { 0, 0 };
         public int[] Game_Taiko_Background_Y = new int[] { 184, 360 };
+        public int[] Game_Taiko_Frame_X = new int[] { 329, 329 };
+        public int[] Game_Taiko_Frame_Y = new int[] { 136, 360 };
         public int[] Game_Taiko_NamePlate_X = new int[] { 0, 0 };
         public int[] Game_Taiko_NamePlate_Y = new int[] { 288, 368 };
         public int[] Game_Taiko_PlayerNumber_X = new int[] { 4, 4 };
