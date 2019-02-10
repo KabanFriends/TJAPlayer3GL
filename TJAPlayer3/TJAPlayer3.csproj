@@ -96,6 +96,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\PreciseStringMeasurement\CPreciseStringMeasurer.cs" />
+    <Compile Include="Animations\Animator.cs" />
+    <Compile Include="Animations\EaseInOut.cs" />
+    <Compile Include="Animations\EaseOut.cs" />
+    <Compile Include="Animations\EaseIn.cs" />
+    <Compile Include="Animations\FadeIn.cs" />
+    <Compile Include="Animations\FadeOut.cs" />
+    <Compile Include="Animations\IAnimatable.cs" />
+    <Compile Include="Animations\Linear.cs" />
     <Compile Include="Common\Discord.cs" />
     <Compile Include="Common\PreciseStringMeasurement\DirectBitmap.cs" />
     <Compile Include="Common\PreciseStringMeasurement\MeasureStringPreciselyCacheKey.cs" />

@@ -44,17 +44,24 @@ namespace TJAPlayer3
                 pfSubTitle = new CPrivateFont(new FontFamily("MS UI Gothic"), 22);
             }
 
-            using (var bmpSongTitle = pfTitle.DrawPrivateFont(TJAPlayer3.DTX.List_DanSongs[NowShowingNumber].Title, Color.White, Color.Black))
+            if (!string.IsNullOrEmpty(TJAPlayer3.DTX.List_DanSongs[NowShowingNumber].Title))
             {
-                TJAPlayer3.DTX.List_DanSongs[NowShowingNumber].TitleTex = TJAPlayer3.tテクスチャの生成(bmpSongTitle, false);
-                TJAPlayer3.DTX.List_DanSongs[NowShowingNumber].TitleTex.vc拡大縮小倍率.X = TJAPlayer3.GetSongNameXScaling(ref TJAPlayer3.DTX.List_DanSongs[NowShowingNumber].TitleTex, 710);
-                if (string.IsNullOrEmpty(TJAPlayer3.DTX.List_DanSongs[NowShowingNumber].Title)) TJAPlayer3.DTX.List_DanSongs[NowShowingNumber].TitleTex = null;
+                using (var bmpSongTitle = pfTitle.DrawPrivateFont(TJAPlayer3.DTX.List_DanSongs[NowShowingNumber].Title, Color.White, Color.Black))
+                {
+                    TJAPlayer3.DTX.List_DanSongs[NowShowingNumber].TitleTex = TJAPlayer3.tテクスチャの生成(bmpSongTitle, false);
+                    TJAPlayer3.DTX.List_DanSongs[NowShowingNumber].TitleTex.vc拡大縮小倍率.X = TJAPlayer3.GetSongNameXScaling(ref TJAPlayer3.DTX.List_DanSongs[NowShowingNumber].TitleTex, 710);
+                }
             }
-            using (var bmpSongSubTitle = pfSubTitle.DrawPrivateFont(TJAPlayer3.DTX.List_DanSongs[NowShowingNumber].SubTitle, Color.White, Color.Black))
+
+            if (!string.IsNullOrEmpty(TJAPlayer3.DTX.List_DanSongs[NowShowingNumber].SubTitle))
             {
-                TJAPlayer3.DTX.List_DanSongs[NowShowingNumber].SubTitleTex = TJAPlayer3.tテクスチャの生成(bmpSongSubTitle, false);
-                if (string.IsNullOrEmpty(TJAPlayer3.DTX.List_DanSongs[NowShowingNumber].SubTitle)) TJAPlayer3.DTX.List_DanSongs[NowShowingNumber].SubTitleTex = null;
+                using (var bmpSongSubTitle = pfSubTitle.DrawPrivateFont(TJAPlayer3.DTX.List_DanSongs[NowShowingNumber].SubTitle, Color.White, Color.Black))
+                {
+                    TJAPlayer3.DTX.List_DanSongs[NowShowingNumber].SubTitleTex = TJAPlayer3.tテクスチャの生成(bmpSongSubTitle, false);
+                    TJAPlayer3.DTX.List_DanSongs[NowShowingNumber].SubTitleTex.vc拡大縮小倍率.X = TJAPlayer3.GetSongNameXScaling(ref TJAPlayer3.DTX.List_DanSongs[NowShowingNumber].SubTitleTex, 710);
+                }
             }
+
             pfTitle?.Dispose();
             pfSubTitle?.Dispose();
             Sound_Section?.tサウンドを先頭から再生する();
@@ -347,12 +354,14 @@ namespace TJAPlayer3
             {
                 if (Counter_Text.b終了値に達してない)
                 {
-                    if (TJAPlayer3.DTX.List_DanSongs[NowShowingNumber].SubTitleTex == null)
-                        TJAPlayer3.DTX.List_DanSongs[NowShowingNumber].TitleTex?.t2D中心基準描画(TJAPlayer3.app.Device, 1280 / 2 + TJAPlayer3.Skin.Game_Lane_Background_X[0] / 2, TJAPlayer3.Skin.Game_Lane_Background_Y[0] + 65);
+                    var title = TJAPlayer3.DTX.List_DanSongs[NowShowingNumber].TitleTex;
+                    var subTitle = TJAPlayer3.DTX.List_DanSongs[NowShowingNumber].SubTitleTex;
+                    if (subTitle == null)
+                        title?.t2D拡大率考慮中央基準描画(TJAPlayer3.app.Device, 1280 / 2 + TJAPlayer3.Skin.Game_Lane_Background_X[0] / 2, TJAPlayer3.Skin.Game_Lane_Background_Y[0] + 65);
                     else
                     {
-                        TJAPlayer3.DTX.List_DanSongs[NowShowingNumber].TitleTex?.t2D中心基準描画(TJAPlayer3.app.Device, 1280 / 2 + TJAPlayer3.Skin.Game_Lane_Background_X[0] / 2, TJAPlayer3.Skin.Game_Lane_Background_Y[0] + 45);
-                        TJAPlayer3.DTX.List_DanSongs[NowShowingNumber].SubTitleTex?.t2D中心基準描画(TJAPlayer3.app.Device, 1280 / 2 + TJAPlayer3.Skin.Game_Lane_Background_X[0] / 2, TJAPlayer3.Skin.Game_Lane_Background_Y[0] + 85);
+                        title?.t2D拡大率考慮中央基準描画(TJAPlayer3.app.Device, 1280 / 2 + TJAPlayer3.Skin.Game_Lane_Background_X[0] / 2, TJAPlayer3.Skin.Game_Lane_Background_Y[0] + 45);
+                        subTitle?.t2D拡大率考慮中央基準描画(TJAPlayer3.app.Device, 1280 / 2 + TJAPlayer3.Skin.Game_Lane_Background_X[0] / 2, TJAPlayer3.Skin.Game_Lane_Background_Y[0] + 85);
                     }
                 }
                 if (Counter_Text.b終了値に達した)
