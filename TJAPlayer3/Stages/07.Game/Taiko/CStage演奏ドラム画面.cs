@@ -1994,8 +1994,8 @@ namespace TJAPlayer3
 
 			//int n小節番号plus1 = pChip.n発声位置 / 384;
             int n小節番号plus1 = this.actPlayInfo.NowMeasure[nPlayer];
-            int x = TJAPlayer3.Skin.nScrollFieldX[ nPlayer ] + pChip.nバーからの距離dot.Taiko;
-            int y = TJAPlayer3.Skin.nScrollFieldY[ nPlayer ];
+            int x = TJAPlayer3.Skin.Game_Lane_Field_X[ nPlayer ] + pChip.nバーからの距離dot.Taiko;
+            int y = TJAPlayer3.Skin.Game_Lane_Field_Y[ nPlayer ];
 
             if( pChip.dbSCROLL_Y != 0.0 )
             {
