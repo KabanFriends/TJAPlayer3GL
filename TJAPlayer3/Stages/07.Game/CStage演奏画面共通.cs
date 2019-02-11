@@ -254,7 +254,10 @@ namespace TJAPlayer3
             this.n現在の連打数 = new int[]{ 0, 0, 0, 0 };
             this.n合計連打数 = new int[]{ 0, 0, 0, 0 };
             this.n分岐した回数 = new int[ 4 ];
-            this.n表示した歌詞 = 0;
+            for (int i = 0; i < 2; i++)
+            {
+                ShownLyric[i] = 0;
+            }
             this.nJPOSSCROLL = new int[ 4 ];
             this.bLEVELHOLD = new bool[]{ false, false, false, false };
 
@@ -681,8 +684,7 @@ namespace TJAPlayer3
         protected int[] nBranch_Miss = new int[ 4 ];
         protected int nListCount;
 
-        private int n表示した歌詞 = 0;
-
+        private readonly int[] ShownLyric = new int[] { 0, 0 };
         public bool[] b連打中 = new bool[]{ false, false, false, false }; //奥の手
         private int[] n合計連打数 = new int[ 4 ];
         protected int[] n風船残り = new int[ 4 ];
@@ -1635,7 +1637,7 @@ namespace TJAPlayer3
                                     this.nBranch_Miss[ nPlayer ]++;
                                     if( nPlayer == 0 ) this.nヒット数_Auto含まない.Drums.Miss++;
                                     this.actCombo.n現在のコンボ数[ nPlayer ] = 0;
-                                    this.actComboVoice.tリセット();
+                                    this.actComboVoice.tReset(nPlayer);
                                     //for (int i = 0; i < 2; i++)
                                     //{
                                     //    ctChipAnime[i].t停止();
@@ -1679,7 +1681,7 @@ namespace TJAPlayer3
                                     {
                                         this.nBranch_Miss[ nPlayer ]++;
 								        this.actCombo.n現在のコンボ数[ nPlayer ] = 0;
-                                        this.actComboVoice.tリセット();
+                                        this.actComboVoice.tReset(nPlayer);
                                         //for (int i = 0; i < 2; i++)
                                         //{
                                         //    ctChipAnime[i].t停止();
@@ -3133,7 +3135,7 @@ namespace TJAPlayer3
                             if ( !pChip.bHit && ( pChip.nバーからの距離dot.Taiko < 0 ) )
 						    {
                                 this.actChara.b演奏中 = true;
-                                if( this.actPlayInfo.n小節番号 == 0 )
+                                if( this.actPlayInfo.NowMeasure[nPlayer] == 0 )
                                 {
                                     for (int i = 0; i < 2; i++)
                                     {
@@ -3225,8 +3227,7 @@ namespace TJAPlayer3
                                     //    this.actChara.ctChara_GoGo = new CCounter( 0, this.actChara.arゴーゴーモーション番号.Length - 1, dbPtn_GoGo, CSound管理.rc演奏用タイマ );
                                     //}
                                 }
-                                if ( pChip.nコース == this.n現在のコース[ nPlayer ] )
-                                    this.actPlayInfo.n小節番号++;
+                                actPlayInfo.NowMeasure[nPlayer] = pChip.n整数値_内部番号;
                                 pChip.bHit = true;
                             }
                             this.t進行描画_チップ_小節線( configIni, ref dTX, ref pChip, nPlayer );
@@ -3675,10 +3676,10 @@ namespace TJAPlayer3
                     case 0xF1:
                         if ( !pChip.bHit && ( pChip.nバーからの距離dot.Drums < 0 ) )
 						{
-                            if( dTX.listLiryc.Count > this.n表示した歌詞 )
+                            if( dTX.listLiryc.Count > ShownLyric[nPlayer] && dTX.nPlayerSide == nPlayer )
                             {
-                                this.actPanel.t歌詞テクスチャを生成する( dTX.listLiryc[ this.n表示した歌詞 ] );
-                                this.n表示した歌詞++;
+                                this.actPanel.t歌詞テクスチャを生成する( dTX.listLiryc[ShownLyric[nPlayer]] );
+                                ShownLyric[nPlayer]++;
                             }
                             pChip.bHit = true;
                         }
@@ -4089,8 +4090,8 @@ namespace TJAPlayer3
                     this.n合計連打数[ i ] = 0;
                     this.n分岐した回数[ i ] = 0;
                 }
-
-                this.actComboVoice.tリセット();
+                for (int i = 0; i < 2; i++)
+                    this.actComboVoice.tReset(i);
             }
 
             this.ReSetScore(TJAPlayer3.DTX.nScoreInit[0, TJAPlayer3.stage選曲.n確定された曲の難易度], TJAPlayer3.DTX.nScoreDiff[TJAPlayer3.stage選曲.n確定された曲の難易度]);

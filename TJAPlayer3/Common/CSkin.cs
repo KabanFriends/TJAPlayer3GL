@@ -1312,6 +1312,11 @@ namespace TJAPlayer3
                                 if (int.Parse(strParam) > 0)
                                     Game_Chara_Balloon_Delay = int.Parse(strParam);
                             }
+                            else if (strCommand == nameof(Game_Chara_Balloon_FadeOut))
+                            {
+                                if (int.Parse(strParam) > 0)
+                                    Game_Chara_Balloon_FadeOut = int.Parse(strParam);
+                            }
                             // パターン数の設定はTextureLoader.csで反映されます。
                             else if (strCommand == "Game_Chara_Motion_Normal")
                             {
@@ -1454,6 +1459,14 @@ namespace TJAPlayer3
                             else if (strCommand == nameof(Game_Taiko_Background_Y))
                             {
                                 Game_Taiko_Background_Y = strParam.Split(',').Select(int.Parse).ToArray();
+                            }
+                            else if (strCommand == nameof(Game_Taiko_Frame_X))
+                            {
+                                Game_Taiko_Frame_X = strParam.Split(',').Select(int.Parse).ToArray();
+                            }
+                            else if (strCommand == nameof(Game_Taiko_Frame_Y))
+                            {
+                                Game_Taiko_Frame_Y = strParam.Split(',').Select(int.Parse).ToArray();
                             }
                             else if (strCommand == "Game_Taiko_NamePlate_X")
                             {
@@ -1609,6 +1622,10 @@ namespace TJAPlayer3
                                 {
                                     Game_Taiko_Combo_Text_Size[i] = int.Parse(strSplit[i]);
                                 }
+                            }
+                            else if (strCommand == nameof(Game_Taiko_Combo_Ex_IsJumping))
+                            {
+                                Game_Taiko_Combo_Ex_IsJumping = C変換.bONorOFF(strParam[0]);
                             }
                             #endregion
                             #region Gauge
@@ -2475,6 +2492,7 @@ namespace TJAPlayer3
         public int Game_Chara_Beat_GoGo = 2;
         public int Game_Chara_Balloon_Timer = 28;
         public int Game_Chara_Balloon_Delay = 500;
+        public int Game_Chara_Balloon_FadeOut = 84;
         #endregion
         #region Dancer
         public int[] Game_Dancer_X = new int[] { 640, 430, 856, 215, 1070 };
@@ -2524,6 +2542,8 @@ namespace TJAPlayer3
         #region Taiko
         public int[] Game_Taiko_Background_X = new int[] { 0, 0 };
         public int[] Game_Taiko_Background_Y = new int[] { 184, 360 };
+        public int[] Game_Taiko_Frame_X = new int[] { 329, 329 };
+        public int[] Game_Taiko_Frame_Y = new int[] { 136, 360 };
         public int[] Game_Taiko_NamePlate_X = new int[] { 0, 0 };
         public int[] Game_Taiko_NamePlate_Y = new int[] { 288, 368 };
         public int[] Game_Taiko_PlayerNumber_X = new int[] { 4, 4 };
@@ -2543,6 +2563,7 @@ namespace TJAPlayer3
         public int[] Game_Taiko_Combo_Text_X = new int[] { 268, 268 };
         public int[] Game_Taiko_Combo_Text_Y = new int[] { 295, 472 };
         public int[] Game_Taiko_Combo_Text_Size = new int[] { 100, 50 };
+        public bool Game_Taiko_Combo_Ex_IsJumping = true;
         #endregion
         #region Gauge
         public int[] Game_Gauge_X = new int[] { 492, 492 };
