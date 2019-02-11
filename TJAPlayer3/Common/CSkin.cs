@@ -1022,6 +1022,7 @@ namespace TJAPlayer3
                                     SongSelect_Auto_Y[i] = int.Parse(strSplit[i]);
                                 }
                             }
+
                             else if (strCommand == "SongSelect_ForeColor_JPOP")
                             {
                                 SongSelect_ForeColor_JPOP = ColorTranslator.FromHtml(strParam);
@@ -1054,6 +1055,7 @@ namespace TJAPlayer3
                             {
                                 SongSelect_ForeColor_Namco = ColorTranslator.FromHtml(strParam);
                             }
+
                             else if (strCommand == "SongSelect_BackColor_JPOP")
                             {
                                 SongSelect_BackColor_JPOP = ColorTranslator.FromHtml(strParam);
@@ -1086,6 +1088,26 @@ namespace TJAPlayer3
                             {
                                 SongSelect_BackColor_Namco = ColorTranslator.FromHtml(strParam);
                             }
+
+                            else if (strCommand == nameof(SongSelect_ForeColor))    //ジャンルなしの時の色
+                            {
+                                SongSelect_ForeColor = ColorTranslator.FromHtml(strParam);
+                            }
+                            else if (strCommand == nameof(SongSelect_BackColor))    //ジャンルなしの時の色
+                            {
+                                SongSelect_BackColor = ColorTranslator.FromHtml(strParam);
+                            }
+
+                            else if (strCommand == nameof(SongSelect_NowSelect_ForeColor))    //今選択している曲の色
+                            {
+                                SongSelect_NowSelect_ForeColor = ColorTranslator.FromHtml(strParam);
+                            }
+                            else if (strCommand == nameof(SongSelect_NowSelect_BackColor))    //今選択している曲の色
+                            {
+                                SongSelect_NowSelect_BackColor = ColorTranslator.FromHtml(strParam);
+                            }
+
+
                             else if (strCommand == nameof(SongSelect_CorrectionX_Chara))
                             {
                                 SongSelect_CorrectionX_Chara = strParam.Split(',').ToArray();
@@ -2438,6 +2460,12 @@ namespace TJAPlayer3
         public Color SongSelect_BackColor_Classic = ColorTranslator.FromHtml("#875600");
         public Color SongSelect_BackColor_GameMusic = ColorTranslator.FromHtml("#412080");
         public Color SongSelect_BackColor_Namco = ColorTranslator.FromHtml("#980E00");
+
+        public Color SongSelect_ForeColor = ColorTranslator.FromHtml("#FFFFFF");              //ジャンルなしの時の色
+        public Color SongSelect_BackColor = ColorTranslator.FromHtml("#000000");              //ジャンルなしの時の色
+        public Color SongSelect_NowSelect_ForeColor = ColorTranslator.FromHtml("#FFFFFF");    //今選択している曲の色
+        public Color SongSelect_NowSelect_BackColor = ColorTranslator.FromHtml("#000000");    //今選択している曲の色
+
         public string[] SongSelect_CorrectionX_Chara = { "ここにX座標を補正したい文字をカンマで区切って記入" };
         public string[] SongSelect_CorrectionY_Chara = { "ここにY座標を補正したい文字をカンマで区切って記入" };
         public int[] SongSelect_CorrectionX_Chara_Value = new int[] { 0 };
