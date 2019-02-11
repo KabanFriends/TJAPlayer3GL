@@ -1052,7 +1052,7 @@ namespace TJAPlayer3
                             }
                             else if (strCommand == nameof(SongSelect_ForeColor_Namco))
                             {
-                                SongSelect_ForeColor_GameMusic = ColorTranslator.FromHtml(strParam);
+                                SongSelect_ForeColor_Namco = ColorTranslator.FromHtml(strParam);
                             }
                             else if (strCommand == "SongSelect_BackColor_JPOP")
                             {
