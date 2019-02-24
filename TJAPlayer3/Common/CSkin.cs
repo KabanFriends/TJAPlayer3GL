@@ -833,18 +833,30 @@ namespace TJAPlayer3
 
         public void tReadSkinConfig()
         {
-            if (File.Exists(CSkin.Path(@"SkinConfig.ini")))
+            var str = "";
+            LoadSkinConfigFromFile(Path(@"SkinConfig.ini"), ref str);
+            this.t文字列から読み込み(str);
+
+            void LoadSkinConfigFromFile(string path, ref string work)
             {
-                string str;
-                using (StreamReader reader = new StreamReader(CSkin.Path(@"SkinConfig.ini"), Encoding.GetEncoding("Shift_JIS")))
+                if (!File.Exists(Path(path))) return;
+                using (var streamReader = new StreamReader(Path(path), Encoding.GetEncoding("Shift_JIS")))
                 {
-                    str = reader.ReadToEnd();
+                    while (streamReader.Peek() > -1) // 一行ずつ読み込む。
+                    {
+                        var nowLine = streamReader.ReadLine();
+                        if (nowLine.StartsWith("#include"))
+                        {
+                            // #include hogehoge.iniにぶち当たった
+                            var includePath = nowLine.Substring("#include ".Length).Trim();
+                            LoadSkinConfigFromFile(includePath, ref work); // 再帰的に読み込む
+                        }
+                        else
+                        {
+                            work += nowLine + Environment.NewLine;
+                        }
+                    }
                 }
-                this.t文字列から読み込み(str);
-            }
-            else
-            {
-                Trace.TraceInformation("SkinConfig.iniが見つかりませんでした。デフォルトの設定値を使用します。");
             }
         }
 
@@ -2615,7 +2627,7 @@ namespace TJAPlayer3
         public int[] Game_Effect_NotesFlash = new int[] { 180, 180, 12 }; // Width, Height, Ptn
         public int Game_Effect_NotesFlash_Timer = 20;
         public int[] Game_Effect_GoGoSplash = new int[] { 300, 400, 30 };
-        public int[] Game_Effect_GoGoSplash_X = new int[] { 80, 300, 520, 760, 980, 1160 };
+        public int[] Game_Effect_GoGoSplash_X = new int[] { 120, 300, 520, 760, 980, 1160 };
         public int[] Game_Effect_GoGoSplash_Y = new int[] { 740, 730, 720, 720, 730, 740 };
         public bool Game_Effect_GoGoSplash_Rotate = true;
         public int Game_Effect_GoGoSplash_Timer = 18;

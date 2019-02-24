@@ -43,7 +43,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>..\Test\</OutputPath>
-    <DefineConstants>TRACE;_TEST_ENGLISH TEST_Direct3D9Ex_ _WindowedFullscreen MemoryRenderer</DefineConstants>
+    <DefineConstants>DEBUG;TRACE;_TEST_ENGLISH TEST_Direct3D9Ex_ _WindowedFullscreen MemoryRenderer</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
@@ -162,6 +162,7 @@
     <Compile Include="Songs\C曲リストノードComparers\C曲リストノードComparer絶対パス.cs" />
     <Compile Include="Songs\Dan-C.cs" />
     <Compile Include="Songs\EジャンルAC15SortOrder.cs" />
+    <Compile Include="Songs\GaugeIncreaseMode.cs" />
     <Compile Include="Stages\01.StartUp\TextureLoader.cs" />
     <Compile Include="Stages\02.Title\CActScanningLoudness.cs" />
     <Compile Include="Stages\02.Title\CEnumSongs.cs" />
