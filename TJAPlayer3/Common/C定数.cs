@@ -28,6 +28,14 @@ namespace TJAPlayer3
         HBSCROLL
     }
 
+    public enum EGaugeMode
+    {
+        Normal,
+        Groove,
+        Hard,
+        ExHard
+    }
+
     public enum EGame
     {
         OFF = 0,
@@ -288,6 +296,7 @@ namespace TJAPlayer3
 		演奏中断,
 		ステージ失敗,
 		ステージクリア,
+        ステージ失敗_ハード,
 		再読込_再演奏,
 		再演奏
 	}

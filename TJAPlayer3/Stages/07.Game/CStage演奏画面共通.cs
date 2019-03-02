@@ -4637,7 +4637,12 @@ namespace TJAPlayer3
 						return true;
 					}
 					break;
-
+                case CStage.Eフェーズ.演奏_STAGE_FAILED_ハード:
+                    if ( this.actFOClear.On進行描画() == 0 )
+                    {
+                        break;
+                    }
+                    return true;
 				case CStage.Eフェーズ.演奏_STAGE_CLEAR_フェードアウト:
 					if ( this.actFOClear.On進行描画() == 0 )
 					{
