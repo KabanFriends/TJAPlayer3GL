@@ -35,8 +35,8 @@ namespace TJAPlayer3
 			}
 		}
 		public Color col文字色 = Color.White;
-        public Color ForeColor = Color.White;
-        public Color BackColor = Color.Black;
+        public Color ForeColor = TJAPlayer3.Skin.SongSelect_ForeColor;
+        public Color BackColor = TJAPlayer3.Skin.SongSelect_BackColor;
         public bool IsChangedForeColor;
         public bool IsChangedBackColor;
 		public List<C曲リストノード> listランダム用ノードリスト;
