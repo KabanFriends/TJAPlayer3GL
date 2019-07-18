@@ -656,6 +656,11 @@ namespace TJAPlayer3
 				        TJAPlayer3.Input管理.Keyboard, TJAPlayer3.SoundGroupLevelController, TJAPlayer3.Skin, true);
 				    #endregion
 
+				    #region [ Ctrl-1 through Ctrl-5 Song Rating ]
+				    SongRatingControlHandler.Handle(
+				        TJAPlayer3.Input管理.Keyboard, act曲リスト, TJAPlayer3.EnumSongs);
+				    #endregion
+
 					this.actSortSongs.t進行描画();
 					this.actQuickConfig.t進行描画();
 				}

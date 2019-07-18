@@ -157,6 +157,8 @@
     <Compile Include="Songs\C曲リストノードComparers\ComparerChain.cs" />
     <Compile Include="Songs\C曲リストノードComparers\C曲リストノードComparerAC15.cs" />
     <Compile Include="Songs\C曲リストノードComparers\C曲リストノードComparerAC8_14.cs" />
+    <Compile Include="Songs\C曲リストノードComparers\C曲リストノードComparerPlaylistIndex.cs" />
+    <Compile Include="Songs\C曲リストノードComparers\C曲リストノードComparerRating.cs" />
     <Compile Include="Songs\C曲リストノードComparers\C曲リストノードComparerタイトル.cs" />
     <Compile Include="Songs\C曲リストノードComparers\C曲リストノードComparerノード種別.cs" />
     <Compile Include="Songs\C曲リストノードComparers\C曲リストノードComparer絶対パス.cs" />
@@ -188,6 +190,9 @@
     <Compile Include="Stages\05.SongSelect\CActSelect演奏履歴パネル.cs" />
     <Compile Include="Stages\05.SongSelect\CActSortSongs.cs" />
     <Compile Include="Stages\05.SongSelect\CStage選曲.cs" />
+    <Compile Include="Stages\05.SongSelect\SongRating.cs" />
+    <Compile Include="Stages\05.SongSelect\SongRatingControlHandler.cs" />
+    <Compile Include="Stages\05.SongSelect\SongRatingController.cs" />
     <Compile Include="Stages\06.SongLoading\CStage曲読み込み.cs" />
     <Compile Include="Stages\06.SongLoading\FastRender.cs" />
     <Compile Include="Stages\07.Game\CAct演奏AVI.cs" />

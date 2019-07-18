@@ -78,6 +78,7 @@ namespace TJAPlayer3
             public int[] nハイスコア;
             public string strサブタイトル;
             public int[] nレベル;
+		    public SongRating? Rating;
 
 			[Serializable]
 			[StructLayout( LayoutKind.Sequential )]
@@ -306,6 +307,7 @@ namespace TJAPlayer3
             this.譜面情報.nハイスコア = new int[(int)Difficulty.Total];
             this.譜面情報.strサブタイトル = "";
             this.譜面情報.nレベル = new int[(int)Difficulty.Total] { -1, -1, -1, -1, -1, -1, -1};
+		    this.譜面情報.Rating = null;
 		}
 	}
 }
