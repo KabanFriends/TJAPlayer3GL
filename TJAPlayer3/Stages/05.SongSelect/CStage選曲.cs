@@ -651,7 +651,7 @@ namespace TJAPlayer3
 						}
 					}
 
-				    #region [ Minus & Equals Sound Group Level ]
+				    #region [ [ & ] Sound Group Level ]
 				    KeyboardSoundGroupLevelControlHandler.Handle(
 				        TJAPlayer3.Input管理.Keyboard, TJAPlayer3.SoundGroupLevelController, TJAPlayer3.Skin, true);
 				    #endregion

@@ -8,9 +8,9 @@ namespace TJAPlayer3
     /// this class they are able to support a centrally-managed and consistent
     /// set of keyboard shortcuts for dynamically adjusting four sound group
     /// levels:
-    /// - sound effect level, via Ctrl and either of the Minus or Equals keys
-    /// - voice level, via Shift and either of the Minus or Equals keys
-    /// - song preview and song playback level, via the Minus or Equals key
+    /// - sound effect level, via Ctrl and either of the [ or ] keys
+    /// - voice level, via Shift and either of the [ or ] keys
+    /// - song preview and song playback level, via the [ or ] key
     ///
     /// When the sound group levels are adjusted in this manner, the
     /// SoundGroupLevelController (and handlers bound to its events) ensure
