@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 
 namespace FDK.ExtensionMethods
 {
@@ -10,6 +7,11 @@ namespace FDK.ExtensionMethods
         public static bool In(this string str, params string[] param)
         {
             return param.Contains(str);
+        }
+
+        public static string ToNullIfEmpty(this string value)
+        {
+            return string.IsNullOrEmpty(value) ? null : value;
         }
     }
 }
