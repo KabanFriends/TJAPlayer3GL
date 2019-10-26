@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using TJAPlayer3;
-using FDK;
+﻿using FDK;
 
 namespace TJAPlayer3
 {
@@ -45,7 +40,7 @@ namespace TJAPlayer3
                 Counter.t進行();
                 if (Counter.b終了値に達した) Counter.t停止();
                 int opacity = (((150 - Counter.n現在の値) * 255) / 100);
-                Texture.n透明度 = opacity;
+                Texture.Opacity = opacity;
                 Texture.t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Lane_Background_X[Player], TJAPlayer3.Skin.Game_Lane_Background_Y[Player]);
             }
             return base.On進行描画();
