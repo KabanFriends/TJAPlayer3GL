@@ -1122,13 +1122,11 @@ namespace TJAPlayer3
         public bool bSession譜面を読み込む;
         public bool IsDanChallenge; // 2018/8/24 段位チャレンジが存在するか否か (AioiLight)
 
-        public string ARTIST;
         public string BACKGROUND;
         public string BACKGROUND_GR;
         public double BASEBPM;
         public double BPM;
         public STチップがある bチップがある;
-        public string COMMENT;
         public double db再生速度;
         public E種別 e種別;
         public string GENRE;
@@ -1300,8 +1298,6 @@ namespace TJAPlayer3
             this.nPlayerSide = 0;
             this.TITLE = "";
             this.SUBTITLE = "";
-            this.ARTIST = "";
-            this.COMMENT = "";
             this.PANEL = "";
             this.GENRE = "";
             this.PREVIEW = "";
@@ -7108,24 +7104,6 @@ namespace TJAPlayer3
                 {
                     //this.t入力_パラメータ食い込みチェック( "TITLE", ref strコマンド, ref strパラメータ );
                     //this.TITLE = strパラメータ;
-                }
-                //-----------------
-                #endregion
-                #region [ ARTIST ]
-                //-----------------
-                else if (strコマンド.StartsWith("ARTIST", StringComparison.OrdinalIgnoreCase))
-                {
-                    this.t入力_パラメータ食い込みチェック("ARTIST", ref strコマンド, ref strパラメータ);
-                    this.ARTIST = strパラメータ;
-                }
-                //-----------------
-                #endregion
-                #region [ COMMENT ]
-                //-----------------
-                else if (strコマンド.StartsWith("COMMENT", StringComparison.OrdinalIgnoreCase))
-                {
-                    this.t入力_パラメータ食い込みチェック("COMMENT", ref strコマンド, ref strパラメータ);
-                    this.COMMENT = strパラメータ;
                 }
                 //-----------------
                 #endregion
