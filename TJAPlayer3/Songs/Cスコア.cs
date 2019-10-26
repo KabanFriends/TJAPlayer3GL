@@ -52,9 +52,6 @@ namespace TJAPlayer3
 		public struct ST譜面情報
 		{
 			public string タイトル;
-			public string アーティスト名;
-			public string コメント;
-			public string ジャンル;
 			public string Preimage;
 			public string Premovie;
 			public string Presound;
@@ -271,9 +268,6 @@ namespace TJAPlayer3
 			this.ファイル情報 = new STファイル情報( "", "", DateTime.MinValue, 0L );
 			this.譜面情報 = new ST譜面情報();
 			this.譜面情報.タイトル = "";
-			this.譜面情報.アーティスト名 = "";
-			this.譜面情報.コメント = "";
-			this.譜面情報.ジャンル = "";
 			this.譜面情報.Preimage = "";
 			this.譜面情報.Premovie = "";
 			this.譜面情報.Presound = "";

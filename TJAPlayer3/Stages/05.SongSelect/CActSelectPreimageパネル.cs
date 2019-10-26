@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Drawing;
 using System.IO;
 using System.Diagnostics;
@@ -59,7 +57,6 @@ namespace TJAPlayer3
 			if( !base.b活性化してない )
 			{
 				this.txパネル本体 = TJAPlayer3.tテクスチャの生成( CSkin.Path( @"Graphics\5_preimage panel.png" ), false );
-				this.txセンサ = TJAPlayer3.tテクスチャの生成( CSkin.Path( @"Graphics\5_sensor.png" ), false );
 				//this.txセンサ光 = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\5_sensor light.png" ), false );
 				this.txプレビュー画像 = null;
 				this.txプレビュー画像がないときの画像 = TJAPlayer3.tテクスチャの生成( CSkin.Path( @"Graphics\5_preimage default.png" ), false );
@@ -77,8 +74,6 @@ namespace TJAPlayer3
 			if( !base.b活性化してない )
 			{
 				TJAPlayer3.tテクスチャの解放( ref this.txパネル本体 );
-				TJAPlayer3.tテクスチャの解放( ref this.txセンサ );
-				TJAPlayer3.tテクスチャの解放( ref this.txセンサ光 );
 				TJAPlayer3.tテクスチャの解放( ref this.txプレビュー画像 );
 				TJAPlayer3.tテクスチャの解放( ref this.txプレビュー画像がないときの画像 );
 				if( this.sfAVI画像 != null )
@@ -156,14 +151,9 @@ namespace TJAPlayer3
 		private int n本体X;
 		private int n本体Y;
 		private IntPtr pAVIBmp;
-		private readonly Rectangle rcセンサ光 = new Rectangle( 0, 0xc0, 0x40, 0x40 );
-		private readonly Rectangle rcセンサ本体下半分 = new Rectangle( 0x40, 0, 0x40, 0x80 );
-		private readonly Rectangle rcセンサ本体上半分 = new Rectangle( 0, 0, 0x40, 0x80 );
 		private CTexture r表示するプレビュー画像;
 		private Surface sfAVI画像;
 		private string str現在のファイル名;
-		private CTexture txセンサ;
-		private CTexture txセンサ光;
 		private CTexture txパネル本体;
 		private CTexture txプレビュー画像;
 		private CTexture txプレビュー画像がないときの画像;
@@ -374,123 +364,6 @@ namespace TJAPlayer3
 				}
 			}
 			return true;
-		}
-        /// <summary>
-        /// 一時的に使用禁止。
-        /// </summary>
-		private void t描画処理_ジャンル文字列()
-		{
-			C曲リストノード c曲リストノード = TJAPlayer3.stage選曲.r現在選択中の曲;
-			Cスコア cスコア = TJAPlayer3.stage選曲.r現在選択中のスコア;
-			if( ( c曲リストノード != null ) && ( cスコア != null ) )
-			{
-				string str = "";
-				switch( c曲リストノード.eノード種別 )
-				{
-					case C曲リストノード.Eノード種別.SCORE:
-						if( ( c曲リストノード.strジャンル == null ) || ( c曲リストノード.strジャンル.Length <= 0 ) )
-						{
-							if( ( cスコア.譜面情報.ジャンル != null ) && ( cスコア.譜面情報.ジャンル.Length > 0 ) )
-							{
-								str = cスコア.譜面情報.ジャンル;
-							}
-#if false	// #32644 2013.12.21 yyagi "Unknown"なジャンル表示を削除。DTX/BMSなどの種別表示もしない。
-							else
-							{
-								switch( cスコア.譜面情報.曲種別 )
-								{
-									case CDTX.E種別.DTX:
-										str = "DTX";
-										break;
-
-									case CDTX.E種別.GDA:
-										str = "GDA";
-										break;
-
-									case CDTX.E種別.G2D:
-										str = "G2D";
-										break;
-
-									case CDTX.E種別.BMS:
-										str = "BMS";
-										break;
-
-									case CDTX.E種別.BME:
-										str = "BME";
-										break;
-								}
-								str = "Unknown";
-							}
-#endif
-							break;
-						}
-						str = c曲リストノード.strジャンル;
-						break;
-
-					case C曲リストノード.Eノード種別.SCORE_MIDI:
-						str = "MIDI";
-						break;
-
-					case C曲リストノード.Eノード種別.BOX:
-						str = "MusicBox";
-						break;
-
-					case C曲リストノード.Eノード種別.BACKBOX:
-						str = "BackBox";
-						break;
-
-					case C曲リストノード.Eノード種別.RANDOM:
-						str = "Random";
-						break;
-
-					default:
-						str = "Unknown";
-						break;
-				}
-				TJAPlayer3.act文字コンソール.tPrint( this.n本体X + 0x12, this.n本体Y - 1, C文字コンソール.Eフォント種別.赤細, str );
-			}
-		}
-		private void t描画処理_センサ光()
-		{
-			int num = this.ctセンサ光.n現在の値;
-			if( num < 12 )
-			{
-				int x = this.n本体X + 0xcc;
-				int y = this.n本体Y + 0x7b;
-				if( this.txセンサ光 != null )
-				{
-					this.txセンサ光.vc拡大縮小倍率 = new Vector3( 1f, 1f, 1f );
-					this.txセンサ光.n透明度 = 0xff;
-					this.txセンサ光.t2D描画( TJAPlayer3.app.Device, x, y, new Rectangle( ( num % 4 ) * 0x40, ( num / 4 ) * 0x40, 0x40, 0x40 ) );
-				}
-			}
-			else if( num < 0x18 )
-			{
-				int num4 = num - 11;
-				double num5 = ( (double) num4 ) / 11.0;
-				double num6 = 1.0 + ( num5 * 0.5 );
-				int num7 = (int) ( 64.0 * num6 );
-				int num8 = (int) ( 64.0 * num6 );
-				int num9 = ( ( this.n本体X + 0xcc ) + 0x20 ) - ( num7 / 2 );
-				int num10 = ( ( this.n本体Y + 0x7b ) + 0x20 ) - ( num8 / 2 );
-				if( this.txセンサ光 != null )
-				{
-					this.txセンサ光.vc拡大縮小倍率 = new Vector3( (float) num6, (float) num6, 1f );
-					this.txセンサ光.n透明度 = (int) ( 255.0 * ( 1.0 - num5 ) );
-					this.txセンサ光.t2D描画( TJAPlayer3.app.Device, num9, num10, this.rcセンサ光 );
-				}
-			}
-		}
-		private void t描画処理_センサ本体()
-		{
-			int x = this.n本体X + 0xcd;
-			int y = this.n本体Y - 4;
-			if( this.txセンサ != null )
-			{
-				this.txセンサ.t2D描画( TJAPlayer3.app.Device, x, y, this.rcセンサ本体上半分 );
-				y += 0x80;
-				this.txセンサ.t2D描画( TJAPlayer3.app.Device, x, y, this.rcセンサ本体下半分 );
-			}
 		}
 		private void t描画処理_パネル本体()
 		{

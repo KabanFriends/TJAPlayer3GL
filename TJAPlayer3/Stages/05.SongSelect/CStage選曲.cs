@@ -109,7 +109,6 @@ namespace TJAPlayer3
 			base.list子Activities.Add( this.act演奏履歴パネル = new CActSelect演奏履歴パネル() );
 			base.list子Activities.Add( this.actPreimageパネル = new CActSelectPreimageパネル() );
 			base.list子Activities.Add( this.actPresound = new CActSelectPresound() );
-			base.list子Activities.Add( this.actArtistComment = new CActSelectArtistComment() );
 			base.list子Activities.Add( this.actInformation = new CActSelectInformation() );
 			base.list子Activities.Add( this.actSortSongs = new CActSortSongs() );
 			base.list子Activities.Add( this.actShowCurrentPosition = new CActSelectShowCurrentPosition() );
@@ -128,7 +127,6 @@ namespace TJAPlayer3
 			this.actPresound.t選択曲が変更された();
 			this.act演奏履歴パネル.t選択曲が変更された();
 			this.actステータスパネル.t選択曲が変更された();
-			this.actArtistComment.t選択曲が変更された();
 
 			#region [ プラグインにも通知する（BOX, RANDOM, BACK なら通知しない）]
 			//---------------------
@@ -775,7 +773,6 @@ namespace TJAPlayer3
 				}
 			}
 		}
-		private CActSelectArtistComment actArtistComment;
 		private CActFIFOBlack actFIFO;
 		private CActFIFOBlack actFIfrom結果画面;
 		//private CActFIFOBlack actFOtoNowLoading;
@@ -978,20 +975,12 @@ namespace TJAPlayer3
 			}
 			TJAPlayer3.Skin.bgm選曲画面.t停止する();
 		}
+
 		private void t曲を選択する()
 		{
-			this.r確定された曲 = this.act曲リスト.r現在選択中の曲;
-			this.r確定されたスコア = this.act曲リスト.r現在選択中のスコア;
-			this.n確定された曲の難易度 = this.act曲リスト.n現在選択中の曲の現在の難易度レベル;
-            this.str確定された曲のジャンル = this.r確定された曲.strジャンル;
-            if ( ( this.r確定された曲 != null ) && ( this.r確定されたスコア != null ) )
-			{
-				this.eフェードアウト完了時の戻り値 = E戻り値.選曲した;
-				this.actFOtoNowLoading.tフェードアウト開始();				// #27787 2012.3.10 yyagi 曲決定時の画面フェードアウトの省略
-				base.eフェーズID = CStage.Eフェーズ.選曲_NowLoading画面へのフェードアウト;
-			}
-			TJAPlayer3.Skin.bgm選曲画面.t停止する();
+            t曲を選択する(this.act曲リスト.n現在選択中の曲の現在の難易度レベル);
 		}
+
 		public void t曲を選択する( int nCurrentLevel )
 		{
 			this.r確定された曲 = this.act曲リスト.r現在選択中の曲;

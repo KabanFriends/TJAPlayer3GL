@@ -9,37 +9,62 @@ namespace TJAPlayer3
 {
 	internal class CBoxDef
 	{
+        private static readonly Dictionary<DirectoryInfo, CBoxDef> Cache = new Dictionary<DirectoryInfo, CBoxDef>();
+
 		// プロパティ
+        public string Genre;
+        public string Title;
+        public Color? ForeColor;
+        public Color? BackColor;
 
-		public Color Color;
-		public string Genre;
-		public string Title;
-        public Color ForeColor;
-        public Color BackColor;
-        public bool IsChangedForeColor;
-        public bool IsChangedBackColor;
+        // Factory methods, used to leverage the cache.
 
+        public static CBoxDef Find(DirectoryInfo directoryInfo)
+        {
+            while (true)
+            {
+                var boxdef = Get(directoryInfo);
+                if (boxdef != null)
+                {
+                    return boxdef;
+                }
+
+                directoryInfo = directoryInfo.Parent;
+                if (directoryInfo == null)
+                {
+                    return null;
+                }
+            }
+        }
+
+        public static CBoxDef Get(DirectoryInfo directoryInfo)
+        {
+            if (Cache.TryGetValue(directoryInfo, out var boxdef))
+            {
+                return boxdef;
+            }
+
+            boxdef = GetImpl(directoryInfo);
+            Cache[directoryInfo] = boxdef;
+
+            return boxdef;
+        }
+
+        private static CBoxDef GetImpl(DirectoryInfo directoryInfo)
+        {
+            var boxdefファイル名 = Path.Combine(directoryInfo.FullName, "box.def");
+
+            if (File.Exists(boxdefファイル名))
+            {
+                return new CBoxDef(directoryInfo, boxdefファイル名);
+            }
+
+            return null;
+        }
 
 		// コンストラクタ
 
-		public CBoxDef()
-		{
-			this.Title = "";
-			this.Genre = "";
-            ForeColor = Color.White;
-            BackColor = Color.Black;
-
-		}
-		public CBoxDef( string boxdefファイル名 )
-			: this()
-		{
-			this.t読み込み( boxdefファイル名 );
-		}
-
-
-		// メソッド
-
-		public void t読み込み( string boxdefファイル名 )
+		private CBoxDef(DirectoryInfo directoryInfo, string boxdefファイル名)
 		{
 			StreamReader reader = new StreamReader( boxdefファイル名, Encoding.GetEncoding( "Shift_JIS" ) );
 			string str = null;
@@ -62,39 +87,69 @@ namespace TJAPlayer3
 							char[] ignoreChars = new char[] { ':', ' ', '\t' };
 		
 							if ( str.StartsWith( "#TITLE", StringComparison.OrdinalIgnoreCase ) )
-							{
-								this.Title = str.Substring( 6 ).Trim( ignoreChars );
-							}
+                            {
+                                var title = str.Substring( 6 ).Trim( ignoreChars );
+                                if (!string.IsNullOrEmpty(title))
+                                {
+                                    this.Title = title;
+                                }
+                            }
 							else if( str.StartsWith( "#GENRE", StringComparison.OrdinalIgnoreCase ) )
 							{
 								this.Genre = str.Substring( 6 ).Trim( ignoreChars );
 							}
-							else if ( str.StartsWith( "#FONTCOLOR", StringComparison.OrdinalIgnoreCase ) )
-							{
-								this.Color = ColorTranslator.FromHtml( str.Substring( 10 ).Trim( ignoreChars ) );
-							}
                             else if (str.StartsWith("#FORECOLOR", StringComparison.OrdinalIgnoreCase))
                             {
                                 this.ForeColor = ColorTranslator.FromHtml(str.Substring(10).Trim(ignoreChars));
-                                IsChangedForeColor = true;
                             }
                             else if (str.StartsWith("#BACKCOLOR", StringComparison.OrdinalIgnoreCase))
                             {
                                 this.BackColor = ColorTranslator.FromHtml(str.Substring(10).Trim(ignoreChars));
-                                IsChangedBackColor = true;
                             }
                         }
-						continue;
 					}
 					catch (Exception e)
 					{
 					    Trace.TraceError( e.ToString() );
 					    Trace.TraceError( "例外が発生しましたが処理を継続します。 (178a9a36-a59e-4264-8e4c-b3c3459db43c)" );
-						continue;
 					}
 				}
 			}
 			reader.Close();
+
+            if (Genre == null || Title == null || ForeColor == null || BackColor == null)
+            {
+                if (directoryInfo.Parent == null)
+                {
+                    return;
+                }
+
+                var ancestor = Find(directoryInfo.Parent);
+                if (ancestor == null)
+                {
+                    return;
+                }
+
+                if (Genre == null)
+                {
+                    Genre = ancestor.Genre;
+                }
+
+                if (Title == null)
+                {
+                    Title = ancestor.Title;
+                }
+
+                if (ForeColor == null)
+                {
+                    ForeColor = ancestor.ForeColor;
+                }
+
+                if (BackColor == null)
+                {
+                    BackColor = ancestor.BackColor;
+                }
+            }
 		}
 	}
 }
