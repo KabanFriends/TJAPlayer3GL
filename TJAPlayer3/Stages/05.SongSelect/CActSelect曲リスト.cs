@@ -1595,32 +1595,25 @@ namespace TJAPlayer3
 	        }
 	    }
 
-	    // 26x24 alt
-	    private int _ratingUnselectedSongOffsetX = 87;
-	    private int _ratingUnselectedSongOffsetY = 20;
-	    private int _ratingSelectedSongX = 826;
-	    private int _ratingSelectedSongOffsetY = 16;
-	    private int _ratingIncrementY = 14;
-
-	    private void DrawRatingForUnselectedSong(int nパネル番号, int baseX)
+        private void DrawRatingForUnselectedSong(int nパネル番号, int baseX)
 	    {
 	        var rating = this.stバー情報[nパネル番号].Rating;
-	        var x = baseX + _ratingUnselectedSongOffsetX;
-	        var offsetY = _ratingUnselectedSongOffsetY;
+	        var x = baseX + TJAPlayer3.Skin.SongSelect_Rating_Unselected_Song_Offset_X;
+	        var offsetY = TJAPlayer3.Skin.SongSelect_Rating_Unselected_Song_Offset_Y;
 
 	        DrawRatingForSong(rating, x, offsetY);
 	    }
 
-	    private void DrawRatingForSelectedSong()
+	    private static void DrawRatingForSelectedSong()
 	    {
 	        var rating = TJAPlayer3.stage選曲.r現在選択中のスコア.譜面情報.Rating;
-	        var x = _ratingSelectedSongX;
-	        var offsetY = _ratingSelectedSongOffsetY;
+	        var x = TJAPlayer3.Skin.SongSelect_Rating_Selected_Song_X;
+	        var offsetY = TJAPlayer3.Skin.SongSelect_Rating_Selected_Song_Offset_Y;
 
 	        DrawRatingForSong(rating, x, offsetY);
 	    }
 
-	    private void DrawRatingForSong(SongRating? rating, int x, int offsetY)
+	    private static void DrawRatingForSong(SongRating? rating, int x, int offsetY)
 	    {
 	        if (rating == null || rating == SongRating.Unset)
 	        {
@@ -1634,13 +1627,15 @@ namespace TJAPlayer3
 	            return;
 	        }
 
+            var baseY = TJAPlayer3.Skin.SongSelect_Overall_Y + offsetY;
+
 	        for (int i = -((int)rating - 1); i <= 0; i++)
-	        {
-	            txRating.t2D下中央基準描画(
+            {
+                txRating.t2D下中央基準描画(
 	                TJAPlayer3.app.Device,
 	                x,
-	                TJAPlayer3.Skin.SongSelect_Overall_Y + offsetY - (i * _ratingIncrementY));
-	        }
+	                baseY - (i * TJAPlayer3.Skin.SongSelect_Rating_Increment_Y));
+            }
 	    }
 
 	    public void OnSelectedSongRatingChanged(SongRating newRating)

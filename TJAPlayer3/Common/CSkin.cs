@@ -1140,6 +1140,27 @@ namespace TJAPlayer3
                             {
                                 SongSelect_Rotate_Chara = strParam.Split(',').ToArray();
                             }
+
+                            else if (strCommand == nameof(SongSelect_Rating_Unselected_Song_Offset_X))
+                            {
+                                SongSelect_Rating_Unselected_Song_Offset_X = int.Parse(strParam);
+                            }
+                            else if (strCommand == nameof(SongSelect_Rating_Unselected_Song_Offset_Y))
+                            {
+                                SongSelect_Rating_Unselected_Song_Offset_Y = int.Parse(strParam);
+                            }
+                            else if (strCommand == nameof(SongSelect_Rating_Selected_Song_X))
+                            {
+                                SongSelect_Rating_Selected_Song_X = int.Parse(strParam);
+                            }
+                            else if (strCommand == nameof(SongSelect_Rating_Selected_Song_Offset_Y))
+                            {
+                                SongSelect_Rating_Selected_Song_Offset_Y = int.Parse(strParam);
+                            }
+                            else if (strCommand == nameof(SongSelect_Rating_Increment_Y))
+                            {
+                                SongSelect_Rating_Increment_Y = int.Parse(strParam);
+                            }
                             #endregion
                             #region SongLoading
                             else if (strCommand == nameof(SongLoading_Plate_XY))
@@ -2483,6 +2504,12 @@ namespace TJAPlayer3
         public int[] SongSelect_CorrectionX_Chara_Value = new int[] { 0 };
         public int[] SongSelect_CorrectionY_Chara_Value = new int[] { 0 };
         public string[] SongSelect_Rotate_Chara = { "ここに90°回転させたい文字をカンマで区切って記入" };
+
+        public int SongSelect_Rating_Unselected_Song_Offset_X = 22;
+        public int SongSelect_Rating_Unselected_Song_Offset_Y = 33;
+        public int SongSelect_Rating_Selected_Song_X = 471;
+        public int SongSelect_Rating_Selected_Song_Offset_Y = 33;
+        public int SongSelect_Rating_Increment_Y = 14;
         #endregion
         #region SongLoading
         public int[] SongLoading_Plate_XY = new int[] { 640, 360 };
