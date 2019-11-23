@@ -1154,9 +1154,9 @@ namespace TJAPlayer3
                             {
                                 SongSelect_Rating_Unselected_Song_Offset_Y = int.Parse(strParam);
                             }
-                            else if (strCommand == nameof(SongSelect_Rating_Selected_Song_X))
+                            else if (strCommand == nameof(SongSelect_Rating_Selected_Song_Offset_X))
                             {
-                                SongSelect_Rating_Selected_Song_X = int.Parse(strParam);
+                                SongSelect_Rating_Selected_Song_Offset_X = int.Parse(strParam);
                             }
                             else if (strCommand == nameof(SongSelect_Rating_Selected_Song_Offset_Y))
                             {
@@ -2514,7 +2514,7 @@ namespace TJAPlayer3
 
         public int SongSelect_Rating_Unselected_Song_Offset_X = 22;
         public int SongSelect_Rating_Unselected_Song_Offset_Y = 33;
-        public int SongSelect_Rating_Selected_Song_X = 471;
+        public int SongSelect_Rating_Selected_Song_Offset_X = 23;
         public int SongSelect_Rating_Selected_Song_Offset_Y = 33;
         public int SongSelect_Rating_Increment_Y = 14;
         #endregion

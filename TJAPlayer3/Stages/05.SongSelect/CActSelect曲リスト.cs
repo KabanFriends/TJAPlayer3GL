@@ -1607,7 +1607,7 @@ namespace TJAPlayer3
 	    private static void DrawRatingForSelectedSong()
 	    {
 	        var rating = TJAPlayer3.stage選曲.r現在選択中のスコア.譜面情報.Rating;
-	        var x = TJAPlayer3.Skin.SongSelect_Rating_Selected_Song_X;
+            var x = TJAPlayer3.Skin.SongSelect_Bar_Center_X + TJAPlayer3.Skin.SongSelect_Rating_Selected_Song_Offset_X;
 	        var offsetY = TJAPlayer3.Skin.SongSelect_Rating_Selected_Song_Offset_Y;
 
 	        DrawRatingForSong(rating, x, offsetY);
