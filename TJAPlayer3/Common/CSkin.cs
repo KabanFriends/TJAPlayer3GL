@@ -2512,11 +2512,11 @@ namespace TJAPlayer3
 
         public int SongSelect_Bar_Center_X = 448;
 
-        public int SongSelect_Rating_Unselected_Song_Offset_X = 22;
-        public int SongSelect_Rating_Unselected_Song_Offset_Y = 33;
+        public int SongSelect_Rating_Unselected_Song_Offset_X = 21;
+        public int SongSelect_Rating_Unselected_Song_Offset_Y = 37;
         public int SongSelect_Rating_Selected_Song_Offset_X = 23;
-        public int SongSelect_Rating_Selected_Song_Offset_Y = 33;
-        public int SongSelect_Rating_Increment_Y = 14;
+        public int SongSelect_Rating_Selected_Song_Offset_Y = 37;
+        public int SongSelect_Rating_Increment_Y = 13;
         #endregion
         #region SongLoading
         public int[] SongLoading_Plate_XY = new int[] { 640, 360 };
