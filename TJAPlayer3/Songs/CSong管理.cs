@@ -664,7 +664,8 @@ namespace TJAPlayer3
             IEnumerable<FileInfo> GetPlaylistFileInfos(FileInfo playlistFileInfo)
             {
                 return File.ReadAllLines(playlistFileInfo.FullName, Encoding.UTF8)
-                    .Select(o => new FileInfo(o)); // TODO Add support for various (relative) locations
+                    .Where(o => !string.IsNullOrEmpty(o))
+                    .Select(o => new FileInfo(Path.Combine(playlistFileInfo.DirectoryName, o)));
             }
         }
 
