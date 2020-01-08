@@ -1140,6 +1140,32 @@ namespace TJAPlayer3
                             {
                                 SongSelect_Rotate_Chara = strParam.Split(',').ToArray();
                             }
+
+                            else if (strCommand == nameof(SongSelect_Bar_Center_X))
+                            {
+                                SongSelect_Bar_Center_X = int.Parse(strParam);
+                            }
+
+                            else if (strCommand == nameof(SongSelect_Rating_Unselected_Song_Offset_X))
+                            {
+                                SongSelect_Rating_Unselected_Song_Offset_X = int.Parse(strParam);
+                            }
+                            else if (strCommand == nameof(SongSelect_Rating_Unselected_Song_Offset_Y))
+                            {
+                                SongSelect_Rating_Unselected_Song_Offset_Y = int.Parse(strParam);
+                            }
+                            else if (strCommand == nameof(SongSelect_Rating_Selected_Song_Offset_X))
+                            {
+                                SongSelect_Rating_Selected_Song_Offset_X = int.Parse(strParam);
+                            }
+                            else if (strCommand == nameof(SongSelect_Rating_Selected_Song_Offset_Y))
+                            {
+                                SongSelect_Rating_Selected_Song_Offset_Y = int.Parse(strParam);
+                            }
+                            else if (strCommand == nameof(SongSelect_Rating_Increment_Y))
+                            {
+                                SongSelect_Rating_Increment_Y = int.Parse(strParam);
+                            }
                             #endregion
                             #region SongLoading
                             else if (strCommand == nameof(SongLoading_Plate_XY))
@@ -2499,6 +2525,14 @@ namespace TJAPlayer3
         public int[] SongSelect_CorrectionX_Chara_Value = new int[] { 0 };
         public int[] SongSelect_CorrectionY_Chara_Value = new int[] { 0 };
         public string[] SongSelect_Rotate_Chara = { "ここに90°回転させたい文字をカンマで区切って記入" };
+
+        public int SongSelect_Bar_Center_X = 448;
+
+        public int SongSelect_Rating_Unselected_Song_Offset_X = 21;
+        public int SongSelect_Rating_Unselected_Song_Offset_Y = 37;
+        public int SongSelect_Rating_Selected_Song_Offset_X = 23;
+        public int SongSelect_Rating_Selected_Song_Offset_Y = 37;
+        public int SongSelect_Rating_Increment_Y = 13;
         #endregion
         #region SongLoading
         public int[] SongLoading_Plate_XY = new int[] { 640, 360 };

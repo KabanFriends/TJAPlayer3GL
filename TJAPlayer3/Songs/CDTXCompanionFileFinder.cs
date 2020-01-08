@@ -22,7 +22,7 @@ namespace TJAPlayer3
             // the vast majority of cases it has been mangled during zip
             // compression by a zip tool which is not properly aware of
             // multi-byte encodings, Unicode, etc. When decompressed, such
-            // zipped files end up a file names which are simply the raw bytes
+            // zipped files end up with file names which are simply the raw bytes
             // of the Shift-JIS encoded form. Some of these bytes will be
             // invalid as characters of file names and will have been further
             // mangled, usually to a single underscore character.
