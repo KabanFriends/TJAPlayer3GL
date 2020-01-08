@@ -7,8 +7,8 @@ using System.Drawing;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.IO;
+using System.Linq;
 using System.Threading;
-using System.Runtime.Serialization.Formatters.Binary;
 using SlimDX;
 using SlimDX.Direct3D9;
 using FDK;
@@ -19,14 +19,29 @@ namespace TJAPlayer3
 {
 	internal class TJAPlayer3 : Game
 	{
+        public const string SLIMDXDLL = "c_net20x86_Jun2010";
+        public const string D3DXDLL = "d3dx9_43.dll";   // June 2010
+        //public const string D3DXDLL = "d3dx9_42.dll"; // February 2010
+        //public const string D3DXDLL = "d3dx9_41.dll"; // March 2009
+
         // プロパティ
         #region [ properties ]
-        public static readonly string VERSION = Assembly.GetExecutingAssembly().GetName().Version.ToString().Substring(0, Assembly.GetExecutingAssembly().GetName().Version.ToString().Length - 2);
 
-        public static readonly string SLIMDXDLL = "c_net20x86_Jun2010";
-		public static readonly string D3DXDLL = "d3dx9_43.dll";		// June 2010
-        //public static readonly string D3DXDLL = "d3dx9_42.dll";	// February 2010
-        //public static readonly string D3DXDLL = "d3dx9_41.dll";	// March 2009
+        public static readonly string ThreePartVersion = GetThreePartVersion();
+
+        private static string GetThreePartVersion()
+        {
+            var version = Assembly.GetExecutingAssembly().GetName().Version;
+
+            return $"{version.Major}.{version.Minor}.{version.Build}";
+        }
+
+        public static readonly string InformationalVersion = Assembly.GetExecutingAssembly()
+            .GetCustomAttributes(typeof(AssemblyInformationalVersionAttribute), false)
+            .Cast<AssemblyInformationalVersionAttribute>()
+            .FirstOrDefault()
+            ?.InformationalVersion
+            ?? $"{ThreePartVersion} (unknown informational version)";
 
 		public static TJAPlayer3 app
 		{
@@ -1875,20 +1890,6 @@ for (int i = 0; i < 3; i++) {
 		private List<CActivity> listトップレベルActivities;
 		private int n進行描画の戻り値;
 		private MouseButtons mb = System.Windows.Forms.MouseButtons.Left;
-		private string strWindowTitle
-		{
-			get
-			{
-				if ( DTXVmode.Enabled )
-				{
-					return "DTXViewer release " + VERSION;
-				}
-				else
-				{
-					return "TJAPlayer3 feat.DTXMania";
-				}
-			}
-		}
 		private CSound previewSound;
         public static long StartupTime
         {
@@ -1954,7 +1955,7 @@ for (int i = 0; i < 3; i++) {
 			}
 			Trace.WriteLine("");
 			Trace.WriteLine( "DTXMania powered by YAMAHA Silent Session Drums" );
-			Trace.WriteLine( string.Format( "Release: {0}", VERSION ) );
+			Trace.WriteLine($"Release: {InformationalVersion}");
 			Trace.WriteLine( "" );
 			Trace.TraceInformation( "----------------------" );
 			Trace.TraceInformation( "■ アプリケーションの初期化" );
@@ -2425,7 +2426,7 @@ for (int i = 0; i < 3; i++) {
 				delay = "(" + Sound管理.GetSoundDelay() + "ms)";
 			}
             AssemblyName asmApp = Assembly.GetExecutingAssembly().GetName();
-            base.Window.Text = asmApp.Name + " Ver." + VERSION + " (" + Sound管理.GetCurrentSoundDeviceType() + delay + ")";
+            base.Window.Text = asmApp.Name + " Ver." + InformationalVersion + " (" + Sound管理.GetCurrentSoundDeviceType() + delay + ")";
 		}
 
 		private void t終了処理()
