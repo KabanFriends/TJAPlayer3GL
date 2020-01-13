@@ -14,9 +14,8 @@
     <FileAlignment>512</FileAlignment>
     <ApplicationIcon>Resources\TJAPlayer3.ico</ApplicationIcon>
     <IsWebBootstrapper>false</IsWebBootstrapper>
-    <SignAssembly>false</SignAssembly>
-    <AssemblyOriginatorKeyFile>
-    </AssemblyOriginatorKeyFile>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\TJAPlayer3.snk</AssemblyOriginatorKeyFile>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -127,6 +126,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <None Include="..\TJAPlayer3.snk">
+      <Link>TJAPlayer3.snk</Link>
+    </None>
     <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="TJAPlayer3.manifest" />
