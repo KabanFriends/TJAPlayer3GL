@@ -15,7 +15,6 @@
     <ApplicationIcon>Resources\TJAPlayer3.ico</ApplicationIcon>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <SignAssembly>false</SignAssembly>
-    <AssemblyOriginatorKeyFile>..\TJAPlayer3.snk</AssemblyOriginatorKeyFile>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
