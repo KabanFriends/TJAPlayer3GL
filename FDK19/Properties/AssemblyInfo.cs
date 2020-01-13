@@ -10,7 +10,7 @@ using System.Resources;
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct( "FDKライブラリ ver.21" )]
+[assembly: AssemblyProduct( "FDKライブラリ" )]
 [assembly: AssemblyCopyright( "Copyright(C) 2000-2013 DTXMania Group" )]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

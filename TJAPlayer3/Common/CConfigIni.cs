@@ -780,7 +780,7 @@ namespace TJAPlayer3
 		{
 			get
 			{
-				return ( !this.bConfigIniが存在している || !TJAPlayer3.ThreePartVersion.Equals( this.strDTXManiaのバージョン ) );
+				return ( !this.bConfigIniが存在している || !TJAPlayer3.AppNumericThreePartVersion.Equals( this.strDTXManiaのバージョン ) );
 			}
 		}
 		public bool bEnterがキー割り当てのどこにも使用されていない
@@ -1487,7 +1487,7 @@ namespace TJAPlayer3
 			#region [ Version ]
 			sw.WriteLine( "; リリースバージョン" );
 			sw.WriteLine( "; Release Version." );
-			sw.WriteLine( "Version={0}", TJAPlayer3.ThreePartVersion );
+			sw.WriteLine( "Version={0}", TJAPlayer3.AppNumericThreePartVersion );
 			sw.WriteLine();
 			#endregion
 			#region [ TJAPath ]

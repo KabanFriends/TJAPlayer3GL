@@ -5,7 +5,6 @@ using System.Text;
 using System.Windows.Forms;
 using System.Drawing;
 using System.Diagnostics;
-using System.Runtime.InteropServices;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -27,23 +26,36 @@ namespace TJAPlayer3
         // プロパティ
         #region [ properties ]
 
-        public static readonly string ThreePartVersion = GetThreePartVersion();
+        public static readonly string AppDisplayName = Assembly.GetExecutingAssembly().GetName().Name;
 
-        private static string GetThreePartVersion()
+        public static readonly string AppDisplayThreePartVersion = GetAppDisplayThreePartVersion();
+        public static readonly string AppNumericThreePartVersion = GetAppNumericThreePartVersion();
+
+        private static string GetAppDisplayThreePartVersion()
+        {
+            return $"v{GetAppNumericThreePartVersion()}";
+        }
+
+        private static string GetAppNumericThreePartVersion()
         {
             var version = Assembly.GetExecutingAssembly().GetName().Version;
 
             return $"{version.Major}.{version.Minor}.{version.Build}";
         }
 
-        public static readonly string InformationalVersion = Assembly.GetExecutingAssembly()
-            .GetCustomAttributes(typeof(AssemblyInformationalVersionAttribute), false)
-            .Cast<AssemblyInformationalVersionAttribute>()
-            .FirstOrDefault()
-            ?.InformationalVersion
-            ?? $"{ThreePartVersion} (unknown informational version)";
+        public static readonly string AppInformationalVersion =
+            Assembly
+                .GetExecutingAssembly()
+                .GetCustomAttributes(typeof(AssemblyInformationalVersionAttribute), false)
+                .Cast<AssemblyInformationalVersionAttribute>()
+                .FirstOrDefault()
+                ?.InformationalVersion
+            ?? $"{GetAppDisplayThreePartVersion()} (unknown informational version)";
 
-		public static TJAPlayer3 app
+        public static readonly string AppDisplayNameWithThreePartVersion = $"{AppDisplayName} {AppDisplayThreePartVersion}";
+        public static readonly string AppDisplayNameWithInformationalVersion = $"{AppDisplayName} {AppInformationalVersion}";
+
+        public static TJAPlayer3 app
 		{
 			get;
 			private set;
@@ -1954,8 +1966,7 @@ for (int i = 0; i < 3; i++) {
 				}
 			}
 			Trace.WriteLine("");
-			Trace.WriteLine( "DTXMania powered by YAMAHA Silent Session Drums" );
-			Trace.WriteLine($"Release: {InformationalVersion}");
+			Trace.WriteLine(AppDisplayNameWithInformationalVersion);
 			Trace.WriteLine( "" );
 			Trace.TraceInformation( "----------------------" );
 			Trace.TraceInformation( "■ アプリケーションの初期化" );
@@ -2423,10 +2434,9 @@ for (int i = 0; i < 3; i++) {
 			string delay = "";
 			if ( Sound管理.GetCurrentSoundDeviceType() != "DirectSound" )
 			{
-				delay = "(" + Sound管理.GetSoundDelay() + "ms)";
+				delay = " (" + Sound管理.GetSoundDelay() + "ms)";
 			}
-            AssemblyName asmApp = Assembly.GetExecutingAssembly().GetName();
-            base.Window.Text = asmApp.Name + " Ver." + InformationalVersion + " (" + Sound管理.GetCurrentSoundDeviceType() + delay + ")";
+            base.Window.Text = $"{AppDisplayNameWithInformationalVersion} ({Sound管理.GetCurrentSoundDeviceType()}{delay})";
 		}
 
 		private void t終了処理()
