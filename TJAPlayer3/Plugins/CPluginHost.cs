@@ -15,7 +15,7 @@ namespace TJAPlayer3
 
 		public CPluginHost()
 		{
-			this._DTXManiaVersion = new CDTXVersion( TJAPlayer3.VERSION );
+			this._DTXManiaVersion = new CDTXVersion( TJAPlayer3.AppNumericThreePartVersion );
 		}
 
 

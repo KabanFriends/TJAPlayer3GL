@@ -1,0 +1,8 @@
+mode: ContinuousDelivery
+next-version: 4.7.0
+branches:
+  master: {}
+  develop: {}
+ignore:
+  sha: []
+merge-message-formats: {}
