@@ -659,6 +659,7 @@ namespace TJAPlayer3
         {
             return fileInfos
                 .Where(o => o.Extension.ToUpperInvariant() == ".T3U8")
+                .OrderBy(o => o.Name)
                 .SelectMany(GetPlaylistFileInfos);
 
             IEnumerable<FileInfo> GetPlaylistFileInfos(FileInfo playlistFileInfo)
