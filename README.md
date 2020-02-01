@@ -45,8 +45,11 @@ As laws do vary by jurisdiction, it is the sole responsibility of each individua
 - Project sustainability (maintainability, modernization, good open source citizenship, ease of contribution, etc.)
 - Satisfying rhythm gameplay, with reliably-accurate judgment
 - Quality of life (System, data, and application compatibility, launch time, reliability, song browsing, etc.)
+- Priority placed, though not exclusively, on users outside of Japan
 
 Detailed plans regarding the above goals are to be managed in the project roadmap.
+
+As an aside regarding the prioritization of users outside of Japan: With respect, Japanese taiko simulator users have a strong tendency toward chasing precise simulation of the user experience and user interface of modern machines in arcades they can conveniently visit. International users, on the other hand, often struggle to even locate decade-old cabinets (usually in poor condition) within their city, state, or even their entire country. The latter group are underserved and present a set of software requirements which are significantly more sustainable, especially given the limited userbase and development resources interested in such a small niche.
 
 ### Non-Goals
 
