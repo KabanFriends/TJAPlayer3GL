@@ -107,7 +107,7 @@ TJAPlayer3 is currently lacking suitable documentation, as the source fork's doc
 
 To find the most current documenation and remain safe from malicious parties, prioritize the use of the official documentation contained within [twopointzero's TJAPlayer3 GitHub project](https://github.com/twopointzero/TJAPlayer3).
 
-[Click here to view the current documentation.](https://github.com/twopointzero/TJAPlayer3/docs/index.md)
+[Click here to view the current documentation.](https://github.com/twopointzero/TJAPlayer3/blob/master/docs/index.md)
 
 ## Support
 
