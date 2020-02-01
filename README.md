@@ -62,7 +62,7 @@ Taiko simulator development projects have been easily derailed (or at least near
 While the MIT License grants users and developers incredible freedom, _actions performed with that freedom do not receive automatic respect_. One can adhere to the MIT License while being a completely poisonous community member. Such community members are absolutely unwelcome and their behaviour explicitly denounced:
 
 - The TJAPlayer3 contributors explicitly denounce intellectual property violation. Please familiarize yourself with the [Statement Regarding Intellectual Property](#statement-regarding-intellectual-property)
-- The TJAPlayer3 contributors explicitly denounce intellectual property hypocricy. For example, if you intend to skin TJAPlayer3 using third-party skin assets, do not complain of `S E C O N D A R Y   D I S T R I B U T I O N` when someone improves on your work or repurposes those assets for something else. We live in a "remix and share" culture, and such behavior will absolutely not be tolerated. Go skin some other simulator.
+- The TJAPlayer3 contributors explicitly denounce intellectual property hypocricy. For example, if you intend to skin TJAPlayer3 using third-party skin assets, do not complain of `S E C O N D A R Y   D I S T R I B U T I O N` when someone improves on your work or repurposes those assets for something else. We live in a "remix and share" culture, and such hypocricy will absolutely not be tolerated. Go skin some other simulator.
 - The TJAPlayer3 contributors explicitly denounce antithetical open source citizenship. For example, if you intend to fork the TJAPlayer3 code, modify it, distribute it privately, and post brag videos on the internet without sharing your code back to the project, then instead go fork some other simulator. Yes, the MIT License allows you to do it. No, we still don't want you around.
 
 The TJAPlayer3 contributors are 100% committed to ensuring the sustainability of the project above all other concerns. If you are offended by any of the above denouncements then you're a part of the problem, not the solution. Kindly redirect your offense to `/dev/null` and go far, far away.
@@ -111,13 +111,13 @@ To find the most current documenation and remain safe from malicious parties, pr
 
 ## Support
 
-Being an open source project supported only be free contribution of time, only a limited amount of support can reasonably be provided. Here are a few constraints one might experience if seeking support from the TJAPlayer3 contributors:
+Being an open source project supported only by free contribution of time, only a limited amount of support can reasonably be provided. Here are a few constraints one might experience if seeking support from the TJAPlayer3 contributors:
 
 - As the software is used globally, the official language of the TJAPlayer3 project is English, though some accommodation can be provided at times via machine translation
 - Only the latest official release package is supported, unless you've been asked to reproduce an issue with a specific pre-release package or by building from source using a specific commit.
 - Only the SimpleStyle skin is supported, unless working on a pre-agreed effort to expand skinning capabilities (contact twopointzero.)
 - There is no formal monitoring of, or support via, any other application or service (e.g. Discord.)
-- twopointzero is present on Reddit from time to time but only on an informal basis.
+- twopointzero is present on Reddit from time to time, as [twopointzero_TJAP](https://www.reddit.com/user/twopointzero_TJAP/), but only on an informal basis.
 
 ## Issue Tracking
 
