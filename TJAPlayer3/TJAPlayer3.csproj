@@ -335,8 +335,7 @@ move /y "$(TargetDir)FDK.pdb" "$(SolutionDir)Test\dll\"
 move /y "$(TargetDir)Bass.Net.dll" "$(SolutionDir)Test\dll\"
 move /y "$(TargetDir)DirectShowLib-2005.dll" "$(SolutionDir)Test\dll\"
 move /y "$(TargetDir)SlimDX.dll" "$(SolutionDir)Test\dll\"
-move /y "$(TargetDir)CSharpTest.Net.Collections.*" "$(SolutionDir)Test\dll\"
-copy /y "$(SolutionDir)Readme.txt" "$(SolutionDir)Test\"</PostBuildEvent>
+move /y "$(TargetDir)CSharpTest.Net.Collections.*" "$(SolutionDir)Test\dll\"</PostBuildEvent>
   </PropertyGroup>
   <Import Project="packages\SharpDX.2.6.3\build\SharpDX.targets" Condition="Exists('packages\SharpDX.2.6.3\build\SharpDX.targets')" />
   <Import Project="..\packages\LargeAddressAware.1.0.3\build\LargeAddressAware.targets" Condition="Exists('..\packages\LargeAddressAware.1.0.3\build\LargeAddressAware.targets')" />
