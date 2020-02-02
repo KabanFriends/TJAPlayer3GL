@@ -1,10 +1,10 @@
 ---
-name: Bug Report
-about: Create a report to help us improve
+name: Feature Request
+about: Suggest an idea for this project
 
 ---
 
-**Can you write a one-sentence description of the bug?**
+**Can you write a one-sentence description of your request?**
 
 
 
@@ -12,11 +12,11 @@ about: Create a report to help us improve
 
 
 
-**Please provide the steps to reproduce and if possible a minimal demo of the problem.**
-
-
-
 **What is the expected behavior?**
+
+
+
+**What is the motivation / use case for changing the behavior?**
 
 
 
