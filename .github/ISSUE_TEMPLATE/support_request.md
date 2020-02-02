@@ -1,22 +1,10 @@
 ---
-name: Bug Report
-about: Create a report to help us improve
+name: Support Request
+about: Ask for help with a problem
 
 ---
 
-**Can you write a one-sentence description of the bug?**
-
-
-
-**What is the current behavior?**
-
-
-
-**Please provide the steps to reproduce and if possible a minimal demo of the problem.**
-
-
-
-**What is the expected behavior?**
+**Please write a description of your request**
 
 
 
