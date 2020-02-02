@@ -76,7 +76,7 @@ namespace TJAPlayer3
 				Drums.nGreatになる範囲ms = TJAPlayer3.nGreat範囲ms;
 				Drums.nGoodになる範囲ms = TJAPlayer3.nGood範囲ms;
 				Drums.nPoorになる範囲ms = TJAPlayer3.nPoor範囲ms;
-				Drums.strDTXManiaのバージョン = TJAPlayer3.VERSION;
+				Drums.strDTXManiaのバージョン = TJAPlayer3.AppNumericThreePartVersion;
 				Drums.最終更新日時 = DateTime.Now.ToString();
 				Drums.Hash = CScoreIni.t演奏セクションのMD5を求めて返す( Drums );
                 Drums.fゲージ = (float)this.actGauge.db現在のゲージ値[ 0 ];
@@ -146,7 +146,7 @@ namespace TJAPlayer3
 				Drums.nGreatになる範囲ms = TJAPlayer3.nGreat範囲ms;
 				Drums.nGoodになる範囲ms = TJAPlayer3.nGood範囲ms;
 				Drums.nPoorになる範囲ms = TJAPlayer3.nPoor範囲ms;
-				Drums.strDTXManiaのバージョン = TJAPlayer3.VERSION;
+				Drums.strDTXManiaのバージョン = TJAPlayer3.AppNumericThreePartVersion;
 				Drums.最終更新日時 = DateTime.Now.ToString();
 				Drums.Hash = CScoreIni.t演奏セクションのMD5を求めて返す( Drums );
                 Drums.fゲージ = (float)this.actGauge.db現在のゲージ値[ 0 ];
@@ -3126,12 +3126,12 @@ namespace TJAPlayer3
 				pChip.nバーからの距離dot.Drums = (int) ( time * ScrollSpeedDrums );
 				pChip.nバーからの距離dot.Guitar = (int) ( time * ScrollSpeedGuitar );
 				pChip.nバーからの距離dot.Bass = (int) ( time * ScrollSpeedBass );
-                pChip.nバーからの距離dot.Taiko = (int) ( ( time * pChip.dbBPM * pChip.dbSCROLL * (db現在の譜面スクロール速度.Drums + 1.5 ) ) / 628.7 );
+                pChip.nバーからの距離dot.Taiko = (int) (  time * pChip.dbBPM * pChip.dbSCROLL * (db現在の譜面スクロール速度.Drums + 1.0 )  / 502.8594 );
                 pChip.nバーからのノーツ末端距離dot.Drums = 0;
                 pChip.nバーからのノーツ末端距離dot.Guitar = 0;
                 pChip.nバーからのノーツ末端距離dot.Bass = 0;
                 if( pChip.nノーツ終了時刻ms != 0 )
-                    pChip.nバーからのノーツ末端距離dot.Taiko = (int) ( ( ( pChip.nノーツ終了時刻ms - n現在時刻ms) * pChip.dbBPM * pChip.dbSCROLL * (db現在の譜面スクロール速度.Drums + 1.5 ) ) / 628.7 );
+                    pChip.nバーからのノーツ末端距離dot.Taiko = (int) ( ( pChip.nノーツ終了時刻ms - n現在時刻ms) * pChip.dbBPM * pChip.dbSCROLL * (db現在の譜面スクロール速度.Drums + 1 ) / 502.8594 );
 
                 if( configIni.eScrollMode == EScrollMode.BMSCROLL || configIni.eScrollMode == EScrollMode.HBSCROLL )
                 {
@@ -3142,9 +3142,9 @@ namespace TJAPlayer3
 
                     var dbSCROLL = configIni.eScrollMode == EScrollMode.BMSCROLL ? 1.0 : pChip.dbSCROLL;
 
-                    pChip.nバーからの距離dot.Taiko = (int)( ( ( pChip.fBMSCROLLTime * NOTE_GAP ) - ( play_bpm_time * NOTE_GAP ) ) * dbSCROLL * ( db現在の譜面スクロール速度.Drums + 1.5 ) );
+                    pChip.nバーからの距離dot.Taiko = (int)( 3 * 0.8335 * ( ( pChip.fBMSCROLLTime * NOTE_GAP ) - ( play_bpm_time * NOTE_GAP ) ) * dbSCROLL * ( db現在の譜面スクロール速度.Drums + 1 ) / 2 );
                     if( pChip.nノーツ終了時刻ms != 0 )
-                        pChip.nバーからのノーツ末端距離dot.Taiko = (int)( ( ( pChip.fBMSCROLLTime_end * NOTE_GAP) - ( play_bpm_time * NOTE_GAP ) ) * pChip.dbSCROLL * ( db現在の譜面スクロール速度.Drums + 1.5 ) );
+                        pChip.nバーからのノーツ末端距離dot.Taiko = (int)( 3 * 0.8335 * ( ( pChip.fBMSCROLLTime_end * NOTE_GAP) - ( play_bpm_time * NOTE_GAP ) ) * pChip.dbSCROLL * ( db現在の譜面スクロール速度.Drums + 1 ) / 2 );
                 }
 
 				int instIndex = (int) pChip.e楽器パート;
@@ -3677,6 +3677,7 @@ namespace TJAPlayer3
 						if ( !pChip.bHit && ( pChip.nバーからの距離dot.Drums < 0 ) )
 						{
 							pChip.bHit = true;
+
 							//if ( dTX.listSCROLL.ContainsKey( pChip.n整数値_内部番号 ) )
 							//{
 								//this.actPlayInfo.dbBPM = ( dTX.listBPM[ pChip.n整数値_内部番号 ].dbBPM値 * ( ( (double) configIni.n演奏速度 ) / 20.0 ) );// + dTX.BASEBPM;
@@ -3900,11 +3901,11 @@ namespace TJAPlayer3
                         {
                             if (nPlayer == 0)
                             {
-                                TJAPlayer3.stage演奏ドラム画面.actLaneTaiko.t判定枠移動(dTX.listJPOSSCROLL[nJPOSSCROLL[nPlayer]].db移動時間, dTX.listJPOSSCROLL[nJPOSSCROLL[nPlayer]].n移動距離px, dTX.listJPOSSCROLL[nJPOSSCROLL[nPlayer]].n移動方向);
+                                TJAPlayer3.stage演奏ドラム画面.actLaneTaiko.t判定枠移動XY(dTX.listJPOSSCROLL[nJPOSSCROLL[nPlayer]].db移動時間, dTX.listJPOSSCROLL[nJPOSSCROLL[nPlayer]].n移動距離px, dTX.listJPOSSCROLL[nJPOSSCROLL[nPlayer]].n移動距離Ypx, dTX.listJPOSSCROLL[nJPOSSCROLL[nPlayer]].n移動方向);
                             }
                             else
                             {
-                                TJAPlayer3.stage演奏ドラム画面.actLaneTaiko.t判定枠移動2(dTX.listJPOSSCROLL[nJPOSSCROLL[nPlayer]].db移動時間, dTX.listJPOSSCROLL[nJPOSSCROLL[nPlayer]].n移動距離px, dTX.listJPOSSCROLL[nJPOSSCROLL[nPlayer]].n移動方向);
+                                TJAPlayer3.stage演奏ドラム画面.actLaneTaiko.t判定枠移動XY2(dTX.listJPOSSCROLL[nJPOSSCROLL[nPlayer]].db移動時間, dTX.listJPOSSCROLL[nJPOSSCROLL[nPlayer]].n移動距離px, dTX.listJPOSSCROLL[nJPOSSCROLL[nPlayer]].n移動距離Ypx, dTX.listJPOSSCROLL[nJPOSSCROLL[nPlayer]].n移動方向);
                             }
                             this.nJPOSSCROLL[ nPlayer ]++;
                             pChip.bHit = true;
@@ -4642,7 +4643,12 @@ namespace TJAPlayer3
 						return true;
 					}
 					break;
-
+                case CStage.Eフェーズ.演奏_STAGE_FAILED_ハード:
+                    if ( this.actFOClear.On進行描画() == 0 )
+                    {
+                        break;
+                    }
+                    return true;
 				case CStage.Eフェーズ.演奏_STAGE_CLEAR_フェードアウト:
 					if ( this.actFOClear.On進行描画() == 0 )
 					{

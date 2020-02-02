@@ -27,18 +27,15 @@ namespace TJAPlayer3
         BMSCROLL,
         HBSCROLL
     }
-    public enum Eジャンル
+
+    public enum EGaugeMode
     {
-        None = 0,
-        JPOP = 1,
-        ゲーム = 2,
-        ナムコ = 3,
-        クラシック = 4,
-        バラエティ = 5,
-        どうよう = 6,
-        ボーカロイド = 7,
-        アニメ = 8
+        Normal,
+        Groove,
+        Hard,
+        ExHard
     }
+
     public enum EGame
     {
         OFF = 0,
@@ -299,6 +296,7 @@ namespace TJAPlayer3
 		演奏中断,
 		ステージ失敗,
 		ステージクリア,
+        ステージ失敗_ハード,
 		再読込_再演奏,
 		再演奏
 	}

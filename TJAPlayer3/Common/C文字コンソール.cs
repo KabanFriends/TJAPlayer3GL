@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Drawing;
+﻿using System.Drawing;
 using FDK;
 
 namespace TJAPlayer3
@@ -15,15 +12,7 @@ namespace TJAPlayer3
 			白,
 			赤,
 			灰,
-			白細,
-			赤細,
-			灰細
-		}
-		public enum E配置
-		{
-			左詰,
-			中央,
-			右詰
+			白細
 		}
 
 

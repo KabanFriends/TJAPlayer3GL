@@ -120,7 +120,7 @@ namespace TJAPlayer3
 		public void StartEnumFromCache()
 		{
 			this.thDTXFileEnumerate = new Thread( new ThreadStart( this.t曲リストの構築1 ) );
-			this.thDTXFileEnumerate.Name = "曲リストの構築";
+			this.thDTXFileEnumerate.Name = "曲リストの構築1 (\"StartEnumFromCache\")";
 			this.thDTXFileEnumerate.IsBackground = true;
 			this.thDTXFileEnumerate.Start();
 		}
@@ -149,7 +149,7 @@ namespace TJAPlayer3
 					this.Songs管理 = new CSongs管理();
 				}
 				this.thDTXFileEnumerate = new Thread( new ThreadStart( this.t曲リストの構築2 ) );
-				this.thDTXFileEnumerate.Name = "曲リストの構築";
+				this.thDTXFileEnumerate.Name = "曲リストの構築2 (\"StartEnumFromDisk\")";
 				this.thDTXFileEnumerate.IsBackground = true;
 				this.thDTXFileEnumerate.Priority = System.Threading.ThreadPriority.Lowest;
 				this.thDTXFileEnumerate.Start();

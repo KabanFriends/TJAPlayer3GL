@@ -86,13 +86,10 @@ namespace TJAPlayer3
 			{
 				if( base.b初めての進行描画 )
 				{
-					this.list進行文字列.Add( "DTXManiaXG Ver.K powered by YAMAHA Silent Session Drums\n" );
-					this.list進行文字列.Add( "Product by.kairera0467\n" );
-					this.list進行文字列.Add( "Release: " + TJAPlayer3.VERSION + " [" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString() + "]" );
-
+					this.list進行文字列.Add(TJAPlayer3.AppDisplayNameWithInformationalVersion);
                     this.list進行文字列.Add("");
-                    this.list進行文字列.Add("TJAPlayer3 forked TJAPlayer2 forPC(kairera0467)");
-                    this.list進行文字列.Add("TJAPlayer3 edited by AioiLight(@aioilight)");
+                    this.list進行文字列.Add($"{TJAPlayer3.AppDisplayName} is open source software under the MIT license.");
+                    this.list進行文字列.Add("See README for acknowledgments.");
                     this.list進行文字列.Add("");
 
                     es = new CEnumSongs();

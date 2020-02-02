@@ -12,8 +12,7 @@
     <AssemblyName>FDK</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>slimdx_aioilight.snk</AssemblyOriginatorKeyFile>
+    <SignAssembly>false</SignAssembly>
     <ApplicationIcon>
     </ApplicationIcon>
     <FileUpgradeFlags>
@@ -80,6 +79,7 @@
     <Compile Include="コード\00.共通\C共通.cs" />
     <Compile Include="コード\00.共通\ExtensionMethods\DoubleExtensions.cs" />
     <Compile Include="コード\00.共通\ExtensionMethods\Int32Extensions.cs" />
+    <Compile Include="コード\00.共通\StringExtensions.cs" />
     <Compile Include="コード\01.フレームワーク\Core\GameWindowSize.cs" />
     <Compile Include="コード\01.フレームワーク\Core\Game.cs" />
     <Compile Include="コード\01.フレームワーク\Core\GameClock.cs" />
@@ -167,7 +167,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="slimdx_aioilight.snk" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
@@ -177,8 +176,4 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
-  </PropertyGroup>
 </Project>

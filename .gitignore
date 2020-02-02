@@ -11,7 +11,10 @@
 *.DotSettings.user
 /packages
 /Test/Capture_img
-/Test/Config.ini
+/Test/Config*.ini
 /Test/bs1770gain**
 /Test/dll/CSharpTest.Net.Collections.*
+/Test/dll/FDK.*
 /Test/dll/SlimDX.*
+/Test/TJAPlayer3.exe.config
+

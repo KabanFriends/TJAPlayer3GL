@@ -5,10 +5,9 @@ using System.Text;
 using System.Windows.Forms;
 using System.Drawing;
 using System.Diagnostics;
-using System.Runtime.InteropServices;
 using System.IO;
+using System.Linq;
 using System.Threading;
-using System.Runtime.Serialization.Formatters.Binary;
 using SlimDX;
 using SlimDX.Direct3D9;
 using FDK;
@@ -19,16 +18,44 @@ namespace TJAPlayer3
 {
 	internal class TJAPlayer3 : Game
 	{
+        public const string SLIMDXDLL = "c_net20x86_Jun2010";
+        public const string D3DXDLL = "d3dx9_43.dll";   // June 2010
+        //public const string D3DXDLL = "d3dx9_42.dll"; // February 2010
+        //public const string D3DXDLL = "d3dx9_41.dll"; // March 2009
+
         // プロパティ
         #region [ properties ]
-        public static readonly string VERSION = Assembly.GetExecutingAssembly().GetName().Version.ToString().Substring(0, Assembly.GetExecutingAssembly().GetName().Version.ToString().Length - 2);
 
-        public static readonly string SLIMDXDLL = "c_net20x86_Jun2010";
-		public static readonly string D3DXDLL = "d3dx9_43.dll";		// June 2010
-        //public static readonly string D3DXDLL = "d3dx9_42.dll";	// February 2010
-        //public static readonly string D3DXDLL = "d3dx9_41.dll";	// March 2009
+        public static readonly string AppDisplayName = Assembly.GetExecutingAssembly().GetName().Name;
 
-		public static TJAPlayer3 app
+        public static readonly string AppDisplayThreePartVersion = GetAppDisplayThreePartVersion();
+        public static readonly string AppNumericThreePartVersion = GetAppNumericThreePartVersion();
+
+        private static string GetAppDisplayThreePartVersion()
+        {
+            return $"v{GetAppNumericThreePartVersion()}";
+        }
+
+        private static string GetAppNumericThreePartVersion()
+        {
+            var version = Assembly.GetExecutingAssembly().GetName().Version;
+
+            return $"{version.Major}.{version.Minor}.{version.Build}";
+        }
+
+        public static readonly string AppInformationalVersion =
+            Assembly
+                .GetExecutingAssembly()
+                .GetCustomAttributes(typeof(AssemblyInformationalVersionAttribute), false)
+                .Cast<AssemblyInformationalVersionAttribute>()
+                .FirstOrDefault()
+                ?.InformationalVersion
+            ?? $"{GetAppDisplayThreePartVersion()} (unknown informational version)";
+
+        public static readonly string AppDisplayNameWithThreePartVersion = $"{AppDisplayName} {AppDisplayThreePartVersion}";
+        public static readonly string AppDisplayNameWithInformationalVersion = $"{AppDisplayName} {AppInformationalVersion}";
+
+        public static TJAPlayer3 app
 		{
 			get;
 			private set;
@@ -1364,21 +1391,104 @@ for (int i = 0; i < 3; i++) {
 									this.tガベージコレクションを実行する();
 								}
 								break;
-								//-----------------------------
-								#endregion
+                            //-----------------------------
+                            #endregion
 
-							case (int) E演奏画面の戻り値.ステージクリア:
-								#region [ 演奏クリア ]
-								//-----------------------------
-								CScoreIni.C演奏記録 c演奏記録_Drums;
-								stage演奏ドラム画面.t演奏結果を格納する( out c演奏記録_Drums );
+                            case (int) E演奏画面の戻り値.ステージ失敗_ハード:
+                                #region 演奏失敗(ハードゲージ)
+                                //-----------------------------
+                                CScoreIni.C演奏記録 c演奏記録_Drums;
+                                stage演奏ドラム画面.t演奏結果を格納する(out c演奏記録_Drums);
 
                                 double ps = 0.0, gs = 0.0;
+                                if (!c演奏記録_Drums.b全AUTOである && c演奏記録_Drums.n全チップ数 > 0)
+                                {
+                                    ps = c演奏記録_Drums.db演奏型スキル値;
+                                    gs = c演奏記録_Drums.dbゲーム型スキル値;
+                                }
+                                string str = "Failed";
+                                switch (CScoreIni.t総合ランク値を計算して返す(c演奏記録_Drums, null, null))
+                                {
+                                    case (int)CScoreIni.ERANK.SS:
+                                        str = string.Format("Failed (SS: {0:F2})", ps);
+                                        break;
+
+                                    case (int)CScoreIni.ERANK.S:
+                                        str = string.Format("Failed (S: {0:F2})", ps);
+                                        break;
+
+                                    case (int)CScoreIni.ERANK.A:
+                                        str = string.Format("Failed (A: {0:F2})", ps);
+                                        break;
+
+                                    case (int)CScoreIni.ERANK.B:
+                                        str = string.Format("Failed (B: {0:F2})", ps);
+                                        break;
+
+                                    case (int)CScoreIni.ERANK.C:
+                                        str = string.Format("Failed (C: {0:F2})", ps);
+                                        break;
+
+                                    case (int)CScoreIni.ERANK.D:
+                                        str = string.Format("Failed (D: {0:F2})", ps);
+                                        break;
+
+                                    case (int)CScoreIni.ERANK.E:
+                                        str = string.Format("Failed (E: {0:F2})", ps);
+                                        break;
+
+                                    case (int)CScoreIni.ERANK.UNKNOWN:  // #23534 2010.10.28 yyagi add: 演奏チップが0個のとき
+                                        str = "Failed (GAUGE:HARD)";
+                                        break;
+                                }
+
+                                scoreIni = this.tScoreIniへBGMAdjustとHistoryとPlayCountを更新(str);
+
+                                #region [ プラグイン On演奏失敗() の呼び出し ]
+                                //---------------------
+                                foreach (STPlugin pg in this.listプラグイン)
+                                {
+                                    Directory.SetCurrentDirectory(pg.strプラグインフォルダ);
+                                    pg.plugin.On演奏失敗(scoreIni);
+                                    Directory.SetCurrentDirectory(TJAPlayer3.strEXEのあるフォルダ);
+                                }
+                                //---------------------
+                                #endregion
+
+                                r現在のステージ.On非活性化();
+                                Trace.TraceInformation("----------------------");
+                                Trace.TraceInformation("■ 結果");
+                                stage結果.st演奏記録.Drums = c演奏記録_Drums;
+                                stage結果.On活性化();
+                                r直前のステージ = r現在のステージ;
+                                r現在のステージ = stage結果;
+
+                                #region [ プラグイン Onステージ変更() の呼び出し ]
+                                //---------------------
+                                foreach (STPlugin pg in this.listプラグイン)
+                                {
+                                    Directory.SetCurrentDirectory(pg.strプラグインフォルダ);
+                                    pg.plugin.Onステージ変更();
+                                    Directory.SetCurrentDirectory(TJAPlayer3.strEXEのあるフォルダ);
+                                }
+                                //---------------------
+                                #endregion
+
+                                break;
+                            #endregion
+
+                            case (int) E演奏画面の戻り値.ステージクリア:
+								#region [ 演奏クリア ]
+								//-----------------------------
+								stage演奏ドラム画面.t演奏結果を格納する( out c演奏記録_Drums );
+
+                                ps = 0.0;
+                                gs = 0.0;
 								if ( !c演奏記録_Drums.b全AUTOである && c演奏記録_Drums.n全チップ数 > 0) {
 									ps = c演奏記録_Drums.db演奏型スキル値;
 									gs = c演奏記録_Drums.dbゲーム型スキル値;
 								}
-								string str = "Cleared";
+								str = "Cleared";
 								switch( CScoreIni.t総合ランク値を計算して返す( c演奏記録_Drums, null, null ) )
 								{
 									case (int)CScoreIni.ERANK.SS:
@@ -1792,20 +1902,6 @@ for (int i = 0; i < 3; i++) {
 		private List<CActivity> listトップレベルActivities;
 		private int n進行描画の戻り値;
 		private MouseButtons mb = System.Windows.Forms.MouseButtons.Left;
-		private string strWindowTitle
-		{
-			get
-			{
-				if ( DTXVmode.Enabled )
-				{
-					return "DTXViewer release " + VERSION;
-				}
-				else
-				{
-					return "TJAPlayer3 feat.DTXMania";
-				}
-			}
-		}
 		private CSound previewSound;
         public static long StartupTime
         {
@@ -1870,8 +1966,7 @@ for (int i = 0; i < 3; i++) {
 				}
 			}
 			Trace.WriteLine("");
-			Trace.WriteLine( "DTXMania powered by YAMAHA Silent Session Drums" );
-			Trace.WriteLine( string.Format( "Release: {0}", VERSION ) );
+			Trace.WriteLine(AppDisplayNameWithInformationalVersion);
 			Trace.WriteLine( "" );
 			Trace.TraceInformation( "----------------------" );
 			Trace.TraceInformation( "■ アプリケーションの初期化" );
@@ -2339,10 +2434,9 @@ for (int i = 0; i < 3; i++) {
 			string delay = "";
 			if ( Sound管理.GetCurrentSoundDeviceType() != "DirectSound" )
 			{
-				delay = "(" + Sound管理.GetSoundDelay() + "ms)";
+				delay = " (" + Sound管理.GetSoundDelay() + "ms)";
 			}
-            AssemblyName asmApp = Assembly.GetExecutingAssembly().GetName();
-            base.Window.Text = asmApp.Name + " Ver." + VERSION + " (" + Sound管理.GetCurrentSoundDeviceType() + delay + ")";
+            base.Window.Text = $"{AppDisplayNameWithInformationalVersion} ({Sound管理.GetCurrentSoundDeviceType()}{delay})";
 		}
 
 		private void t終了処理()

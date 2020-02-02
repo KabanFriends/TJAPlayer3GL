@@ -6,7 +6,7 @@ namespace TJAPlayer3.C曲リストノードComparers
     {
         public int Compare(C曲リストノード n1, C曲リストノード n2)
         {
-            return CStrジャンルtoNum.ForAC15(n1.strジャンル).CompareTo(CStrジャンルtoNum.ForAC15(n2.strジャンル));
+            return CStrジャンルtoNum.ForAC15SortOrder(n1.strジャンル).CompareTo(CStrジャンルtoNum.ForAC15SortOrder(n2.strジャンル));
         }
     }
 }

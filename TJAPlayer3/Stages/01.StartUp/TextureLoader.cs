@@ -106,7 +106,6 @@ namespace TJAPlayer3
             SongSelect_Branch_Text = TxC(SONGSELECT + @"Branch_Text.png");
             SongSelect_Bar_Center = TxC(SONGSELECT + @"Bar_Center.png");
             SongSelect_Frame_Score = TxC(SONGSELECT + @"Frame_Score.png");
-            SongSelect_Frame_Box = TxC(SONGSELECT + @"Frame_Box.png");
             SongSelect_Frame_BackBox = TxC(SONGSELECT + @"Frame_BackBox.png");
             SongSelect_Frame_Random = TxC(SONGSELECT + @"Frame_Random.png");
             SongSelect_Score_Select = TxC(SONGSELECT + @"Score_Select.png");
@@ -118,6 +117,10 @@ namespace TJAPlayer3
             {
                 SongSelect_Bar_Genre[i] = TxC(SONGSELECT + @"Bar_Genre_" + i.ToString() + ".png");
             }
+            for (int i = 0; i < 9; i++)
+            {
+                SongSelect_Frame_Box[i] = TxC(SONGSELECT + @"Frame_Box_" + i.ToString() + ".png");
+            }
             for (int i = 0; i < (int)Difficulty.Total; i++)
             {
                 SongSelect_ScoreWindow[i] = TxC(SONGSELECT + @"ScoreWindow_" + i.ToString() + ".png");
@@ -128,6 +131,7 @@ namespace TJAPlayer3
                 SongSelect_GenreBack[i] = TxC(SONGSELECT + @"GenreBackground_" + i.ToString() + ".png");
             }
             SongSelect_ScoreWindow_Text = TxC(SONGSELECT + @"ScoreWindow_Text.png");
+            SongSelect_Rating = TxC(SONGSELECT + @"Rating.png");
             #endregion
 
             #region 4_読み込み画面
@@ -356,12 +360,27 @@ namespace TJAPlayer3
             Gauge = new CTexture[2];
             Gauge[0] = TxC(GAME + GAUGE + @"1P.png");
             Gauge[1] = TxC(GAME + GAUGE + @"2P.png");
+            Gauge_Hard = new CTexture[2];
+            Gauge_Hard[0] = TxC(GAME + GAUGE + @"1P_Hard.png");
+            Gauge_Hard[1] = TxC(GAME + GAUGE + @"2P_Hard.png");
+            Gauge_ExHard = new CTexture[2];
+            Gauge_ExHard[0] = TxC(GAME + GAUGE + @"1P_ExHard.png");
+            Gauge_ExHard[1] = TxC(GAME + GAUGE + @"2P_ExHard.png");
             Gauge_Base = new CTexture[2];
             Gauge_Base[0] = TxC(GAME + GAUGE + @"1P_Base.png");
             Gauge_Base[1] = TxC(GAME + GAUGE + @"2P_Base.png");
+            Gauge_Base_Hard = new CTexture[2];
+            Gauge_Base_Hard[0] = TxC(GAME + GAUGE + @"1P_Base_Hard.png");
+            Gauge_Base_Hard[1] = TxC(GAME + GAUGE + @"2P_Base_Hard.png");
+            Gauge_Base_ExHard = new CTexture[2];
+            Gauge_Base_ExHard[0] = TxC(GAME + GAUGE + @"1P_Base_ExHard.png");
+            Gauge_Base_ExHard[1] = TxC(GAME + GAUGE + @"2P_Base_ExHard.png");
             Gauge_Line = new CTexture[2];
             Gauge_Line[0] = TxC(GAME + GAUGE + @"1P_Line.png");
             Gauge_Line[1] = TxC(GAME + GAUGE + @"2P_Line.png");
+            Gauge_Line_Hard = new CTexture[2];
+            Gauge_Line_Hard[0] = TxC(GAME + GAUGE + @"1P_Line_Hard.png");
+            Gauge_Line_Hard[1] = TxC(GAME + GAUGE + @"2P_Line_Hard.png");
             TJAPlayer3.Skin.Game_Gauge_Rainbow_Ptn = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path(BASE + GAME + GAUGE + @"Rainbow\"));
             if (TJAPlayer3.Skin.Game_Gauge_Rainbow_Ptn != 0)
             {
@@ -492,6 +511,10 @@ namespace TJAPlayer3
             Result_FadeIn = TxC(RESULT + @"FadeIn.png");
             Result_Gauge = TxC(RESULT + @"Gauge.png");
             Result_Gauge_Base = TxC(RESULT + @"Gauge_Base.png");
+            Result_Gauge_Hard = TxC(RESULT + @"Gauge_Hard.png");
+            Result_Gauge_ExHard = TxC(RESULT + @"Gauge_ExHard.png");
+            Result_Gauge_Base_Hard = TxC(RESULT + @"Gauge_Base_Hard.png");
+            Result_Gauge_Base_ExHard = TxC(RESULT + @"Gauge_Base_ExHard.png");
             Result_Judge = TxC(RESULT + @"Judge.png");
             Result_Header = TxC(RESULT + @"Header.png");
             Result_Number = TxC(RESULT + @"Number.png");
@@ -552,7 +575,6 @@ namespace TJAPlayer3
             TJAPlayer3.tテクスチャの解放(ref SongSelect_Branch_Text);
             TJAPlayer3.tテクスチャの解放(ref SongSelect_Bar_Center);
             TJAPlayer3.tテクスチャの解放(ref SongSelect_Frame_Score);
-            TJAPlayer3.tテクスチャの解放(ref SongSelect_Frame_Box);
             TJAPlayer3.tテクスチャの解放(ref SongSelect_Frame_BackBox);
             TJAPlayer3.tテクスチャの解放(ref SongSelect_Frame_Random);
             TJAPlayer3.tテクスチャの解放(ref SongSelect_Score_Select);
@@ -562,6 +584,10 @@ namespace TJAPlayer3
             for (int i = 0; i < SongSelect_Bar_Genre.Length; i++)
             {
                 TJAPlayer3.tテクスチャの解放(ref SongSelect_Bar_Genre[i]);
+            }
+            for (int i = 0; i < 9; i++)
+            {
+                TJAPlayer3.tテクスチャの解放(ref SongSelect_Frame_Box[i]);
             }
             for (int i = 0; i < (int)Difficulty.Total; i++)
             {
@@ -573,6 +599,7 @@ namespace TJAPlayer3
                 TJAPlayer3.tテクスチャの解放(ref SongSelect_GenreBack[i]);
             }
             TJAPlayer3.tテクスチャの解放(ref SongSelect_ScoreWindow_Text);
+            TJAPlayer3.tテクスチャの解放(ref SongSelect_Rating);
             #endregion
 
             #region 4_読み込み画面
@@ -707,10 +734,18 @@ namespace TJAPlayer3
             #region ゲージ
             TJAPlayer3.tテクスチャの解放(ref Gauge[0]);
             TJAPlayer3.tテクスチャの解放(ref Gauge[1]);
+            TJAPlayer3.tテクスチャの解放(ref Gauge_Hard[0]);
+            TJAPlayer3.tテクスチャの解放(ref Gauge_Hard[1]);
             TJAPlayer3.tテクスチャの解放(ref Gauge_Base[0]);
             TJAPlayer3.tテクスチャの解放(ref Gauge_Base[1]);
+            TJAPlayer3.tテクスチャの解放(ref Gauge_Base_Hard[0]);
+            TJAPlayer3.tテクスチャの解放(ref Gauge_Base_Hard[1]);
+            TJAPlayer3.tテクスチャの解放(ref Gauge_Base_ExHard[0]);
+            TJAPlayer3.tテクスチャの解放(ref Gauge_Base_ExHard[1]);
             TJAPlayer3.tテクスチャの解放(ref Gauge_Line[0]);
             TJAPlayer3.tテクスチャの解放(ref Gauge_Line[1]);
+            TJAPlayer3.tテクスチャの解放(ref Gauge_Line_Hard[0]);
+            TJAPlayer3.tテクスチャの解放(ref Gauge_Line_Hard[1]);
             for (int i = 0; i < TJAPlayer3.Skin.Game_Gauge_Rainbow_Ptn; i++)
             {
                 TJAPlayer3.tテクスチャの解放(ref Gauge_Rainbow[i]);
@@ -813,6 +848,10 @@ namespace TJAPlayer3
             TJAPlayer3.tテクスチャの解放(ref Result_FadeIn);
             TJAPlayer3.tテクスチャの解放(ref Result_Gauge);
             TJAPlayer3.tテクスチャの解放(ref Result_Gauge_Base);
+            TJAPlayer3.tテクスチャの解放(ref Result_Gauge_Hard);
+            TJAPlayer3.tテクスチャの解放(ref Result_Gauge_ExHard);
+            TJAPlayer3.tテクスチャの解放(ref Result_Gauge_Base_Hard);
+            TJAPlayer3.tテクスチャの解放(ref Result_Gauge_Base_ExHard);
             TJAPlayer3.tテクスチャの解放(ref Result_Judge);
             TJAPlayer3.tテクスチャの解放(ref Result_Header);
             TJAPlayer3.tテクスチャの解放(ref Result_Number);
@@ -864,7 +903,6 @@ namespace TJAPlayer3
             SongSelect_Branch,
             SongSelect_Branch_Text,
             SongSelect_Frame_Score,
-            SongSelect_Frame_Box,
             SongSelect_Frame_BackBox,
             SongSelect_Frame_Random,
             SongSelect_Score_Select,
@@ -872,10 +910,12 @@ namespace TJAPlayer3
             SongSelect_GenreText,
             SongSelect_Cursor_Left,
             SongSelect_Cursor_Right,
-            SongSelect_ScoreWindow_Text;
+            SongSelect_ScoreWindow_Text,
+            SongSelect_Rating;
         public CTexture[] SongSelect_GenreBack = new CTexture[9],
             SongSelect_ScoreWindow = new CTexture[(int)Difficulty.Total],
             SongSelect_Bar_Genre = new CTexture[9],
+            SongSelect_Frame_Box = new CTexture[9],
             SongSelect_NamePlate = new CTexture[1];
         #endregion
 
@@ -947,8 +987,13 @@ namespace TJAPlayer3
         #endregion
         #region ゲージ
         public CTexture[] Gauge,
+            Gauge_Hard,
+            Gauge_ExHard,
             Gauge_Base,
+            Gauge_Base_Hard,
+            Gauge_Base_ExHard,
             Gauge_Line,
+            Gauge_Line_Hard,
             Gauge_Rainbow,
             Gauge_Soul_Explosion;
         public CTexture Gauge_Soul,
@@ -1023,7 +1068,11 @@ namespace TJAPlayer3
         public CTexture Result_Background,
             Result_FadeIn,
             Result_Gauge,
+            Result_Gauge_Hard,
+            Result_Gauge_ExHard,
             Result_Gauge_Base,
+            Result_Gauge_Base_Hard,
+            Result_Gauge_Base_ExHard,
             Result_Judge,
             Result_Header,
             Result_Number,

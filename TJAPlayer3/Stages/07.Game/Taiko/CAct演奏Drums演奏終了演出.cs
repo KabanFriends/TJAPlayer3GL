@@ -42,15 +42,28 @@ namespace TJAPlayer3
                 // 通常のモード。
                 // ここでフルコンボフラグをチェックするが現時点ではない。
                 // 今の段階では魂ゲージ80%以上でチェック。
+
+                //ハードゲージの場合、完奏=クリアなので、
+                //EndModeチェックのタイミングでは常にクリアになってもいい気がするけど、一応↓
                 for (int i = 0; i < TJAPlayer3.ConfigIni.nPlayerCount; i++)
                 {
-                    if (TJAPlayer3.stage演奏ドラム画面.actGauge.db現在のゲージ値[i] >= 80)
+                    if (TJAPlayer3.ConfigIni.eGaugeMode == EGaugeMode.Hard || TJAPlayer3.ConfigIni.eGaugeMode == EGaugeMode.ExHard)
                     {
-                        this.Mode[i] = EndMode.StageCleared;
+                        if (TJAPlayer3.stage演奏ドラム画面.actGauge.db現在のゲージ値[i] > 0)
+                            this.Mode[i] = EndMode.StageCleared;
+                        else
+                            this.Mode[i] = EndMode.StageFailed;
                     }
                     else
                     {
-                        this.Mode[i] = EndMode.StageFailed;
+                        if (TJAPlayer3.stage演奏ドラム画面.actGauge.db現在のゲージ値[i] >= 80)
+                        {
+                            this.Mode[i] = EndMode.StageCleared;
+                        }
+                        else
+                        {
+                            this.Mode[i] = EndMode.StageFailed;
+                        }
                     }
                 }
             }
@@ -89,7 +102,7 @@ namespace TJAPlayer3
             {
                 base.b初めての進行描画 = false;
             }
-            if (this.ct進行メイン != null && (TJAPlayer3.stage演奏ドラム画面.eフェーズID == CStage.Eフェーズ.演奏_演奏終了演出 || TJAPlayer3.stage演奏ドラム画面.eフェーズID == CStage.Eフェーズ.演奏_STAGE_CLEAR_フェードアウト))
+            if (this.ct進行メイン != null && (TJAPlayer3.stage演奏ドラム画面.eフェーズID == CStage.Eフェーズ.演奏_演奏終了演出 || TJAPlayer3.stage演奏ドラム画面.eフェーズID == CStage.Eフェーズ.演奏_STAGE_CLEAR_フェードアウト || TJAPlayer3.stage演奏ドラム画面.eフェーズID == CStage.Eフェーズ.演奏_STAGE_FAILED_ハード))
             {
                 this.ct進行メイン.t進行();
 

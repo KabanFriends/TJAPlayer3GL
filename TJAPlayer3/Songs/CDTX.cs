@@ -253,6 +253,7 @@ namespace TJAPlayer3
         {
             public double db移動時間;
             public int n移動距離px;
+            public int n移動距離Ypx;
             public int n移動方向; //移動方向は0(左)、1(右)の2つだけ。
             public int n内部番号;
             public int n表記上の番号;
@@ -264,6 +265,7 @@ namespace TJAPlayer3
                 {
                     builder.Append(string.Format("CJPOSSCROLL{0}(内部{1})", CDTX.tZZ(this.n表記上の番号), this.n内部番号));
                 }
+
                 else
                 {
                     builder.Append(string.Format("CJPOSSCROLL{0}", CDTX.tZZ(this.n表記上の番号)));
@@ -1120,17 +1122,14 @@ namespace TJAPlayer3
         public bool bSession譜面を読み込む;
         public bool IsDanChallenge; // 2018/8/24 段位チャレンジが存在するか否か (AioiLight)
 
-        public string ARTIST;
         public string BACKGROUND;
         public string BACKGROUND_GR;
         public double BASEBPM;
         public double BPM;
         public STチップがある bチップがある;
-        public string COMMENT;
         public double db再生速度;
         public E種別 e種別;
         public string GENRE;
-        public Eジャンル eジャンル;
         public bool HIDDENLEVEL;
         public STDGBVALUE<int> LEVEL;
         public int[] LEVELtaiko = new int[(int)Difficulty.Total] { -1, -1, -1, -1, -1, -1, -1 };
@@ -1299,11 +1298,8 @@ namespace TJAPlayer3
             this.nPlayerSide = 0;
             this.TITLE = "";
             this.SUBTITLE = "";
-            this.ARTIST = "";
-            this.COMMENT = "";
             this.PANEL = "";
             this.GENRE = "";
-            this.eジャンル = Eジャンル.None;
             this.PREVIEW = "";
             this.PREIMAGE = "";
             this.BACKGROUND = "";
@@ -3804,26 +3800,65 @@ namespace TJAPlayer3
             }
             else if (command == "#JPOSSCROLL")
             {
-                strArray = argument.Split(chDelimiter);
-                WarnSplitLength("#JPOSSCROLL", strArray, 3);
-                double db移動時刻 = Convert.ToDouble(strArray[0]);
-                int n移動px = Convert.ToInt32(strArray[1]);
-                int n移動方向 = Convert.ToInt32(strArray[2]);
+                //SCROLL同様、iが含まれれば二次元移動するJPOSSCROLLとみなす
+                if (argument.IndexOf('i') != -1)
+                {
+                    //スクロールと記入方法を揃えるために、文字を置換しまくる・・・
+                    //「#JPOSSCROLL 3 100 100i 0」のように、「+」を省略して間にスペースを入れても
+                    //反応してくれます・・・たぶん(20190105 rhimm)
+                    StringBuilder rep = new StringBuilder(argument);
+                    rep.Replace("+", " ");
+                    rep.Replace(" -", "-");
+                    rep.Replace("-", " -");
+                    rep.Replace("i", "");
+                    
+                    string reparg = rep.ToString();
+                    strArray = reparg.Split(chDelimiter);
 
-                //チップ追加して割り込んでみる。
-                var chip = new CChip();
+                    WarnSplitLength("#JPOSSCROLL", strArray, 4);
+                    double db移動時刻 = Convert.ToDouble(strArray[0]);
+                    int n移動px = Convert.ToInt32(strArray[1]);
+                    int n移動Ypx = Convert.ToInt32(strArray[2]);
+                    int n移動方向 = Convert.ToInt32(strArray[3]);
 
-                chip.nチャンネル番号 = 0xE2;
-                chip.n発声位置 = ((this.n現在の小節数) * 384) - 1;
-                chip.n発声時刻ms = (int)this.dbNowTime;
-                chip.n整数値_内部番号 = 0;
-                chip.nコース = this.n現在のコース;
+                    //チップ追加して割り込んでみる。
+                    var chip = new CChip();
 
-                // チップを配置。
+                    chip.nチャンネル番号 = 0xE2;
+                    chip.n発声位置 = ((this.n現在の小節数) * 384) - 1;
+                    chip.n発声時刻ms = (int)this.dbNowTime;
+                    chip.n整数値_内部番号 = 0;
+                    chip.nコース = this.n現在のコース;
 
-                this.listJPOSSCROLL.Add(this.n内部番号JSCROLL1to, new CJPOSSCROLL() { n内部番号 = this.n内部番号JSCROLL1to, n表記上の番号 = 0, db移動時間 = db移動時刻, n移動距離px = n移動px, n移動方向 = n移動方向 });
-                this.listChip.Add(chip);
-                this.n内部番号JSCROLL1to++;
+                    // チップを配置。
+
+                    this.listJPOSSCROLL.Add(this.n内部番号JSCROLL1to, new CJPOSSCROLL() { n内部番号 = this.n内部番号JSCROLL1to, n表記上の番号 = 0, db移動時間 = db移動時刻, n移動距離px = n移動px, n移動距離Ypx = n移動Ypx, n移動方向 = n移動方向 });
+                    this.listChip.Add(chip);
+                    this.n内部番号JSCROLL1to++;
+                }
+                else
+                {
+                    strArray = argument.Split(chDelimiter);
+                    WarnSplitLength("#JPOSSCROLL", strArray, 3);
+                    double db移動時刻 = Convert.ToDouble(strArray[0]);
+                    int n移動px = Convert.ToInt32(strArray[1]);
+                    int n移動方向 = Convert.ToInt32(strArray[2]);
+
+                    //チップ追加して割り込んでみる。
+                    var chip = new CChip();
+
+                    chip.nチャンネル番号 = 0xE2;
+                    chip.n発声位置 = ((this.n現在の小節数) * 384) - 1;
+                    chip.n発声時刻ms = (int)this.dbNowTime;
+                    chip.n整数値_内部番号 = 0;
+                    chip.nコース = this.n現在のコース;
+
+                    // チップを配置。
+
+                    this.listJPOSSCROLL.Add(this.n内部番号JSCROLL1to, new CJPOSSCROLL() { n内部番号 = this.n内部番号JSCROLL1to, n表記上の番号 = 0, db移動時間 = db移動時刻, n移動距離px = n移動px, n移動距離Ypx = 0, n移動方向 = n移動方向 });
+                    this.listChip.Add(chip);
+                    this.n内部番号JSCROLL1to++;
+                }
             }
             else if (command == "#SENOTECHANGE")
             {
@@ -7069,24 +7104,6 @@ namespace TJAPlayer3
                 {
                     //this.t入力_パラメータ食い込みチェック( "TITLE", ref strコマンド, ref strパラメータ );
                     //this.TITLE = strパラメータ;
-                }
-                //-----------------
-                #endregion
-                #region [ ARTIST ]
-                //-----------------
-                else if (strコマンド.StartsWith("ARTIST", StringComparison.OrdinalIgnoreCase))
-                {
-                    this.t入力_パラメータ食い込みチェック("ARTIST", ref strコマンド, ref strパラメータ);
-                    this.ARTIST = strパラメータ;
-                }
-                //-----------------
-                #endregion
-                #region [ COMMENT ]
-                //-----------------
-                else if (strコマンド.StartsWith("COMMENT", StringComparison.OrdinalIgnoreCase))
-                {
-                    this.t入力_パラメータ食い込みチェック("COMMENT", ref strコマンド, ref strパラメータ);
-                    this.COMMENT = strパラメータ;
                 }
                 //-----------------
                 #endregion

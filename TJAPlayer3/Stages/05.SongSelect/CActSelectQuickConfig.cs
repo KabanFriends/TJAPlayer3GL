@@ -91,7 +91,10 @@ namespace TJAPlayer3
                 " \n" +
                 " ",
                 new string[] { "OFF", "完走!", "完走!激辛" }) );
-
+            l.Add( new CItemList("ゲージモード", CItemBase.Eパネル種別.通常, (int)TJAPlayer3.ConfigIni.eGaugeMode,
+                "",
+                "",
+                new string[] {"Normal", "Groove","Hard", "Ex Hard" }) );
             l.Add(new CItemList(nameof(TJAPlayer3.ConfigIni.ShinuchiMode), CItemBase.Eパネル種別.通常, TJAPlayer3.ConfigIni.ShinuchiMode ? 1 : 0, "", "", new string[] { "OFF", "ON" }));
 
 			#endregion
@@ -146,6 +149,17 @@ namespace TJAPlayer3
                     }
 					TJAPlayer3.ConfigIni.eGameMode = game;
 					break;
+                case (int) EOrder.GaugeMode:
+                    EGaugeMode gauge = EGaugeMode.Normal;
+                    switch((int)GetIndex((int)EOrder.GaugeMode))
+                    {
+                        case 0: gauge = EGaugeMode.Normal; break;
+                        case 1: gauge = EGaugeMode.Groove; break;
+                        case 2: gauge = EGaugeMode.Hard; break;
+                        case 3: gauge = EGaugeMode.ExHard; break;
+                    }
+                    TJAPlayer3.ConfigIni.eGaugeMode = gauge;
+                    break;
                 case (int)EOrder.ShinuchiMode:
                     TJAPlayer3.ConfigIni.ShinuchiMode = !TJAPlayer3.ConfigIni.ShinuchiMode;
                     break;
@@ -249,6 +263,7 @@ namespace TJAPlayer3
 			Random,
             Stealth,
             GameMode,
+            GaugeMode,
             ShinuchiMode,
 			More,
 			Return, END,

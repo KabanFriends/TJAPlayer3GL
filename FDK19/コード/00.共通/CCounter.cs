@@ -159,6 +159,8 @@ namespace FDK
 			this.timer = timer;
 			this.n現在の経過時間ms = this.timer.n現在時刻;
 			this.n現在の値 = n開始値;
+            if (n間隔ms <= 0)
+                n間隔ms = -n間隔ms;
 		}
 
         /// <summary>
@@ -176,6 +178,8 @@ namespace FDK
 			this.timerdb = timer;
 			this.db現在の経過時間 = this.timerdb.dbシステム時刻;
 			this.db現在の値 = db開始値;
+            if (db間隔 <= 0)
+                db間隔 = -db間隔;
 		}
 
 		/// <summary>
@@ -189,6 +193,8 @@ namespace FDK
 				long num = this.timer.n現在時刻;
 				if ( num < this.n現在の経過時間ms )
 					this.n現在の経過時間ms = num;
+                if (this.n間隔ms <= 0)
+                    this.n間隔ms = -this.n間隔ms;
 
 				while ( ( num - this.n現在の経過時間ms ) >= this.n間隔ms )
 				{
@@ -211,6 +217,8 @@ namespace FDK
 				double num = this.timerdb.n現在時刻;
 				if ( num < this.db現在の経過時間 )
 					this.db現在の経過時間 = num;
+                if (this.db間隔 <= 0)
+                    this.db間隔 = -this.db間隔;
 
 				while ( ( num - this.db現在の経過時間 ) >= this.db間隔 )
 				{
@@ -233,6 +241,8 @@ namespace FDK
 				long num = this.timer.n現在時刻;
 				if ( num < this.n現在の経過時間ms )
 					this.n現在の経過時間ms = num;
+                if (this.n間隔ms <= 0)
+                    this.n間隔ms = -this.n間隔ms;
 
 				while ( ( num - this.n現在の経過時間ms ) >= this.n間隔ms )
 				{
@@ -255,6 +265,8 @@ namespace FDK
 				double num = this.timerdb.n現在時刻;
 				if ( num < this.n現在の経過時間ms )
 					this.db現在の経過時間 = num;
+                if (this.db間隔 <= 0)
+                    this.db間隔 = -this.db間隔;
 
 				while ( ( num - this.db現在の経過時間 ) >= this.db間隔 )
 				{

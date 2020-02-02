@@ -1,35 +1,47 @@
 ---
-name: Bug report
+name: Bug Report
 about: Create a report to help us improve
 
 ---
 
-**Describe the bug**
-A clear and concise description of what the bug is.
+**Can you write a one-sentence description of the bug?**
 
-**To Reproduce**
-Steps to reproduce the behavior:
-1. Go to '...'
-2. Click on '....'
-3. Scroll down to '....'
-4. See error
 
-**Expected behavior**
-A clear and concise description of what you expected to happen.
 
-**Screenshots**
-If applicable, add screenshots to help explain your problem.
+**What is the current behavior?**
 
-**Desktop (please complete the following information):**
- - OS: [e.g. iOS]
- - Browser [e.g. chrome, safari]
- - Version [e.g. 22]
 
-**Smartphone (please complete the following information):**
- - Device: [e.g. iPhone6]
- - OS: [e.g. iOS8.1]
- - Browser [e.g. stock browser, safari]
- - Version [e.g. 22]
 
-**Additional context**
-Add any other context about the problem here.
+**Please provide the steps to reproduce and if possible a minimal demo of the problem.**
+
+
+
+**What is the expected behavior?**
+
+
+
+**Please tell us about your environment:**
+
+- TJAPlayer3 version: vX.X.X-yyy
+- Operating system version:
+- Windows System Locale:
+- Display adapter:
+- Audio adapter:
+- Input device:
+
+
+
+**Other information**
+
+If you can provide any additional information, please do. If small, feel free to paste the content into the issue. If larger, consider linking to a Gist or a downloadable file.
+
+Here are some suggestions:
+
+- Related issues
+- Config.ini file
+- Skin *Config.ini files
+- Stack trace(s)
+- Log file(s)
+- Example .tja file(s) (do *not* provide media)
+
+

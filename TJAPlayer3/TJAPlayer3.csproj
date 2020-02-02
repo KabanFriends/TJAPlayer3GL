@@ -15,8 +15,6 @@
     <ApplicationIcon>Resources\TJAPlayer3.ico</ApplicationIcon>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <SignAssembly>false</SignAssembly>
-    <AssemblyOriginatorKeyFile>
-    </AssemblyOriginatorKeyFile>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -38,6 +36,7 @@
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <LargeAddressAware>true</LargeAddressAware>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>true</DebugSymbols>
@@ -94,6 +93,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\PreciseStringMeasurement\CPreciseStringMeasurer.cs" />
     <Compile Include="Animations\Animator.cs" />
     <Compile Include="Animations\EaseInOut.cs" />
     <Compile Include="Animations\EaseOut.cs" />
@@ -103,6 +103,8 @@
     <Compile Include="Animations\IAnimatable.cs" />
     <Compile Include="Animations\Linear.cs" />
     <Compile Include="Common\Discord.cs" />
+    <Compile Include="Common\PreciseStringMeasurement\DirectBitmap.cs" />
+    <Compile Include="Common\PreciseStringMeasurement\MeasureStringPreciselyCacheKey.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\Discord.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -147,14 +149,19 @@
     <Compile Include="Songs\CDTXCompanionFileFinder.cs" />
     <Compile Include="Songs\CDTXStyleExtractor.cs" />
     <Compile Include="Songs\CScoreIni.cs" />
+    <Compile Include="Songs\CStrジャンル.cs" />
     <Compile Include="Songs\CStrジャンルtoNum.cs" />
+    <Compile Include="Songs\CStrジャンルtoStr.cs" />
     <Compile Include="Songs\C曲リストノードComparers\ComparerChain.cs" />
     <Compile Include="Songs\C曲リストノードComparers\C曲リストノードComparerAC15.cs" />
     <Compile Include="Songs\C曲リストノードComparers\C曲リストノードComparerAC8_14.cs" />
+    <Compile Include="Songs\C曲リストノードComparers\C曲リストノードComparerPlaylistIndex.cs" />
+    <Compile Include="Songs\C曲リストノードComparers\C曲リストノードComparerRating.cs" />
     <Compile Include="Songs\C曲リストノードComparers\C曲リストノードComparerタイトル.cs" />
     <Compile Include="Songs\C曲リストノードComparers\C曲リストノードComparerノード種別.cs" />
     <Compile Include="Songs\C曲リストノードComparers\C曲リストノードComparer絶対パス.cs" />
     <Compile Include="Songs\Dan-C.cs" />
+    <Compile Include="Songs\EジャンルAC15SortOrder.cs" />
     <Compile Include="Songs\GaugeIncreaseMode.cs" />
     <Compile Include="Stages\01.StartUp\TextureLoader.cs" />
     <Compile Include="Stages\02.Title\CActScanningLoudness.cs" />
@@ -168,7 +175,6 @@
     <Compile Include="Stages\04.Config\CActConfigKeyAssign.cs" />
     <Compile Include="Stages\04.Config\CActConfigList.cs" />
     <Compile Include="Stages\04.Config\CStageコンフィグ.cs" />
-    <Compile Include="Stages\05.SongSelect\CActSelectArtistComment.cs" />
     <Compile Include="Stages\05.SongSelect\CActSelectInformation.cs" />
     <Compile Include="Stages\05.SongSelect\CActSelectPopupMenu.cs" />
     <Compile Include="Stages\05.SongSelect\CActSelectPreimageパネル.cs" />
@@ -181,6 +187,9 @@
     <Compile Include="Stages\05.SongSelect\CActSelect演奏履歴パネル.cs" />
     <Compile Include="Stages\05.SongSelect\CActSortSongs.cs" />
     <Compile Include="Stages\05.SongSelect\CStage選曲.cs" />
+    <Compile Include="Stages\05.SongSelect\SongRating.cs" />
+    <Compile Include="Stages\05.SongSelect\SongRatingControlHandler.cs" />
+    <Compile Include="Stages\05.SongSelect\SongRatingController.cs" />
     <Compile Include="Stages\06.SongLoading\CStage曲読み込み.cs" />
     <Compile Include="Stages\06.SongLoading\FastRender.cs" />
     <Compile Include="Stages\07.Game\CAct演奏AVI.cs" />
@@ -326,10 +335,14 @@ move /y "$(TargetDir)FDK.pdb" "$(SolutionDir)Test\dll\"
 move /y "$(TargetDir)Bass.Net.dll" "$(SolutionDir)Test\dll\"
 move /y "$(TargetDir)DirectShowLib-2005.dll" "$(SolutionDir)Test\dll\"
 move /y "$(TargetDir)SlimDX.dll" "$(SolutionDir)Test\dll\"
-move /y "$(TargetDir)CSharpTest.Net.Collections.*" "$(SolutionDir)Test\dll\"
-copy /y "$(SolutionDir)Readme.txt" "$(SolutionDir)Test\"
-call "$(DevEnvDir)..\Tools\VsDevCmd.bat"
-"editbin.exe" /LARGEADDRESSAWARE "$(SolutionDir)Test\TJAPlayer3.exe"</PostBuildEvent>
+move /y "$(TargetDir)CSharpTest.Net.Collections.*" "$(SolutionDir)Test\dll\"</PostBuildEvent>
   </PropertyGroup>
   <Import Project="packages\SharpDX.2.6.3\build\SharpDX.targets" Condition="Exists('packages\SharpDX.2.6.3\build\SharpDX.targets')" />
+  <Import Project="..\packages\LargeAddressAware.1.0.3\build\LargeAddressAware.targets" Condition="Exists('..\packages\LargeAddressAware.1.0.3\build\LargeAddressAware.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\LargeAddressAware.1.0.3\build\LargeAddressAware.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\LargeAddressAware.1.0.3\build\LargeAddressAware.targets'))" />
+  </Target>
 </Project>

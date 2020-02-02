@@ -747,9 +747,11 @@ namespace TJAPlayer3
         public bool ShowMob;
         public bool ShowPuchiChara; // リザーブ
         //
-
         public EScrollMode eScrollMode = EScrollMode.Normal;
         public bool bスクロールモードを上書き = false;
+
+        public EGaugeMode eGaugeMode = EGaugeMode.Normal;
+        public bool bゲージモードを上書き = false;
 
         public bool bHispeedRandom;
         public Eステルスモード eSTEALTH;
@@ -778,7 +780,7 @@ namespace TJAPlayer3
 		{
 			get
 			{
-				return ( !this.bConfigIniが存在している || !TJAPlayer3.VERSION.Equals( this.strDTXManiaのバージョン ) );
+				return ( !this.bConfigIniが存在している || !TJAPlayer3.AppNumericThreePartVersion.Equals( this.strDTXManiaのバージョン ) );
 			}
 		}
 		public bool bEnterがキー割り当てのどこにも使用されていない
@@ -1485,7 +1487,7 @@ namespace TJAPlayer3
 			#region [ Version ]
 			sw.WriteLine( "; リリースバージョン" );
 			sw.WriteLine( "; Release Version." );
-			sw.WriteLine( "Version={0}", TJAPlayer3.VERSION );
+			sw.WriteLine( "Version={0}", TJAPlayer3.AppNumericThreePartVersion );
 			sw.WriteLine();
 			#endregion
 			#region [ TJAPath ]
@@ -1830,8 +1832,12 @@ namespace TJAPlayer3
             sw.WriteLine( "ScrollMode={0}", (int)this.eScrollMode );
             sw.WriteLine();
             */
-			#region [ SUDDEN ]
-			sw.WriteLine( "; ドラムSUDDENモード(0:OFF, 1:ON)" );
+            sw.WriteLine("; ゲージモード(※β版)");
+            sw.WriteLine("; (0:通常, 1:グルーブゲージ, 2:ハードゲージ)");
+            sw.WriteLine("GaugeMode={0}", (int)this.eGaugeMode);
+            sw.WriteLine();
+            #region [ SUDDEN ]
+            sw.WriteLine( "; ドラムSUDDENモード(0:OFF, 1:ON)" );
 			sw.WriteLine( "DrumsSudden={0}", this.bSudden.Drums ? 1 : 0 );
 			sw.WriteLine();
 			#endregion
@@ -2576,6 +2582,10 @@ namespace TJAPlayer3
                                             else if( str3.Equals( "ScrollMode" ) )
                                             {
                                                 this.eScrollMode = ( EScrollMode )C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 2, 0 );
+                                            }
+                                            else if( str3.Equals( "GaugeMode" ))
+                                            {
+                                                this.eGaugeMode = (EGaugeMode)C変換.n値を文字列から取得して範囲内に丸めて返す(str4, 0, 3, 0);
                                             }
                                             /*
 											else if( str3.Equals( "DrumsGraph" ) )  // #24074 2011.01.23 addikanick
