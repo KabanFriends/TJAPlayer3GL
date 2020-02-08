@@ -3,7 +3,7 @@ tag-template: 'v$NEXT_PATCH_VERSION'
 branches:
   - 'master'
 template: |
-  # What's Changed
+  ## Changes
   
   $CHANGES
 categories:
