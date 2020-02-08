@@ -153,18 +153,21 @@ namespace TJAPlayer3
 						Trace.Write( e.ToString() );
 						Trace.WriteLine( "" );
 						Trace.WriteLine( "エラーだゴメン！（涙" );
-                        MessageBox.Show( "エラーが発生しました。\n" +
-                            "原因がわからない場合は、以下のエラー文を添えて、エラー送信フォームに送信してください。\n" + 
-                            e.ToString(), $"{TJAPlayer3.AppDisplayNameWithThreePartVersion} Error", MessageBoxButtons.OK, MessageBoxIcon.Error );	// #23670 2011.2.28 yyagi to show error dialog
-                        DialogResult result = MessageBox.Show("エラー送信フォームを開きますか?(ブラウザが起動します)",
-                            TJAPlayer3.AppDisplayNameWithThreePartVersion,
-                            MessageBoxButtons.YesNo,
-                            MessageBoxIcon.Asterisk);
-                        if(result == DialogResult.Yes)
-                        {
-                            Process.Start("https://docs.google.com/forms/d/e/1FAIpQLScr_Oqs9WKnonQyxpEVt7gZYPcjjIfN3SjgqWPvxfw95nAQ6g/viewform?usp=pp_url&entry.60593436=" + System.Web.HttpUtility.UrlEncode(e.ToString()));
-                        }
 
+                        var messageBoxText =
+                            "An error has occurred.\n" +
+                            "Would you like the error details copied to the clipboard and your browser opened to our GitHub Issues page?\n\n" +
+                            e;
+                        var dialogResult = MessageBox.Show(
+                            messageBoxText,
+                            $"{TJAPlayer3.AppDisplayNameWithThreePartVersion} Error",
+                            MessageBoxButtons.YesNo,
+                            MessageBoxIcon.Error);
+                        if (dialogResult == DialogResult.Yes)
+                        {
+                            Clipboard.SetText(e.ToString());
+                            Process.Start("https://github.com/twopointzero/TJAPlayer3/issues");
+                        }
 					}
 #endif
 					// END #24606 2011.03.08 from
