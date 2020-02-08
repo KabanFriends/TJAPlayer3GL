@@ -8,5 +8,5 @@ categories:
     label: 'chore'
 template: |
   ## Changes
-
+  
   $CHANGES
