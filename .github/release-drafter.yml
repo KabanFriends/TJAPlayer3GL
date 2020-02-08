@@ -1,4 +1,6 @@
 name-template: 'TJAPlayer3 v$NEXT_PATCH_VERSION'
+branches:
+  - 'master'
 categories:
   - title: 'Enhancements'
     label: 'enhancement'
