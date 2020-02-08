@@ -1,0 +1,12 @@
+name-template: 'TJAPlayer3 v$NEXT_PATCH_VERSION'
+categories:
+  - title: 'Enhancements'
+    label: 'enhancement'
+  - title: 'Bug Fixes'
+    label: 'bug'
+  - title: 'Maintenance'
+    label: 'chore'
+template: |
+  ## Changes
+
+  $CHANGES
