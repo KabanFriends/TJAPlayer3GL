@@ -81,6 +81,9 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net35\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="SlimDX, Version=2.0.13.43, Culture=neutral, PublicKeyToken=b1b0c32fd1ffe4f9, processorArchitecture=x86">
       <HintPath>..\packages\SlimDX.4.0.13.44\lib\NET20\SlimDX.dll</HintPath>
     </Reference>
@@ -106,6 +109,7 @@
     <Compile Include="Common\PreciseStringMeasurement\DirectBitmap.cs" />
     <Compile Include="Common\PreciseStringMeasurement\MeasureStringPreciselyCacheKey.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Updates\UpdateChecker.cs" />
     <EmbeddedResource Include="Properties\Discord.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Discord.Designer.cs</LastGenOutput>
@@ -335,7 +339,9 @@ move /y "$(TargetDir)FDK.pdb" "$(SolutionDir)Test\dll\"
 move /y "$(TargetDir)Bass.Net.dll" "$(SolutionDir)Test\dll\"
 move /y "$(TargetDir)DirectShowLib-2005.dll" "$(SolutionDir)Test\dll\"
 move /y "$(TargetDir)SlimDX.dll" "$(SolutionDir)Test\dll\"
-move /y "$(TargetDir)CSharpTest.Net.Collections.*" "$(SolutionDir)Test\dll\"</PostBuildEvent>
+move /y "$(TargetDir)CSharpTest.Net.Collections.*" "$(SolutionDir)Test\dll\"
+move /y "$(TargetDir)Newtonsoft.Json.*" "$(SolutionDir)Test\dll\"
+</PostBuildEvent>
   </PropertyGroup>
   <Import Project="packages\SharpDX.2.6.3\build\SharpDX.targets" Condition="Exists('packages\SharpDX.2.6.3\build\SharpDX.targets')" />
   <Import Project="..\packages\LargeAddressAware.1.0.3\build\LargeAddressAware.targets" Condition="Exists('..\packages\LargeAddressAware.1.0.3\build\LargeAddressAware.targets')" />
