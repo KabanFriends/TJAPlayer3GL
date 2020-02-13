@@ -15,6 +15,7 @@
 /Test/bs1770gain**
 /Test/dll/CSharpTest.Net.Collections.*
 /Test/dll/FDK.*
+/Test/dll/Newtonsoft.Json.*
 /Test/dll/SlimDX.*
 /Test/TJAPlayer3.exe.config
 
