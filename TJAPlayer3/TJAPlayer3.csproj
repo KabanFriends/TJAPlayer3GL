@@ -136,7 +136,6 @@
     <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="TJAPlayer3.manifest" />
-    <None Include="DTXManiaGR.exe.x86.manifest" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -290,7 +289,6 @@
     <Compile Include="Common\Program.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="dtx.ico" />
     <None Include="Resources\TJAPlayer3.ico" />
   </ItemGroup>
   <ItemGroup>
