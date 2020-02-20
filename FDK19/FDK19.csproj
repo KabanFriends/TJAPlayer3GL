@@ -93,7 +93,6 @@
     <Compile Include="コード\01.フレームワーク\DeviceSettings\DeviceSettings.cs" />
     <Compile Include="コード\01.フレームワーク\DeviceSettings\Direct3D9Settings.cs" />
     <Compile Include="コード\01.フレームワーク\Enumeration\Enumeration9.cs" />
-    <Compile Include="コード\01.フレームワーク\Properties\Resources.Designer.cs" />
     <Compile Include="コード\01.フレームワーク\Rendering\DeviceCreationException.cs" />
     <Compile Include="コード\01.フレームワーク\Rendering\DeviceCache.cs" />
     <Compile Include="コード\01.フレームワーク\Rendering\Direct3D9Manager.cs" />
@@ -158,14 +157,6 @@
     <Compile Include="コード\05.DirectShow\CDStoWAVFileImage.cs" />
     <Compile Include="コード\05.DirectShow\MemoryRenderer.cs" />
     <Compile Include="コード\06.Tempo\CBeatDetect.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="コード\01.フレームワーク\Properties\Resources.resx">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="コード\01.フレームワーク\Resources\sdx_icon_black.ico" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
