@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>TJAPlayer3</RootNamespace>
     <AssemblyName>TJAPlayer3</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ApplicationIcon>Resources\TJAPlayer3.ico</ApplicationIcon>
     <IsWebBootstrapper>false</IsWebBootstrapper>
@@ -37,6 +37,8 @@
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <LargeAddressAware>true</LargeAddressAware>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>true</DebugSymbols>
@@ -50,6 +52,7 @@
     <UseVSHostingProcess>false</UseVSHostingProcess>
     <Optimize>false</Optimize>
     <LangVersion>7.3</LangVersion>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <OutputPath>..\Test\</OutputPath>
@@ -62,6 +65,7 @@
     <NoWarn>0219</NoWarn>
     <UseVSHostingProcess>true</UseVSHostingProcess>
     <LangVersion>7.3</LangVersion>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup />
   <PropertyGroup>
@@ -73,7 +77,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="CSharpTest.Net.Collections, Version=14.906.1403.1082, Culture=neutral, PublicKeyToken=06aee00cce822474, processorArchitecture=MSIL">
-      <HintPath>..\packages\CSharpTest.Net.Collections.14.906.1403.1082\lib\net20\CSharpTest.Net.Collections.dll</HintPath>
+      <HintPath>..\packages\CSharpTest.Net.Collections.14.906.1403.1082\lib\net40\CSharpTest.Net.Collections.dll</HintPath>
     </Reference>
     <Reference Include="DirectShowLib-2005, Version=2.1.0.0, Culture=neutral, PublicKeyToken=67e7b740cdfc2d3f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -82,10 +86,10 @@
     </Reference>
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net35\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="SlimDX, Version=2.0.13.43, Culture=neutral, PublicKeyToken=b1b0c32fd1ffe4f9, processorArchitecture=x86">
-      <HintPath>..\packages\SlimDX.4.0.13.44\lib\NET20\SlimDX.dll</HintPath>
+    <Reference Include="SlimDX, Version=4.0.13.43, Culture=neutral, PublicKeyToken=b1b0c32fd1ffe4f9, processorArchitecture=x86">
+      <HintPath>..\packages\SlimDX.4.0.13.44\lib\NET40\SlimDX.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -132,7 +136,6 @@
     <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="TJAPlayer3.manifest" />
-    <None Include="DTXManiaGR.exe.x86.manifest" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -286,7 +289,6 @@
     <Compile Include="Common\Program.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="dtx.ico" />
     <None Include="Resources\TJAPlayer3.ico" />
   </ItemGroup>
   <ItemGroup>
@@ -344,11 +346,11 @@ move /y "$(TargetDir)Newtonsoft.Json.*" "$(SolutionDir)Test\dll\"
 </PostBuildEvent>
   </PropertyGroup>
   <Import Project="packages\SharpDX.2.6.3\build\SharpDX.targets" Condition="Exists('packages\SharpDX.2.6.3\build\SharpDX.targets')" />
-  <Import Project="..\packages\LargeAddressAware.1.0.3\build\LargeAddressAware.targets" Condition="Exists('..\packages\LargeAddressAware.1.0.3\build\LargeAddressAware.targets')" />
+  <Import Project="..\packages\LargeAddressAware.1.0.4\build\LargeAddressAware.targets" Condition="Exists('..\packages\LargeAddressAware.1.0.4\build\LargeAddressAware.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\LargeAddressAware.1.0.3\build\LargeAddressAware.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\LargeAddressAware.1.0.3\build\LargeAddressAware.targets'))" />
+    <Error Condition="!Exists('..\packages\LargeAddressAware.1.0.4\build\LargeAddressAware.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\LargeAddressAware.1.0.4\build\LargeAddressAware.targets'))" />
   </Target>
 </Project>
