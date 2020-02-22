@@ -10,12 +10,19 @@
 *.swp
 *.DotSettings.user
 /packages
+/Test/dll/x64
+/Test/dll/x86
 /Test/Capture_img
 /Test/Config*.ini
 /Test/bs1770gain**
 /Test/dll/CSharpTest.Net.Collections.*
 /Test/dll/FDK.*
+/Test/dll/Microsoft.*
 /Test/dll/Newtonsoft.Json.*
+/Test/dll/Remotion.*
+/Test/dll/Rollbar*
 /Test/dll/SlimDX.*
+/Test/dll/SQLite*
+/Test/dll/System.*
 /Test/TJAPlayer3.exe.config
 
