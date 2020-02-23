@@ -20,15 +20,12 @@ namespace TJAPlayer3.ErrorReporting
             {
                 var appInformationalVersion = TJAPlayer3.AppInformationalVersion;
 
-                var environment = GetEnvironment(appInformationalVersion);
-                var codeVersion = environment == EnvironmentDevelopment
-                    ? null
-                    : GetShaFromInformationalVersion(appInformationalVersion);
+                var codeVersion = GetShaFromInformationalVersion(appInformationalVersion);
 
                 var rollbarConfig = new RollbarConfig("a4c98d82d6534bdab3fd9583029314e0")
                 {
                     CaptureUncaughtExceptions = true,
-                    Environment = environment,
+                    Environment = GetEnvironment(appInformationalVersion),
                     RethrowExceptionsAfterReporting = false,
                     Transform = payload =>
                     {
@@ -69,14 +66,14 @@ namespace TJAPlayer3.ErrorReporting
 
         private static void ReportError(Exception e)
         {
+            Trace.WriteLine("");
+            Trace.WriteLine(e);
+            Trace.WriteLine("");
+            Trace.WriteLine("エラーだゴメン！（涙");
+
 #if !DEBUG
             try
             {
-                Trace.WriteLine("");
-                Trace.WriteLine(e);
-                Trace.WriteLine("");
-                Trace.WriteLine("エラーだゴメン！（涙");
-
                 RollbarLocator.RollbarInstance.AsBlockingLogger(TimeSpan.FromSeconds(5)).Error(e);
             }
             catch (TimeoutException)
@@ -115,7 +112,8 @@ namespace TJAPlayer3.ErrorReporting
 
         public static string GetShaFromInformationalVersion(string informationalVersion)
         {
-            return Regex.Match(informationalVersion, @"(?<=\.)[0-9a-f]{40}$").Value;
+            var match = Regex.Match(informationalVersion, @"(?<=\.)[0-9a-f]{40}$");
+            return match.Value == "" ? null : match.Value;
         }
     }
 }
