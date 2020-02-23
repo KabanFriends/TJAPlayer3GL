@@ -38,9 +38,6 @@ namespace TJAPlayer3.ErrorReporting
                 };
                 RollbarLocator.RollbarInstance.Configure(rollbarConfig);
 
-                RollbarLocator.RollbarInstance.AsBlockingLogger(TimeSpan.FromSeconds(10))
-                    .Info("Temporary Environment & Code Version test info-level event.");
-
                 Application.ThreadException += (sender, args) =>
                 {
                     ReportError(args.Exception);
