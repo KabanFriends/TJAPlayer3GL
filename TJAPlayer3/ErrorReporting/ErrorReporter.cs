@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Rollbar;
+using Sentry;
 
 namespace TJAPlayer3.ErrorReporting
 {
@@ -16,48 +16,33 @@ namespace TJAPlayer3.ErrorReporting
 
         public static void WithErrorReporting(Action action)
         {
-            try
+            var appInformationalVersion = TJAPlayer3.AppInformationalVersion;
+
+            using (SentrySdk.Init(o =>
             {
-                var appInformationalVersion = TJAPlayer3.AppInformationalVersion;
-
-                var codeVersion = GetShaFromInformationalVersion(appInformationalVersion);
-
-                var rollbarConfig = new RollbarConfig("a4c98d82d6534bdab3fd9583029314e0")
+                o.Dsn = new Dsn("https://d13a7e78ae024f678e110c64bbf7e7f2@sentry.io/3365560");
+                o.Environment = GetEnvironment(appInformationalVersion);
+                o.ShutdownTimeout = TimeSpan.FromSeconds(5);
+            }))
+            {
+                try
                 {
-                    CaptureUncaughtExceptions = true,
-                    Environment = GetEnvironment(appInformationalVersion),
-                    RethrowExceptionsAfterReporting = false,
-                    Transform = payload =>
+                    Application.ThreadException += (sender, args) =>
                     {
-                        if (codeVersion != null)
-                        {
-                            payload.Data.CodeVersion = codeVersion;
-                        }
-                        payload.Data.Platform = "client";
-                    }
-                };
-                RollbarLocator.RollbarInstance.Configure(rollbarConfig);
+                        ReportError(args.Exception);
+                    };
 
-                Application.ThreadException += (sender, args) =>
+                    TaskScheduler.UnobservedTaskException += (sender, args) =>
+                    {
+                        ReportError(args.Exception);
+                    };
+
+                    action();
+                }
+                catch (Exception e)
                 {
-                    ReportError(args.Exception);
-                };
-
-                AppDomain.CurrentDomain.UnhandledException += (sender, args) =>
-                {
-                    ReportError(args.ExceptionObject as Exception);
-                };
-
-                TaskScheduler.UnobservedTaskException += (sender, args) =>
-                {
-                    ReportError(args.Exception);
-                };
-
-                action();
-            }
-            catch (Exception e)
-            {
-                ReportError(e);
+                    ReportError(e);
+                }
             }
         }
 
@@ -71,11 +56,11 @@ namespace TJAPlayer3.ErrorReporting
 #if !DEBUG
             try
             {
-                RollbarLocator.RollbarInstance.AsBlockingLogger(TimeSpan.FromSeconds(5)).Error(e);
+                SentrySdk.CaptureException(e);
             }
             catch (TimeoutException)
             {
-                Trace.WriteLine("Timeout encountered when attempting to report an error to Rollbar");
+                Trace.WriteLine("Timeout encountered when attempting to report an error to Sentry");
             }
             catch (Exception exception)
             {

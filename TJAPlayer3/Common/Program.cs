@@ -6,7 +6,6 @@ using System.Diagnostics;
 using System.Windows.Forms;
 using System.IO;
 using FDK;
-using Rollbar;
 using TJAPlayer3.ErrorReporting;
 using TJAPlayer3.Updates;
 

@@ -94,9 +94,9 @@ Though every reasonable attempt is made to ensure that usage of TJAPlayer3 will 
 
 ### Privacy
 
-To help make improvements to the software, TJAPlayer3 automatically sends information about software errors to a prominent cloud service called [Rollbar](https://rollbar.com/).
+To help make improvements to the software, TJAPlayer3 automatically sends information about software errors to a prominent cloud service called [Sentry](https://sentry.io/).
 
-Rollbar maintains strong compliance with privacy regulations in multiple legal jurisdictions. Nevertheless:
+Sentry maintains strong compliance with privacy regulations in multiple legal jurisdictions. Nevertheless:
 
 - Every effort is made to ensure that TJAPlayer3 collects no personal information in the process of reporting errors.
 - Only [twopointzero](https://github.com/twopointzero) has access to these error reports and no access will be granted to others.
