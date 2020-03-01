@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Windows.Forms;
 using System.IO;
 using FDK;
+using TJAPlayer3.ErrorReporting;
 using TJAPlayer3.Updates;
 
 namespace TJAPlayer3
@@ -52,8 +53,13 @@ namespace TJAPlayer3
 		//-----------------------------
 		#endregion
 
-		[STAThread] 
-		private static void Main()
+        [STAThread]
+        private static void Main()
+        {
+            ErrorReporter.WithErrorReporting(MainImpl);
+        }
+
+        private static void MainImpl()
 		{
             UpdateChecker.CheckForAndOfferUpdate();
 
@@ -85,44 +91,13 @@ namespace TJAPlayer3
 
 					DWM.EnableComposition( false );	// Disable AeroGrass temporally
 
-					// BEGIN #23670 2010.11.13 from: キャッチされない例外は放出せずに、ログに詳細を出力する。
-					// BEGIM #24606 2011.03.08 from: DEBUG 時は例外発生箇所を直接デバッグできるようにするため、例外をキャッチしないようにする。
-#if !DEBUG
-					try
-#endif
-					{
-						using ( var mania = new TJAPlayer3() )
-							mania.Run();
+                    using (var mania = new TJAPlayer3())
+                    {
+                        mania.Run();
+                    }
 
-						Trace.WriteLine( "" );
-						Trace.WriteLine( "遊んでくれてありがとう！" );
-					}
-#if !DEBUG
-					catch( Exception e )
-					{
-						Trace.WriteLine( "" );
-						Trace.Write( e.ToString() );
-						Trace.WriteLine( "" );
-						Trace.WriteLine( "エラーだゴメン！（涙" );
-
-                        var messageBoxText =
-                            "An error has occurred.\n" +
-                            "Would you like the error details copied to the clipboard and your browser opened to our GitHub Issues page?\n\n" +
-                            e;
-                        var dialogResult = MessageBox.Show(
-                            messageBoxText,
-                            $"{TJAPlayer3.AppDisplayNameWithThreePartVersion} Error",
-                            MessageBoxButtons.YesNo,
-                            MessageBoxIcon.Error);
-                        if (dialogResult == DialogResult.Yes)
-                        {
-                            Clipboard.SetText(e.ToString());
-                            Process.Start("https://github.com/twopointzero/TJAPlayer3/issues");
-                        }
-					}
-#endif
-					// END #24606 2011.03.08 from
-					// END #23670 2010.11.13 from
+					Trace.WriteLine( "" );
+					Trace.WriteLine( "遊んでくれてありがとう！" );
 
 					if ( Trace.Listeners.Count > 1 )
 						Trace.Listeners.RemoveAt( 1 );
