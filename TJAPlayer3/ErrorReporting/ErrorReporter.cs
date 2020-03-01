@@ -42,6 +42,33 @@ namespace TJAPlayer3.ErrorReporting
                 catch (Exception e)
                 {
                     ReportError(e);
+
+                    SentrySdk.FlushAsync(TimeSpan.FromSeconds(5));
+
+                    NotifyUserOfError(e);
+                }
+            }
+        }
+
+        public static string GetEnvironment(string informationalVersion)
+        {
+            switch (Regex.Match(informationalVersion, @"(?<=^.+?[+-])\w+").Value)
+            {
+                case "Branch":
+                {
+                    return EnvironmentProduction;
+                }
+                case "beta":
+                {
+                    return EnvironmentBeta;
+                }
+                case "alpha":
+                {
+                    return EnvironmentAlpha;
+                }
+                default:
+                {
+                    return EnvironmentDevelopment;
                 }
             }
         }
@@ -69,33 +96,23 @@ namespace TJAPlayer3.ErrorReporting
 #endif
         }
 
-        public static string GetEnvironment(string informationalVersion)
+        private static void NotifyUserOfError(Exception exception)
         {
-            switch (Regex.Match(informationalVersion, @"(?<=^.+?[+-])\w+").Value)
+            var messageBoxText =
+                "An error has occurred and was automatically reported.\n\n" +
+                "If you wish, you can provide additional information, look for similar issues, etc. by visiting our GitHub Issues page.\n\n" +
+                "Would you like the error details copied to the clipboard and your browser opened?\n\n" +
+                exception;
+            var dialogResult = MessageBox.Show(
+                messageBoxText,
+                $"{TJAPlayer3.AppDisplayNameWithThreePartVersion} Error",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Error);
+            if (dialogResult == DialogResult.Yes)
             {
-                case "Branch":
-                {
-                    return EnvironmentProduction;
-                }
-                case "beta":
-                {
-                    return EnvironmentBeta;
-                }
-                case "alpha":
-                {
-                    return EnvironmentAlpha;
-                }
-                default:
-                {
-                    return EnvironmentDevelopment;
-                }
+                Clipboard.SetText(exception.ToString());
+                Process.Start("https://github.com/twopointzero/TJAPlayer3/issues");
             }
-        }
-
-        public static string GetShaFromInformationalVersion(string informationalVersion)
-        {
-            var match = Regex.Match(informationalVersion, @"(?<=\.)[0-9a-f]{40}$");
-            return match.Value == "" ? null : match.Value;
         }
     }
 }

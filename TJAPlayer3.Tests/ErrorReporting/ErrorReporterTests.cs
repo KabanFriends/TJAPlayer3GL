@@ -16,15 +16,5 @@ namespace TJAPlayer3.Tests.ErrorReporting
         {
             Assert.That(ErrorReporter.GetEnvironment(informationalVersion), Is.EqualTo(environment));
         }
-
-        [Test]
-        [TestCase("5.0.0-automatic-error-reporting.1+173.Branch.feature-automatic-error-reporting.Sha.5e794d5329511ac26c2e11dc05da806fd33c2661", "5e794d5329511ac26c2e11dc05da806fd33c2661")]
-        [TestCase("v0.0.0 (unknown informational version)", null)]
-        public void TestGetShaFromInformationalVersion(string informationalVersion, string expected)
-        {
-            var actual = ErrorReporter.GetShaFromInformationalVersion(informationalVersion);
-
-            Assert.That(actual, Is.EqualTo(expected));
-        }
     }
 }
