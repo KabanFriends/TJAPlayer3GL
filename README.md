@@ -107,7 +107,7 @@ If the information above still leaves you feeling uncomfortable, your computer o
 
 - Windows 7 or greater is required. However...
 - Windows 10 is strongly recommended. Correct behaviour on Windows versions lower than 10 is possible but no longer a tested configuration.
-- .NET Framework 3.5 is required.
+- .NET Framework 4.8 is required.
 - DirectX 9c is required.
 
 ### Installation
@@ -154,6 +154,7 @@ A full development guide is forthcoming, including information regarding roadmap
 A number of individuals created and iterated on the software that came to be TJAPlayer3.
 
 In lieu of attempting to list everyone who has contributed to this and related projects, our thanks go out to the following creators/maintainers of notable members of the TJAPlayer software family:
+
 - FROM/yyagi
 - kairera0467
 - AioiLight
