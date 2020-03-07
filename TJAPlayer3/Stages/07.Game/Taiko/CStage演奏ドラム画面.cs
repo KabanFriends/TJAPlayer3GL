@@ -1,16 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Runtime.InteropServices;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
 using System.Diagnostics;
-using System.Threading;
 using SlimDX;
-using SlimDX.Direct3D9;
 using FDK;
-using TJAPlayer3;
 
 namespace TJAPlayer3
 {
@@ -585,8 +580,7 @@ namespace TJAPlayer3
 
 				// キー入力
 
-				if( TJAPlayer3.act現在入力を占有中のプラグイン == null )
-					this.tキー入力();
+				this.tキー入力();
 
 
                 // 確認用 18_04_26(AioiLight)

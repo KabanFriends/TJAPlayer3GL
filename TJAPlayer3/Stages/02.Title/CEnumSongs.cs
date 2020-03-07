@@ -234,7 +234,7 @@ namespace TJAPlayer3
 		public void t曲リストの構築1()
 		{
 			// ！注意！
-			// 本メソッドは別スレッドで動作するが、プラグイン側でカレントディレクトリを変更しても大丈夫なように、
+			// 本メソッドは別スレッドで動作するが、
 			// すべてのファイルアクセスは「絶対パス」で行うこと。(2010.9.16)
 			// 構築が完了したら、DTXEnumerateState state を DTXEnumerateState.Done にすること。(2012.2.9)
 			DateTime now = DateTime.Now;
@@ -404,7 +404,7 @@ namespace TJAPlayer3
 		private void t曲リストの構築2()
 		{
 			// ！注意！
-			// 本メソッドは別スレッドで動作するが、プラグイン側でカレントディレクトリを変更しても大丈夫なように、
+			// 本メソッドは別スレッドで動作するが、
 			// すべてのファイルアクセスは「絶対パス」で行うこと。(2010.9.16)
 			// 構築が完了したら、DTXEnumerateState state を DTXEnumerateState.Done にすること。(2012.2.9)
 

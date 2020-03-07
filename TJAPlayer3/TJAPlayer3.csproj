@@ -302,9 +302,6 @@
     <Compile Include="Stages\CActオプションパネル.cs" />
     <Compile Include="Stages\CDTXVmode.cs" />
     <Compile Include="Stages\CStage.cs" />
-    <Compile Include="Plugins\CPluginHost.cs" />
-    <Compile Include="Plugins\IPluginActivity.cs" />
-    <Compile Include="Plugins\IPluginHost.cs" />
     <Compile Include="Common\CActFlushGPU.cs" />
     <Compile Include="Common\CConfigIni.cs" />
     <Compile Include="Common\TJAPlayer3.cs" />
