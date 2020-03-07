@@ -4,7 +4,6 @@ using System.Text;
 using System.Runtime.InteropServices;
 using System.Drawing;
 using System.Diagnostics;
-using System.IO;
 using FDK;
 
 namespace TJAPlayer3
@@ -127,29 +126,6 @@ namespace TJAPlayer3
 			this.actPresound.t選択曲が変更された();
 			this.act演奏履歴パネル.t選択曲が変更された();
 			this.actステータスパネル.t選択曲が変更された();
-
-			#region [ プラグインにも通知する（BOX, RANDOM, BACK なら通知しない）]
-			//---------------------
-			if( TJAPlayer3.app != null )
-			{
-				var c曲リストノード = TJAPlayer3.stage選曲.r現在選択中の曲;
-				var cスコア = TJAPlayer3.stage選曲.r現在選択中のスコア;
-
-				if( c曲リストノード != null && cスコア != null && c曲リストノード.eノード種別 == C曲リストノード.Eノード種別.SCORE )
-				{
-					string str選択曲ファイル名 = cスコア.ファイル情報.ファイルの絶対パス;
-				    int n曲番号inブロック = TJAPlayer3.stage選曲.act曲リスト.n現在のアンカ難易度レベルに最も近い難易度レベルを返す( c曲リストノード );
-
-					foreach( TJAPlayer3.STPlugin stPlugin in TJAPlayer3.app.listプラグイン )
-					{
-						Directory.SetCurrentDirectory( stPlugin.strプラグインフォルダ );
-						stPlugin.plugin.On選択曲変更( str選択曲ファイル名, n曲番号inブロック );
-						Directory.SetCurrentDirectory( TJAPlayer3.strEXEのあるフォルダ );
-					}
-				}
-			}
-			//---------------------
-			#endregion
 		}
 
 		// CStage 実装
@@ -396,8 +372,7 @@ namespace TJAPlayer3
                     this.ctDiffSelect移動待ち.t進行();
 
 				// キー入力
-				if( base.eフェーズID == CStage.Eフェーズ.共通_通常状態 
-					&& TJAPlayer3.act現在入力を占有中のプラグイン == null )
+				if( base.eフェーズID == CStage.Eフェーズ.共通_通常状態 )
 				{
 					#region [ 簡易CONFIGでMore、またはShift+F1: 詳細CONFIG呼び出し ]
 					if (  actQuickConfig.bGotoDetailConfig )
