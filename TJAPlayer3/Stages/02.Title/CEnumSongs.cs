@@ -1,15 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Diagnostics;
-using System.Runtime.InteropServices;
 using System.IO;
 using System.Threading;
 using System.Runtime.Serialization.Formatters.Binary;
-using SlimDX;
-using SlimDX.Direct3D9;
-using FDK;
-using SampleFramework;
 
 namespace TJAPlayer3
 {
@@ -251,31 +245,28 @@ namespace TJAPlayer3
 				try
 				{
 					TJAPlayer3.Skin.bgm起動画面.t再生する();
-					for ( int i = 0; i < TJAPlayer3.Skin.nシステムサウンド数; i++ )
+					for ( int i = 0; i < TJAPlayer3.Skin.nシステムサウンド数; i++ ) // TODO CEnumSongs song list construction code (~line 254) duplicates CSkin's ReloadSkin sound loading code (~line 633)
 					{
 						if ( !TJAPlayer3.Skin[ i ].b排他 )	// BGM系以外のみ読み込む。(BGM系は必要になったときに読み込む)
 						{
 							CSkin.Cシステムサウンド cシステムサウンド = TJAPlayer3.Skin[ i ];
-							if ( !TJAPlayer3.bコンパクトモード || cシステムサウンド.bCompact対象 )
+							try
 							{
-								try
-								{
-									cシステムサウンド.t読み込み();
-									Trace.TraceInformation( "システムサウンドを読み込みました。({0})", cシステムサウンド.strファイル名 );
-									//if ( ( cシステムサウンド == CDTXMania.Skin.bgm起動画面 ) && cシステムサウンド.b読み込み成功 )
-									//{
-									//	cシステムサウンド.t再生する();
-									//}
-								}
-								catch ( FileNotFoundException )
-								{
-									Trace.TraceWarning( "システムサウンドが存在しません。({0})", cシステムサウンド.strファイル名 );
-								}
-								catch ( Exception e )
-								{
-									Trace.TraceWarning( e.ToString() );
-									Trace.TraceWarning( "システムサウンドの読み込みに失敗しました。({0})", cシステムサウンド.strファイル名 );
-								}
+								cシステムサウンド.t読み込み();
+								Trace.TraceInformation( "システムサウンドを読み込みました。({0})", cシステムサウンド.strファイル名 );
+								//if ( ( cシステムサウンド == CDTXMania.Skin.bgm起動画面 ) && cシステムサウンド.b読み込み成功 )
+								//{
+								//	cシステムサウンド.t再生する();
+								//}
+							}
+							catch ( FileNotFoundException )
+							{
+								Trace.TraceWarning( "システムサウンドが存在しません。({0})", cシステムサウンド.strファイル名 );
+							}
+							catch ( Exception e )
+							{
+								Trace.TraceWarning( e.ToString() );
+								Trace.TraceWarning( "システムサウンドの読み込みに失敗しました。({0})", cシステムサウンド.strファイル名 );
 							}
 						}
 					}
@@ -290,12 +281,6 @@ namespace TJAPlayer3
 				}
 				//-----------------------------
 				#endregion
-
-				if ( TJAPlayer3.bコンパクトモード )
-				{
-					Trace.TraceInformation( "コンパクトモードなので残りの起動処理は省略します。" );
-					return;
-				}
 
 				#region [ 00) songlist.dbの読み込みによる曲リストの構築  ]
 				//-----------------------------

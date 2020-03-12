@@ -200,7 +200,6 @@ namespace FDK
 
 		#region [ Windowsメッセージ ]
 		public const uint WM_ACTIVATEAPP = 0x1c;
-		public const uint WM_COPYDATA = 0x4a;
 		public const uint WM_CLOSE = 0x10;
 		public const uint WM_POWERBROADCAST = 0x218;
 		public const uint WM_SIZE = 5;

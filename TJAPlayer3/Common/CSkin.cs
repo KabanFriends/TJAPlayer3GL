@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Text;
 using System.IO;
 using System.Diagnostics;
@@ -51,7 +50,7 @@ namespace TJAPlayer3
 
             // フィールド、プロパティ
 
-            public bool bCompact対象;
+            public bool bCompact対象; // TODO dead code
             public bool bループ;
             public bool b読み込み未試行;
             public bool b読み込み成功;
@@ -630,28 +629,25 @@ namespace TJAPlayer3
 
         public void ReloadSkin()
         {
-            for (int i = 0; i < nシステムサウンド数; i++)
+            for (int i = 0; i < nシステムサウンド数; i++) // TODO CEnumSongs song list construction code (~line 254) duplicates CSkin's ReloadSkin sound loading code (~line 633)
             {
-                if (!this[i].b排他)   // BGM系以外のみ読み込む。(BGM系は必要になったときに読み込む)
+                var cシステムサウンド = this[i];
+                if (!cシステムサウンド.b排他)   // BGM系以外のみ読み込む。(BGM系は必要になったときに読み込む)
                 {
-                    Cシステムサウンド cシステムサウンド = this[i];
-                    if (!TJAPlayer3.bコンパクトモード || cシステムサウンド.bCompact対象)
+                    try
                     {
-                        try
-                        {
-                            cシステムサウンド.t読み込み();
-                            Trace.TraceInformation("システムサウンドを読み込みました。({0})", cシステムサウンド.strファイル名);
-                        }
-                        catch (FileNotFoundException e)
-                        {
-                            Trace.TraceWarning(e.ToString());
-                            Trace.TraceWarning("システムサウンドが存在しません。({0})", cシステムサウンド.strファイル名);
-                        }
-                        catch (Exception e)
-                        {
-                            Trace.TraceWarning(e.ToString());
-                            Trace.TraceWarning("システムサウンドの読み込みに失敗しました。({0})", cシステムサウンド.strファイル名);
-                        }
+                        cシステムサウンド.t読み込み();
+                        Trace.TraceInformation("システムサウンドを読み込みました。({0})", cシステムサウンド.strファイル名);
+                    }
+                    catch (FileNotFoundException e)
+                    {
+                        Trace.TraceWarning(e.ToString());
+                        Trace.TraceWarning("システムサウンドが存在しません。({0})", cシステムサウンド.strファイル名);
+                    }
+                    catch (Exception e)
+                    {
+                        Trace.TraceWarning(e.ToString());
+                        Trace.TraceWarning("システムサウンドの読み込みに失敗しました。({0})", cシステムサウンド.strファイル名);
                     }
                 }
             }

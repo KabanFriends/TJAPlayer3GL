@@ -189,16 +189,6 @@ namespace TJAPlayer3
             base.ReSetScore(TJAPlayer3.DTX.nScoreInit[0, TJAPlayer3.stage選曲.n確定された曲の難易度], TJAPlayer3.DTX.nScoreDiff[TJAPlayer3.stage選曲.n確定された曲の難易度]);
 			base.On活性化();
 
-			// MODIFY_BEGIN #25398 2011.06.07 FROM
-			if( TJAPlayer3.bコンパクトモード )
-			{
-				var score = new Cスコア();
-				TJAPlayer3.Songs管理.tScoreIniを読み込んで譜面情報を設定する( TJAPlayer3.strコンパクトモードファイル + ".score.ini", score );
-			}
-			else
-			{
-			}
-			// MODIFY_END #25398
 			dtLastQueueOperation = DateTime.MinValue;
 
             //int nUnit = (int)( ( ( 60.0 / ( CDTXMania.stage演奏ドラム画面.actPlayInfo.dbBPM ) ) ) * 1000.0 / this.actChara.arモーション番号.Length );
@@ -378,14 +368,6 @@ namespace TJAPlayer3
 
 					base.eフェーズID = CStage.Eフェーズ.共通_フェードイン;
 					this.actFI.tフェードイン開始();
-
-					if ( TJAPlayer3.DTXVmode.Enabled )			// DTXVモードなら
-					{
-						#region [ DTXV用の再生設定にする(全AUTOなど) ]
-						tDTXV用の設定();
-						#endregion
-						t演奏位置の変更( TJAPlayer3.DTXVmode.nStartBar, 0 );
-					}
 
 					TJAPlayer3.Sound管理.tDisableUpdateBufferAutomatically();
 					base.b初めての進行描画 = false;

@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
@@ -52,41 +50,25 @@ namespace TJAPlayer3
 					this.sd読み込み音 = null;
 				}
 
-			    if (TJAPlayer3.bコンパクトモード)
-			    {
-			        string strDTXファイルパス = TJAPlayer3.strコンパクトモードファイル;
-				
-			        CDTX cdtx = new CDTX( strDTXファイルパス, true, 1.0, 0, 0 );
-			        if( File.Exists( cdtx.strフォルダ名 + @"set.def" ) )
-			            cdtx = new CDTX( strDTXファイルパス, true, 1.0, 0, 1 );
+		        string strDTXファイルパス = TJAPlayer3.stage選曲.r確定されたスコア.ファイル情報.ファイルの絶対パス;
 
-			        this.str曲タイトル = cdtx.TITLE;
-			        this.strサブタイトル = cdtx.SUBTITLE;
+		        var strフォルダ名 = Path.GetDirectoryName(strDTXファイルパス) + @"\";
 
-			        cdtx.On非活性化();
-			    }
-			    else
-			    {
-			        string strDTXファイルパス = TJAPlayer3.stage選曲.r確定されたスコア.ファイル情報.ファイルの絶対パス;
+		        if (File.Exists(strフォルダ名 + @"set.def"))
+		        {
+		            var cdtx = new CDTX(strDTXファイルパス, true, 1.0, 0, 1);
 
-			        var strフォルダ名 = Path.GetDirectoryName(strDTXファイルパス) + @"\";
+		            this.str曲タイトル = cdtx.TITLE;
+		            this.strサブタイトル = cdtx.SUBTITLE;
 
-			        if (File.Exists(strフォルダ名 + @"set.def"))
-			        {
-			            var cdtx = new CDTX(strDTXファイルパス, true, 1.0, 0, 1);
-
-			            this.str曲タイトル = cdtx.TITLE;
-			            this.strサブタイトル = cdtx.SUBTITLE;
-
-			            cdtx.On非活性化();
-			        }
-			        else
-			        {
-			            var 譜面情報 = TJAPlayer3.stage選曲.r確定されたスコア.譜面情報;
-			            this.str曲タイトル = 譜面情報.タイトル;
-			            this.strサブタイトル = 譜面情報.strサブタイトル;
-			        }
-			    }
+		            cdtx.On非活性化();
+		        }
+		        else
+		        {
+		            var 譜面情報 = TJAPlayer3.stage選曲.r確定されたスコア.譜面情報;
+		            this.str曲タイトル = 譜面情報.タイトル;
+		            this.strサブタイトル = 譜面情報.strサブタイトル;
+		        }
 
 			    // For the moment, detect that we are performing
 			    // calibration via there being an actual single
@@ -197,8 +179,6 @@ namespace TJAPlayer3
 		}
 		public override int On進行描画()
 		{
-			string str;
-
 			if( base.b活性化してない )
 				return 0;
 
@@ -328,12 +308,7 @@ namespace TJAPlayer3
 				case CStage.Eフェーズ.NOWLOADING_DTXファイルを読み込む:
 					{
 						timeBeginLoad = DateTime.Now;
-						TimeSpan span;
-						str = null;
-						if( !TJAPlayer3.bコンパクトモード )
-							str = TJAPlayer3.stage選曲.r確定されたスコア.ファイル情報.ファイルの絶対パス;
-						else
-							str = TJAPlayer3.strコンパクトモードファイル;
+						var str = TJAPlayer3.stage選曲.r確定されたスコア.ファイル情報.ファイルの絶対パス;
 
 						CScoreIni ini = new CScoreIni( str + ".score.ini" );
 						ini.t全演奏記録セクションの整合性をチェックし不整合があればリセットする();
@@ -358,7 +333,7 @@ namespace TJAPlayer3
 			    			Trace.TraceInformation( "FILE: {0}",  TJAPlayer3.DTX.strファイル名の絶対パス );
 		    				Trace.TraceInformation( "---------------------------" );
 
-	    					span = (TimeSpan) ( DateTime.Now - timeBeginLoad );
+							var span = (TimeSpan) ( DateTime.Now - timeBeginLoad );
     						Trace.TraceInformation( "DTX読込所要時間:           {0}", span.ToString() );
 
                             // 段位認定モード用。
@@ -532,16 +507,13 @@ namespace TJAPlayer3
 //						if ( ( nCurrentTime - this.nBGM再生開始時刻 ) > ( this.nBGMの総再生時間ms - 1000 ) )
 						if ( ( nCurrentTime - this.nBGM再生開始時刻 ) >= ( this.nBGMの総再生時間ms ) )	// #27787 2012.3.10 yyagi 1000ms == フェードイン分の時間
 						{
-							if ( !TJAPlayer3.DTXVmode.Enabled )
-							{
-							}
 							base.eフェーズID = CStage.Eフェーズ.共通_フェードアウト;
 						}
 						return (int) E曲読込画面の戻り値.継続;
 					}
 
 				case CStage.Eフェーズ.共通_フェードアウト:
-					if ( this.ct待機.b終了値に達してない )		// DTXVモード時は、フェードアウト省略
+					if ( this.ct待機.b終了値に達してない )
 						return (int)E曲読込画面の戻り値.継続;
 
 					if ( txFilename != null )

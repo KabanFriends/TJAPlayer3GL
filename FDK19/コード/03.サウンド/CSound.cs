@@ -31,7 +31,6 @@ namespace FDK
 		public static CSoundTimer rc演奏用タイマ = null;
 		public static bool bUseOSTimer = false;		// OSのタイマーを使うか、CSoundTimerを使うか。DTXCではfalse, DTXManiaではtrue。
 													// DTXC(DirectSound)でCSoundTimerを使うと、内部で無音のループサウンドを再生するため
-													// サウンドデバイスを占有してしまい、Viewerとして呼び出されるDTXManiaで、ASIOが使えなくなる。
 
 													// DTXMania単体でこれをtrueにすると、WASAPI/ASIO時に演奏タイマーとしてFDKタイマーではなく
 													// システムのタイマーを使うようになる。こうするとスクロールは滑らかになるが、音ズレが出るかもしれない。
@@ -593,8 +592,7 @@ namespace FDK
 	    /// the audio is output.
 	    /// 
 	    /// This method, taking an integer representing a percent value, is used
-	    /// for mixing in the SONGVOL value, when available. It is also used for
-	    /// DTXViewer preview mode.
+	    /// for mixing in the SONGVOL value, when available.
 	    /// </summary>
 	    public void SetGain(int songVol)
 	    {

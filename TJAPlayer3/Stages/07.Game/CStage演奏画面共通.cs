@@ -5,7 +5,6 @@ using System.Drawing;
 using System.Diagnostics;
 using FDK;
 using FDK.ExtensionMethods;
-using TJAPlayer3;
 
 namespace TJAPlayer3
 {
@@ -94,65 +93,6 @@ namespace TJAPlayer3
 			}
 		}
 		#endregion
-		#region [ t演奏結果を格納する_太鼓() ]
-		public void t演奏結果を格納する_太鼓( out CScoreIni.C演奏記録 Drums )
-		{
-			Drums = new CScoreIni.C演奏記録();
-
-			//if ( CDTXMania.DTX.bチップがある.Drums )
-			{
-				Drums.nスコア = (long) this.actScore.Get( E楽器パート.DRUMS, 0 );
-				Drums.dbゲーム型スキル値 = CScoreIni.tゲーム型スキルを計算して返す( TJAPlayer3.DTX.LEVEL.Drums, TJAPlayer3.DTX.n可視チップ数.Drums, this.nヒット数_Auto含まない.Drums.Perfect, this.actCombo.n現在のコンボ数.P2, E楽器パート.DRUMS, bIsAutoPlay );
-				Drums.db演奏型スキル値 = CScoreIni.t演奏型スキルを計算して返す( TJAPlayer3.DTX.n可視チップ数.Drums, this.nヒット数_Auto含まない.Drums.Perfect, this.nヒット数_Auto含まない.Drums.Great, this.nヒット数_Auto含まない.Drums.Good, this.nヒット数_Auto含まない.Drums.Poor, this.nヒット数_Auto含まない.Drums.Miss, E楽器パート.DRUMS, bIsAutoPlay );
-				Drums.nPerfect数 = this.nヒット数_Auto含まない.Taiko.Perfect;
-				Drums.nGreat数 = this.nヒット数_Auto含まない.Taiko.Great;
-				Drums.nGood数 = this.nヒット数_Auto含まない.Taiko.Good;
-				Drums.nPoor数 = this.nヒット数_Auto含まない.Taiko.Poor;
-				Drums.nMiss数 = this.nヒット数_Auto含まない.Taiko.Miss;
-				Drums.nPerfect数_Auto含まない = this.nヒット数_Auto含まない.Taiko.Perfect;
-				Drums.nGreat数_Auto含まない = this.nヒット数_Auto含まない.Taiko.Great;
-				Drums.nGood数_Auto含まない = this.nヒット数_Auto含まない.Taiko.Good;
-				Drums.nPoor数_Auto含まない = this.nヒット数_Auto含まない.Taiko.Poor;
-				Drums.nMiss数_Auto含まない = this.nヒット数_Auto含まない.Taiko.Miss;
-                Drums.n連打数 = this.n合計連打数[ 0 ];
-				Drums.n最大コンボ数 = this.actCombo.n現在のコンボ数.P2;
-				Drums.n全チップ数 = TJAPlayer3.DTX.nノーツ数[ 3 ];
-				for ( int i = 0; i < (int) Eレーン.MAX;  i++ )
-				{
-					Drums.bAutoPlay[ i ] = TJAPlayer3.ConfigIni.b太鼓パートAutoPlay;
-				}
-				Drums.bTight = TJAPlayer3.ConfigIni.bTight;
-				for ( int i = 0; i < 3; i++ )
-				{
-					Drums.bSudden[ i ] = TJAPlayer3.ConfigIni.bSudden[ i ];
-					Drums.bHidden[ i ] = TJAPlayer3.ConfigIni.bHidden[ i ];
-					Drums.eInvisible[ i ] = TJAPlayer3.ConfigIni.eInvisible[ i ];
-					Drums.bReverse[ i ] = TJAPlayer3.ConfigIni.bReverse[ i ];
-					Drums.eRandom[ i ] = TJAPlayer3.ConfigIni.eRandom[ i ];
-					Drums.bLight[ i ] = TJAPlayer3.ConfigIni.bLight[ i ];
-					Drums.bLeft[ i ] = TJAPlayer3.ConfigIni.bLeft[ i ];
-					Drums.f譜面スクロール速度[ i ] = ( (float) ( TJAPlayer3.ConfigIni.n譜面スクロール速度[ i ] + 1 ) ) * 0.5f;
-				}
-				Drums.eDark = TJAPlayer3.ConfigIni.eDark;
-				Drums.n演奏速度分子 = TJAPlayer3.ConfigIni.n演奏速度;
-				Drums.n演奏速度分母 = 20;
-				Drums.bSTAGEFAILED有効 = TJAPlayer3.ConfigIni.bSTAGEFAILED有効;
-				Drums.eダメージレベル = TJAPlayer3.ConfigIni.eダメージレベル;
-				Drums.b演奏にキーボードを使用した = this.b演奏にキーボードを使った.Drums;
-				Drums.b演奏にMIDI入力を使用した = this.b演奏にMIDI入力を使った.Drums;
-				Drums.b演奏にジョイパッドを使用した = this.b演奏にジョイパッドを使った.Drums;
-				Drums.b演奏にマウスを使用した = this.b演奏にマウスを使った.Drums;
-				Drums.nPerfectになる範囲ms = TJAPlayer3.nPerfect範囲ms;
-				Drums.nGreatになる範囲ms = TJAPlayer3.nGreat範囲ms;
-				Drums.nGoodになる範囲ms = TJAPlayer3.nGood範囲ms;
-				Drums.nPoorになる範囲ms = TJAPlayer3.nPoor範囲ms;
-				Drums.strDTXManiaのバージョン = TJAPlayer3.AppNumericThreePartVersion;
-				Drums.最終更新日時 = DateTime.Now.ToString();
-				Drums.Hash = CScoreIni.t演奏セクションのMD5を求めて返す( Drums );
-                Drums.fゲージ = (float)this.actGauge.db現在のゲージ値[ 0 ];
-			}
-		}
-		#endregion
 
 		// CStage 実装
 
@@ -220,10 +160,6 @@ namespace TJAPlayer3
 				this.queWailing[ k ] = new Queue<CDTX.CChip>();
 				this.r現在の歓声Chip[ k ] = null;
 				cInvisibleChip.eInvisibleMode[ k ] = TJAPlayer3.ConfigIni.eInvisible[ k ];
-				if ( TJAPlayer3.DTXVmode.Enabled )
-				{
-					TJAPlayer3.ConfigIni.n譜面スクロール速度[ k ] = TJAPlayer3.ConfigIni.nViewerScrollSpeed[ k ];
-				}
 
 				//this.nJudgeLinePosY_delta[ k ] = CDTXMania.ConfigIni.nJudgeLinePosOffset[ k ];		// #31602 2013.6.23 yyagi
 
@@ -288,16 +224,8 @@ namespace TJAPlayer3
 			bIsDirectSound = ( TJAPlayer3.Sound管理.GetCurrentSoundDeviceType() == "DirectSound" );
 			bUseOSTimer = TJAPlayer3.ConfigIni.bUseOSTimer;
 			this.bPAUSE = false;
-			if ( TJAPlayer3.DTXVmode.Enabled )
-			{
-				db再生速度 = TJAPlayer3.DTX.dbDTXVPlaySpeed;
-				TJAPlayer3.ConfigIni.n演奏速度 = (int) (TJAPlayer3.DTX.dbDTXVPlaySpeed * 20 + 0.5 );
-			}
-			else
-			{
-				db再生速度 = ( (double) TJAPlayer3.ConfigIni.n演奏速度 ) / 20.0;
-			}
-			bValidScore = ( TJAPlayer3.DTXVmode.Enabled ) ? false : true;
+
+            db再生速度 = ( (double) TJAPlayer3.ConfigIni.n演奏速度 ) / 20.0;
 
 			#region [ 演奏開始前にmixer登録しておくべきサウンド(開幕してすぐに鳴らすことになるチップ音)を登録しておく ]
 			foreach ( CDTX.CChip pChip in listChip[0] )
@@ -647,8 +575,6 @@ namespace TJAPlayer3
 		protected DateTime dtLastQueueOperation;				//
 		protected bool bIsDirectSound;							//
 		protected double db再生速度;
-		protected bool bValidScore;
-//		protected bool bDTXVmode;
 //		protected STDGBVALUE<int> nJudgeLinePosY_delta;			// #31602 2013.6.23 yyagi 表示遅延対策として、判定ラインの表示位置をずらす機能を追加する
 		protected STDGBVALUE<bool> bReverse;
 
@@ -1083,11 +1009,7 @@ namespace TJAPlayer3
 
 		protected void tステータスパネルの選択()
 		{
-			if ( TJAPlayer3.bコンパクトモード )
-			{
-				this.actStatusPanels.tラベル名からステータスパネルを決定する( null );
-			}
-			else if ( TJAPlayer3.stage選曲.r確定された曲 != null )
+			if ( TJAPlayer3.stage選曲.r確定された曲 != null )
 			{
 				this.actStatusPanels.tラベル名からステータスパネルを決定する( TJAPlayer3.stage選曲.r確定された曲.ar難易度ラベル[ TJAPlayer3.stage選曲.n確定された曲の難易度 ] );
 			}
@@ -4260,7 +4182,7 @@ namespace TJAPlayer3
             return bpm_time;
         }
 
-		public void t再読込()
+		public void t再読込() // TODO dead code?
 		{
 			TJAPlayer3.DTX.t全チップの再生停止とミキサーからの削除();
 			this.eフェードアウト完了時の戻り値 = E演奏画面の戻り値.再読込_再演奏;
@@ -4283,7 +4205,7 @@ namespace TJAPlayer3
             this.bPAUSE = false;
         }
 
-		public void t停止()
+		public void t停止() // TODO dead code?
 		{
 			TJAPlayer3.DTX.t全チップの再生停止とミキサーからの削除();
 			this.actAVI.Stop();
@@ -4479,65 +4401,6 @@ namespace TJAPlayer3
             base.eフェーズID = CStage.Eフェーズ.共通_フェードアウト;
             this.eフェードアウト完了時の戻り値 = E演奏画面の戻り値.演奏中断;
         }
-
-		/// <summary>
-		/// DTXV用の設定をする。(全AUTOなど)
-		/// 元の設定のバックアップなどはしないので、あとでConfig.iniを上書き保存しないこと。
-		/// </summary>
-		protected void tDTXV用の設定()
-		{
-			TJAPlayer3.ConfigIni.bAutoPlay.HH = true;
-			TJAPlayer3.ConfigIni.bAutoPlay.SD = true;
-			TJAPlayer3.ConfigIni.bAutoPlay.BD = true;
-			TJAPlayer3.ConfigIni.bAutoPlay.HT = true;
-			TJAPlayer3.ConfigIni.bAutoPlay.LT = true;
-			TJAPlayer3.ConfigIni.bAutoPlay.CY = true;
-			TJAPlayer3.ConfigIni.bAutoPlay.FT = true;
-			TJAPlayer3.ConfigIni.bAutoPlay.RD = true;
-			TJAPlayer3.ConfigIni.bAutoPlay.LC = true;
-            TJAPlayer3.ConfigIni.bAutoPlay.LP = true;
-            TJAPlayer3.ConfigIni.bAutoPlay.LBD = true;
-			TJAPlayer3.ConfigIni.bAutoPlay.GtR = true;
-			TJAPlayer3.ConfigIni.bAutoPlay.GtB = true;
-			TJAPlayer3.ConfigIni.bAutoPlay.GtB = true;
-			TJAPlayer3.ConfigIni.bAutoPlay.GtPick = true;
-			TJAPlayer3.ConfigIni.bAutoPlay.GtW = true;
-			TJAPlayer3.ConfigIni.bAutoPlay.BsR = true;
-			TJAPlayer3.ConfigIni.bAutoPlay.BsB = true;
-			TJAPlayer3.ConfigIni.bAutoPlay.BsB = true;
-			TJAPlayer3.ConfigIni.bAutoPlay.BsPick = true;
-			TJAPlayer3.ConfigIni.bAutoPlay.BsW = true;
-
-			this.bIsAutoPlay = TJAPlayer3.ConfigIni.bAutoPlay;
-
-			TJAPlayer3.ConfigIni.bAVI有効 = true;
-			TJAPlayer3.ConfigIni.bBGA有効 = true;
-			for ( int i = 0; i < 3; i++ )
-			{
-				TJAPlayer3.ConfigIni.bGraph[ i ] = false;
-				TJAPlayer3.ConfigIni.bHidden[ i ] = false;
-				TJAPlayer3.ConfigIni.bLeft[ i ] = false;
-				TJAPlayer3.ConfigIni.bLight[ i ] = false;
-				TJAPlayer3.ConfigIni.bReverse[ i ] = false;
-				TJAPlayer3.ConfigIni.bSudden[ i ] = false;
-				TJAPlayer3.ConfigIni.eInvisible[ i ] = EInvisible.OFF;
-				TJAPlayer3.ConfigIni.eRandom[ i ] = Eランダムモード.OFF;
-				TJAPlayer3.ConfigIni.n表示可能な最小コンボ数[ i ] = 65535;
-				TJAPlayer3.ConfigIni.判定文字表示位置[ i ] = E判定文字表示位置.表示OFF;
-				// CDTXMania.ConfigIni.n譜面スクロール速度[ i ] = CDTXMania.ConfigIni.nViewerScrollSpeed[ i ];	// これだけはOn活性化()で行うこと。
-																												// そうしないと、演奏開始直後にスクロール速度が変化して見苦しい。
-			}
-
-			TJAPlayer3.ConfigIni.eDark = Eダークモード.OFF;
-
-			TJAPlayer3.ConfigIni.b演奏情報を表示する = TJAPlayer3.ConfigIni.bViewerShowDebugStatus;
-			TJAPlayer3.ConfigIni.bScoreIniを出力する = false;
-			TJAPlayer3.ConfigIni.bSTAGEFAILED有効 = false;
-			TJAPlayer3.ConfigIni.bTight = false;
-			TJAPlayer3.ConfigIni.bストイックモード = false;
-
-			TJAPlayer3.ConfigIni.nRisky = 0;
-		}
 
 		protected abstract void t進行描画_チップ_ドラムス( CConfigIni configIni, ref CDTX dTX, ref CDTX.CChip pChip );
 		protected abstract void t進行描画_チップ本体_ドラムス( CConfigIni configIni, ref CDTX dTX, ref CDTX.CChip pChip );

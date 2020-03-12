@@ -21,11 +21,9 @@
 */
 using System;
 using System.ComponentModel;
-using System.Threading;
 using System.Windows.Forms;
 using SlimDX;
 using SlimDX.Direct3D9;
-using System.Collections.ObjectModel;
 
 namespace SampleFramework
 {
