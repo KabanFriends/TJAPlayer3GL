@@ -50,7 +50,6 @@ namespace TJAPlayer3
 
             // フィールド、プロパティ
 
-            public bool bCompact対象; // TODO dead code
             public bool bループ;
             public bool b読み込み未試行;
             public bool b読み込み成功;
@@ -151,13 +150,11 @@ namespace TJAPlayer3
             /// <param name="strファイル名"></param>
             /// <param name="bループ"></param>
             /// <param name="b排他"></param>
-            /// <param name="bCompact対象"></param>
-            public Cシステムサウンド(string strファイル名, bool bループ, bool b排他, bool bCompact対象, ESoundGroup soundGroup)
+            public Cシステムサウンド(string strファイル名, bool bループ, bool b排他, ESoundGroup soundGroup)
             {
                 this.strファイル名 = strファイル名;
                 this.bループ = bループ;
                 this.b排他 = b排他;
-                this.bCompact対象 = bCompact対象;
                 _soundGroup = soundGroup;
                 this.b読み込み未試行 = true;
             }
@@ -601,28 +598,28 @@ namespace TJAPlayer3
                     this[i].Dispose();
                 }
             }
-            this.soundカーソル移動音 = new Cシステムサウンド(@"Sounds\Move.ogg", false, false, false, ESoundGroup.SoundEffect);
-            this.sound決定音 = new Cシステムサウンド(@"Sounds\Decide.ogg", false, false, false, ESoundGroup.SoundEffect);
-            this.sound変更音 = new Cシステムサウンド(@"Sounds\Change.ogg", false, false, false, ESoundGroup.SoundEffect);
-            this.sound取消音 = new Cシステムサウンド(@"Sounds\Cancel.ogg", false, false, true, ESoundGroup.SoundEffect);
-            this.sound歓声音 = new Cシステムサウンド(@"Sounds\Audience.ogg", false, false, true, ESoundGroup.SoundEffect);
-            this.soundSTAGEFAILED音 = new Cシステムサウンド(@"Sounds\Stage failed.ogg", false, true, true, ESoundGroup.Voice);
-            this.soundゲーム開始音 = new Cシステムサウンド(@"Sounds\Game start.ogg", false, false, false, ESoundGroup.Voice);
-            this.soundゲーム終了音 = new Cシステムサウンド(@"Sounds\Game end.ogg", false, true, false, ESoundGroup.Voice);
-            this.soundステージクリア音 = new Cシステムサウンド(@"Sounds\Stage clear.ogg", false, true, true, ESoundGroup.Voice);
-            this.soundフルコンボ音 = new Cシステムサウンド(@"Sounds\Full combo.ogg", false, false, true, ESoundGroup.Voice);
-            this.sound曲読込開始音 = new Cシステムサウンド(@"Sounds\Now loading.ogg", false, true, true, ESoundGroup.Unknown);
-            this.soundタイトル音 = new Cシステムサウンド(@"Sounds\Title.ogg", false, true, false, ESoundGroup.SongPlayback);
-            this.bgm起動画面 = new Cシステムサウンド(@"Sounds\Setup BGM.ogg", true, true, false, ESoundGroup.SongPlayback);
-            this.bgmオプション画面 = new Cシステムサウンド(@"Sounds\Option BGM.ogg", true, true, false, ESoundGroup.SongPlayback);
-            this.bgmコンフィグ画面 = new Cシステムサウンド(@"Sounds\Config BGM.ogg", true, true, false, ESoundGroup.SongPlayback);
-            this.bgm選曲画面 = new Cシステムサウンド(@"Sounds\Select BGM.ogg", true, true, false, ESoundGroup.SongPreview);
+            this.soundカーソル移動音 = new Cシステムサウンド(@"Sounds\Move.ogg", false, false, ESoundGroup.SoundEffect);
+            this.sound決定音 = new Cシステムサウンド(@"Sounds\Decide.ogg", false, false, ESoundGroup.SoundEffect);
+            this.sound変更音 = new Cシステムサウンド(@"Sounds\Change.ogg", false, false, ESoundGroup.SoundEffect);
+            this.sound取消音 = new Cシステムサウンド(@"Sounds\Cancel.ogg", false, false, ESoundGroup.SoundEffect);
+            this.sound歓声音 = new Cシステムサウンド(@"Sounds\Audience.ogg", false, false, ESoundGroup.SoundEffect);
+            this.soundSTAGEFAILED音 = new Cシステムサウンド(@"Sounds\Stage failed.ogg", false, true, ESoundGroup.Voice);
+            this.soundゲーム開始音 = new Cシステムサウンド(@"Sounds\Game start.ogg", false, false, ESoundGroup.Voice);
+            this.soundゲーム終了音 = new Cシステムサウンド(@"Sounds\Game end.ogg", false, true, ESoundGroup.Voice);
+            this.soundステージクリア音 = new Cシステムサウンド(@"Sounds\Stage clear.ogg", false, true, ESoundGroup.Voice);
+            this.soundフルコンボ音 = new Cシステムサウンド(@"Sounds\Full combo.ogg", false, false, ESoundGroup.Voice);
+            this.sound曲読込開始音 = new Cシステムサウンド(@"Sounds\Now loading.ogg", false, true, ESoundGroup.Unknown);
+            this.soundタイトル音 = new Cシステムサウンド(@"Sounds\Title.ogg", false, true, ESoundGroup.SongPlayback);
+            this.bgm起動画面 = new Cシステムサウンド(@"Sounds\Setup BGM.ogg", true, true, ESoundGroup.SongPlayback);
+            this.bgmオプション画面 = new Cシステムサウンド(@"Sounds\Option BGM.ogg", true, true, ESoundGroup.SongPlayback);
+            this.bgmコンフィグ画面 = new Cシステムサウンド(@"Sounds\Config BGM.ogg", true, true,  ESoundGroup.SongPlayback);
+            this.bgm選曲画面 = new Cシステムサウンド(@"Sounds\Select BGM.ogg", true, true, ESoundGroup.SongPreview);
 
-            //this.soundRed               = new Cシステムサウンド( @"Sounds\dong.ogg",            false, false, true, ESoundType.SoundEffect );
-            //this.soundBlue              = new Cシステムサウンド( @"Sounds\ka.ogg",              false, false, true, ESoundType.SoundEffect );
-            this.soundBalloon = new Cシステムサウンド(@"Sounds\balloon.ogg", false, false, true, ESoundGroup.SoundEffect);
-            this.sound曲決定音 = new Cシステムサウンド(@"Sounds\SongDecide.ogg", false, false, true, ESoundGroup.Voice);
-            this.sound成績発表 = new Cシステムサウンド(@"Sounds\ResultIn.ogg", false, false, false, ESoundGroup.Voice);
+            //this.soundRed               = new Cシステムサウンド( @"Sounds\dong.ogg",            false, false, ESoundType.SoundEffect );
+            //this.soundBlue              = new Cシステムサウンド( @"Sounds\ka.ogg",              false, false, ESoundType.SoundEffect );
+            this.soundBalloon = new Cシステムサウンド(@"Sounds\balloon.ogg", false, false, ESoundGroup.SoundEffect);
+            this.sound曲決定音 = new Cシステムサウンド(@"Sounds\SongDecide.ogg", false, false, ESoundGroup.Voice);
+            this.sound成績発表 = new Cシステムサウンド(@"Sounds\ResultIn.ogg", false, false, ESoundGroup.Voice);
             ReloadSkin();
             tReadSkinConfig();
         }
