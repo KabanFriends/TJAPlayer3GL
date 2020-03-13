@@ -225,7 +225,7 @@ namespace TJAPlayer3
 		/// <summary>
 		/// songlist.dbからの曲リスト構築
 		/// </summary>
-		public void t曲リストの構築1()
+		private void t曲リストの構築1()
 		{
 			// ！注意！
 			// 本メソッドは別スレッドで動作するが、
@@ -243,33 +243,10 @@ namespace TJAPlayer3
 				Trace.Indent();
 
 				try
-				{
-					TJAPlayer3.Skin.bgm起動画面.t再生する();
-					for ( int i = 0; i < TJAPlayer3.Skin.nシステムサウンド数; i++ ) // TODO CEnumSongs song list construction code (~line 254) duplicates CSkin's ReloadSkin sound loading code (~line 633)
-					{
-						if ( !TJAPlayer3.Skin[ i ].b排他 )	// BGM系以外のみ読み込む。(BGM系は必要になったときに読み込む)
-						{
-							CSkin.Cシステムサウンド cシステムサウンド = TJAPlayer3.Skin[ i ];
-							try
-							{
-								cシステムサウンド.t読み込み();
-								Trace.TraceInformation( "システムサウンドを読み込みました。({0})", cシステムサウンド.strファイル名 );
-								//if ( ( cシステムサウンド == CDTXMania.Skin.bgm起動画面 ) && cシステムサウンド.b読み込み成功 )
-								//{
-								//	cシステムサウンド.t再生する();
-								//}
-							}
-							catch ( FileNotFoundException )
-							{
-								Trace.TraceWarning( "システムサウンドが存在しません。({0})", cシステムサウンド.strファイル名 );
-							}
-							catch ( Exception e )
-							{
-								Trace.TraceWarning( e.ToString() );
-								Trace.TraceWarning( "システムサウンドの読み込みに失敗しました。({0})", cシステムサウンド.strファイル名 );
-							}
-						}
-					}
+                {
+                    TJAPlayer3.Skin.bgm起動画面.t再生する();
+                    TJAPlayer3.Skin.ReloadSkin();
+
 					lock ( TJAPlayer3.stage起動.list進行文字列 )
 					{
 						TJAPlayer3.stage起動.list進行文字列.Add( "SYSTEM SOUND...OK" );
@@ -381,8 +358,7 @@ namespace TJAPlayer3
 			}
 		}
 
-
-		/// <summary>
+        /// <summary>
 		/// 起動してタイトル画面に遷移した後にバックグラウンドで発生させる曲検索
 		/// #27060 2012.2.6 yyagi
 		/// </summary>

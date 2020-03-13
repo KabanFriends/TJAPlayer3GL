@@ -626,26 +626,29 @@ namespace TJAPlayer3
 
         public void ReloadSkin()
         {
-            for (int i = 0; i < nシステムサウンド数; i++) // TODO CEnumSongs song list construction code (~line 254) duplicates CSkin's ReloadSkin sound loading code (~line 633)
+            for (int i = 0; i < nシステムサウンド数; i++)
             {
                 var cシステムサウンド = this[i];
-                if (!cシステムサウンド.b排他)   // BGM系以外のみ読み込む。(BGM系は必要になったときに読み込む)
+
+                if (cシステムサウンド.b排他)
                 {
-                    try
-                    {
-                        cシステムサウンド.t読み込み();
-                        Trace.TraceInformation("システムサウンドを読み込みました。({0})", cシステムサウンド.strファイル名);
-                    }
-                    catch (FileNotFoundException e)
-                    {
-                        Trace.TraceWarning(e.ToString());
-                        Trace.TraceWarning("システムサウンドが存在しません。({0})", cシステムサウンド.strファイル名);
-                    }
-                    catch (Exception e)
-                    {
-                        Trace.TraceWarning(e.ToString());
-                        Trace.TraceWarning("システムサウンドの読み込みに失敗しました。({0})", cシステムサウンド.strファイル名);
-                    }
+                    continue;
+                }
+
+                try
+                {
+                    cシステムサウンド.t読み込み();
+                    Trace.TraceInformation("システムサウンドを読み込みました。({0})", cシステムサウンド.strファイル名);
+                }
+                catch (FileNotFoundException e)
+                {
+                    Trace.TraceWarning(e.ToString());
+                    Trace.TraceWarning("システムサウンドが存在しません。({0})", cシステムサウンド.strファイル名);
+                }
+                catch (Exception e)
+                {
+                    Trace.TraceWarning(e.ToString());
+                    Trace.TraceWarning("システムサウンドの読み込みに失敗しました。({0})", cシステムサウンド.strファイル名);
                 }
             }
         }
