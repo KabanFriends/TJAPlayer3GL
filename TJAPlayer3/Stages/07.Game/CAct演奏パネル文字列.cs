@@ -194,9 +194,13 @@ namespace TJAPlayer3
 		{
 			throw new InvalidOperationException( "t進行描画(x,y)のほうを使用してください。" );
 		}
-		public int t進行描画( int x, int y )
-		{
-            if (TJAPlayer3.stage演奏ドラム画面.actDan.IsAnimating) return 0;
+		public void t進行描画()
+        {
+            if (TJAPlayer3.stage演奏ドラム画面.actDan.IsAnimating)
+            {
+                return;
+            }
+
 			if( !base.b活性化してない && !this.bMute )
 			{
 				this.ct進行用.t進行Loop();
@@ -301,7 +305,6 @@ namespace TJAPlayer3
 
 				//this.txMusicName.t2D描画( CDTXMania.app.Device, 1250 - this.txMusicName.szテクスチャサイズ.Width, 14 );
 			}
-			return 0;
 		}
 
 

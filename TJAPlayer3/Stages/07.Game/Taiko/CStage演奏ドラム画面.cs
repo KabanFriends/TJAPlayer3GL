@@ -818,10 +818,6 @@ namespace TJAPlayer3
 				this.actPad.On進行描画();
 			}
 		}
-		protected override void t進行描画_パネル文字列()
-		{
-			base.t進行描画_パネル文字列( 336, 427 );
-		}
 
 		protected override void t進行描画_演奏情報()
 		{

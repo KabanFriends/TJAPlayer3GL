@@ -2935,15 +2935,16 @@ namespace TJAPlayer3
 		{
 			this.actChipFireGB.On進行描画();
 		}
-		protected abstract void t進行描画_パネル文字列();
-		protected void t進行描画_パネル文字列( int x, int y )
+
+        protected void t進行描画_パネル文字列()
 		{
 			if ( ( base.eフェーズID != CStage.Eフェーズ.演奏_STAGE_FAILED ) && ( base.eフェーズID != CStage.Eフェーズ.演奏_STAGE_FAILED_フェードアウト ) )
 			{
-				this.actPanel.t進行描画( x, y );
+				this.actPanel.t進行描画();
 			}
 		}
-		protected void tパネル文字列の設定()
+
+		private void tパネル文字列の設定()
 		{
 		    // When performing calibration, inform the player that
 		    // calibration is taking place, rather than
@@ -4182,14 +4183,6 @@ namespace TJAPlayer3
             return bpm_time;
         }
 
-		public void t再読込() // TODO dead code?
-		{
-			TJAPlayer3.DTX.t全チップの再生停止とミキサーからの削除();
-			this.eフェードアウト完了時の戻り値 = E演奏画面の戻り値.再読込_再演奏;
-			base.eフェーズID = CStage.Eフェーズ.演奏_再読込;
-			this.bPAUSE = false;
-		}
-
         public void t演奏やりなおし()
         {
 			TJAPlayer3.DTX.t全チップの再生停止とミキサーからの削除();
@@ -4204,18 +4197,6 @@ namespace TJAPlayer3
             }
             this.bPAUSE = false;
         }
-
-		public void t停止() // TODO dead code?
-		{
-			TJAPlayer3.DTX.t全チップの再生停止とミキサーからの削除();
-			this.actAVI.Stop();
-			this.actPanel.Stop();				// PANEL表示停止
-			TJAPlayer3.Timer.t一時停止();		// 再生時刻カウンタ停止
-
-			this.n現在のトップChip = TJAPlayer3.DTX.listChip.Count - 1;	// 終端にシーク
-
-			// 自分自身のOn活性化()相当の処理もすべき。
-		}
 
         public void t数値の初期化( bool b演奏記録, bool b演奏状態 )
         {
