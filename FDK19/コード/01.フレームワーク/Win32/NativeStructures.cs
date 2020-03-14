@@ -60,13 +60,4 @@ namespace SampleFramework
             get { return Marshal.SizeOf(typeof(WINDOWPLACEMENT)); }
         }
     }
-	#region #28821 2014.1.23 yyagi add: 外部からの文字列メッセージ送受信 定数定義
-	[StructLayout( LayoutKind.Sequential )]
-	public struct COPYDATASTRUCT
-	{
-		public IntPtr dwData;
-		public UInt32 cbData;
-		public IntPtr lpData;
-	}
-	#endregion
 }

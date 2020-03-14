@@ -197,7 +197,6 @@ namespace TJAPlayer3
 				#endregion
 				#region [ 選曲画面の譜面情報の更新 ]
 				//---------------------
-				if( !TJAPlayer3.bコンパクトモード )
 				{
 					Cスコア cスコア = TJAPlayer3.stage選曲.r確定されたスコア;
 					bool[] b更新が必要か否か = new bool[ 3 ];

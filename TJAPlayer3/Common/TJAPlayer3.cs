@@ -65,11 +65,6 @@ namespace TJAPlayer3
 			get;
 			private set;
 		}
-		public static bool bコンパクトモード
-		{
-			get;
-			private set;
-		}
 		public static CConfigIni ConfigIni
 		{
 			get; 
@@ -306,11 +301,6 @@ namespace TJAPlayer3
 			get;
 			private set;
 		}
-		public static string strコンパクトモードファイル
-		{ 
-			get; 
-			private set;
-		}
 		public static CTimer Timer
 		{
 			get;
@@ -345,11 +335,6 @@ namespace TJAPlayer3
 		public IntPtr WindowHandle					// 2012.10.24 yyagi; to add ASIO support
 		{
 			get { return base.Window.Handle; }
-		}
-		public static CDTXVmode DTXVmode			// #28821 2014.1.23 yyagi
-		{
-			get;
-			set;
 		}
 
         #endregion
@@ -565,60 +550,6 @@ namespace TJAPlayer3
 			}
 			#endregion
 
-			#region [ DTXCreatorからの指示 ]
-			if ( this.Window.IsReceivedMessage )	// ウインドウメッセージで、
-			{
-				string strMes = this.Window.strMessage;
-				this.Window.IsReceivedMessage = false;
-
-				if ( strMes != null )
-				{
-					DTXVmode.ParseArguments( strMes );
-
-					if ( DTXVmode.Enabled )
-					{
-						bコンパクトモード = true;
-						strコンパクトモードファイル = DTXVmode.filename;
-						if ( DTXVmode.Command == CDTXVmode.ECommand.Preview )
-						{
-							// preview soundの再生
-							string strPreviewFilename = DTXVmode.previewFilename;
-//Trace.TraceInformation( "Preview Filename=" + DTXVmode.previewFilename );
-							try
-							{
-								if ( this.previewSound != null )
-								{
-									this.previewSound.tサウンドを停止する();
-									this.previewSound.Dispose();
-									this.previewSound = null;
-								}
-								this.previewSound = TJAPlayer3.Sound管理.tサウンドを生成する( strPreviewFilename, ESoundGroup.SongPlayback );
-
-							    // 2018-08-23 twopointzero: DTXVmode previewVolume will always set
-							    // Gain since in this mode it should override the application of
-							    // SONGVOL or any other Gain source regardless of configuration.
-								this.previewSound.SetGain(DTXVmode.previewVolume);
-
-								this.previewSound.n位置 = DTXVmode.previewPan;
-								this.previewSound.t再生を開始する();
-								Trace.TraceInformation( "DTXCからの指示で、サウンドを生成しました。({0})", strPreviewFilename );
-							}
-							catch (Exception e)
-							{
-								Trace.TraceError( e.ToString() );
-								Trace.TraceError( "DTXCからの指示での、サウンドの生成に失敗しました。({0})", strPreviewFilename );
-								if ( this.previewSound != null )
-								{
-									this.previewSound.Dispose();
-								}
-								this.previewSound = null;
-							}
-						}
-					}
-				}
-			}
-			#endregion
-
 			this.Device.BeginScene();
 			this.Device.Clear( ClearFlags.ZBuffer | ClearFlags.Target, Color.Black, 1f, 0 );
 
@@ -634,11 +565,11 @@ namespace TJAPlayer3
 					EnumSongs.SongListEnumCompletelyDone();
 					TJAPlayer3.stage選曲.bIsEnumeratingSongs = false;
 				}
+
 				#region [ 曲検索スレッドの起動/終了 ]					// ここに"Enumerating Songs..."表示を集約
-				if ( !TJAPlayer3.bコンパクトモード )
-				{
-					actEnumSongs.On進行描画();							// "Enumerating Songs..."アイコンの描画
-				}
+
+				actEnumSongs.On進行描画();							// "Enumerating Songs..."アイコンの描画
+
 				switch ( r現在のステージ.eステージID )
 				{
 					case CStage.Eステージ.タイトル:
@@ -727,25 +658,12 @@ namespace TJAPlayer3
 						//-----------------------------
 						if( this.n進行描画の戻り値 != 0 )
 						{
-							if( !bコンパクトモード )
-							{
-								r現在のステージ.On非活性化();
-								Trace.TraceInformation( "----------------------" );
-								Trace.TraceInformation( "■ タイトル" );
-								stageタイトル.On活性化();
-								r直前のステージ = r現在のステージ;
-								r現在のステージ = stageタイトル;
-							}
-							else
-							{
-								r現在のステージ.On非活性化();
-								Trace.TraceInformation( "----------------------" );
-								Trace.TraceInformation( "■ 曲読み込み" );
-								stage曲読み込み.On活性化();
-								r直前のステージ = r現在のステージ;
-								r現在のステージ = stage曲読み込み;
-
-							}
+							r現在のステージ.On非活性化();
+							Trace.TraceInformation( "----------------------" );
+							Trace.TraceInformation( "■ タイトル" );
+							stageタイトル.On活性化();
+							r直前のステージ = r現在のステージ;
+							r現在のステージ = stageタイトル;
 
 							this.tガベージコレクションを実行する();
 						}
@@ -988,7 +906,6 @@ namespace TJAPlayer3
 					case CStage.Eステージ.曲読み込み:
 						#region [ *** ]
 						//-----------------------------
-						DTXVmode.Refreshed = false;		// 曲のリロード中に発生した再リロードは、無視する。
 						if( this.n進行描画の戻り値 != 0 )
 						{
 							TJAPlayer3.Pad.st検知したデバイス.Clear();	// 入力デバイスフラグクリア(2010.9.11)
@@ -1049,74 +966,6 @@ for (int i = 0; i < 3; i++) {
 						//swlist4.Add( Convert.ToInt32( n4 ) );
 						//swlist5.Add( Convert.ToInt32( n5 ) );
 
-						#region [ DTXVモード中にDTXCreatorから指示を受けた場合の処理 ]
-						if ( DTXVmode.Enabled && DTXVmode.Refreshed )
-						{
-							DTXVmode.Refreshed = false;
-
-							if ( DTXVmode.Command == CDTXVmode.ECommand.Stop )
-							{
-								TJAPlayer3.stage演奏ドラム画面.t停止();
-								if ( previewSound != null )
-								{
-									this.previewSound.tサウンドを停止する();
-									this.previewSound.Dispose();
-									this.previewSound = null;
-								}
-								//{
-								//    int lastd = 0;
-								//    int f = 0;
-								//    for ( int i = 0; i < swlist1.Count; i++ )
-								//    {
-								//        int d1 = swlist1[ i ];
-								//        int d2 = swlist2[ i ];
-								//        int d3 = swlist3[ i ];
-								//        int d4 = swlist4[ i ];
-								//        int d5 = swlist5[ i ];
-
-								//        int dif = d1 - lastd;
-								//        string s = "";
-								//        if ( 16 <= dif && dif <= 17 )
-								//        {
-								//        }
-								//        else
-								//        {
-								//            s = "★";
-								//        }
-								//        Trace.TraceInformation( "frame {0:D4}: {1:D3} ( {2:D3}, {3:D3} - {7:D3}, {4:D3} ) {5}, n現在時刻={6}", f, dif, d1, d2, d3, s, d4, d5 );
-								//        lastd = d1;
-								//        f++;
-								//    }
-								//    swlist1.Clear();
-								//    swlist2.Clear();
-								//    swlist3.Clear();
-								//    swlist4.Clear();
-								//    swlist5.Clear();
-
-								//}
-							}
-							else if ( DTXVmode.Command == CDTXVmode.ECommand.Play )
-							{
-								if ( DTXVmode.NeedReload )
-								{
-									TJAPlayer3.stage演奏ドラム画面.t再読込();
-
-									TJAPlayer3.ConfigIni.bTimeStretch = DTXVmode.TimeStretch;
-									CSound管理.bIsTimeStretch = DTXVmode.TimeStretch;
-									if ( TJAPlayer3.ConfigIni.b垂直帰線待ちを行う != DTXVmode.VSyncWait )
-									{
-										TJAPlayer3.ConfigIni.b垂直帰線待ちを行う = DTXVmode.VSyncWait;
-										TJAPlayer3.app.b次のタイミングで垂直帰線同期切り替えを行う = true;
-									}
-								}
-								else
-								{
-									TJAPlayer3.stage演奏ドラム画面.t演奏位置の変更( TJAPlayer3.DTXVmode.nStartBar, 0 );
-								}
-							}
-						}
-						#endregion
-
 						switch( this.n進行描画の戻り値 )
 						{
 							case (int) E演奏画面の戻り値.再読込_再演奏:
@@ -1174,20 +1023,12 @@ for (int i = 0; i < 3; i++) {
 								DTX.t全チップの再生停止();
 								DTX.On非活性化();
 								r現在のステージ.On非活性化();
-								if( bコンパクトモード )
-								{
-									base.Window.Close();
-								}
-								else
-								{
-									Trace.TraceInformation( "----------------------" );
-									Trace.TraceInformation( "■ 選曲" );
-									stage選曲.On活性化();
-									r直前のステージ = r現在のステージ;
-									r現在のステージ = stage選曲;
+								Trace.TraceInformation( "----------------------" );
+								Trace.TraceInformation( "■ 選曲" );
+								stage選曲.On活性化();
+								r直前のステージ = r現在のステージ;
+								r現在のステージ = stage選曲;
 
-									this.tガベージコレクションを実行する();
-								}
                                 this.tガベージコレクションを実行する();
                                 break;
 								//-----------------------------
@@ -1201,20 +1042,13 @@ for (int i = 0; i < 3; i++) {
 								DTX.t全チップの再生停止();
 								DTX.On非活性化();
 								r現在のステージ.On非活性化();
-								if( bコンパクトモード )
-								{
-									base.Window.Close();
-								}
-								else
-								{
-									Trace.TraceInformation( "----------------------" );
-									Trace.TraceInformation( "■ 選曲" );
-									stage選曲.On活性化();
-									r直前のステージ = r現在のステージ;
-									r現在のステージ = stage選曲;
+								Trace.TraceInformation( "----------------------" );
+								Trace.TraceInformation( "■ 選曲" );
+								stage選曲.On活性化();
+								r直前のステージ = r現在のステージ;
+								r現在のステージ = stage選曲;
 
-									this.tガベージコレクションを実行する();
-								}
+								this.tガベージコレクションを実行する();
 								break;
                             //-----------------------------
                             #endregion
@@ -1355,20 +1189,13 @@ for (int i = 0; i < 3; i++) {
                             DTX.On非活性化();
 							r現在のステージ.On非活性化();
                             this.tガベージコレクションを実行する();
-                            if ( !bコンパクトモード )
-							{
-								Trace.TraceInformation( "----------------------" );
-								Trace.TraceInformation( "■ 選曲" );
-								stage選曲.On活性化();
-								r直前のステージ = r現在のステージ;
-								r現在のステージ = stage選曲;
+							Trace.TraceInformation( "----------------------" );
+							Trace.TraceInformation( "■ 選曲" );
+							stage選曲.On活性化();
+							r直前のステージ = r現在のステージ;
+							r現在のステージ = stage選曲;
 
-								this.tガベージコレクションを実行する();
-							}
-							else
-							{
-								base.Window.Close();
-							}
+							this.tガベージコレクションを実行する();
 						}
 						//-----------------------------
 						#endregion
@@ -1749,23 +1576,6 @@ for (int i = 0; i < 3; i++) {
 			Trace.TraceInformation( "CLR Version: " + Environment.Version.ToString() );
 			//---------------------
 			#endregion
-			#region [ DTXVmodeクラス の初期化 ]
-			//---------------------
-			//Trace.TraceInformation( "DTXVモードの初期化を行います。" );
-			//Trace.Indent();
-			try
-			{
-				DTXVmode = new CDTXVmode();
-				DTXVmode.Enabled = false;
-				//Trace.TraceInformation( "DTXVモードの初期化を完了しました。" );
-			}
-			finally
-			{
-				//Trace.Unindent();
-			}
-			//---------------------
-			#endregion
-
 
 			#region [ ウィンドウ初期化 ]
 			//---------------------
@@ -1928,8 +1738,7 @@ for (int i = 0; i < 3; i++) {
 			Trace.Indent();
 			try
 			{
-				bool bUseMIDIIn = !DTXVmode.Enabled;
-				Input管理 = new CInput管理( base.Window.Handle, bUseMIDIIn );
+				Input管理 = new CInput管理( base.Window.Handle );
 				foreach( IInputDevice device in Input管理.list入力デバイス )
 				{
 					if( ( device.e入力デバイス種別 == E入力デバイス種別.Joystick ) && !ConfigIni.dicJoystick.ContainsValue( device.GUID ) )
@@ -2141,14 +1950,7 @@ for (int i = 0; i < 3; i++) {
             Trace.TraceInformation( "----------------------" );
 			Trace.TraceInformation( "■ 起動" );
 
-			if ( TJAPlayer3.bコンパクトモード )
-			{
-				r現在のステージ = stage曲読み込み;
-			}
-			else
-			{
-				r現在のステージ = stage起動;
-			}
+			r現在のステージ = stage起動;
 			r現在のステージ.On活性化();
 
 			//---------------------
@@ -2412,16 +2214,8 @@ for (int i = 0; i < 3; i++) {
 				Trace.Indent();
 				try
 				{
-					if ( DTXVmode.Enabled )
-					{
-						DTXVmode.tUpdateConfigIni();
-						Trace.TraceInformation( "DTXVモードの設定情報を、Config.iniに保存しました。" );
-					}
-					else
-					{
-						ConfigIni.t書き出し( str );
-						Trace.TraceInformation( "保存しました。({0})", str );
-					}
+					ConfigIni.t書き出し( str );
+					Trace.TraceInformation( "保存しました。({0})", str );
 				}
 				catch( Exception e )
 				{
@@ -2453,28 +2247,7 @@ for (int i = 0; i < 3; i++) {
 
 				//---------------------
 				#endregion
-				#region [ DTXVmodeの終了処理 ]
-				//---------------------
-				//Trace.TraceInformation( "DTXVモードの終了処理を行います。" );
-				//Trace.Indent();
-				try
-				{
-					if ( DTXVmode != null )
-					{
-						DTXVmode = null;
-						//Trace.TraceInformation( "DTXVモードの終了処理を完了しました。" );
-					}
-					else
-					{
-						//Trace.TraceInformation( "DTXVモードは使用されていません。" );
-					}
-				}
-				finally
-				{
-					//Trace.Unindent();
-				}
-				//---------------------
-				#endregion
+
                 #region [ DirectXの終了処理 ]
                 base.GraphicsDeviceManager.Dispose();
                 #endregion
@@ -2519,15 +2292,12 @@ for (int i = 0; i < 3; i++) {
 					ini.stファイル.PlayCountBass++;
 				}
 				ini.tヒストリを追加する( str新ヒストリ行 );
-				if( !bコンパクトモード )
+				stage選曲.r現在選択中のスコア.譜面情報.演奏回数.Drums = ini.stファイル.PlayCountDrums;
+				stage選曲.r現在選択中のスコア.譜面情報.演奏回数.Guitar = ini.stファイル.PlayCountGuitar;
+				stage選曲.r現在選択中のスコア.譜面情報.演奏回数.Bass = ini.stファイル.PlayCountBass;
+				for( int j = 0; j < ini.stファイル.History.Length; j++ )
 				{
-					stage選曲.r現在選択中のスコア.譜面情報.演奏回数.Drums = ini.stファイル.PlayCountDrums;
-					stage選曲.r現在選択中のスコア.譜面情報.演奏回数.Guitar = ini.stファイル.PlayCountGuitar;
-					stage選曲.r現在選択中のスコア.譜面情報.演奏回数.Bass = ini.stファイル.PlayCountBass;
-					for( int j = 0; j < ini.stファイル.History.Length; j++ )
-					{
-						stage選曲.r現在選択中のスコア.譜面情報.演奏履歴[ j ] = ini.stファイル.History[ j ];
-					}
+					stage選曲.r現在選択中のスコア.譜面情報.演奏履歴[ j ] = ini.stファイル.History[ j ];
 				}
 			}
 			if( ConfigIni.bScoreIniを出力する )
