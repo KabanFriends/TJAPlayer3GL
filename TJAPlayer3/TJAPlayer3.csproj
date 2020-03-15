@@ -134,13 +134,8 @@
   <ItemGroup>
     <Compile Include="Common\PreciseStringMeasurement\CPreciseStringMeasurer.cs" />
     <Compile Include="Animations\Animator.cs" />
-    <Compile Include="Animations\EaseInOut.cs" />
-    <Compile Include="Animations\EaseOut.cs" />
-    <Compile Include="Animations\EaseIn.cs" />
-    <Compile Include="Animations\FadeIn.cs" />
     <Compile Include="Animations\FadeOut.cs" />
     <Compile Include="Animations\IAnimatable.cs" />
-    <Compile Include="Animations\Linear.cs" />
     <Compile Include="Common\Discord.cs" />
     <Compile Include="Common\PreciseStringMeasurement\DirectBitmap.cs" />
     <Compile Include="Common\PreciseStringMeasurement\MeasureStringPreciselyCacheKey.cs" />
@@ -184,7 +179,6 @@
     <Compile Include="Items\CItemThreeState.cs" />
     <Compile Include="Items\CItemToggle.cs" />
     <Compile Include="Songs\CBoxDef.cs" />
-    <Compile Include="Songs\CCourse.cs" />
     <Compile Include="Songs\CDTX.cs" />
     <Compile Include="Songs\CDTXCompanionFileFinder.cs" />
     <Compile Include="Songs\CDTXStyleExtractor.cs" />
@@ -309,7 +303,6 @@
     <Compile Include="Common\ConfigIniToSoundGroupLevelControllerBinder.cs" />
     <Compile Include="Common\CPad.cs" />
     <Compile Include="Common\CPrivateFastFont.cs" />
-    <Compile Include="Common\CVeirticalSongNameFont.cs" />
     <Compile Include="Common\CPrivateFont.cs" />
     <Compile Include="Common\CSkin.cs" />
     <Compile Include="Common\C定数.cs" />

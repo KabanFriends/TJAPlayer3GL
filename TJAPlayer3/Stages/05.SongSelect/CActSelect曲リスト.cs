@@ -1648,49 +1648,6 @@ namespace TJAPlayer3
 		//-----------------
 		private enum Eバー種別 { Score, Box, Other }
 
-		private struct STバー
-		{
-			public CTexture Score;
-			public CTexture Box;
-			public CTexture Other;
-			public CTexture this[ int index ]
-			{
-				get
-				{
-					switch( index )
-					{
-						case 0:
-							return this.Score;
-
-						case 1:
-							return this.Box;
-
-						case 2:
-							return this.Other;
-					}
-					throw new IndexOutOfRangeException();
-				}
-				set
-				{
-					switch( index )
-					{
-						case 0:
-							this.Score = value;
-							return;
-
-						case 1:
-							this.Box = value;
-							return;
-
-						case 2:
-							this.Other = value;
-							return;
-					}
-					throw new IndexOutOfRangeException();
-				}
-			}
-		}
-
 		private struct STバー情報
 		{
 			public string strタイトル文字列;
@@ -1704,49 +1661,6 @@ namespace TJAPlayer3
             public string strサブタイトル;
             public TitleTextureKey ttkタイトル;
 		    public SongRating? Rating;
-		}
-
-		private struct ST選曲バー
-		{
-			public CTexture Score;
-			public CTexture Box;            
-			public CTexture Other;
-            public CTexture this[ int index ]
-			{
-				get
-				{
-					switch( index )
-					{
-						case 0:
-							return this.Score;
-
-						case 1:
-							return this.Box;
-
-						case 2:
-							return this.Other;
-					}
-					throw new IndexOutOfRangeException();
-				}
-				set
-				{
-					switch( index )
-					{
-						case 0:
-							this.Score = value;
-							return;
-
-						case 1:
-							this.Box = value;
-							return;
-
-						case 2:
-							this.Other = value;
-							return;
-					}
-					throw new IndexOutOfRangeException();
-				}
-			}
 		}
 
         public bool b選択曲が変更された = true;

@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Runtime.InteropServices;
 
 namespace TJAPlayer3
@@ -54,12 +52,6 @@ namespace TJAPlayer3
 		HALF,
 		FULL
 	}
-    public enum EWindowMovieMode
-    {
-        OFF = 0,
-        左下 = 1,
-        中央下 = 2
-    }
 	public enum Eダメージレベル
 	{
 		少ない	= 0,
@@ -189,11 +181,6 @@ namespace TJAPlayer3
 		UNKNOWN	= E楽器パート.UNKNOWN
 	}
 
-	public enum E打ち分け時の再生の優先順位
-	{
-		ChipがPadより優先,
-		PadがChipより優先
-	}
 	internal enum E入力デバイス
 	{
 		キーボード		= 0,
@@ -236,14 +223,6 @@ namespace TJAPlayer3
 		AVI,
 		AVIPAN
 	}
-	internal enum EBGA種別
-	{
-		Unknown,
-		BMP,
-		BMPTEX,
-		BGA,
-		BGAPAN
-	}
 	internal enum EFIFOモード
 	{
 		フェードイン,
@@ -276,19 +255,6 @@ namespace TJAPlayer3
 		BsW,
 		MAX,	// 要素数取得のための定義 ("BGM"は使わない前提で)
 		BGM
-	}
-	internal enum Eレーン数
-	{
-		物理 = 8,	   // LC, HH,             SD, BD, HT, LT, FT, CY
-		論理 = 10,	   // LC, HO, HC,         SD, BD, HT, LT, FT, RC, RD
-        DTXG物理 = 10, // LC, HH,     LP,     SD, BD, HT, LT, FT, CY, RD
-        DTXG論理 = 12  // LC, HO, HC, LP, LB, SD, BD, HT, LT, FT, CY, RD 
-	}
-	internal enum Eログ出力
-	{
-		OFF,
-		ON通常,
-		ON詳細あり
 	}
 	internal enum E演奏画面の戻り値
 	{
@@ -765,8 +731,4 @@ namespace TJAPlayer3
         OFF                = 0
     }
     #endregion
-
-    internal class C定数
-	{
-	}
 }

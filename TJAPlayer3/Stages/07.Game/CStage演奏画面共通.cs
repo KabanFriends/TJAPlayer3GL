@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using System.Drawing;
 using System.Diagnostics;
 using FDK;
@@ -388,118 +387,6 @@ namespace TJAPlayer3
 			}
 		}
 
-		[StructLayout( LayoutKind.Sequential )]
-		protected struct STKARAUCHI
-		{
-			public CDTX.CChip HH;
-			public CDTX.CChip SD;
-			public CDTX.CChip BD;
-			public CDTX.CChip HT;
-			public CDTX.CChip LT;
-			public CDTX.CChip FT;
-			public CDTX.CChip CY;
-			public CDTX.CChip HHO;
-			public CDTX.CChip RD;
-			public CDTX.CChip LC;
-            public CDTX.CChip LP;
-            public CDTX.CChip LBD;
-			public CDTX.CChip this[ int index ]
-			{
-				get
-				{
-					switch ( index )
-					{
-						case 0:
-							return this.HH;
-
-						case 1:
-							return this.SD;
-
-						case 2:
-							return this.BD;
-
-						case 3:
-							return this.HT;
-
-						case 4:
-							return this.LT;
-
-						case 5:
-							return this.FT;
-
-						case 6:
-							return this.CY;
-
-						case 7:
-							return this.HHO;
-
-						case 8:
-							return this.RD;
-
-						case 9:
-							return this.LC;
-
-                        case 10:
-                            return this.LP;
-
-                        case 11:
-                            return this.LBD;
-					}
-					throw new IndexOutOfRangeException();
-				}
-				set
-				{
-					switch ( index )
-					{
-						case 0:
-							this.HH = value;
-							return;
-
-						case 1:
-							this.SD = value;
-							return;
-
-						case 2:
-							this.BD = value;
-							return;
-
-						case 3:
-							this.HT = value;
-							return;
-
-						case 4:
-							this.LT = value;
-							return;
-
-						case 5:
-							this.FT = value;
-							return;
-
-						case 6:
-							this.CY = value;
-							return;
-
-						case 7:
-							this.HHO = value;
-							return;
-
-						case 8:
-							this.RD = value;
-							return;
-
-						case 9:
-							this.LC = value;
-							return;
-
-                        case 10:
-                            this.LP = value;
-                            return;
-					}
-					throw new IndexOutOfRangeException();
-				}
-			}
-		}
-
 		protected struct stmixer
 		{
 			internal bool bIsAdd;
@@ -668,21 +555,6 @@ namespace TJAPlayer3
 		protected Stopwatch sw;		// 2011.6.13 最適化検討用のストップウォッチ
 //		protected Stopwatch sw2;
 //		protected GCLatencyMode gclatencymode;
-
-        public struct STBranchStatus
-        {
-            public int nBranch_Perfect;
-            public int nBranch_Good;
-            public int nBranch_Miss;
-            public int nBranch_Roll;
-            public bool b強制的に分岐させた;
-            public bool bLEVELHOLD;
-            public bool bUseBranch;
-            public int n現在のコース; //0:普通譜面 1:玄人譜面 2:達人譜面
-            public int n次回のコース;
-            public bool b譜面分岐中;
-            public int n分岐した回数;
-        }
 
         //
         private System.Timers.Timer combot;

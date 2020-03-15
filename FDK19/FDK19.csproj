@@ -76,7 +76,6 @@
     <Compile Include="コード\00.共通\COS.cs" />
     <Compile Include="コード\00.共通\CPowerManagement.cs" />
     <Compile Include="コード\00.共通\CTimerBase.cs" />
-    <Compile Include="コード\00.共通\C一定間隔処理.cs" />
     <Compile Include="コード\00.共通\C共通.cs" />
     <Compile Include="コード\00.共通\ExtensionMethods\DoubleExtensions.cs" />
     <Compile Include="コード\00.共通\ExtensionMethods\Int32Extensions.cs" />
@@ -99,9 +98,6 @@
     <Compile Include="コード\01.フレームワーク\Rendering\GraphicsDeviceManager.cs" />
     <Compile Include="コード\01.フレームワーク\Rendering\NoCompatibleDevicesException.cs" />
     <Compile Include="コード\01.フレームワーク\Rendering\VertexElementAttribute.cs" />
-    <Compile Include="コード\01.フレームワーク\Utilities\Camera.cs" />
-    <Compile Include="コード\01.フレームワーク\Utilities\TransformedColoredTexturedVertex.cs" />
-    <Compile Include="コード\01.フレームワーク\Utilities\TransformedColoredVertex.cs" />
     <Compile Include="コード\01.フレームワーク\Win32\NativeMethods.cs" />
     <Compile Include="コード\01.フレームワーク\Win32\NativeStructures.cs" />
     <Compile Include="コード\01.フレームワーク\Win32\WindowConstants.cs" />
@@ -134,20 +130,15 @@
     <Compile Include="コード\04.グラフィック\BitmapUtil.cs" />
     <Compile Include="コード\04.グラフィック\CAero.cs" />
     <Compile Include="コード\04.グラフィック\CAvi.cs" />
-    <Compile Include="コード\04.グラフィック\CTaskBar.cs" />
     <Compile Include="コード\04.グラフィック\CTextureAutofold.cs" />
-    <Compile Include="コード\04.グラフィック\頂点フォーマット%28Vertex%29\ColoredVertex.cs" />
     <Compile Include="コード\04.グラフィック\CTexture.cs" />
     <Compile Include="コード\04.グラフィック\CTextureCreateFailedException.cs" />
     <Compile Include="コード\04.グラフィック\頂点フォーマット%28Vertex%29\PositionColoredTexturedVertex.cs" />
-    <Compile Include="コード\04.グラフィック\頂点フォーマット%28Vertex%29\TexturedVertex.cs" />
     <Compile Include="コード\04.グラフィック\頂点フォーマット%28Vertex%29\TransformedColoredTexturedVertex.cs" />
-    <Compile Include="コード\04.グラフィック\頂点フォーマット%28Vertex%29\TransformedColoredVertex.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="コード\00.共通\CActivity.cs" />
     <Compile Include="コード\00.共通\CCounter.cs" />
     <Compile Include="コード\00.共通\CFPS.cs" />
-    <Compile Include="コード\00.共通\CIniFile.cs" />
     <Compile Include="コード\00.共通\CTimer.cs" />
     <Compile Include="コード\00.共通\CTraceLogListener.cs" />
     <Compile Include="コード\00.共通\CWin32.cs" />
@@ -155,11 +146,11 @@
     <Compile Include="コード\05.DirectShow\CDirectShow.cs" />
     <Compile Include="コード\05.DirectShow\CDStoWAVFileImage.cs" />
     <Compile Include="コード\05.DirectShow\MemoryRenderer.cs" />
-    <Compile Include="コード\06.Tempo\CBeatDetect.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
