@@ -322,11 +322,10 @@ namespace TJAPlayer3
 			get;
 			set;
 		}
-		public DeviceCache Device
-		{
-			get { return base.GraphicsDeviceManager.Direct3D9.Device; }
-		}
-		private static Size currentClientSize		// #23510 2010.10.27 add yyagi to keep current window size
+
+		public DeviceCache Device => GraphicsDeviceManager.Device;
+
+        private static Size currentClientSize		// #23510 2010.10.27 add yyagi to keep current window size
 		{
 			get;
 			set;

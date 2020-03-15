@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace FDK
 {
-	public class C変換
+	public static class C変換
 	{
 		// プロパティ
 
@@ -23,29 +22,11 @@ namespace FDK
 		{
 			return ( ( Math.PI * angle ) / 180.0 );
 		}
-		public static double RadianToDegree( double angle )
-		{
-			return ( angle * 180.0 / Math.PI );
-		}
 		public static float DegreeToRadian( float angle )
 		{
 			return (float) DegreeToRadian( (double) angle );
 		}
-		public static float RadianToDegree( float angle )
-		{
-			return (float) RadianToDegree( (double) angle );
-		}
 
-		public static int n値を範囲内に丸めて返す( int n値, int n最小値, int n最大値 )
-		{
-			if( n値 < n最小値 )
-				return n最小値;
-
-			if( n値 > n最大値 )
-				return n最大値;
-
-			return n値;
-		}
 		public static int n値を文字列から取得して範囲内に丸めて返す( string str数値文字列, int n最小値, int n最大値, int n取得失敗時のデフォルト値 )
 		{
 			int num;
@@ -153,38 +134,6 @@ namespace FDK
 			}
 			return -1;
 		}
-		
-		public static string str小節番号を文字列3桁に変換して返す( int num )
-		{
-			if( ( num < 0 ) || ( num >= 3600 ) )	// 3600 == Z99 + 1
-				return "000";
-
-			int digit4 = num / 100;
-			int digit2 = ( num % 100 ) / 10;
-			int digit1 = ( num % 100 ) % 10;
-			char ch3 = str36進数文字[ digit4 ];
-			char ch2 = str16進数文字[ digit2 ];
-			char ch1 = str16進数文字[ digit1 ];
-			return ( ch3.ToString() + ch2.ToString() + ch1.ToString() );
-		}
-		public static string str数値を16進数2桁に変換して返す( int num )
-		{
-			if( ( num < 0 ) || ( num >= 0x100 ) )
-				return "00";
-
-			char ch2 = str16進数文字[ num / 0x10 ];
-			char ch1 = str16進数文字[ num % 0x10 ];
-			return ( ch2.ToString() + ch1.ToString() );
-		}
-		public static string str数値を36進数2桁に変換して返す( int num )
-		{
-			if( ( num < 0 ) || ( num >= 36 * 36 ) )
-				return "00";
-
-			char ch2 = str36進数文字[ num / 36 ];
-			char ch1 = str36進数文字[ num % 36 ];
-			return ( ch2.ToString() + ch1.ToString() );
-		}
 
         public static int[] ar配列形式のstringをint配列に変換して返す( string str )
         {
@@ -209,7 +158,6 @@ namespace FDK
             return nArray;
         }
 
-
         /// <summary>
         /// 百分率数値を255段階数値に変換するメソッド。透明度用。
         /// </summary>
@@ -219,34 +167,5 @@ namespace FDK
         {
             return (int)(255.0 * num);
         }
-
-        /// <summary>
-        /// 255段階数値を百分率に変換するメソッド。
-        /// </summary>
-        /// <param name="num"></param>
-        /// <returns></returns>
-        public static int n255ToParsent( int num )
-        {
-            return (int)(100.0 / num);
-        }
-
-        public static SlimDX.Color4 n255ToColor4( int nR, int nG, int nB )
-        {
-            float fR = n255ToParsent( nR );
-            float fG = n255ToParsent( nG );
-            float fB = n255ToParsent( nB );
-
-            return new SlimDX.Color4( fR, fG, fB );
-        }
-
-		#region [ private ]
-		//-----------------
-
-		// private コンストラクタでインスタンス生成を禁止する。
-		private C変換()
-		{
-		}
-		//-----------------
-		#endregion
-	} 
+    }
 }

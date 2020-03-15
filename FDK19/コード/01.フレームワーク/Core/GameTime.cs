@@ -94,27 +94,5 @@ namespace SampleFramework
             get { return m_IsRunningSlowly; }
             internal set { m_IsRunningSlowly = value; }
         }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="GameTime"/> class.
-        /// </summary>
-        public GameTime()
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="GameTime"/> class.
-        /// </summary>
-        /// <param name="totalRealTime">The total real time.</param>
-        /// <param name="elapsedRealTime">The elapsed real time.</param>
-        /// <param name="totalGameTime">The total game time.</param>
-        /// <param name="elapsedGameTime">The elapsed game time.</param>
-        public GameTime(float totalRealTime, float elapsedRealTime, float totalGameTime, float elapsedGameTime)
-        {
-            TotalRealTime = totalRealTime;
-            ElapsedRealTime = elapsedRealTime;
-            TotalGameTime = totalGameTime;
-            ElapsedGameTime = elapsedGameTime;
-        }
     }
 }
