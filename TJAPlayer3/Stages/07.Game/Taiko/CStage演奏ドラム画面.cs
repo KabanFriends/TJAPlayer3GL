@@ -369,7 +369,6 @@ namespace TJAPlayer3
 					base.eフェーズID = CStage.Eフェーズ.共通_フェードイン;
 					this.actFI.tフェードイン開始();
 
-					TJAPlayer3.Sound管理.tDisableUpdateBufferAutomatically();
 					base.b初めての進行描画 = false;
 				}
 				#endregion

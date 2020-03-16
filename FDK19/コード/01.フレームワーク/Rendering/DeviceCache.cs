@@ -158,11 +158,6 @@ namespace SampleFramework
             _device.SetTexture(sampler, texture);
         }
 
-        public Result SetRenderTarget(int targetIndex, Surface target)
-        {
-            return _device.SetRenderTarget(targetIndex, target);
-        }
-
         public Result DrawUserPrimitives<T>(PrimitiveType primitiveType, int startIndex, int primitiveCount, in T[] data) where T : struct//, new()
         {
             return _device.DrawUserPrimitives(primitiveType, startIndex, primitiveCount, data);
@@ -171,11 +166,6 @@ namespace SampleFramework
         public Result DrawUserPrimitives<T>(PrimitiveType primitiveType, int primitiveCount, in T[] data) where T : struct//, new()
         {
             return _device.DrawUserPrimitives(primitiveType, primitiveCount, data);
-        }
-
-        public Result StretchRectangle(Surface source, Surface destination, TextureFilter filter)
-        {
-            return _device.StretchRectangle(source, destination, filter);
         }
 
         public Result UpdateSurface(Surface source, in Rectangle sourceRectangle, Surface destination, in Point destinationPoint)

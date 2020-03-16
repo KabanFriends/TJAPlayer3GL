@@ -5,7 +5,6 @@ using System.Threading;
 using System.Diagnostics;
 using System.Windows.Forms;
 using System.IO;
-using FDK;
 using TJAPlayer3.ErrorReporting;
 using TJAPlayer3.Updates;
 
@@ -88,8 +87,6 @@ namespace TJAPlayer3
 #if DEBUG && TEST_ENGLISH
 					Thread.CurrentThread.CurrentCulture = new CultureInfo( "en-US" );
 #endif
-
-					DWM.EnableComposition( false );	// Disable AeroGrass temporally
 
                     using (var mania = new TJAPlayer3())
                     {

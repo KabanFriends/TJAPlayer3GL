@@ -176,7 +176,6 @@
     <Compile Include="Items\CItemBase.cs" />
     <Compile Include="Items\CItemInteger.cs" />
     <Compile Include="Items\CItemList.cs" />
-    <Compile Include="Items\CItemThreeState.cs" />
     <Compile Include="Items\CItemToggle.cs" />
     <Compile Include="Songs\CBoxDef.cs" />
     <Compile Include="Songs\CDTX.cs" />

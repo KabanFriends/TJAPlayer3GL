@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Text;
 using System.Runtime.InteropServices;
-using System.IO;
-using System.Diagnostics;
-using System.Threading;
-
 
 namespace FDK
 {
@@ -43,10 +38,6 @@ namespace FDK
 		public override uint GetTotalPCMSize( int nHandle )
 		{
 			return oggGetTotalPCMSize( nHandle );
-		}
-		public override int Seek( int nHandle, uint dwPosition )
-		{
-			return oggSeek( nHandle, dwPosition );
 		}
 		public override int Decode( int nHandle, IntPtr pDest, uint szDestSize, int bLoop )
 		{

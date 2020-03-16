@@ -1,10 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Text;
 using System.Drawing;
 using System.Threading;
-using SlimDX;
 using FDK;
 
 namespace TJAPlayer3
@@ -1137,20 +1134,7 @@ namespace TJAPlayer3
 					TJAPlayer3.ConfigIni.b垂直帰線待ちを行う = this.iSystemVSyncWait.bON;
 					TJAPlayer3.app.b次のタイミングで垂直帰線同期切り替えを行う = true;
 				}
-				#region [ AutoPlay #23886 2012.5.8 yyagi ]
-				else if ( this.list項目リスト[ this.n現在の選択項目 ] == this.iDrumsAutoPlayAll )
-				{
-					this.t全部のドラムパッドのAutoを切り替える( this.iDrumsAutoPlayAll.e現在の状態 == CItemThreeState.E状態.ON );
-				}
-				else if ( this.list項目リスト[ this.n現在の選択項目 ] == this.iGuitarAutoPlayAll )
-				{
-					this.t全部のギターパッドのAutoを切り替える( this.iGuitarAutoPlayAll.e現在の状態 == CItemThreeState.E状態.ON );
-				}
-				else if ( this.list項目リスト[ this.n現在の選択項目 ] == this.iBassAutoPlayAll )
-				{
-					this.t全部のベースパッドのAutoを切り替える( this.iBassAutoPlayAll.e現在の状態 == CItemThreeState.E状態.ON );
-				}
-				#endregion
+
 				#region [ キーアサインへの遷移と脱出 ]
 				else if ( this.list項目リスト[ this.n現在の選択項目 ] == this.iSystemGoToKeyAssign )			// #24609 2011.4.12 yyagi
 				{
@@ -1840,28 +1824,6 @@ namespace TJAPlayer3
 					//-----------------
 						#endregion
 
-					case CItemBase.E種別.ONorOFFor不定スリーステート:
-						#region [ *** ]
-						//-----------------
-						switch ( ( (CItemThreeState) this.list項目リスト[ nItem ] ).e現在の状態 )
-						{
-							case CItemThreeState.E状態.ON:
-								strParam = "ON";
-								break;
-
-							case CItemThreeState.E状態.不定:
-								strParam = "- -";
-								break;
-
-							default:
-								strParam = "OFF";
-								break;
-						}
-						//CDTXMania.stageコンフィグ.actFont.t文字列描画( x + 210, y + 12, "ON" );
-						break;
-					//-----------------
-						#endregion
-
 					case CItemBase.E種別.整数:		// #24789 2011.4.8 yyagi: add PlaySpeed supports (copied them from OPTION)
 						#region [ *** ]
 						//-----------------
@@ -2152,8 +2114,6 @@ namespace TJAPlayer3
 
 		private CItemList iSystemGRmode;
 
-		//private CItemToggle iBassAutoPlay;
-		private CItemThreeState iBassAutoPlayAll;			// #23886 2012.5.8 yyagi
 		private CItemToggle iBassR;							//
 		private CItemToggle iBassG;							//
 		private CItemToggle iBassB;							//
@@ -2173,7 +2133,6 @@ namespace TJAPlayer3
 		private CItemInteger iCommonPlaySpeed;
 //		private CItemBase iCommonReturnToMenu;
 
-		private CItemThreeState iDrumsAutoPlayAll;
 		private CItemToggle iDrumsBass;
 		private CItemToggle iDrumsCymbalRide;
 		private CItemToggle iDrumsFloorTom;
@@ -2220,8 +2179,6 @@ namespace TJAPlayer3
         CItemToggle ShinuchiMode;
         CItemToggle FastRender;
         CItemInteger MusicPreTimeMs;
-		//private CItemToggle iGuitarAutoPlay;
-		private CItemThreeState iGuitarAutoPlayAll;			// #23886 2012.5.8 yyagi
 		private CItemToggle iGuitarR;						//
 		private CItemToggle iGuitarG;						//
 		private CItemToggle iGuitarB;						//
@@ -2262,18 +2219,7 @@ namespace TJAPlayer3
 			}
 			return nItem;
 		}
-		private void t全部のドラムパッドのAutoを切り替える( bool bAutoON )
-		{
-			this.iDrumsLeftCymbal.bON = this.iDrumsHiHat.bON = this.iDrumsSnare.bON = this.iDrumsBass.bON = this.iDrumsHighTom.bON = this.iDrumsLowTom.bON = this.iDrumsFloorTom.bON = this.iDrumsCymbalRide.bON = bAutoON;
-		}
-		private void t全部のギターパッドのAutoを切り替える( bool bAutoON )
-		{
-			this.iGuitarR.bON = this.iGuitarG.bON = this.iGuitarB.bON = this.iGuitarPick.bON = this.iGuitarW.bON = bAutoON;
-		}
-		private void t全部のベースパッドのAutoを切り替える( bool bAutoON )
-		{
-			this.iBassR.bON = this.iBassG.bON = this.iBassB.bON = this.iBassPick.bON = this.iBassW.bON = bAutoON;
-		}
+
 		private void tConfigIniへ記録する()
 		{
 			switch( this.eメニュー種別 )

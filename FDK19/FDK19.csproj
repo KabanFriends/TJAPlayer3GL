@@ -93,10 +93,8 @@
     <Compile Include="コード\01.フレームワーク\Enumeration\Enumeration9.cs" />
     <Compile Include="コード\01.フレームワーク\Rendering\DeviceCreationException.cs" />
     <Compile Include="コード\01.フレームワーク\Rendering\DeviceCache.cs" />
-    <Compile Include="コード\01.フレームワーク\Rendering\Enums.cs" />
     <Compile Include="コード\01.フレームワーク\Rendering\GraphicsDeviceManager.cs" />
     <Compile Include="コード\01.フレームワーク\Rendering\NoCompatibleDevicesException.cs" />
-    <Compile Include="コード\01.フレームワーク\Rendering\VertexElementAttribute.cs" />
     <Compile Include="コード\01.フレームワーク\Win32\NativeMethods.cs" />
     <Compile Include="コード\01.フレームワーク\Win32\NativeStructures.cs" />
     <Compile Include="コード\01.フレームワーク\Win32\WindowConstants.cs" />
@@ -127,7 +125,6 @@
     <Compile Include="コード\03.サウンド\ISoundDevice.cs" />
     <Compile Include="コード\03.サウンド\SoundGroupLevelController.cs" />
     <Compile Include="コード\04.グラフィック\BitmapUtil.cs" />
-    <Compile Include="コード\04.グラフィック\CAero.cs" />
     <Compile Include="コード\04.グラフィック\CAvi.cs" />
     <Compile Include="コード\04.グラフィック\CTextureAutofold.cs" />
     <Compile Include="コード\04.グラフィック\CTexture.cs" />

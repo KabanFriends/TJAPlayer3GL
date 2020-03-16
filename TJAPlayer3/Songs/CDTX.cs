@@ -1477,7 +1477,7 @@ namespace TJAPlayer3
                 #region [ 同時発音数を、チャンネルによって変える ]
 
                 int nPoly = nPolyphonicSounds;
-                if (TJAPlayer3.Sound管理.GetCurrentSoundDeviceType() != "DirectSound") // DShowでの再生の場合はミキシング負荷が高くないため、
+                if (CSound管理.GetCurrentSoundDeviceType() != "DirectSound") // DShowでの再生の場合はミキシング負荷が高くないため、
                 {
                     // チップのライフタイム管理を行わない
                     if (cwav.bIsBassSound) nPoly = (nPolyphonicSounds >= 2) ? 2 : 1;
@@ -6372,7 +6372,7 @@ namespace TJAPlayer3
         /// </summary>
         public void PlanToAddMixerChannel()
         {
-            if (TJAPlayer3.Sound管理.GetCurrentSoundDeviceType() == "DirectSound") // DShowでの再生の場合はミキシング負荷が高くないため、
+            if (CSound管理.GetCurrentSoundDeviceType() == "DirectSound") // DShowでの再生の場合はミキシング負荷が高くないため、
             {                                                                       // チップのライフタイム管理を行わない
                 return;
             }

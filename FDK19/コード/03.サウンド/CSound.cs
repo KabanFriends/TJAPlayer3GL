@@ -9,8 +9,6 @@ using FDK.ExtensionMethods;
 using SlimDX.DirectSound;
 using SlimDX.Multimedia;
 using Un4seen.Bass;
-using Un4seen.BassAsio;
-using Un4seen.BassWasapi;
 using Un4seen.Bass.AddOn.Mix;
 using Un4seen.Bass.AddOn.Fx;
 
@@ -105,29 +103,14 @@ namespace FDK
 		//public static bool bIsMP3DecodeByWindowsCodec = false;
 
 		public static int nMixing = 0;
-		public int GetMixingStreams()
-		{
-			return nMixing;
-		}
 		public static int nStreams = 0;
-		public int GetStreams()
-		{
-			return nStreams;
-		}
+
 		#region [ WASAPI/ASIO/DirectSound設定値 ]
 		/// <summary>
 		/// <para>WASAPI 排他モード出力における再生遅延[ms]（の希望値）。最終的にはこの数値を基にドライバが決定する）。</para>
 		/// <para>0以下の値を指定すると、この数値はWASAPI初期化時に自動設定する。正数を指定すると、その値を設定しようと試みる。</para>
 		/// </summary>
 		public static int SoundDelayExclusiveWASAPI = 0;		// SSTでは、50ms
-		public int GetSoundExclusiveWASAPI()
-		{
-			return SoundDelayExclusiveWASAPI;
-		}
-		public void SetSoundDelayExclusiveWASAPI( int value )
-		{
-			SoundDelayExclusiveWASAPI = value;
-		}
 		/// <summary>
 		/// <para>WASAPI 共有モード出力における再生遅延[ms]。ユーザが決定する。</para>
 		/// </summary>
@@ -150,23 +133,7 @@ namespace FDK
 		/// <para>ASIO 出力におけるバッファサイズ。</para>
 		/// </summary>
 		public static int SoundDelayASIO = 0;						// 0にすると、デバイスの設定値をそのまま使う。
-		public int GetSoundDelayASIO()
-		{
-			return SoundDelayASIO;
-		}
-		public void SetSoundDelayASIO(int value)
-		{
-			SoundDelayASIO = value;
-		}
 		public static int ASIODevice = 0;
-		public int GetASIODevice()
-		{
-			return ASIODevice;
-		}
-		public void SetASIODevice(int value)
-		{
-			ASIODevice = value;
-		}
 		/// <summary>
 		/// <para>DirectSound 出力における再生遅延[ms]。ユーザが決定する。</para>
 		/// </summary>
@@ -205,25 +172,6 @@ namespace FDK
 		public void Dispose()
 		{
 			t終了();
-		}
-
-		//public static void t初期化()
-		//{
-		//    t初期化( ESoundDeviceType.DirectSound, 0, 0, 0 );
-		//}
-
-		public void t初期化( ESoundDeviceType soundDeviceType, int _nSoundDelayExclusiveWASAPI, int _nSoundDelayASIO, int _nASIODevice, IntPtr handle )
-		{
-			//if ( !bInitialized )
-			{
-				WindowHandle = handle;
-				t初期化( soundDeviceType, _nSoundDelayExclusiveWASAPI, _nSoundDelayASIO, _nASIODevice );
-				//bInitialized = true;
-			}
-		}
-		public void t初期化( ESoundDeviceType soundDeviceType, int _nSoundDelayExclusiveWASAPI, int _nSoundDelayASIO, int _nASIODevice )
-		{
-			t初期化( soundDeviceType, _nSoundDelayExclusiveWASAPI, _nSoundDelayASIO, _nASIODevice, false );
 		}
 
 		public void t初期化( ESoundDeviceType soundDeviceType, int _nSoundDelayExclusiveWASAPI, int _nSoundDelayASIO, int _nASIODevice, bool _bUseOSTimer )
@@ -288,16 +236,6 @@ namespace FDK
 				Trace.TraceInformation( "BASS_CONFIG_UpdateThreads=" + Bass.BASS_GetConfig( BASSConfig.BASS_CONFIG_UPDATETHREADS ) );
 			}
 		}
-
-		public void tDisableUpdateBufferAutomatically()
-		{
-			//Bass.BASS_SetConfig( BASSConfig.BASS_CONFIG_UPDATETHREADS, 0 );
-			//Bass.BASS_SetConfig( BASSConfig.BASS_CONFIG_UPDATEPERIOD, 0 );
-
-			//Trace.TraceInformation( "BASS_CONFIG_UpdatePeriod=" + Bass.BASS_GetConfig( BASSConfig.BASS_CONFIG_UPDATEPERIOD ) );
-			//Trace.TraceInformation( "BASS_CONFIG_UpdateThreads=" + Bass.BASS_GetConfig( BASSConfig.BASS_CONFIG_UPDATETHREADS ) );
-		}
-
 
 		public static void t終了()
 		{
@@ -375,56 +313,12 @@ namespace FDK
 			return SoundDevice.tサウンドを作成する( filename, soundGroup );
 		}
 
-		private static DateTime lastUpdateTime = DateTime.MinValue;
-		public void t再生中の処理をする( object o )			// #26122 2011.9.1 yyagi; delegate経由の呼び出し用
-		{
-			t再生中の処理をする();
-		}
-		public void t再生中の処理をする()
-		{
-//★★★★★★★★★★★★★★★★★★★★★ダミー★★★★★★★★★★★★★★★★★★
-//			Debug.Write( "再生中の処理をする()" );
-			//DateTime now = DateTime.Now;
-			//TimeSpan ts = now - lastUpdateTime;
-			//if ( ts.Milliseconds > 5 )
-			//{
-			//    bool b = Bass.BASS_Update( 100 * 2 );
-			//    lastUpdateTime = DateTime.Now;
-			//    if ( !b )
-			//    {
-			//        Trace.TraceInformation( "BASS_UPdate() failed: " + Bass.BASS_ErrorGetCode().ToString() );
-			//    }
-			//}
-		}
-
 		public void tサウンドを破棄する( CSound csound )
 		{
 		    csound?.t解放する( true );			// インスタンスは存続→破棄にする。
 		}
 
-		public float GetCPUusage()
-		{
-			float f;
-			switch ( SoundDeviceType )
-			{
-				case ESoundDeviceType.ExclusiveWASAPI:
-				case ESoundDeviceType.SharedWASAPI:
-					f = BassWasapi.BASS_WASAPI_GetCPU();
-					break;
-				case ESoundDeviceType.ASIO:
-					f = BassAsio.BASS_ASIO_GetCPU();
-					break;
-				case ESoundDeviceType.DirectSound:
-					f = 0.0f;
-					break;
-				default:
-					f = 0.0f;
-					break;
-			}
-			return f;
-		}
-
-		public string GetCurrentSoundDeviceType()
+		public static string GetCurrentSoundDeviceType()
 		{
 			switch ( SoundDeviceType )
 			{
@@ -439,33 +333,13 @@ namespace FDK
 					return "Unknown";
 			}
 		}
-
-		public void AddMixer( CSound cs, double db再生速度, bool _b演奏終了後も再生が続くチップである )
-		{
-			cs.b演奏終了後も再生が続くチップである = _b演奏終了後も再生が続くチップである;
-			cs.db再生速度 = db再生速度;
-			cs.tBASSサウンドをミキサーに追加する();
-		}
-		public void AddMixer( CSound cs, double db再生速度 )
-		{
-			cs.db再生速度 = db再生速度;
-			cs.tBASSサウンドをミキサーに追加する();
-		}
-		public void AddMixer( CSound cs )
-		{
-			cs.tBASSサウンドをミキサーに追加する();
-		}
-		public void RemoveMixer( CSound cs )
-		{
-			cs.tBASSサウンドをミキサーから削除する();
-		}
-	}
+    }
 	#endregion
 
 	// CSound は、サウンドデバイスが変更されたときも、インスタンスを再作成することなく、新しいデバイスで作り直せる必要がある。
 	// そのため、デバイスごとに別のクラスに分割するのではなく、１つのクラスに集約するものとする。
 
-	public class CSound : IDisposable
+	public sealed class CSound : IDisposable
 	{
 	    public const int MinimumSongVol = 0;
 	    public const int MaximumSongVol = 200; // support an approximate doubling in volume.
@@ -584,6 +458,18 @@ namespace FDK
 		//private STREAMPROC _cbStreamXA;		// make it global, so that the GC can not remove it
 		private SYNCPROC _cbEndofStream;	// ストリームの終端まで再生されたときに呼び出されるコールバック
 //		private WaitCallback _cbRemoveMixerChannel;
+
+        public void AddMixer( double db再生速度, bool _b演奏終了後も再生が続くチップである )
+        {
+            b演奏終了後も再生が続くチップである = _b演奏終了後も再生が続くチップである;
+            this.db再生速度 = db再生速度;
+            tBASSサウンドをミキサーに追加する();
+        }
+
+        public void RemoveMixer()
+        {
+            tBASSサウンドをミキサーから削除する();
+        }
 
 	    /// <summary>
 	    /// Gain is applied "first" to the audio data, much as in a physical or
@@ -818,15 +704,6 @@ namespace FDK
 		/// <para>～を作成する() で追加され、t解放する() or Dispose() で解放される。</para>
 		/// </summary>
 		public static readonly ObservableCollection<CSound> listインスタンス = new ObservableCollection<CSound>();
-
-		public static void ShowAllCSoundFiles()
-		{
-			int i = 0;
-			foreach ( CSound cs in listインスタンス )
-			{
-				Debug.WriteLine( i++.ToString( "d3" ) + ": " + Path.GetFileName( cs.strファイル名 ) );
-			}
-		}
 
 		public CSound(ESoundGroup soundGroup)
 		{
@@ -1094,10 +971,6 @@ namespace FDK
 
 		#region [ DTXMania用の変換 ]
 
-		public void tサウンドを破棄する( CSound cs )
-		{
-			cs.t解放する();
-		}
 		public void t再生を開始する()
 		{
 			t再生位置を先頭に戻す();

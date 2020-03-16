@@ -220,7 +220,7 @@ namespace TJAPlayer3
 			TJAPlayer3.Skin.tRemoveMixerAll();	// 効果音のストリームをミキサーから解除しておく
 
 			queueMixerSound = new Queue<stmixer>( 64 );
-			bIsDirectSound = ( TJAPlayer3.Sound管理.GetCurrentSoundDeviceType() == "DirectSound" );
+			bIsDirectSound = ( CSound管理.GetCurrentSoundDeviceType() == "DirectSound" );
 			bUseOSTimer = TJAPlayer3.ConfigIni.bUseOSTimer;
 			this.bPAUSE = false;
 
@@ -242,7 +242,7 @@ namespace TJAPlayer3
 							{
 								if ( wc.rSound[ i ] != null )
 								{
-									TJAPlayer3.Sound管理.AddMixer( wc.rSound[ i ], db再生速度, pChip.b演奏終了後も再生が続くチップである );
+                                    wc.rSound[ i ].AddMixer( db再生速度, pChip.b演奏終了後も再生が続くチップである );
 									//AddMixer( wc.rSound[ i ] );		// 最初はqueueを介さず直接ミキサー登録する
 								}
 							}
@@ -603,11 +603,11 @@ namespace TJAPlayer3
 						stmixer stm = queueMixerSound.Dequeue();
 						if ( stm.bIsAdd )
 						{
-							TJAPlayer3.Sound管理.AddMixer( stm.csound, db再生速度, stm.b演奏終了後も再生が続くチップである );
+                            stm.csound.AddMixer( db再生速度, stm.b演奏終了後も再生が続くチップである );
 						}
 						else
 						{
-							TJAPlayer3.Sound管理.RemoveMixer( stm.csound );
+                            stm.csound.RemoveMixer();
 						}
 					}
 				}
