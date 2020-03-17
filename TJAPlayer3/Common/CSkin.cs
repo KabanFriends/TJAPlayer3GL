@@ -16,7 +16,8 @@ namespace TJAPlayer3
 		BGMコンフィグ画面,
 		BGM起動画面,
 		BGM選曲画面,
-		SOUNDステージ失敗音,
+        BGM結果画面,
+        SOUNDステージ失敗音,
 		SOUNDカーソル移動音,
 		SOUNDゲーム開始音,
 		SOUNDゲーム終了音,
@@ -302,6 +303,7 @@ namespace TJAPlayer3
         public Cシステムサウンド bgmコンフィグ画面 = null;
         public Cシステムサウンド bgm起動画面 = null;
         public Cシステムサウンド bgm選曲画面 = null;
+        public Cシステムサウンド bgm結果画面 = null;
         public Cシステムサウンド soundSTAGEFAILED音 = null;
         public Cシステムサウンド soundカーソル移動音 = null;
         public Cシステムサウンド soundゲーム開始音 = null;
@@ -381,19 +383,22 @@ namespace TJAPlayer3
                     case 15:
                         return this.bgm選曲画面;
 
+                    case 16:
+                        return this.bgm結果画面;
+
                     //case 16:
                     //    return this.soundRed;
 
                     //case 17:
                     //    return this.soundBlue;
 
-                    case 16:
+                    case 17:
                         return this.soundBalloon;
 
-                    case 17:
+                    case 18:
                         return this.sound曲決定音;
 
-                    case 18:
+                    case 19:
                         return this.sound成績発表;
                 }
                 throw new IndexOutOfRangeException();
@@ -536,6 +541,7 @@ namespace TJAPlayer3
             this.bgmオプション画面 = new Cシステムサウンド(@"Sounds\Option BGM.ogg", true, true, ESoundGroup.SongPlayback);
             this.bgmコンフィグ画面 = new Cシステムサウンド(@"Sounds\Config BGM.ogg", true, true,  ESoundGroup.SongPlayback);
             this.bgm選曲画面 = new Cシステムサウンド(@"Sounds\Select BGM.ogg", true, true, ESoundGroup.SongPreview);
+            this.bgm結果画面 = new Cシステムサウンド(@"Sounds\Result BGM.ogg", true, true, ESoundGroup.SongPreview);
 
             //this.soundRed               = new Cシステムサウンド( @"Sounds\dong.ogg",            false, false, ESoundType.SoundEffect );
             //this.soundBlue              = new Cシステムサウンド( @"Sounds\ka.ogg",              false, false, ESoundType.SoundEffect );

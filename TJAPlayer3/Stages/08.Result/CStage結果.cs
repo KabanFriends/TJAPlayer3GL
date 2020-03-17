@@ -272,7 +272,7 @@ namespace TJAPlayer3
 		}
 		public override int On進行描画()
 		{
-			if( !base.b活性化してない )
+            if ( !base.b活性化してない )
 			{
 				int num;
 				if( base.b初めての進行描画 )
@@ -285,7 +285,7 @@ namespace TJAPlayer3
 						this.rResultSound.t再生を開始する();
 					}
 					base.b初めての進行描画 = false;
-				}
+                }
 				this.bアニメが完了 = true;
 				if( this.ct登場用.b進行中 )
 				{
@@ -349,6 +349,7 @@ namespace TJAPlayer3
 					if( this.actFI.On進行描画() != 0 )
 					{
 						base.eフェーズID = CStage.Eフェーズ.共通_通常状態;
+                        TJAPlayer3.Skin.bgm結果画面.t再生する();
 					}
 				}
 				else if( ( base.eフェーズID == CStage.Eフェーズ.共通_フェードアウト ) )			//&& ( this.actFO.On進行描画() != 0 ) )
