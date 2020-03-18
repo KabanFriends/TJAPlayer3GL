@@ -18,16 +18,12 @@ namespace TJAPlayer3
 			base.eステージID = CStage.Eステージ.演奏;
 			base.eフェーズID = CStage.Eフェーズ.共通_通常状態;
 			base.b活性化してない = true;
-			base.list子Activities.Add( this.actPad = new CAct演奏Drumsパッド() );
-			base.list子Activities.Add( this.actCombo = new CAct演奏DrumsコンボDGB() );
-			base.list子Activities.Add( this.actDANGER = new CAct演奏DrumsDanger() );
+			base.list子Activities.Add( this.actCombo = new CAct演奏Combo共通() );
 			base.list子Activities.Add( this.actChipFireD = new CAct演奏DrumsチップファイアD() );
 			base.list子Activities.Add( this.Rainbow = new Rainbow() );
             base.list子Activities.Add( this.actGauge = new CAct演奏Drumsゲージ() );
-            base.list子Activities.Add( this.actGraph = new CAct演奏Drumsグラフ() ); // #24074 2011.01.23 add ikanick
 			base.list子Activities.Add( this.actJudgeString = new CAct演奏Drums判定文字列() );
 			base.list子Activities.Add( this.actTaikoLaneFlash = new TaikoLaneFlash() );
-			base.list子Activities.Add( this.actLaneFlushGB = new CAct演奏DrumsレーンフラッシュGB() );
 			base.list子Activities.Add( this.actScore = new CAct演奏Drumsスコア() );
 			base.list子Activities.Add( this.actStatusPanels = new CAct演奏Drumsステータスパネル() );
 			base.list子Activities.Add( this.act譜面スクロール速度 = new CAct演奏スクロール速度() );
@@ -462,7 +458,7 @@ namespace TJAPlayer3
 
                 for ( int i = 0; i < TJAPlayer3.ConfigIni.nPlayerCount; i++ )
                 {
-				    bIsFinishedPlaying = this.t進行描画_チップ( E楽器パート.DRUMS, i );
+				    bIsFinishedPlaying = this.t進行描画_チップ( i );
                     this.t進行描画_チップ_連打( E楽器パート.DRUMS, i );
                 }
 
@@ -584,8 +580,6 @@ namespace TJAPlayer3
 		}
 		public CAct演奏DrumsチップファイアD actChipFireD;
 
-		private CAct演奏Drumsグラフ actGraph;   // #24074 2011.01.23 add ikanick
-		private CAct演奏Drumsパッド actPad;
         public CAct演奏Drumsレーン actLane;
         public CAct演奏DrumsMtaiko actMtaiko;
         public CAct演奏Drumsレーン太鼓 actLaneTaiko;
@@ -630,46 +624,6 @@ namespace TJAPlayer3
         private readonly ST文字位置[] st小文字位置;
         private readonly ST文字位置[] st大文字位置;
 		//-----------------
-
-		private bool bフィルイン区間の最後のChipである( CDTX.CChip pChip )
-		{
-			if( pChip == null )
-			{
-				return false;
-			}
-			int num = pChip.n発声位置;
-			for( int i = listChip[0].IndexOf( pChip ) + 1; i < listChip[0].Count; i++ )
-			{
-				pChip = listChip[0][ i ];
-				if( ( pChip.nチャンネル番号 == 0x53 ) && ( pChip.n整数値 == 2 ) )
-				{
-					return true;
-				}
-				if( ( ( pChip.nチャンネル番号 >= 0x11 ) && ( pChip.nチャンネル番号 <= 0x1C ) ) && ( ( pChip.n発声位置 - num ) > 0x18 ) )
-				{
-					return false;
-				}
-			}
-			return true;
-		}
-
-		protected override E判定 tチップのヒット処理( long nHitTime, CDTX.CChip pChip, bool bCorrectLane )
-		{
-			E判定 eJudgeResult = tチップのヒット処理( nHitTime, pChip, E楽器パート.DRUMS, bCorrectLane, 0 );
-			// #24074 2011.01.23 add ikanick
-            if( pChip.nコース == this.n現在のコース[ 0 ] && ( pChip.nチャンネル番号 >= 0x11 && pChip.nチャンネル番号 <= 0x14 ) && pChip.bShow == true && eJudgeResult != E判定.Auto )
-                this.actGame.t叩ききりまショー_判定から各数値を増加させる( eJudgeResult, (int)( nHitTime - pChip.n発声時刻ms ) );
-			return eJudgeResult;
-		}
-
-		protected override void tチップのヒット処理_BadならびにTight時のMiss( E楽器パート part )
-		{
-			this.tチップのヒット処理_BadならびにTight時のMiss( part, 0, E楽器パート.DRUMS );
-		}
-		protected override void tチップのヒット処理_BadならびにTight時のMiss( E楽器パート part, int nLane )
-		{
-			this.tチップのヒット処理_BadならびにTight時のMiss( part, nLane, E楽器パート.DRUMS );
-		}
 
 		private bool tドラムヒット処理( long nHitTime, Eパッド type, CDTX.CChip pChip, bool b両手入力, int nPlayer )
 		{
@@ -791,31 +745,10 @@ namespace TJAPlayer3
 		{
 			base.t進行描画_AVI( 0, 0 );
 		}
-		protected override void t進行描画_DANGER()
-		{
-			this.actDANGER.t進行描画( this.actGauge.IsDanger(E楽器パート.DRUMS), false, false );
-		}
-
-		private void t進行描画_グラフ()        
-        {
-			if( TJAPlayer3.ConfigIni.bGraph.Drums )
-			{
-                this.actGraph.On進行描画();
-            }
-        }
 
 		private void t進行描画_チップファイアD()
 		{
 			this.actChipFireD.On進行描画();
-		}
-
-
-		private void t進行描画_ドラムパッド()
-		{
-			if( TJAPlayer3.ConfigIni.eDark != Eダークモード.FULL )
-			{
-				this.actPad.On進行描画();
-			}
 		}
 
 		protected override void t進行描画_演奏情報()
@@ -1241,37 +1174,6 @@ namespace TJAPlayer3
 					//-----------------------------
 					#endregion
 				}
-			}
-		}
-
-		// t入力処理_ドラム()からメソッドを抽出したもの。
-		/// <summary>
-		/// chipArrayの中を, n発生位置の小さい順に並べる + nullを大きい方に退かす。セットでe判定Arrayも並べ直す。
-		/// </summary>
-		/// <param name="chipArray">ソート対象chip群</param>
-		/// <param name="e判定Array">ソート対象e判定群</param>
-		/// <param name="NumOfChips">チップ数</param>
-		private static void SortChipsByNTime( CDTX.CChip[] chipArray, E判定[] e判定Array, int NumOfChips )
-		{
-			for ( int i = 0; i < NumOfChips - 1; i++ )
-			{
-				//num9 = 2;
-				//while( num9 > num8 )
-				for ( int j = NumOfChips - 1; j > i; j-- )
-				{
-					if ( ( chipArray[ j - 1 ] == null ) || ( ( chipArray[ j ] != null ) && ( chipArray[ j - 1 ].n発声位置 > chipArray[ j ].n発声位置 ) ) )
-					{
-						// swap
-						CDTX.CChip chipTemp = chipArray[ j - 1 ];
-						chipArray[ j - 1 ] = chipArray[ j ];
-						chipArray[ j ] = chipTemp;
-						E判定 e判定Temp = e判定Array[ j - 1 ];
-						e判定Array[ j - 1 ] = e判定Array[ j ];
-						e判定Array[ j ] = e判定Temp;
-					}
-					//num9--;
-				}
-				//num8++;
 			}
 		}
 
@@ -1970,16 +1872,6 @@ namespace TJAPlayer3
             #endregion
 		}
 
-		protected override void t進行描画_チップ_ドラムス( CConfigIni configIni, ref CDTX dTX, ref CDTX.CChip pChip )
-		{
-		}
-        protected override void t進行描画_チップ本体_ドラムス( CConfigIni configIni, ref CDTX dTX, ref CDTX.CChip pChip )
-		{
-		}
-		protected override void t進行描画_チップ_フィルイン( CConfigIni configIni, ref CDTX dTX, ref CDTX.CChip pChip )
-		{
-
-		}
 		protected override void t進行描画_チップ_小節線( CConfigIni configIni, ref CDTX dTX, ref CDTX.CChip pChip, int nPlayer )
 		{
             if( pChip.nコース != this.n現在のコース[ nPlayer ] )
@@ -2035,11 +1927,6 @@ namespace TJAPlayer3
                 }
 			}
 		}
-
-        protected void t進行描画_レーン()
-        {
-            this.actLane.On進行描画();
-        }
 
         /// <summary>
         /// 全体にわたる制御をする。

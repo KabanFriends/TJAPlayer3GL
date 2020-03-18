@@ -891,32 +891,6 @@ namespace TJAPlayer3
 		}
 		#endregion
 
-		/// <summary>Sud+Hidの初期値を返す</summary>
-		/// <param name="eInst"></param>
-		/// <returns>
-		/// 0: None
-		/// 1: Sudden
-		/// 2: Hidden
-		/// 3: Sud+Hid
-		/// 4: Semi-Invisible
-		/// 5: Full-Invisible
-		/// </returns>
-		private int getDefaultSudHidValue( E楽器パート eInst )
-		{
-			int defvar;
-			int nInst = (int) eInst;
-			if ( TJAPlayer3.ConfigIni.eInvisible[ nInst ] != EInvisible.OFF )
-			{
-				defvar = (int) TJAPlayer3.ConfigIni.eInvisible[ nInst ] + 3;
-			}
-			else
-			{
-				defvar = ( TJAPlayer3.ConfigIni.bSudden[ nInst ] ? 1 : 0 ) +
-						 ( TJAPlayer3.ConfigIni.bHidden[ nInst ] ? 2 : 0 );
-			}
-			return defvar;
-		}
-
 		/// <summary>
 		/// ESC押下時の右メニュー描画
 		/// </summary>

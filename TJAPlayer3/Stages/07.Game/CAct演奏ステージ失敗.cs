@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Drawing;
-using System.IO;
 using System.Runtime.InteropServices;
 using FDK;
 
@@ -219,11 +216,6 @@ namespace TJAPlayer3
         {
             public char ch;
             public Point pt;
-            public ST文字位置( char ch, Point pt )
-            {
-                this.ch = ch;
-                this.pt = pt;
-            }
         }
 
         private void t文字表示( int x, int y, string str )

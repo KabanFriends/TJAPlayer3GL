@@ -20,8 +20,6 @@ namespace FDK
 		private static extern uint mp3GetTotalPCMSize( int nHandle );
 		[DllImport( "SoundDecoder.dll" )]
 		private static extern int mp3Open( string fileName );
-		[DllImport( "SoundDecoder.dll" )]
-		private static extern int mp3Seek( int nHandle, uint dwPosition );
 		//-----------------
 		#endregion
 

@@ -57,10 +57,6 @@ namespace TJAPlayer3
 			this.n現在選択されている項目番号 = 0;
 			this.list項目値.Clear();
 		}
-		public void t初期化( string str項目名, CItemBase.Eパネル種別 eパネル種別, int n初期インデックス値, params string[] arg項目リスト )
-		{
-			this.t初期化(str項目名, eパネル種別, n初期インデックス値, "", "",arg項目リスト);
-		}
 		public void t初期化(string str項目名, CItemBase.Eパネル種別 eパネル種別, int n初期インデックス値, string str説明文jp, params string[] arg項目リスト) {
 			this.t初期化(str項目名, eパネル種別, n初期インデックス値, str説明文jp, str説明文jp, arg項目リスト);
 		}

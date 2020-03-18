@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Drawing;
-using System.Diagnostics;
+﻿using System.Drawing;
 using System.Runtime.InteropServices;
-using SlimDX;
 using FDK;
 
 namespace TJAPlayer3
@@ -98,27 +93,6 @@ namespace TJAPlayer3
 
             this.ct風船ふきだしアニメ = new CCounter(0, 1, 100, TJAPlayer3.Timer);
             base.OnManagedリソースの作成();
-        }
-
-        public override void OnManagedリソースの解放()
-        {
-            //CDTXMania.tテクスチャの解放(ref this.tx連打枠);
-            //CDTXMania.tテクスチャの解放(ref this.tx連打数字);
-
-            //CDTXMania.tテクスチャの解放(ref this.txキャラクター);
-            //CDTXMania.tテクスチャの解放(ref this.txキャラクター_風船終了);
-
-            //for (int i = 0; i < 6; i++)
-            //{
-            //    CDTXMania.tテクスチャの解放(ref this.tx風船枠[i]);
-            //}
-
-            base.OnManagedリソースの解放();
-        }
-
-        public override int On進行描画()
-        {
-            return base.On進行描画();
         }
 
         public int On進行描画(int n連打ノルマ, int n連打数, int player)
@@ -285,11 +259,6 @@ namespace TJAPlayer3
                 }
                 x += (TJAPlayer3.Skin.Game_Balloon_Number_Padding - (n桁数 > 2 ? n桁数 * 2 : 0));
             }
-        }
-
-        public void tEnd()
-        {
-            this.ct風船終了 = new CCounter(0, 80, 10, CSound管理.rc演奏用タイマ);
         }
     }
 }

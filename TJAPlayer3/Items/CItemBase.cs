@@ -60,10 +60,6 @@ namespace TJAPlayer3
 		public virtual void t項目値を前へ移動()
 		{
 		}
-		public virtual void t初期化( string str項目名 )
-		{
-			this.t初期化( str項目名, Eパネル種別.通常 );
-		}
 		public virtual void t初期化(string str項目名, string str説明文jp, string str説明文en) {
 			this.t初期化(str項目名, Eパネル種別.通常, str説明文jp, str説明文en);
 		}

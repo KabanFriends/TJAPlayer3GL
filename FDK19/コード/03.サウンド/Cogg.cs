@@ -21,8 +21,6 @@ namespace FDK
 		private static extern uint oggGetTotalPCMSize( int nHandle );
 		[DllImport( "SoundDecoder.dll" )]
 		private static extern int oggOpen( string fileName );
-		[DllImport( "SoundDecoder.dll" )]
-		private static extern int oggSeek( int nHandle, uint dwPosition );
 		//-----------------
 		#endregion
 

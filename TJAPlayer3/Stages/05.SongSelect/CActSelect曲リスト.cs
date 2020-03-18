@@ -179,18 +179,8 @@ namespace TJAPlayer3
 
 			return n最も近いレベル;
 		}
-		public C曲リストノード r指定された曲が存在するリストの先頭の曲( C曲リストノード song )
-		{
-			List<C曲リストノード> songList = GetSongListWithinMe( song );
-			return ( songList == null ) ? null : songList[ 0 ];
-		}
-		public C曲リストノード r指定された曲が存在するリストの末尾の曲( C曲リストノード song )
-		{
-			List<C曲リストノード> songList = GetSongListWithinMe( song );
-			return ( songList == null ) ? null : songList[ songList.Count - 1 ];
-		}
 
-		private List<C曲リストノード> GetSongListWithinMe( C曲リストノード song )
+		private static List<C曲リストノード> GetSongListWithinMe( C曲リストノード song )
 		{
 			if ( song.r親ノード == null )					// root階層のノートだったら
 			{
@@ -1782,62 +1772,7 @@ namespace TJAPlayer3
 
 			return list[ index - 1 ];
 		}
-		private void tスキル値の描画( int x, int y, int nスキル値 )
-		{
-			if( nスキル値 <= 0 || nスキル値 > 100 )		// スキル値 0 ＝ 未プレイ なので表示しない。
-				return;
 
-			int color = ( nスキル値 == 100 ) ? 3 : ( nスキル値 / 25 );
-
-			int n百の位 = nスキル値 / 100;
-			int n十の位 = ( nスキル値 % 100 ) / 10;
-			int n一の位 = ( nスキル値 % 100 ) % 10;
-
-
-			// 百の位の描画。
-
-			if( n百の位 > 0 )
-				this.tスキル値の描画_１桁描画( x, y, n百の位, color );
-
-
-			// 十の位の描画。
-
-			if( n百の位 != 0 || n十の位 != 0 )
-				this.tスキル値の描画_１桁描画( x + 7, y, n十の位, color );
-
-
-			// 一の位の描画。
-
-			this.tスキル値の描画_１桁描画( x + 14, y, n一の位, color );
-		}
-		private void tスキル値の描画_１桁描画( int x, int y, int n数値, int color )
-		{
-			//int dx = ( n数値 % 5 ) * 9;
-			//int dy = ( n数値 / 5 ) * 12;
-			
-			//switch( color )
-			//{
-			//	case 0:
-			//		if( this.txスキル数字 != null )
-			//			this.txスキル数字.t2D描画( CDTXMania.app.Device, x, y, new Rectangle( 45 + dx, 24 + dy, 9, 12 ) );
-			//		break;
-
-			//	case 1:
-			//		if( this.txスキル数字 != null )
-			//			this.txスキル数字.t2D描画( CDTXMania.app.Device, x, y, new Rectangle( 45 + dx, dy, 9, 12 ) );
-			//		break;
-
-			//	case 2:
-			//		if( this.txスキル数字 != null )
-			//			this.txスキル数字.t2D描画( CDTXMania.app.Device, x, y, new Rectangle( dx, 24 + dy, 9, 12 ) );
-			//		break;
-
-			//	case 3:
-			//		if( this.txスキル数字 != null )
-			//			this.txスキル数字.t2D描画( CDTXMania.app.Device, x, y, new Rectangle( dx, dy, 9, 12 ) );
-			//		break;
-			//}
-		}
 		private void tバーの初期化()
 		{
 			C曲リストノード song = this.r現在選択中の曲;
@@ -1876,48 +1811,6 @@ namespace TJAPlayer3
 			this.n現在の選択行 = 5;
 		}
 
-	    private void tバーの描画( int x, int y, Eバー種別 type, bool b選択曲 )
-		{
-			//if( x >= SampleFramework.GameWindowSize.Width || y >= SampleFramework.GameWindowSize.Height )
-			//	return;
-
-			//if( b選択曲 )
-			//{
-			//	#region [ (A) 選択曲の場合 ]
-			//	//-----------------
-			//	if( this.tx選曲バー[ (int) type ] != null )
-			//		this.tx選曲バー[ (int) type ].t2D描画( CDTXMania.app.Device, x, y, new Rectangle( 0, 0, 128, 96 ) );	// ヘサキ
-			//	x += 128;
-
-			//	var rc = new Rectangle( 128, 0, 128, 96 );
-			//	while( x < 1280 )
-			//	{
-			//		if( this.tx選曲バー[ (int) type ] != null )
-			//			this.tx選曲バー[ (int) type ].t2D描画( CDTXMania.app.Device, x, y, rc );	// 胴体；64pxずつ横につなげていく。
-			//		x += 128;
-			//	}
-			//	//-----------------
-			//	#endregion
-			//}
-			//else
-			//{
-			//	#region [ (B) その他の場合 ]
-			//	//-----------------
-			//	if( this.tx曲名バー[ (int) type ] != null )
-			//		this.tx曲名バー[ (int) type ].t2D描画( CDTXMania.app.Device, x, y, new Rectangle( 0, 0, 128, 48 ) );		// ヘサキ
-			//	x += 128;
-
-			//	var rc = new Rectangle( 0, 48, 128, 48 );
-			//	while( x < 1280 )
-			//	{
-			//		if( this.tx曲名バー[ (int) type ] != null )
-			//			this.tx曲名バー[ (int) type ].t2D描画( CDTXMania.app.Device, x, y, rc );	// 胴体；64pxずつ横につなげていく。
-			//		x += 128;
-			//	}
-			//	//-----------------
-			//	#endregion
-			//}
-		}
 		private void tジャンル別選択されていない曲バーの描画( int x, int y, string strジャンル )
 		{
 			if( x >= SampleFramework.GameWindowSize.Width || y >= SampleFramework.GameWindowSize.Height )

@@ -1,10 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Runtime.InteropServices;
-using System.Drawing;
-using System.Diagnostics;
-using SlimDX;
 using FDK;
 
 namespace TJAPlayer3
@@ -16,38 +10,14 @@ namespace TJAPlayer3
     /// _STAGE FAILED OFF時にゲージ回復を止める
     /// _黒→閉店までの差を大きくする。
 	/// </summary>
-	internal class CAct演奏ゲージ共通 : CActivity
+	internal abstract class CAct演奏ゲージ共通 : CActivity
 	{
-		// プロパティ
-		public CActLVLNFont actLVLNFont { get; protected set; }
-
-		// コンストラクタ
-		public CAct演奏ゲージ共通()
-		{
-			//actLVLNFont = new CActLVLNFont();		// On活性化()に移動
-			//actLVLNFont.On活性化();
-		}
-
 		// CActivity 実装
 
-		public override void On活性化()
-		{
-			actLVLNFont = new CActLVLNFont();
-			actLVLNFont.On活性化();
-			base.On活性化();
-		}
-		public override void On非活性化()
-		{
-			actLVLNFont.On非活性化();
-			actLVLNFont = null;
-			base.On非活性化();
-		}
-		
 		const double GAUGE_MAX = 100.0;
 		const double GAUGE_INITIAL =  2.0 / 3;
 		const double GAUGE_MIN = -0.1;
 		const double GAUGE_ZERO = 0.0;
-		const double GAUGE_DANGER = 0.3;
 	
 		public bool bRisky							// Riskyモードか否か
 		{
@@ -71,22 +41,6 @@ namespace TJAPlayer3
 			}
 			return this.db現在のゲージ値[ (int) part ] <= GAUGE_MIN;
 		}
-		public bool IsDanger( E楽器パート part )	// DANGERかどうか
-		{
-			if ( bRisky )
-			{
-				switch ( nRiskyTimes_Initial ) {
-					case 1:
-						return false;
-					case 2:
-					case 3:
-						return ( nRiskyTimes <= 1 );
-					default: 
-						return ( nRiskyTimes <= 2 );
-				}
-			}
-			return ( this.db現在のゲージ値[ (int) part ] <= GAUGE_DANGER );
-		}
 
 		public double dbゲージ値	// Drums専用
 		{
@@ -104,24 +58,7 @@ namespace TJAPlayer3
 			}
 		}
 
-		public double dbゲージ値2P	// Drums専用
-		{
-			get
-			{
-				return this.db現在のゲージ値[ 1 ];
-			}
-			set
-			{
-				this.db現在のゲージ値[ 1 ] = value;
-				if ( this.db現在のゲージ値[ 1 ] > GAUGE_MAX )
-				{
-					this.db現在のゲージ値[ 1 ] = GAUGE_MAX;
-				}
-			}
-		}
-    
-
-		/// <summary>
+        /// <summary>
 		/// ゲージの初期化
 		/// </summary>
 		/// <param name="nRiskyTimes_Initial_">Riskyの初期値(0でRisky未使用)</param>

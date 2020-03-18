@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Runtime.InteropServices;
 using System.Drawing;
-using SlimDX;
 using FDK;
 
 namespace TJAPlayer3
 {
-	internal class CAct演奏Combo共通 : CActivity
+	internal sealed class CAct演奏Combo共通 : CActivity
 	{
 		// プロパティ
 
@@ -307,11 +303,7 @@ namespace TJAPlayer3
 
 		// メソッド
 
-		protected virtual void tコンボ表示_ドラム( int nCombo値, int nジャンプインデックス )
-		{
-		}
-
-      	protected virtual void tコンボ表示_太鼓( int nCombo値, int nジャンプインデックス, int nPlayer )
+        private void tコンボ表示_太鼓( int nCombo値, int nジャンプインデックス, int nPlayer )
 		{
             //テスト用コンボ数
             //nCombo値 = 114;
@@ -537,25 +529,6 @@ namespace TJAPlayer3
 			#endregion
 		}
 
-		protected virtual void tコンボ表示_ギター( int nCombo値, int nジャンプインデックス )
-		{
-		}
-		protected virtual void tコンボ表示_ベース( int nCombo値, int nジャンプインデックス )
-		{
-		}
-		protected void tコンボ表示_ギター( int nCombo値, int n表示中央X, int n表示中央Y, int nジャンプインデックス )
-		{
-
-		}
-		protected void tコンボ表示_ベース( int nCombo値, int n表示中央X, int n表示中央Y, int nジャンプインデックス )
-		{
-
-		}
-		protected void tコンボ表示_ギターベース( int nCombo値, int n表示中央X, int n表示中央Y, int nジャンプインデックス )
-		{
-		}
-
-
 		// CActivity 実装
 
 		public override void On活性化()
@@ -697,14 +670,6 @@ namespace TJAPlayer3
 
 							case 1:
 								this.tコンボ表示_太鼓( this.status[ i ].nCOMBO値, this.status[ i ].nジャンプインデックス値, 1 );
-								break;
-
-							case 2:
-								this.tコンボ表示_ベース( this.status[ i ].nCOMBO値, this.status[ i ].nジャンプインデックス値 );
-								break;
-
-							case 3:
-								this.tコンボ表示_ドラム( this.status[ i ].nCOMBO値, this.status[ i ].nジャンプインデックス値 );
 								break;
 						}
 						break;
