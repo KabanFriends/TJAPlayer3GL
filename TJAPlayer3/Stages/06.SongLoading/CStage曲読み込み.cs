@@ -339,8 +339,8 @@ namespace TJAPlayer3
                             // 段位認定モード用。
                             if (TJAPlayer3.stage選曲.n確定された曲の難易度 == (int)Difficulty.Dan && TJAPlayer3.DTX.List_DanSongs != null)
                             {
-                                var pfTitle = new CPrivateFont();
-                                var pfSubTitle = new CPrivateFont();
+                                CPrivateFont pfTitle;
+                                CPrivateFont pfSubTitle;
                                 if (!string.IsNullOrEmpty(TJAPlayer3.ConfigIni.FontName))
                                 {
                                     pfTitle = new CPrivateFont(new FontFamily(TJAPlayer3.ConfigIni.FontName), 30);

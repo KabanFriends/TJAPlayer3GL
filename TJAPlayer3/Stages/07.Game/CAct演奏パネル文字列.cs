@@ -127,10 +127,6 @@ namespace TJAPlayer3
             }
         }
 
-		public void Stop()
-		{
-			this.bMute = true;
-		}
 		public void Start()
 		{
 			this.bMute = false;

@@ -322,11 +322,10 @@ namespace TJAPlayer3
 			get;
 			set;
 		}
-		public DeviceCache Device
-		{
-			get { return base.GraphicsDeviceManager.Direct3D9.Device; }
-		}
-		private static Size currentClientSize		// #23510 2010.10.27 add yyagi to keep current window size
+
+		public DeviceCache Device => GraphicsDeviceManager.Device;
+
+        private static Size currentClientSize		// #23510 2010.10.27 add yyagi to keep current window size
 		{
 			get;
 			set;
@@ -530,7 +529,6 @@ namespace TJAPlayer3
 		}
 		protected override void Draw( GameTime gameTime )
 		{
-			Sound管理?.t再生中の処理をする();
             Timer?.t更新();
             CSound管理.rc演奏用タイマ?.t更新();
             Input管理?.tポーリング( this.bApplicationActive, TJAPlayer3.ConfigIni.bバッファ入力を行う );
@@ -1243,11 +1241,6 @@ for (int i = 0; i < 3; i++) {
 #if !GPUFlushAfterPresent
 			actFlushGPU?.On進行描画();		// Flush GPU	// EndScene()～Present()間 (つまりVSync前) でFlush実行
 #endif
-			if ( Sound管理?.GetCurrentSoundDeviceType() != "DirectSound" )
-			{
-				Sound管理?.t再生中の処理をする();	// サウンドバッファの更新; 画面描画と同期させることで、スクロールをスムーズにする
-			}
-
 
 			#region [ 全画面_ウインドウ切り替え ]
 			if ( this.b次のタイミングで全画面_ウィンドウ切り替えを行う )
@@ -1309,31 +1302,6 @@ for (int i = 0; i < 3; i++) {
 		{
 			TJAPlayer3.t安全にDisposeする( ref tx );
 		}
-        public static void tテクスチャの解放( ref CTextureAf tx )
-		{
-			TJAPlayer3.t安全にDisposeする( ref tx );
-		}
-		public static CTexture tテクスチャの生成( byte[] txData )
-		{
-			return tテクスチャの生成( txData, false );
-		}
-		public static CTexture tテクスチャの生成( byte[] txData, bool b黒を透過する )
-		{
-			if ( app == null )
-			{
-				return null;
-			}
-			try
-			{
-				return new CTexture( app.Device, txData, TextureFormat, b黒を透過する );
-			}
-			catch ( CTextureCreateFailedException e )
-			{
-				Trace.TraceError( e.ToString() );
-				Trace.TraceError( "テクスチャの生成に失敗しました。(txData)" );
-				return null;
-			}
-		}
 		public static CTexture tテクスチャの生成( Bitmap bitmap )
 		{
 			return tテクスチャの生成( bitmap, false );
@@ -1388,36 +1356,6 @@ for (int i = 0; i < 3; i++) {
 				return null;
 			}
 		}
-        public static CDirectShow t失敗してもスキップ可能なDirectShowを生成する(string fileName, IntPtr hWnd, bool bオーディオレンダラなし)
-        {
-            CDirectShow ds = null;
-            if( File.Exists( fileName ) )
-            {
-                try
-                {
-                    ds = new CDirectShow(fileName, hWnd, bオーディオレンダラなし);
-                }
-                catch (FileNotFoundException e)
-                {
-                    Trace.TraceError( e.ToString() );
-                    Trace.TraceError("動画ファイルが見つかりませんでした。({0})", fileName);
-                    ds = null;      // Dispose はコンストラクタ内で実施済み
-                }
-                catch (Exception e)
-                {
-                    Trace.TraceError( e.ToString() );
-                    Trace.TraceError("DirectShow の生成に失敗しました。[{0}]", fileName);
-                    ds = null;      // Dispose はコンストラクタ内で実施済み
-                }
-            }
-            else
-            {
-                Trace.TraceError("動画ファイルが見つかりませんでした。({0})", fileName);
-                return null;
-            }
-
-            return ds;
-        }
 
         /// <summary>プロパティ、インデクサには ref は使用できないので注意。</summary>
         public static void t安全にDisposeする<T>(ref T obj)
@@ -1960,11 +1898,11 @@ for (int i = 0; i < 3; i++) {
 		public void ShowWindowTitleWithSoundType()
 		{
 			string delay = "";
-			if ( Sound管理.GetCurrentSoundDeviceType() != "DirectSound" )
+			if ( CSound管理.GetCurrentSoundDeviceType() != "DirectSound" )
 			{
 				delay = " (" + Sound管理.GetSoundDelay() + "ms)";
 			}
-            base.Window.Text = $"{AppDisplayNameWithInformationalVersion} ({Sound管理.GetCurrentSoundDeviceType()}{delay})";
+            base.Window.Text = $"{AppDisplayNameWithInformationalVersion} ({CSound管理.GetCurrentSoundDeviceType()}{delay})";
 		}
 
 		private void t終了処理()

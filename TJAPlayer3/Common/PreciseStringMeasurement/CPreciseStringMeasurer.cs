@@ -47,23 +47,22 @@ namespace TJAPlayer3
                 bmpGraphics.TextContrast = g.TextContrast;
                 bmpGraphics.PixelOffsetMode = g.PixelOffsetMode;
                 //文字列の描かれていない部分の色を取得する
-                Color backColor = bmp.GetPixel(0, 0);
+                int backColorArgb = bmp.GetPixelArgb(0, 0);
                 //実際にBitmapに文字列を描画する
                 bmpGraphics.DrawString(text, font, Brushes.Black,
                     new RectangleF(0f, 0f, proposedSize.Width, proposedSize.Height),
                     stringFormat);
                 bmpGraphics.Dispose();
                 //文字列が描画されている範囲を計測する
-                return MeasureForegroundArea(bmp, backColor);
+                return MeasureForegroundArea(bmp, backColorArgb);
             }
         }
 
         /// <summary>
         /// 指定されたBitmapで、backColor以外の色が使われている範囲を計測する
         /// </summary>
-        private static Rectangle MeasureForegroundArea(DirectBitmap bmp, Color backColor)
+        private static Rectangle MeasureForegroundArea(DirectBitmap bmp, int backColorArgb)
         {
-            int backColorArgb = backColor.ToArgb();
             int maxWidth = bmp.Width;
             int maxHeight = bmp.Height;
 
@@ -74,7 +73,7 @@ namespace TJAPlayer3
                 for (int y = 0; y < maxHeight; y++)
                 {
                     //違う色を見つけたときは、位置を決定する
-                    if (bmp.GetPixel(x, y).ToArgb() != backColorArgb)
+                    if (bmp.GetPixelArgb(x, y) != backColorArgb)
                     {
                         leftPosition = x;
                         break;
@@ -97,7 +96,7 @@ namespace TJAPlayer3
             {
                 for (int y = 0; y < maxHeight; y++)
                 {
-                    if (bmp.GetPixel(x, y).ToArgb() != backColorArgb)
+                    if (bmp.GetPixelArgb(x, y) != backColorArgb)
                     {
                         rightPosition = x;
                         break;
@@ -119,7 +118,7 @@ namespace TJAPlayer3
             {
                 for (int x = leftPosition; x <= rightPosition; x++)
                 {
-                    if (bmp.GetPixel(x, y).ToArgb() != backColorArgb)
+                    if (bmp.GetPixelArgb(x, y) != backColorArgb)
                     {
                         topPosition = y;
                         break;
@@ -141,7 +140,7 @@ namespace TJAPlayer3
             {
                 for (int x = leftPosition; x <= rightPosition; x++)
                 {
-                    if (bmp.GetPixel(x, y).ToArgb() != backColorArgb)
+                    if (bmp.GetPixelArgb(x, y) != backColorArgb)
                     {
                         bottomPosition = y;
                         break;

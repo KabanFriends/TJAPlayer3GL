@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Drawing;
-using System.IO;
-using SlimDX;
 using FDK;
 
 namespace TJAPlayer3
@@ -186,23 +181,9 @@ namespace TJAPlayer3
 		}
 
 		/// <summary>
-		/// 1つの値を、全targetに適用する。RiskyやDarkなど、全tatgetで共通の設定となるもので使う。
-		/// </summary>
-		/// <param name="order">設定項目リストの順番</param>
-		/// <param name="index">設定値(index)</param>
-		private void SetValueToAllTarget( int order, int index )
-		{
-			for ( int i = 0; i < 3; i++ )
-			{
-				lci[ nCurrentConfigSet ][ i ][ order ].SetIndex( index );
-			}
-		}
-		
-
-		/// <summary>
 		/// ConfigIni.bAutoPlayに簡易CONFIGの状態を反映する
 		/// </summary>
-		private void SetAutoParameters()
+		private static void SetAutoParameters()
 		{
 			for ( int target = 0; target < 3; target++ )
 			{

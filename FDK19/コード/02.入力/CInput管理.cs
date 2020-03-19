@@ -108,17 +108,7 @@ namespace FDK
 			}
 			return null;
 		}
-		public IInputDevice Joystick( string GUID )
-		{
-			foreach( IInputDevice device in this.list入力デバイス )
-			{
-				if( ( device.e入力デバイス種別 == E入力デバイス種別.Joystick ) && device.GUID.Equals( GUID ) )
-				{
-					return device;
-				}
-			}
-			return null;
-		}
+
 		public IInputDevice MidiIn( int ID )
 		{
 			foreach( IInputDevice device in this.list入力デバイス )

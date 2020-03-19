@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using System.Drawing;
 using System.Diagnostics;
 using FDK;
@@ -221,7 +220,7 @@ namespace TJAPlayer3
 			TJAPlayer3.Skin.tRemoveMixerAll();	// 効果音のストリームをミキサーから解除しておく
 
 			queueMixerSound = new Queue<stmixer>( 64 );
-			bIsDirectSound = ( TJAPlayer3.Sound管理.GetCurrentSoundDeviceType() == "DirectSound" );
+			bIsDirectSound = ( CSound管理.GetCurrentSoundDeviceType() == "DirectSound" );
 			bUseOSTimer = TJAPlayer3.ConfigIni.bUseOSTimer;
 			this.bPAUSE = false;
 
@@ -243,7 +242,7 @@ namespace TJAPlayer3
 							{
 								if ( wc.rSound[ i ] != null )
 								{
-									TJAPlayer3.Sound管理.AddMixer( wc.rSound[ i ], db再生速度, pChip.b演奏終了後も再生が続くチップである );
+                                    wc.rSound[ i ].AddMixer( db再生速度, pChip.b演奏終了後も再生が続くチップである );
 									//AddMixer( wc.rSound[ i ] );		// 最初はqueueを介さず直接ミキサー登録する
 								}
 							}
@@ -388,118 +387,6 @@ namespace TJAPlayer3
 			}
 		}
 
-		[StructLayout( LayoutKind.Sequential )]
-		protected struct STKARAUCHI
-		{
-			public CDTX.CChip HH;
-			public CDTX.CChip SD;
-			public CDTX.CChip BD;
-			public CDTX.CChip HT;
-			public CDTX.CChip LT;
-			public CDTX.CChip FT;
-			public CDTX.CChip CY;
-			public CDTX.CChip HHO;
-			public CDTX.CChip RD;
-			public CDTX.CChip LC;
-            public CDTX.CChip LP;
-            public CDTX.CChip LBD;
-			public CDTX.CChip this[ int index ]
-			{
-				get
-				{
-					switch ( index )
-					{
-						case 0:
-							return this.HH;
-
-						case 1:
-							return this.SD;
-
-						case 2:
-							return this.BD;
-
-						case 3:
-							return this.HT;
-
-						case 4:
-							return this.LT;
-
-						case 5:
-							return this.FT;
-
-						case 6:
-							return this.CY;
-
-						case 7:
-							return this.HHO;
-
-						case 8:
-							return this.RD;
-
-						case 9:
-							return this.LC;
-
-                        case 10:
-                            return this.LP;
-
-                        case 11:
-                            return this.LBD;
-					}
-					throw new IndexOutOfRangeException();
-				}
-				set
-				{
-					switch ( index )
-					{
-						case 0:
-							this.HH = value;
-							return;
-
-						case 1:
-							this.SD = value;
-							return;
-
-						case 2:
-							this.BD = value;
-							return;
-
-						case 3:
-							this.HT = value;
-							return;
-
-						case 4:
-							this.LT = value;
-							return;
-
-						case 5:
-							this.FT = value;
-							return;
-
-						case 6:
-							this.CY = value;
-							return;
-
-						case 7:
-							this.HHO = value;
-							return;
-
-						case 8:
-							this.RD = value;
-							return;
-
-						case 9:
-							this.LC = value;
-							return;
-
-                        case 10:
-                            this.LP = value;
-                            return;
-					}
-					throw new IndexOutOfRangeException();
-				}
-			}
-		}
-
 		protected struct stmixer
 		{
 			internal bool bIsAdd;
@@ -509,9 +396,7 @@ namespace TJAPlayer3
 
 		public CAct演奏AVI actAVI;
         public Rainbow Rainbow;
-		protected CAct演奏チップファイアGB actChipFireGB;
 		public CAct演奏Combo共通 actCombo;
-		protected CAct演奏Danger共通 actDANGER;
 		//protected CActFIFOBlack actFI;
         protected CActFIFOStart actFI;
 		protected CActFIFOBlack actFO;
@@ -521,7 +406,6 @@ namespace TJAPlayer3
         public CAct演奏DrumsDancer actDancer;
 		protected CAct演奏判定文字列共通 actJudgeString;
 		public TaikoLaneFlash actTaikoLaneFlash;
-		protected CAct演奏レーンフラッシュGB共通 actLaneFlushGB;
 		public CAct演奏パネル文字列 actPanel;
 		public CAct演奏演奏情報 actPlayInfo;
 		public CAct演奏スコア共通 actScore;
@@ -581,7 +465,7 @@ namespace TJAPlayer3
 		protected STDGBVALUE<Queue<CDTX.CChip>> queWailing;
 		protected STDGBVALUE<CDTX.CChip> r現在の歓声Chip;
 		protected CTexture txチップ;
-		protected CTexture txヒットバー;
+		protected CTexture txヒットバー; // TODO dead code?
 
 		protected CTexture tx背景;
 
@@ -669,21 +553,6 @@ namespace TJAPlayer3
 //		protected Stopwatch sw2;
 //		protected GCLatencyMode gclatencymode;
 
-        public struct STBranchStatus
-        {
-            public int nBranch_Perfect;
-            public int nBranch_Good;
-            public int nBranch_Miss;
-            public int nBranch_Roll;
-            public bool b強制的に分岐させた;
-            public bool bLEVELHOLD;
-            public bool bUseBranch;
-            public int n現在のコース; //0:普通譜面 1:玄人譜面 2:達人譜面
-            public int n次回のコース;
-            public bool b譜面分岐中;
-            public int n分岐した回数;
-        }
-
         //
         private System.Timers.Timer combot;
         //
@@ -731,11 +600,11 @@ namespace TJAPlayer3
 						stmixer stm = queueMixerSound.Dequeue();
 						if ( stm.bIsAdd )
 						{
-							TJAPlayer3.Sound管理.AddMixer( stm.csound, db再生速度, stm.b演奏終了後も再生が続くチップである );
+                            stm.csound.AddMixer( db再生速度, stm.b演奏終了後も再生が続くチップである );
 						}
 						else
 						{
-							TJAPlayer3.Sound管理.RemoveMixer( stm.csound );
+                            stm.csound.RemoveMixer();
 						}
 					}
 				}
@@ -804,100 +673,6 @@ namespace TJAPlayer3
 				}
 			}
 			return E判定.Miss;
-		}
-
-		protected CDTX.CChip r空うちChip( E楽器パート part, Eパッド pad )
-		{
-			return null;
-		}
-		protected CDTX.CChip r指定時刻に一番近いChip_ヒット未済問わず不可視考慮( long nTime, int nChannel, int nInputAdjustTime, int nPlayer )
-		{
-			//sw2.Start();
-//Trace.TraceInformation( "NTime={0}, nChannel={1:x2}", nTime, nChannel );
-			nTime += nInputAdjustTime;						// #24239 2011.1.23 yyagi InputAdjust
-
-			int nIndex_InitialPositionSearchingToPast;
-			if ( this.n現在のトップChip == -1 )				// 演奏データとして1個もチップがない場合は
-			{
-				//sw2.Stop();
-				return null;
-			}
-			int count = listChip[ nPlayer ].Count;
-			int nIndex_NearestChip_Future = nIndex_InitialPositionSearchingToPast = this.n現在のトップChip;
-			if ( this.n現在のトップChip >= count )			// その時点で演奏すべきチップが既に全部無くなっていたら
-			{
-				nIndex_NearestChip_Future = nIndex_InitialPositionSearchingToPast = count - 1;
-			}
-			//int nIndex_NearestChip_Future;	// = nIndex_InitialPositionSearchingToFuture;
-			//while ( nIndex_NearestChip_Future < count )		// 未来方向への検索
-			for ( ; nIndex_NearestChip_Future < count; nIndex_NearestChip_Future++)
-			{
-				CDTX.CChip chip = listChip[ nPlayer ][ nIndex_NearestChip_Future ];
-
-				if ( ( ( 0x11 <= nChannel ) && ( nChannel <= 0x14 ) ) || nChannel == 0x1F )
-				{
-					if ( ( ( chip.nチャンネル番号 == nChannel ) || ( chip.nチャンネル番号 == ( nChannel ) ) ) )
-					{
-						if ( chip.n発声時刻ms > nTime )
-						{
-							break;
-						}
-                        if( chip.nコース != this.n次回のコース[ nPlayer ] )
-                        {
-                            break;
-                        }
-						nIndex_InitialPositionSearchingToPast = nIndex_NearestChip_Future;
-					}
-					continue;	// ほんの僅かながら高速化
-				}
-
-				// nIndex_NearestChip_Future++;
-			}
-			int nIndex_NearestChip_Past = nIndex_InitialPositionSearchingToPast;
-			//while ( nIndex_NearestChip_Past >= 0 )			// 過去方向への検索
-			for ( ; nIndex_NearestChip_Past >= 0; nIndex_NearestChip_Past-- )
-			{
-				CDTX.CChip chip = listChip[ nPlayer ][ nIndex_NearestChip_Past ];
-
-				if ( ( 0x11 <= nChannel ) && ( nChannel <= 0x14 ) )
-				{
-					if ( ( ( chip.nチャンネル番号 == nChannel ) )  )
-					{
-						break;
-					}
-				}
-				// nIndex_NearestChip_Past--;
-			}
-
-			if ( nIndex_NearestChip_Future >= count )
-			{
-				if ( nIndex_NearestChip_Past < 0 )	// 検索対象が過去未来どちらにも見つからなかった場合
-				{
-					return null;
-				}
-				else 								// 検索対象が未来方向には見つからなかった(しかし過去方向には見つかった)場合
-				{
-					//sw2.Stop();
-					return listChip[ nPlayer ][ nIndex_NearestChip_Past ];
-				}
-			}
-			else if ( nIndex_NearestChip_Past < 0 )	// 検索対象が過去方向には見つからなかった(しかし未来方向には見つかった)場合
-			{
-				//sw2.Stop();
-				return listChip[ nPlayer ][ nIndex_NearestChip_Future ];
-			}
-													// 検索対象が過去未来の双方に見つかったなら、より近い方を採用する
-			CDTX.CChip nearestChip_Future = listChip[ nPlayer ][ nIndex_NearestChip_Future ];
-			CDTX.CChip nearestChip_Past   = listChip[ nPlayer ][ nIndex_NearestChip_Past ];
-			int nDiffTime_Future = Math.Abs( (int) ( nTime - nearestChip_Future.n発声時刻ms ) );
-			int nDiffTime_Past   = Math.Abs( (int) ( nTime - nearestChip_Past.n発声時刻ms ) );
-			if ( nDiffTime_Future >= nDiffTime_Past )
-			{
-				//sw2.Stop();
-				return nearestChip_Past;
-			}
-			//sw2.Stop();
-			return nearestChip_Future;
 		}
 
 		protected CDTX.CChip r指定時刻に一番近い連打Chip_ヒット未済問わず不可視考慮( long nTime, int nChannel, int nInputAdjustTime, int nPlayer )
@@ -1242,15 +1017,6 @@ namespace TJAPlayer3
             return true;
         }
 
-		protected E判定 tチップのヒット処理( long nHitTime, CDTX.CChip pChip )
-		{
-			return tチップのヒット処理( nHitTime, pChip, true );
-		}
-		protected abstract E判定 tチップのヒット処理( long nHitTime, CDTX.CChip pChip, bool bCorrectLane );
-		protected E判定 tチップのヒット処理( long nHitTime, CDTX.CChip pChip, E楽器パート screenmode )		// E楽器パート screenmode
-		{
-			return tチップのヒット処理( nHitTime, pChip, screenmode, true, 1, 0 );
-		}
 		protected E判定 tチップのヒット処理( long nHitTime, CDTX.CChip pChip, E楽器パート screenmode, bool bCorrectLane, int nNowInput )
 		{
 			return tチップのヒット処理( nHitTime, pChip, screenmode, bCorrectLane, nNowInput, 0 );
@@ -1935,42 +1701,6 @@ namespace TJAPlayer3
 			return eJudgeResult;
 		}
 
-        protected void t分岐状況チェック( int n現在時刻, int nPlayer )
-        {
-            CDTX dTX = TJAPlayer3.DTX;
-
-            switch( nPlayer )
-            {
-                case 1:
-                    dTX = TJAPlayer3.DTX_2P;
-                    break;
-                default:
-                    break;
-            }
-
-            for( int i = this.n現在のトップChip; i < dTX.listChip.Count; i++ )
-            {
-                if( ( dTX.listChip[ i ].nチャンネル番号 <= 0x11 && dTX.listChip[ i ].nチャンネル番号 >= 0x18 ) != false )
-                {
-                    if( dTX.listChip[ i ].nコース == this.n現在のコース[ nPlayer ] )
-                    {
-                        dTX.listChip[i].b可視 = true;
-                    }
-                    else
-                    {
-                        dTX.listChip[i].b可視 = false;
-                    }
-                }
-            }
-        }
-
-
-		protected abstract void tチップのヒット処理_BadならびにTight時のMiss( E楽器パート part );
-		protected abstract void tチップのヒット処理_BadならびにTight時のMiss( E楽器パート part, int nLane );
-		protected void tチップのヒット処理_BadならびにTight時のMiss( E楽器パート part, E楽器パート screenmode )
-		{
-			this.tチップのヒット処理_BadならびにTight時のMiss( part, 0, screenmode );
-		}
 		protected void tチップのヒット処理_BadならびにTight時のMiss( E楽器パート part, int nLane, E楽器パート screenmode )
 		{
             //まだpChipでのチャンネル判別に対応していない。
@@ -1996,102 +1726,7 @@ namespace TJAPlayer3
 			}
 		}
 
-		protected CDTX.CChip r指定時刻に一番近いChipを過去方向優先で検索する( long nTime, int nChannel, int nInputAdjustTime, int nPlayer )
-		{
-			//sw2.Start();
-			nTime += nInputAdjustTime;
-
-			int nIndex_InitialPositionSearchingToPast;
-			int nTimeDiff;
-			int count = listChip[ nPlayer ].Count;
-			if ( count <= 0 )			// 演奏データとして1個もチップがない場合は
-			{
-				//sw2.Stop();
-				return null;
-			}
-
-			int nIndex_NearestChip_Future = nIndex_InitialPositionSearchingToPast = this.n現在のトップChip;
-			if ( this.n現在のトップChip >= count )		// その時点で演奏すべきチップが既に全部無くなっていたら
-			{
-				nIndex_NearestChip_Future  = nIndex_InitialPositionSearchingToPast = count - 1;
-			}
-			// int nIndex_NearestChip_Future = nIndex_InitialPositionSearchingToFuture;
-//			while ( nIndex_NearestChip_Future < count )	// 未来方向への検索
-			for ( ; nIndex_NearestChip_Future < count; nIndex_NearestChip_Future++ )
-			{
-				CDTX.CChip chip = listChip[ nPlayer ][ nIndex_NearestChip_Future ];
-				if ( chip.b可視 )
-				{
-					if( chip.nチャンネル番号 == nChannel )
-					{
-						if ( chip.n発声時刻ms > nTime )
-						{
-							break;
-						}
-                        nIndex_InitialPositionSearchingToPast = nIndex_NearestChip_Future;
-					}
-				}
-//				nIndex_NearestChip_Future++;
-			}
-			int nIndex_NearestChip_Past = nIndex_InitialPositionSearchingToPast;
-//			while ( nIndex_NearestChip_Past >= 0 )		// 過去方向への検索
-			for ( ; nIndex_NearestChip_Past >= 0; nIndex_NearestChip_Past-- )
-			{
-				CDTX.CChip chip = listChip[ nPlayer ][ nIndex_NearestChip_Past ];
-				//if ( (!chip.bHit && chip.b可視 ) && ( (  0x93 <= chip.nチャンネル番号 ) && ( chip.nチャンネル番号 <= 0x99 ) ) )
-                if( chip.b可視 && chip.nチャンネル番号 == nChannel )
-				{
-				    break;
-				}
-			}
-			if ( ( nIndex_NearestChip_Future >= count ) && ( nIndex_NearestChip_Past < 0 ) )	// 検索対象が過去未来どちらにも見つからなかった場合
-			{
-				//sw2.Stop();
-				return null;
-			}
-			CDTX.CChip nearestChip;	// = null;	// 以下のifブロックのいずれかで必ずnearestChipには非nullが代入されるので、null初期化を削除
-			if ( nIndex_NearestChip_Future >= count )											// 検索対象が未来方向には見つからなかった(しかし過去方向には見つかった)場合
-			{
-				nearestChip = listChip[ nPlayer ][ nIndex_NearestChip_Past ];
-//				nTimeDiff = Math.Abs( (int) ( nTime - nearestChip.n発声時刻ms ) );
-			}
-			else if ( nIndex_NearestChip_Past < 0 )												// 検索対象が過去方向には見つからなかった(しかし未来方向には見つかった)場合
-			{
-				nearestChip = listChip[ nPlayer ][ nIndex_NearestChip_Future ];
-//				nTimeDiff = Math.Abs( (int) ( nTime - nearestChip.n発声時刻ms ) );
-			}
-			else
-			{
-				int nTimeDiff_Future = Math.Abs( (int) ( nTime - listChip[ nPlayer ][ nIndex_NearestChip_Future ].n発声時刻ms ) );
-				int nTimeDiff_Past   = Math.Abs( (int) ( nTime - listChip[ nPlayer ][ nIndex_NearestChip_Past   ].n発声時刻ms ) );
-				if ( nTimeDiff_Future < nTimeDiff_Past )
-				{
-                    if( !listChip[ nPlayer ][ nIndex_NearestChip_Past ].bHit && ( listChip[ nPlayer ][ nIndex_NearestChip_Past ].n発声時刻ms + ( 108 ) >= nTime ) )
-                    {
-					    nearestChip = listChip[ nPlayer ][ nIndex_NearestChip_Past ];
-                    }
-                    else
-					    nearestChip = listChip[ nPlayer ][ nIndex_NearestChip_Future ];
-//					nTimeDiff = Math.Abs( (int) ( nTime - nearestChip.n発声時刻ms ) );
-				}
-				else
-				{
-					nearestChip = listChip[ nPlayer ][ nIndex_NearestChip_Past ];
-//					nTimeDiff = Math.Abs( (int) ( nTime - nearestChip.n発声時刻ms ) );
-				}
-			}
-			nTimeDiff = Math.Abs( (int) ( nTime - nearestChip.n発声時刻ms ) );
-            int n検索範囲時間ms = 0;
-			if ( ( n検索範囲時間ms > 0 ) && ( nTimeDiff > n検索範囲時間ms ) )					// チップは見つかったが、検索範囲時間外だった場合
-			{
-				//sw2.Stop();
-				return null;
-			}
-			//sw2.Stop();
-			return nearestChip;
-		}
-
-		protected CDTX.CChip r指定時刻に一番近い未ヒットChipを過去方向優先で検索する( long nTime, int nPlayer )
+		private CDTX.CChip r指定時刻に一番近い未ヒットChipを過去方向優先で検索する( long nTime, int nPlayer )
 		{
 			//sw2.Start();
 			int nIndex_InitialPositionSearchingToPast;
@@ -2913,14 +2548,6 @@ namespace TJAPlayer3
 				this.actAVI.t進行描画( x, y );
 			}
 		}
-		protected abstract void t進行描画_DANGER();
-		protected void t進行描画_MIDIBGM()
-		{
-			if ( base.eフェーズID != CStage.Eフェーズ.演奏_STAGE_FAILED )
-			{
-				CStage.Eフェーズ eフェーズid1 = base.eフェーズID;
-			}
-		}
 		protected void t進行描画_STAGEFAILED()
 		{
 			if ( ( ( base.eフェーズID == CStage.Eフェーズ.演奏_STAGE_FAILED ) || ( base.eフェーズID == CStage.Eフェーズ.演奏_STAGE_FAILED_フェードアウト ) ) && ( ( this.actStageFailed.On進行描画() != 0 ) && ( base.eフェーズID != CStage.Eフェーズ.演奏_STAGE_FAILED_フェードアウト ) ) )
@@ -2929,11 +2556,6 @@ namespace TJAPlayer3
 				base.eフェーズID = CStage.Eフェーズ.演奏_STAGE_FAILED_フェードアウト;
 				this.actFO.tフェードアウト開始();
 			}
-		}
-
-		protected void t進行描画_チップファイアGB()
-		{
-			this.actChipFireGB.On進行描画();
 		}
 
         protected void t進行描画_パネル文字列()
@@ -2973,15 +2595,7 @@ namespace TJAPlayer3
 		{
 			this.actScore.On進行描画();
 		}
-		protected void t進行描画_ステータスパネル()
-		{
-			this.actStatusPanels.On進行描画();
-		}
-        protected bool t進行描画_チップ( E楽器パート ePlayMode )
-        {
-            return this.t進行描画_チップ( ePlayMode, 0 );
-        }
-		protected bool t進行描画_チップ( E楽器パート ePlayMode, int nPlayer )
+		protected bool t進行描画_チップ( int nPlayer )
 		{
 			if ( ( base.eフェーズID == CStage.Eフェーズ.演奏_STAGE_FAILED ) || ( base.eフェーズID == CStage.Eフェーズ.演奏_STAGE_FAILED_フェードアウト ) )
 			{
@@ -4012,53 +3626,6 @@ namespace TJAPlayer3
             }
         }
 
-        public int nBranchJudge( CDTX dTX, int n連打数, int n良, int n可, int n不可 )
-        {
-
-            int n種類 = dTX.listBRANCH[ this.n分岐した回数[ 0 ] ].n分岐の種類;
-            int n次回のコース = 0;
-
-            double dbRate = 0;
-
-            if( ( n良 + n可 + n不可 ) != 0 )
-            {
-                dbRate = ( (double)n良 / (double)( n良 + n可 + n不可 ) ) * 100.0;
-            }
-
-
-            if( n種類 == 0 )
-            {
-                if( dbRate < dTX.listBRANCH[ this.n分岐した回数[ 0 ] ].n条件数値A )
-                {
-                    n次回のコース = 0;
-                }
-                else if( dbRate >= dTX.listBRANCH[ this.n分岐した回数[ 0 ] ].n条件数値A && dbRate < dTX.listBRANCH[ this.n分岐した回数[ 0 ] ].n条件数値B )
-                {
-                    n次回のコース = 1;
-                }
-                else if( dbRate >= dTX.listBRANCH[ this.n分岐した回数[ 0 ] ].n条件数値B )
-                {
-                    n次回のコース = 2;
-                }
-            }
-            else if( n種類 == 1 )
-            {
-                if( n連打数 < dTX.listBRANCH[ this.n分岐した回数[ 0 ] ].n条件数値A )
-                {
-                    n次回のコース = 0;
-                }
-                else if( n連打数 >= dTX.listBRANCH[ this.n分岐した回数[ 0 ] ].n条件数値A && n連打数 < dTX.listBRANCH[ this.n分岐した回数[ 0 ] ].n条件数値B )
-                {
-                    n次回のコース = 1;
-                }
-                else if( n連打数 >= dTX.listBRANCH[ this.n分岐した回数[ 0 ] ].n条件数値B )
-                {
-                    n次回のコース = 2;
-                }
-            }
-
-            return n次回のコース;
-        }
         public void t分岐処理( int n分岐先, int n分岐開始位置のChip番号, int nPlayer )
         {
             int n消すコース1 = 1;
@@ -4383,12 +3950,9 @@ namespace TJAPlayer3
             this.eフェードアウト完了時の戻り値 = E演奏画面の戻り値.演奏中断;
         }
 
-		protected abstract void t進行描画_チップ_ドラムス( CConfigIni configIni, ref CDTX dTX, ref CDTX.CChip pChip );
-		protected abstract void t進行描画_チップ本体_ドラムス( CConfigIni configIni, ref CDTX dTX, ref CDTX.CChip pChip );
 		protected abstract void t進行描画_チップ_Taiko( CConfigIni configIni, ref CDTX dTX, ref CDTX.CChip pChip, int nPlayer );
 		protected abstract void t進行描画_チップ_Taiko連打( CConfigIni configIni, ref CDTX dTX, ref CDTX.CChip pChip, int nPlayer );
 
-		protected abstract void t進行描画_チップ_フィルイン( CConfigIni configIni, ref CDTX dTX, ref CDTX.CChip pChip );
 		protected abstract void t進行描画_チップ_小節線( CConfigIni configIni, ref CDTX dTX, ref CDTX.CChip pChip, int nPlayer );
 		protected void t進行描画_チップアニメ()
 		{
@@ -4503,13 +4067,6 @@ namespace TJAPlayer3
 			}
 			return false;
 		}
-		protected void t進行描画_レーンフラッシュD()
-		{
-			//if ( ( CDTXMania.ConfigIni.eDark == Eダークモード.OFF ) && ( base.eフェーズID != CStage.Eフェーズ.演奏_STAGE_FAILED ) && ( base.eフェーズID != CStage.Eフェーズ.演奏_STAGE_FAILED_フェードアウト ) )
-			{
-				this.actTaikoLaneFlash.On進行描画();
-			}
-		}
 		protected abstract void t進行描画_演奏情報();
 		protected void t進行描画_演奏情報(int x, int y)
 		{
@@ -4526,32 +4083,9 @@ namespace TJAPlayer3
 			}
 		}
 
-		protected void t進行描画_判定ライン()
-		{
-			if ( TJAPlayer3.ConfigIni.eDark != Eダークモード.FULL )
-			{
-				int y = TJAPlayer3.ConfigIni.bReverse.Drums ? 53 - 演奏判定ライン座標.nJudgeLinePosY_delta.Drums : 567 + 演奏判定ライン座標.nJudgeLinePosY_delta.Drums;
-																// #31602 2013.6.23 yyagi 描画遅延対策として、判定ラインの表示位置をオフセット調整できるようにする
-				if ( this.txヒットバー != null )
-				{
-				    this.txヒットバー.t2D描画( TJAPlayer3.app.Device, 295, y, new Rectangle( 0, 0, 558, 6 ) );
-				}
-			}
-		}
-		protected void t進行描画_判定文字列()
-		{
-			this.actJudgeString.t進行描画( 演奏判定ライン座標 );
-		}
 		protected void t進行描画_判定文字列1_通常位置指定の場合()
 		{
 			if ( ( (E判定文字表示位置) TJAPlayer3.ConfigIni.判定文字表示位置.Drums ) != E判定文字表示位置.コンボ下 )	// 判定ライン上または横
-			{
-				this.actJudgeString.t進行描画( 演奏判定ライン座標 );
-			}
-		}
-		protected void t進行描画_判定文字列2_判定ライン上指定の場合()
-		{
-			if ( ( (E判定文字表示位置) TJAPlayer3.ConfigIni.判定文字表示位置.Drums ) == E判定文字表示位置.コンボ下 )	// 判定ライン上または横
 			{
 				this.actJudgeString.t進行描画( 演奏判定ライン座標 );
 			}

@@ -1,11 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Runtime.InteropServices;
-using System.IO;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.Threading;
 using SlimDX;
 using SlimDX.Direct3D9;
 using SlimDX.Multimedia;
@@ -133,99 +128,6 @@ namespace FDK
 			protected set;
 		}
 		
-		public long n現在のグラフの再生位置ms
-		{
-			get
-			{
-				if( this.MediaSeeking == null )
-					return 0;
-
-				long current;
-				int hr = this.MediaSeeking.GetCurrentPosition( out current );
-				DsError.ThrowExceptionForHR( hr );
-				return (long) ( current / ( 1000.0 * 10.0 ) );
-			}
-		}
-		/// <summary>
-		/// <para>無音:0～100:原音。set のみ。</para>
-		/// </summary>
-		public int n音量
-		{
-			get
-			{
-				return this._n音量;
-			}
-			set
-			{
-				if( this.BasicAudio == null )
-					return;
-
-
-				// 値を保存。
-
-				this._n音量 = value;
-
-
-				// リニア音量をデシベル音量に変換。
-
-				int n音量db = 0;
-
-				if( value == 0 )
-				{
-					n音量db = -10000;	// 完全無音
-				}
-				else
-				{
-					n音量db = (int) ( ( 20.0 * Math.Log10( ( (double) value ) / 100.0 ) ) * 100.0 );
-				}
-
-
-				// デシベル音量でグラフの音量を変更。
-
-				this.BasicAudio.put_Volume( n音量db );
-			}
-		}
-		/// <summary>
-		/// <para>左:-100～中央:0～100:右。set のみ。</para>
-		/// </summary>
-		public int n位置
-		{
-			set
-			{
-				if( this.BasicAudio == null )
-					return;
-
-				// リニア位置をデシベル位置に変換。
-
-				int n位置 = Math.Min( Math.Max( value, -100 ), +100 );
-				int n位置db = 0;
-
-				if( n位置 == 0 )
-				{
-					n位置db = 0;
-				}
-				else if( n位置 == -100 )
-				{
-					n位置db = -10000;
-				}
-				else if( n位置 == 100 )
-				{
-					n位置db = +10000;
-				}
-				else if( n位置 < 0 )
-				{
-					n位置db = (int) ( ( 20.0 * Math.Log10( ( (double) ( n位置 + 100 ) ) / 100.0 ) ) * 100.0 );
-				}
-				else
-				{
-					n位置db = (int) ( ( -20.0 * Math.Log10( ( (double) ( 100 - n位置 ) ) / 100.0 ) ) * 100.0 );
-				}
-
-				// デシベル位置でグラフの位置を変更。
-
-				this.BasicAudio.put_Balance( n位置db );
-			}
-		}
 		public IMediaControl MediaCtrl;
 		public IMediaEventEx MediaEventEx;
 		public IMediaSeeking MediaSeeking;
@@ -246,9 +148,6 @@ namespace FDK
 
 		// メソッド
 
-		public CDirectShow()
-		{
-		}
 		public CDirectShow( string fileName, IntPtr hWnd, bool bオーディオレンダラなし )
 		{
 			// 初期化。
@@ -424,49 +323,7 @@ namespace FDK
 				this.b再生中 = true;
 			}
 		}
-		public void t再生一時停止()
-		{
-			if( this.MediaCtrl != null && this.n再生一時停止呼び出しの累積回数 == 0 )
-			{
-				int hr = this.MediaCtrl.Pause();
-				DsError.ThrowExceptionForHR( hr );
-			}
-			this.n再生一時停止呼び出しの累積回数++;
-			this.b再生中 = false;
-		}
-		public void t再生停止()
-		{
-			if( this.MediaCtrl != null )
-			{
-				int hr = this.MediaCtrl.Stop();
-				DsError.ThrowExceptionForHR( hr );
-			}
 
-			// 次への準備。
-			//this.t再生位置を変更する( 0.0 );		→ より細かく制御するために、FDK外部で制御するように変更。(2011.8.7)
-			//this.t再生準備開始();
-
-			this.n再生一時停止呼び出しの累積回数 = 0;	// 停止すると、一時停止呼び出し累積回数はリセットされる。
-			this.b再生中 = false;
-		}
-		public void t再生位置を変更( double db再生位置ms )
-		{
-			if( this.MediaSeeking == null )
-				return;
-
-			int hr = this.MediaSeeking.SetPositions(
-				DsLong.FromInt64( (long) ( db再生位置ms * 1000.0 * 10.0 ) ),
-				AMSeekingSeekingFlags.AbsolutePositioning,
-				null,
-				AMSeekingSeekingFlags.NoPositioning );
-
-			DsError.ThrowExceptionForHR( hr );
-		}
-		public void t最初から再生開始()
-		{
-			this.t再生位置を変更( 0.0 );
-			this.t再生開始();
-		}
 		public Eグラフの状態 t遷移完了まで待って状態を取得する()
 		{
 			var status = Eグラフの状態.未定;
@@ -603,91 +460,6 @@ namespace FDK
 
 		private IntPtr ip = IntPtr.Zero;
 
-		public static void tグラフを解析しデバッグ出力する( IGraphBuilder graphBuilder )
-		{
-			if( graphBuilder == null )
-			{
-				Debug.WriteLine( "指定されたグラフが null です。" );
-				return;
-			}
-
-			int hr = 0;
-
-			IEnumFilters eFilters;
-			hr = graphBuilder.EnumFilters( out eFilters );
-			DsError.ThrowExceptionForHR( hr );
-			{
-				var filters = new IBaseFilter[ 1 ];
-				while( eFilters.Next( 1, filters, IntPtr.Zero ) == CWin32.S_OK )
-				{
-					FilterInfo filterInfo;
-					hr = filters[ 0 ].QueryFilterInfo( out filterInfo );
-					DsError.ThrowExceptionForHR( hr );
-					{
-						Debug.WriteLine( filterInfo.achName );		// フィルタ名表示。
-						if( filterInfo.pGraph != null )
-							C共通.tCOMオブジェクトを解放する( ref filterInfo.pGraph );
-					}
-
-					IEnumPins ePins;
-					hr = filters[ 0 ].EnumPins( out ePins );
-					DsError.ThrowExceptionForHR( hr );
-					{
-						var pins = new IPin[ 1 ];
-						while( ePins.Next( 1, pins, IntPtr.Zero ) == CWin32.S_OK )
-						{
-							PinInfo pinInfo;
-							hr = pins[ 0 ].QueryPinInfo( out pinInfo );
-							DsError.ThrowExceptionForHR( hr );
-							{
-								Debug.Write( "  " + pinInfo.name );	// ピン名表示。
-								Debug.Write( ( pinInfo.dir == PinDirection.Input ) ? " ← " : " → " );
-
-								IPin connectPin;
-								hr = pins[ 0 ].ConnectedTo( out connectPin );
-								if( hr != CWin32.S_OK )
-									Debug.WriteLine( "(未接続)" );
-								else
-								{
-									DsError.ThrowExceptionForHR( hr );
-
-									PinInfo connectPinInfo;
-									hr = connectPin.QueryPinInfo( out connectPinInfo );
-									DsError.ThrowExceptionForHR( hr );
-									{
-										FilterInfo connectFilterInfo;
-										hr = connectPinInfo.filter.QueryFilterInfo( out connectFilterInfo );
-										DsError.ThrowExceptionForHR( hr );
-										{
-											Debug.Write( "[" + connectFilterInfo.achName + "]." );	// 接続先フィルタ名
-
-											if( connectFilterInfo.pGraph != null )
-												C共通.tCOMオブジェクトを解放する( ref connectFilterInfo.pGraph );
-										}
-
-										Debug.WriteLine( connectPinInfo.name );		// 接続先ピン名
-										if( connectPinInfo.filter != null )
-											C共通.tCOMオブジェクトを解放する( ref connectPinInfo.filter );
-										DsUtils.FreePinInfo( connectPinInfo );
-									}
-									C共通.tCOMオブジェクトを解放する( ref connectPin );
-								}
-								if( pinInfo.filter != null )
-									C共通.tCOMオブジェクトを解放する( ref pinInfo.filter );
-								DsUtils.FreePinInfo( pinInfo );
-							}
-							C共通.tCOMオブジェクトを解放する( ref pins[ 0 ] );
-						}
-					}
-					C共通.tCOMオブジェクトを解放する( ref ePins );
-
-					C共通.tCOMオブジェクトを解放する( ref filters[ 0 ] );
-				}
-			}
-			C共通.tCOMオブジェクトを解放する( ref eFilters );
-
-			Debug.Flush();
-		}
 		public static void tオーディオレンダラをNullレンダラに変えてフォーマットを取得する( IGraphBuilder graphBuilder, out WaveFormat wfx, out byte[] wfx拡張データ )
 		{
 			int hr = 0;
@@ -843,108 +615,7 @@ namespace FDK
 				C共通.tCOMオブジェクトを解放する( ref audioRenderer );
 			}
 		}
-		public static void ConnectNullRendererFromSampleGrabber(IGraphBuilder graphBuilder, IBaseFilter sampleGrabber)
-		{
-			int hr = 0;
-			IBaseFilter videoRenderer = null;
-			IPin videoRendererInputPin = null;
-			IBaseFilter audioRenderer = null;
-			IPin audioRendererInputPin = null;
-			IPin connectedOutputPin = null;
-			IPin nullRendererInputPin = null;
-			IPin grabberOutputPin = null;
-			IPin grabberOutputConnectedPin = null;
 
-			try
-			{
-				// videoRenderer を探す。
-				CDirectShow.SearchMMRenderers(graphBuilder, out videoRenderer, out videoRendererInputPin, out audioRenderer, out audioRendererInputPin);
-				if (videoRenderer != null && videoRendererInputPin != null)
-				{
-					// 既存のレンダラにつながっているピン対を取得
-					hr = videoRendererInputPin.ConnectedTo(out connectedOutputPin);
-					DsError.ThrowExceptionForHR(hr);
-
-					// それらを切断。前段の出力ピンとビデオレンダラの入力ピンを切断する。双方向から切断しないとグラフから切り離されないので注意。
-					hr = videoRendererInputPin.Disconnect();
-					DsError.ThrowExceptionForHR(hr);
-					hr = connectedOutputPin.Disconnect();
-					DsError.ThrowExceptionForHR(hr);
-
-					// ビデオレンダラをグラフから除去し、ヌルレンダラを追加
-					hr = graphBuilder.RemoveFilter(videoRenderer);
-					DsError.ThrowExceptionForHR(hr);
-					IBaseFilter nullRenderer = new NullRenderer() as IBaseFilter;
-					hr = graphBuilder.AddFilter(nullRenderer, "Video Null Renderer");
-					DsError.ThrowExceptionForHR(hr);
-
-					// nullRenderer の入力ピンを探す。
-					hr = nullRenderer.FindPin("In", out nullRendererInputPin);
-					DsError.ThrowExceptionForHR(hr);
-					hr = nullRendererInputPin.Disconnect();
-					DsError.ThrowExceptionForHR(hr);
-
-					// グラバの Out と Null Renderer の In を接続する。
-					hr = sampleGrabber.FindPin("Out", out grabberOutputPin);
-					DsError.ThrowExceptionForHR(hr);
-					hr = grabberOutputPin.ConnectedTo(out grabberOutputConnectedPin);
-					// grabberのoutに何もつながっていない場合(つまり、grabberのoutとrendererのinが直結している場合)は、
-					// grabberのoutと、別のフィルタのinの間の切断処理を行わない。
-					if (hr != CWin32.S_OK)
-					{
-						//Debug.WriteLine("grabber out: 未接続:");
-					}
-					else
-					{
-						hr = grabberOutputConnectedPin.Disconnect();
-						DsError.ThrowExceptionForHR(hr);
-						hr = grabberOutputPin.Disconnect();
-						DsError.ThrowExceptionForHR(hr);
-					}
-					hr = grabberOutputPin.Connect(nullRendererInputPin, null);
-					DsError.ThrowExceptionForHR(hr);
-				}
-
-				if ( audioRenderer != null && audioRendererInputPin != null )
-				{
-					C共通.tCOMオブジェクトを解放する(ref connectedOutputPin);
-
-					// 既存のレンダラにつながっているピン対を取得
-					hr = audioRendererInputPin.ConnectedTo(out connectedOutputPin);
-					DsError.ThrowExceptionForHR(hr);
-
-					// それらを切断。前段の出力ピンとビデオレンダラの入力ピンを切断する。双方向から切断しないとグラフから切り離されないので注意。
-					hr = audioRendererInputPin.Disconnect();
-					DsError.ThrowExceptionForHR(hr);
-					hr = connectedOutputPin.Disconnect();
-					DsError.ThrowExceptionForHR(hr);
-
-					// ビデオレンダラをグラフから除去し、ヌルレンダラを追加
-					hr = graphBuilder.RemoveFilter(audioRenderer);
-					DsError.ThrowExceptionForHR(hr);
-					IBaseFilter nullRenderer = new NullRenderer() as IBaseFilter;
-					hr = graphBuilder.AddFilter(nullRenderer, "Audio Null Renderer");
-					DsError.ThrowExceptionForHR(hr);
-
-					C共通.tCOMオブジェクトを解放する(ref nullRendererInputPin);
-					hr = nullRenderer.FindPin("In", out nullRendererInputPin);
-					DsError.ThrowExceptionForHR(hr);
-					hr = connectedOutputPin.Connect(nullRendererInputPin, null);
-					DsError.ThrowExceptionForHR(hr);
-				}
-			}
-			finally
-			{
-				C共通.tCOMオブジェクトを解放する(ref connectedOutputPin);
-				C共通.tCOMオブジェクトを解放する(ref videoRendererInputPin);
-				C共通.tCOMオブジェクトを解放する(ref videoRenderer);
-				C共通.tCOMオブジェクトを解放する(ref audioRenderer);
-				C共通.tCOMオブジェクトを解放する(ref audioRendererInputPin);
-				C共通.tCOMオブジェクトを解放する(ref nullRendererInputPin);
-				C共通.tCOMオブジェクトを解放する(ref grabberOutputPin);
-				C共通.tCOMオブジェクトを解放する(ref grabberOutputConnectedPin);
-			}
-		}
 		private static void SearchMMRenderers( IFilterGraph graph, out IBaseFilter videoRenderer, out IPin inputVPin, out IBaseFilter audioRenderer, out IPin inputAPin )
 		{
 			int hr = 0;

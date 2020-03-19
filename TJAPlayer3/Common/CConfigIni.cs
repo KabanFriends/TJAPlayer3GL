@@ -1417,12 +1417,6 @@ namespace TJAPlayer3
             this.bDirectShowMode = false;
             #endregion
         }
-		public CConfigIni( string iniファイル名 )
-			: this()
-		{
-			this.tファイルから読み込み( iniファイル名 );
-		}
-
 
 		// メソッド
 

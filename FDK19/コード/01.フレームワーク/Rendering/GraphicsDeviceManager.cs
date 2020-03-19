@@ -24,10 +24,8 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Text;
 using System.Threading;
-using System.Windows.Forms;
 using SlimDX;
 using SlimDX.Direct3D9;
-using SlimDX.DXGI;
 using System.Diagnostics;
 
 namespace SampleFramework
@@ -82,7 +80,7 @@ namespace SampleFramework
         {
             get { return new Size(CurrentSettings.BackBufferWidth, CurrentSettings.BackBufferHeight); }
         }
-        public Direct3D9Manager Direct3D9
+        public DeviceCache Device
         {
             get;
             private set;
@@ -110,8 +108,6 @@ namespace SampleFramework
 
 			game.FrameStart += game_FrameStart;
 			game.FrameEnd += game_FrameEnd;
-
-			Direct3D9 = new Direct3D9Manager( this );
 		}
 
         public void Dispose()
@@ -133,40 +129,15 @@ namespace SampleFramework
 
 			CreateDevice( validSettings );
 		}
-        public void ChangeDevice(bool windowed, int desiredWidth, int desiredHeight)
-        {
-            DeviceSettings desiredSettings = new DeviceSettings();
-            desiredSettings.Windowed = windowed;
-            desiredSettings.BackBufferWidth = desiredWidth;
-            desiredSettings.BackBufferHeight = desiredHeight;
 
-            ChangeDevice(desiredSettings, null);
-        }
         public void ChangeDevice(DeviceSettings settings)
         {
             ChangeDevice(settings, null);
         }
 
-        public void ToggleFullScreen()
-        {
-            if (!EnsureDevice())
-                throw new InvalidOperationException("No valid device.");
-
-            DeviceSettings newSettings = CurrentSettings.Clone();
-
-            newSettings.Windowed = !newSettings.Windowed;
-
-            int width = newSettings.Windowed ? windowedWindowWidth : fullscreenWindowWidth;
-            int height = newSettings.Windowed ? windowedWindowHeight : fullscreenWindowHeight;
-
-            newSettings.BackBufferWidth = width;
-            newSettings.BackBufferHeight = height;
-
-            ChangeDevice(newSettings);
-        }
         public bool EnsureDevice()
         {
-            if (Direct3D9.Device != null && !deviceLost)
+            if (Device != null && !deviceLost)
                 return true;
 
             return false;
@@ -412,7 +383,7 @@ namespace SampleFramework
 			Result result = SlimDX.Direct3D9.ResultCode.Success;
 			try
 			{
-				result = Direct3D9.Device.Present();
+				result = Device.Present();
 			}
 			catch (Direct3D9Exception)				// #23842 2011.1.6 yyagi: catch D3D9Exception to avoid unexpected termination by changing VSyncWait in fullscreen.
 			{
@@ -423,7 +394,7 @@ namespace SampleFramework
 		}
         void game_FrameStart(object sender, CancelEventArgs e)
         {
-            if (Direct3D9.Device == null )
+            if (Device == null )
             {
                 e.Cancel = true;
                 return;
@@ -437,7 +408,7 @@ namespace SampleFramework
 
             if (deviceLost)
             {
-                Result result = Direct3D9.Device.TestCooperativeLevel();
+                Result result = Device.TestCooperativeLevel();
                 if (result == SlimDX.Direct3D9.ResultCode.DeviceLost)
                 {
                     e.Cancel = true;
@@ -474,7 +445,7 @@ namespace SampleFramework
 			if( oldSettings == null )
 				return false;
 
-			return Direct3D9.Device != null &&
+			return Device != null &&
 				oldSettings.Direct3D9.AdapterOrdinal == newSettings.Direct3D9.AdapterOrdinal &&
 				oldSettings.Direct3D9.DeviceType == newSettings.Direct3D9.DeviceType &&
 				oldSettings.Direct3D9.CreationFlags == newSettings.Direct3D9.CreationFlags;
@@ -503,19 +474,19 @@ namespace SampleFramework
 					fullScreenDisplayMode.RefreshRate = CurrentSettings.Direct3D9.PresentParameters.FullScreenRefreshRateInHertz;
 					fullScreenDisplayMode.Format = CurrentSettings.Direct3D9.PresentParameters.BackBufferFormat;
 
-					Direct3D9.Device = new SlimDX.Direct3D9.DeviceEx( Direct3D9Object, CurrentSettings.Direct3D9.AdapterOrdinal,
+					Device = new SlimDX.Direct3D9.DeviceEx( Direct3D9Object, CurrentSettings.Direct3D9.AdapterOrdinal,
 						CurrentSettings.Direct3D9.DeviceType, game.Window.Handle,
 						CurrentSettings.Direct3D9.CreationFlags, CurrentSettings.Direct3D9.PresentParameters, fullScreenDisplayMode );
 				}
 				else
 				{
-					Direct3D9.Device = new SlimDX.Direct3D9.DeviceEx( Direct3D9Object, CurrentSettings.Direct3D9.AdapterOrdinal,
+					Device = new SlimDX.Direct3D9.DeviceEx( Direct3D9Object, CurrentSettings.Direct3D9.AdapterOrdinal,
 						CurrentSettings.Direct3D9.DeviceType, game.Window.Handle,
 						CurrentSettings.Direct3D9.CreationFlags, CurrentSettings.Direct3D9.PresentParameters );
 				}
-				Direct3D9.Device.MaximumFrameLatency = 1;
+				Device.MaximumFrameLatency = 1;
 #else
-				Direct3D9.Device = new DeviceCache( new SlimDX.Direct3D9.Device( Direct3D9Object, CurrentSettings.Direct3D9.AdapterOrdinal,
+				Device = new DeviceCache( new SlimDX.Direct3D9.Device( Direct3D9Object, CurrentSettings.Direct3D9.AdapterOrdinal,
 					CurrentSettings.Direct3D9.DeviceType, game.Window.Handle,
 					CurrentSettings.Direct3D9.CreationFlags, CurrentSettings.Direct3D9.PresentParameters ) );
 #endif
@@ -525,7 +496,7 @@ namespace SampleFramework
 					return;
 				}
 #if TEST_Direct3D9Ex
-				Direct3D9.Device.MaximumFrameLatency = 1;			// yyagi
+				Device.MaximumFrameLatency = 1;			// yyagi
 #endif
 			}
 			catch( Exception e )
@@ -545,7 +516,7 @@ namespace SampleFramework
 		{
 			game.UnloadContent();
 
-			Result result = Direct3D9.Device.Reset( CurrentSettings.Direct3D9.PresentParameters );
+			Result result = Device.Reset( CurrentSettings.Direct3D9.PresentParameters );
 			if( result == SlimDX.Direct3D9.ResultCode.DeviceLost )
 				return result;
 
@@ -562,7 +533,7 @@ namespace SampleFramework
         }
         void ReleaseDevice9()
         {
-            if (Direct3D9.Device == null)
+            if (Device == null)
                 return;
 
             if (game != null)
@@ -573,7 +544,7 @@ namespace SampleFramework
 
 			try
 			{
-				Direct3D9.Device.Dispose();
+				Device.Dispose();
 			}
 			catch( ObjectDisposedException e )
 			{
@@ -584,7 +555,7 @@ namespace SampleFramework
             Direct3D9Object.Dispose();
 
             Direct3D9Object = null;
-            Direct3D9.Device = null;
+            Device = null;
         }
 		void PropogateSettings()
 		{
