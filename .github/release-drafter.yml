@@ -7,6 +7,8 @@ template: |
   
   $CHANGES
 categories:
+  - title: 'Breaking Changes'
+    label: 'breaking'
   - title: 'Enhancements'
     label: 'enhancement'
   - title: 'Bug Fixes'

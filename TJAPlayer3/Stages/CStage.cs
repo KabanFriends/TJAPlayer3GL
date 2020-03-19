@@ -1,24 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using FDK;
+﻿using FDK;
 
 namespace TJAPlayer3
 {
 	public class CStage : CActivity
 	{
 		// プロパティ
-
-		internal enum Eヒット判定
-		{
-			PERFECT,
-			GREAT,
-			GOOD,
-			POOR,
-			MISS,
-			BAD,
-			AUTO
-		}
 
 		internal Eステージ eステージID;
 		public enum Eステージ
@@ -67,7 +53,6 @@ namespace TJAPlayer3
             演奏_STAGE_FAILED_ハード,
 			演奏_STAGE_CLEAR_フェードアウト,
             演奏_演奏終了演出, //2016.07.15 kairera0467
-			演奏_再読込
 		}
 	}
 }

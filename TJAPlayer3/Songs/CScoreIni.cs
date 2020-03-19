@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Text;
 using System.Runtime.InteropServices;
-using System.Drawing;
-using System.Drawing.Imaging;
 using System.Diagnostics;
 using System.IO;
 using System.Security.Cryptography;
 using FDK;
-using TJAPlayer3;
 
 namespace TJAPlayer3
 {
@@ -1378,42 +1374,6 @@ namespace TJAPlayer3
             //削除
 			return 1.0;
 		}
-        internal static double t超精密型スキルを計算して返す( CDTX dtx, int nTotal, int nPerfect, int nGood, int nMiss, int Poor, int nMaxLagTime, int nMinLagTimen, int nMaxCombo )
-        {
-            //演奏成績 最大60点
-            //最大コンボ 最大5点
-            //空打ち 最大10点(減点あり)
-            //最大_最小ズレ時間 最大10点
-            //平均ズレ時間 最大5点
-            //ボーナスA 最大5点
-            //ボーナスB 最大5点
-
-            double db演奏点 = 0;
-            double db最大コンボ = 0;
-            double db空打ち = 0;
-            double db最大ズレ時間 = 0;
-            double db最小ズレ時間 = 0;
-            double db平均最大ズレ時間 = 0;
-            double db平均最小ズレ時間 = 0;
-            double dbボーナスA = 0;
-            double dbボーナスB = 0;
-
-            #region[ 演奏点 ]
-
-            #endregion
-            #region[ 空打ち ]
-            int[] n空打ちArray = new int[] { 1, 2, 3, 5, 10, 15, 20, 30, 40, 50 };
-            int n空打ちpt = 0;
-            for( n空打ちpt = 0; n空打ちpt < 10; n空打ちpt++ )
-            {
-                if( Poor == n空打ちArray[ n空打ちpt ] )
-                    break;
-            }
-            db空打ち = ( Poor == 0 ? 10 : 10 - n空打ちpt );
-            #endregion
-
-            return 1.0;
-        }
 		internal static string t演奏セクションのMD5を求めて返す( C演奏記録 cc )
 		{
 			StringBuilder builder = new StringBuilder();

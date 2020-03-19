@@ -860,11 +860,6 @@ namespace TJAPlayer3
 		public STDGBVALUE<EInvisible> eInvisible;	// #32072 2013.9.20 yyagi チップを非表示にする
 		public int nDisplayTimesMs, nFadeoutTimeMs;
 
-		public STDGBVALUE<int> nViewerScrollSpeed;
-		public bool bViewerVSyncWait;
-		public bool bViewerShowDebugStatus;
-		public bool bViewerTimeStretch;
-		public bool bViewerDrums有効, bViewerGuitar有効;
 		//public bool bNoMP3Streaming;				// 2014.4.14 yyagi; mp3のシーク位置がおかしくなる場合は、これをtrueにすることで、wavにデコードしてからオンメモリ再生する
 		public int nMasterVolume;
         public bool ShinuchiMode; // 真打モード
@@ -1329,7 +1324,6 @@ namespace TJAPlayer3
 				this.n譜面スクロール速度[ i ] = 1;
 				this.nJudgeLinePosOffset[ i ] = 0;
 				this.eInvisible[ i ] = EInvisible.OFF;
-				this.nViewerScrollSpeed[ i ] = 1;
 				this.e判定位置[ i ] = E判定位置.標準;
 				//this.e判定表示優先度[ i ] = E判定表示優先度.Chipより下;
 			}
@@ -1386,14 +1380,6 @@ namespace TJAPlayer3
 			this.nDisplayTimesMs = 3000;				// #32072 2013.10.24 yyagi Semi-Invisibleでの、チップ再表示期間
 			this.nFadeoutTimeMs = 2000;					// #32072 2013.10.24 yyagi Semi-Invisibleでの、チップフェードアウト時間
 
-			bViewerVSyncWait = true;
-			bViewerShowDebugStatus = true;
-			bViewerTimeStretch = false;
-			bViewerDrums有効 = true;
-			bViewerGuitar有効 = true;
-            
-            
-
             this.bBranchGuide = false;
             this.nScoreMode = 2;
             this.nDefaultCourse = 3;
@@ -1431,12 +1417,6 @@ namespace TJAPlayer3
             this.bDirectShowMode = false;
             #endregion
         }
-		public CConfigIni( string iniファイル名 )
-			: this()
-		{
-			this.tファイルから読み込み( iniファイル名 );
-		}
-
 
 		// メソッド
 
@@ -1503,8 +1483,6 @@ namespace TJAPlayer3
 			Uri uriRoot = new Uri( System.IO.Path.Combine( TJAPlayer3.strEXEのあるフォルダ, "System" + System.IO.Path.DirectorySeparatorChar ) );
 			if ( strSystemSkinSubfolderFullName != null && strSystemSkinSubfolderFullName.Length == 0 )
 			{
-				// Config.iniが空の状態でDTXManiaをViewerとして起動_終了すると、strSystemSkinSubfolderFullName が空の状態でここに来る。
-				// → 初期値として Default/ を設定する。
 				strSystemSkinSubfolderFullName = System.IO.Path.Combine( TJAPlayer3.strEXEのあるフォルダ, "System" + System.IO.Path.DirectorySeparatorChar + "Default" + System.IO.Path.DirectorySeparatorChar );
 			}
 			Uri uriPath = new Uri( System.IO.Path.Combine( this.strSystemSkinSubfolderFullName, "." + System.IO.Path.DirectorySeparatorChar ) );
@@ -2065,10 +2043,6 @@ namespace TJAPlayer3
 							else if ( str2.Equals( "PlayOption" ) )
 							{
 								unknown = Eセクション種別.PlayOption;
-							}
-							else if ( str2.Equals( "ViewerOption" ) )
-							{
-								unknown = Eセクション種別.ViewerOption;
 							}
 							else if ( str2.Equals( "GUID" ) )
 							{
@@ -2724,47 +2698,6 @@ namespace TJAPlayer3
 									//-----------------------------
 									#endregion
 
-									#region [ [ViewerOption] ]
-									//-----------------------------
-									case Eセクション種別.ViewerOption:
-										{
-											if ( str3.Equals( "ViewerDrumsScrollSpeed" ) )
-											{
-												this.nViewerScrollSpeed.Drums = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 1999, this.nViewerScrollSpeed.Drums );
-											}
-											else if ( str3.Equals( "ViewerGuitarScrollSpeed" ) )
-											{
-												this.nViewerScrollSpeed.Guitar = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 1999, this.nViewerScrollSpeed.Guitar );
-											}
-											else if ( str3.Equals( "ViewerBassScrollSpeed" ) )
-											{
-												this.nViewerScrollSpeed.Bass = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 1999, this.nViewerScrollSpeed.Bass );
-											}
-											else if ( str3.Equals( "ViewerVSyncWait" ) )
-											{
-												this.bViewerVSyncWait = C変換.bONorOFF( str4[ 0 ] );
-											}
-											else if ( str3.Equals( "ViewerShowDebugStatus" ) )
-											{
-												this.bViewerShowDebugStatus = C変換.bONorOFF( str4[ 0 ] );
-											}
-											else if ( str3.Equals( "ViewerTimeStretch" ) )
-											{
-												this.bViewerTimeStretch = C変換.bONorOFF( str4[ 0 ] );
-											}
-											else if ( str3.Equals( "ViewerGuitar" ) )
-											{
-												this.bViewerGuitar有効 = C変換.bONorOFF( str4[ 0 ] );
-											}
-											else if ( str3.Equals( "ViewerDrums" ) )
-											{
-												this.bViewerDrums有効 = C変換.bONorOFF( str4[ 0 ] );
-											}
-											continue;
-										}
-									//-----------------------------
-									#endregion
-
 									#region [ [GUID] ]
 									//-----------------------------
 									case Eセクション種別.GUID:
@@ -2873,7 +2806,6 @@ namespace TJAPlayer3
 			System,
 			Log,
 			PlayOption,
-			ViewerOption,
 			AutoPlay,
 			HitRange,
 			GUID,

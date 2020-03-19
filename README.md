@@ -1,9 +1,15 @@
 ﻿<!-- omit in toc -->
 # TJAPlayer3
 
+## Quick Links
+
+- Download the latest release from the [Releases](https://github.com/twopointzero/TJAPlayer3/releases) page.
+- Learn more about installation and usage in the [Usage](#usage) section of this document.
+
 <!-- omit in toc -->
 ## Table of Contents
 
+- [Quick Links](#quick-links)
 - [Overview](#overview)
 - [Statement Regarding Intellectual Property](#statement-regarding-intellectual-property)
 - [Ethos](#ethos)
@@ -14,6 +20,7 @@
 - [Distribution / Redistribution](#distribution--redistribution)
 - [Usage](#usage)
 	- [Liability](#liability)
+	- [Privacy](#privacy)
 	- [System Requirements](#system-requirements)
 	- [Installation](#installation)
 - [Documentation](#documentation)
@@ -85,11 +92,22 @@ To remain safe from malicious parties, only use official releases (or source cod
 
 Though every reasonable attempt is made to ensure that usage of TJAPlayer3 will not adversely impact your computer, no warranty is expressed or implied and your use of the software is entirely at your own risk.
 
+### Privacy
+
+To help make improvements to the software, TJAPlayer3 automatically sends information about software errors to a prominent cloud service called [Sentry](https://sentry.io/).
+
+Sentry maintains strong compliance with privacy regulations in multiple legal jurisdictions. Nevertheless:
+
+- Every effort is made to ensure that TJAPlayer3 collects no personal information in the process of reporting errors.
+- Only [twopointzero](https://github.com/twopointzero) has access to these error reports and no access will be granted to others.
+
+If the information above still leaves you feeling uncomfortable, your computer or network firewall software can be configured to block TJAPlayer3 from sending error reports. That said, we do hope that you'll allow it to report errors so that we can all make TJAPlayer3 better together.
+
 ### System Requirements
 
 - Windows 7 or greater is required. However...
 - Windows 10 is strongly recommended. Correct behaviour on Windows versions lower than 10 is possible but no longer a tested configuration.
-- .NET Framework 3.5 is required.
+- .NET Framework 4.8 is required.
 - DirectX 9c is required.
 
 ### Installation
@@ -136,6 +154,7 @@ A full development guide is forthcoming, including information regarding roadmap
 A number of individuals created and iterated on the software that came to be TJAPlayer3.
 
 In lieu of attempting to list everyone who has contributed to this and related projects, our thanks go out to the following creators/maintainers of notable members of the TJAPlayer software family:
+
 - FROM/yyagi
 - kairera0467
 - AioiLight

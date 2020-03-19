@@ -178,13 +178,7 @@ namespace TJAPlayer3
                 this.bDShowクリップを再生している = false;
             }
 		}
-		public void Cont( int n再開時刻ms )
-		{
-			if ( ( this.rAVI != null ) && ( this.rAVI.avi != null ) )
-			{
-				this.n移動開始時刻ms = n再開時刻ms;
-			}
-		}
+
 		public unsafe int t進行描画( int x, int y )
 		{
 			if ( !base.b活性化してない )

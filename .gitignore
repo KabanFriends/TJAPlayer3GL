@@ -16,6 +16,8 @@
 /Test/dll/CSharpTest.Net.Collections.*
 /Test/dll/FDK.*
 /Test/dll/Newtonsoft.Json.*
+/Test/dll/Sentry.*
 /Test/dll/SlimDX.*
+/Test/dll/System.*
 /Test/TJAPlayer3.exe.config
 

@@ -14,29 +14,12 @@ namespace TJAPlayer3
             base.b活性化してない = true;
         }
 
-        public void tFadeIn(int player)
-        {
-            this.ct上背景クリアインタイマー[player] = new CCounter( 0, 100, 2, TJAPlayer3.Timer );
-            this.eFadeMode = EFIFOモード.フェードイン;
-        }
-
-        //public void tFadeOut(int player)
-        //{
-        //    this.ct上背景フェードタイマー[player] = new CCounter( 0, 100, 6, CDTXMania.Timer );
-        //    this.eFadeMode = EFIFOモード.フェードアウト;
-        //}
-
         public void ClearIn(int player)
         {
             this.ct上背景クリアインタイマー[player] = new CCounter(0, 100, 2, TJAPlayer3.Timer);
             this.ct上背景クリアインタイマー[player].n現在の値 = 0;
             this.ct上背景FIFOタイマー = new CCounter(0, 100, 2, TJAPlayer3.Timer);
             this.ct上背景FIFOタイマー.n現在の値 = 0;
-        }
-
-        public override void On活性化()
-        {
-            base.On活性化();
         }
 
         public override void On非活性化()
@@ -73,17 +56,6 @@ namespace TJAPlayer3
 
             this.ct上背景FIFOタイマー = new CCounter();
             base.OnManagedリソースの作成();
-        }
-
-        public override void OnManagedリソースの解放()
-        {
-            //CDTXMania.tテクスチャの解放( ref this.tx上背景メイン );
-            //CDTXMania.tテクスチャの解放( ref this.tx上背景クリアメイン );
-            //CDTXMania.tテクスチャの解放( ref this.tx下背景メイン );
-            //CDTXMania.tテクスチャの解放( ref this.tx下背景クリアメイン );
-            //CDTXMania.tテクスチャの解放( ref this.tx下背景クリアサブ1 );
-            //Trace.TraceInformation("CActDrums背景 リソースの開放");
-            base.OnManagedリソースの解放();
         }
 
         public override int On進行描画()
@@ -189,7 +161,6 @@ namespace TJAPlayer3
         //private CTexture tx下背景メイン;
         //private CTexture tx下背景クリアメイン;
         //private CTexture tx下背景クリアサブ1;
-        private EFIFOモード eFadeMode;
         //-----------------
         #endregion
     }

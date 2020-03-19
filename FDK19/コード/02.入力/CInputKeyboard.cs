@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Diagnostics;
 using SlimDX;
 using SlimDX.DirectInput;
@@ -175,14 +174,6 @@ namespace FDK
 		public bool bキーが押されている( int nKey )
 		{
 			return this.bKeyState[ nKey ];
-		}
-		public bool bキーが離された( int nKey )
-		{
-			return this.bKeyPullUp[ nKey ];
-		}
-		public bool bキーが離されている( int nKey )
-		{
-			return !this.bKeyState[ nKey ];
 		}
 		//-----------------
 		#endregion

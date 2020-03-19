@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Globalization;
 using System.Runtime.InteropServices;
 using System.Drawing;
@@ -301,8 +299,7 @@ namespace TJAPlayer3
 			// キー入力
 
 			if( ( base.eフェーズID != CStage.Eフェーズ.共通_通常状態 )
-				|| this.actKeyAssign.bキー入力待ちの最中である
-				|| TJAPlayer3.act現在入力を占有中のプラグイン != null )
+				|| this.actKeyAssign.bキー入力待ちの最中である )
 				return 0;
 
 			// 曲データの一覧取得中は、キー入力を無効化する

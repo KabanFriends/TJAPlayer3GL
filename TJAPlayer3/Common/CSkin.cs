@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Text;
 using System.IO;
 using System.Diagnostics;
@@ -51,7 +50,6 @@ namespace TJAPlayer3
 
             // フィールド、プロパティ
 
-            public bool bCompact対象;
             public bool bループ;
             public bool b読み込み未試行;
             public bool b読み込み成功;
@@ -152,13 +150,11 @@ namespace TJAPlayer3
             /// <param name="strファイル名"></param>
             /// <param name="bループ"></param>
             /// <param name="b排他"></param>
-            /// <param name="bCompact対象"></param>
-            public Cシステムサウンド(string strファイル名, bool bループ, bool b排他, bool bCompact対象, ESoundGroup soundGroup)
+            public Cシステムサウンド(string strファイル名, bool bループ, bool b排他, ESoundGroup soundGroup)
             {
                 this.strファイル名 = strファイル名;
                 this.bループ = bループ;
                 this.b排他 = b排他;
-                this.bCompact対象 = bCompact対象;
                 _soundGroup = soundGroup;
                 this.b読み込み未試行 = true;
             }
@@ -257,13 +253,13 @@ namespace TJAPlayer3
 
             public void tRemoveMixer()
             {
-                if (TJAPlayer3.Sound管理.GetCurrentSoundDeviceType() != "DirectShow")
+                if (CSound管理.GetCurrentSoundDeviceType() != "DirectShow")
                 {
                     for (int i = 0; i < 2; i++)
                     {
                         if (this.rSound[i] != null)
                         {
-                            TJAPlayer3.Sound管理.RemoveMixer(this.rSound[i]);
+                            this.rSound[i].RemoveMixer();
                         }
                     }
                 }
@@ -329,79 +325,8 @@ namespace TJAPlayer3
         public Cシステムサウンド soundBalloon = null;
 
 
-        public readonly int nシステムサウンド数 = (int)Eシステムサウンド.Count;
-        public Cシステムサウンド this[Eシステムサウンド sound]
-        {
-            get
-            {
-                switch (sound)
-                {
-                    case Eシステムサウンド.SOUNDカーソル移動音:
-                        return this.soundカーソル移動音;
+        private readonly int nシステムサウンド数 = (int)Eシステムサウンド.Count;
 
-                    case Eシステムサウンド.SOUND決定音:
-                        return this.sound決定音;
-
-                    case Eシステムサウンド.SOUND変更音:
-                        return this.sound変更音;
-
-                    case Eシステムサウンド.SOUND取消音:
-                        return this.sound取消音;
-
-                    case Eシステムサウンド.SOUND歓声音:
-                        return this.sound歓声音;
-
-                    case Eシステムサウンド.SOUNDステージ失敗音:
-                        return this.soundSTAGEFAILED音;
-
-                    case Eシステムサウンド.SOUNDゲーム開始音:
-                        return this.soundゲーム開始音;
-
-                    case Eシステムサウンド.SOUNDゲーム終了音:
-                        return this.soundゲーム終了音;
-
-                    case Eシステムサウンド.SOUNDステージクリア音:
-                        return this.soundステージクリア音;
-
-                    case Eシステムサウンド.SOUNDフルコンボ音:
-                        return this.soundフルコンボ音;
-
-                    case Eシステムサウンド.SOUND曲読込開始音:
-                        return this.sound曲読込開始音;
-
-                    case Eシステムサウンド.SOUNDタイトル音:
-                        return this.soundタイトル音;
-
-                    case Eシステムサウンド.BGM起動画面:
-                        return this.bgm起動画面;
-
-                    case Eシステムサウンド.BGMオプション画面:
-                        return this.bgmオプション画面;
-
-                    case Eシステムサウンド.BGMコンフィグ画面:
-                        return this.bgmコンフィグ画面;
-
-                    case Eシステムサウンド.BGM選曲画面:
-                        return this.bgm選曲画面;
-
-                    //case Eシステムサウンド.SOUND赤:
-                    //    return this.soundRed;
-
-                    //case Eシステムサウンド.SOUND青:
-                    //    return this.soundBlue;
-
-                    case Eシステムサウンド.SOUND風船:
-                        return this.soundBalloon;
-
-                    case Eシステムサウンド.SOUND曲決定音:
-                        return this.sound曲決定音;
-
-                    case Eシステムサウンド.SOUND成績発表:
-                        return this.sound成績発表;
-                }
-                throw new IndexOutOfRangeException();
-            }
-        }
         public Cシステムサウンド this[int index]
         {
             get
@@ -565,14 +490,7 @@ namespace TJAPlayer3
             ReloadSkinPaths();
             PrepareReloadSkin();
         }
-        public CSkin()
-        {
-            lockBoxDefSkin = new object();
-            InitializeSkinPathRoot();
-            bUseBoxDefSkin = true;
-            ReloadSkinPaths();
-            PrepareReloadSkin();
-        }
+
         private string InitializeSkinPathRoot()
         {
             strSystemSkinRoot = System.IO.Path.Combine(TJAPlayer3.strEXEのあるフォルダ, "System" + System.IO.Path.DirectorySeparatorChar);
@@ -602,28 +520,28 @@ namespace TJAPlayer3
                     this[i].Dispose();
                 }
             }
-            this.soundカーソル移動音 = new Cシステムサウンド(@"Sounds\Move.ogg", false, false, false, ESoundGroup.SoundEffect);
-            this.sound決定音 = new Cシステムサウンド(@"Sounds\Decide.ogg", false, false, false, ESoundGroup.SoundEffect);
-            this.sound変更音 = new Cシステムサウンド(@"Sounds\Change.ogg", false, false, false, ESoundGroup.SoundEffect);
-            this.sound取消音 = new Cシステムサウンド(@"Sounds\Cancel.ogg", false, false, true, ESoundGroup.SoundEffect);
-            this.sound歓声音 = new Cシステムサウンド(@"Sounds\Audience.ogg", false, false, true, ESoundGroup.SoundEffect);
-            this.soundSTAGEFAILED音 = new Cシステムサウンド(@"Sounds\Stage failed.ogg", false, true, true, ESoundGroup.Voice);
-            this.soundゲーム開始音 = new Cシステムサウンド(@"Sounds\Game start.ogg", false, false, false, ESoundGroup.Voice);
-            this.soundゲーム終了音 = new Cシステムサウンド(@"Sounds\Game end.ogg", false, true, false, ESoundGroup.Voice);
-            this.soundステージクリア音 = new Cシステムサウンド(@"Sounds\Stage clear.ogg", false, true, true, ESoundGroup.Voice);
-            this.soundフルコンボ音 = new Cシステムサウンド(@"Sounds\Full combo.ogg", false, false, true, ESoundGroup.Voice);
-            this.sound曲読込開始音 = new Cシステムサウンド(@"Sounds\Now loading.ogg", false, true, true, ESoundGroup.Unknown);
-            this.soundタイトル音 = new Cシステムサウンド(@"Sounds\Title.ogg", false, true, false, ESoundGroup.SongPlayback);
-            this.bgm起動画面 = new Cシステムサウンド(@"Sounds\Setup BGM.ogg", true, true, false, ESoundGroup.SongPlayback);
-            this.bgmオプション画面 = new Cシステムサウンド(@"Sounds\Option BGM.ogg", true, true, false, ESoundGroup.SongPlayback);
-            this.bgmコンフィグ画面 = new Cシステムサウンド(@"Sounds\Config BGM.ogg", true, true, false, ESoundGroup.SongPlayback);
-            this.bgm選曲画面 = new Cシステムサウンド(@"Sounds\Select BGM.ogg", true, true, false, ESoundGroup.SongPreview);
+            this.soundカーソル移動音 = new Cシステムサウンド(@"Sounds\Move.ogg", false, false, ESoundGroup.SoundEffect);
+            this.sound決定音 = new Cシステムサウンド(@"Sounds\Decide.ogg", false, false, ESoundGroup.SoundEffect);
+            this.sound変更音 = new Cシステムサウンド(@"Sounds\Change.ogg", false, false, ESoundGroup.SoundEffect);
+            this.sound取消音 = new Cシステムサウンド(@"Sounds\Cancel.ogg", false, false, ESoundGroup.SoundEffect);
+            this.sound歓声音 = new Cシステムサウンド(@"Sounds\Audience.ogg", false, false, ESoundGroup.SoundEffect);
+            this.soundSTAGEFAILED音 = new Cシステムサウンド(@"Sounds\Stage failed.ogg", false, true, ESoundGroup.Voice);
+            this.soundゲーム開始音 = new Cシステムサウンド(@"Sounds\Game start.ogg", false, false, ESoundGroup.Voice);
+            this.soundゲーム終了音 = new Cシステムサウンド(@"Sounds\Game end.ogg", false, true, ESoundGroup.Voice);
+            this.soundステージクリア音 = new Cシステムサウンド(@"Sounds\Stage clear.ogg", false, true, ESoundGroup.Voice);
+            this.soundフルコンボ音 = new Cシステムサウンド(@"Sounds\Full combo.ogg", false, false, ESoundGroup.Voice);
+            this.sound曲読込開始音 = new Cシステムサウンド(@"Sounds\Now loading.ogg", false, true, ESoundGroup.Unknown);
+            this.soundタイトル音 = new Cシステムサウンド(@"Sounds\Title.ogg", false, true, ESoundGroup.SongPlayback);
+            this.bgm起動画面 = new Cシステムサウンド(@"Sounds\Setup BGM.ogg", true, true, ESoundGroup.SongPlayback);
+            this.bgmオプション画面 = new Cシステムサウンド(@"Sounds\Option BGM.ogg", true, true, ESoundGroup.SongPlayback);
+            this.bgmコンフィグ画面 = new Cシステムサウンド(@"Sounds\Config BGM.ogg", true, true,  ESoundGroup.SongPlayback);
+            this.bgm選曲画面 = new Cシステムサウンド(@"Sounds\Select BGM.ogg", true, true, ESoundGroup.SongPreview);
 
-            //this.soundRed               = new Cシステムサウンド( @"Sounds\dong.ogg",            false, false, true, ESoundType.SoundEffect );
-            //this.soundBlue              = new Cシステムサウンド( @"Sounds\ka.ogg",              false, false, true, ESoundType.SoundEffect );
-            this.soundBalloon = new Cシステムサウンド(@"Sounds\balloon.ogg", false, false, true, ESoundGroup.SoundEffect);
-            this.sound曲決定音 = new Cシステムサウンド(@"Sounds\SongDecide.ogg", false, false, true, ESoundGroup.Voice);
-            this.sound成績発表 = new Cシステムサウンド(@"Sounds\ResultIn.ogg", false, false, false, ESoundGroup.Voice);
+            //this.soundRed               = new Cシステムサウンド( @"Sounds\dong.ogg",            false, false, ESoundType.SoundEffect );
+            //this.soundBlue              = new Cシステムサウンド( @"Sounds\ka.ogg",              false, false, ESoundType.SoundEffect );
+            this.soundBalloon = new Cシステムサウンド(@"Sounds\balloon.ogg", false, false, ESoundGroup.SoundEffect);
+            this.sound曲決定音 = new Cシステムサウンド(@"Sounds\SongDecide.ogg", false, false, ESoundGroup.Voice);
+            this.sound成績発表 = new Cシステムサウンド(@"Sounds\ResultIn.ogg", false, false, ESoundGroup.Voice);
             ReloadSkin();
             tReadSkinConfig();
         }
@@ -632,27 +550,27 @@ namespace TJAPlayer3
         {
             for (int i = 0; i < nシステムサウンド数; i++)
             {
-                if (!this[i].b排他)   // BGM系以外のみ読み込む。(BGM系は必要になったときに読み込む)
+                var cシステムサウンド = this[i];
+
+                if (cシステムサウンド.b排他)
                 {
-                    Cシステムサウンド cシステムサウンド = this[i];
-                    if (!TJAPlayer3.bコンパクトモード || cシステムサウンド.bCompact対象)
-                    {
-                        try
-                        {
-                            cシステムサウンド.t読み込み();
-                            Trace.TraceInformation("システムサウンドを読み込みました。({0})", cシステムサウンド.strファイル名);
-                        }
-                        catch (FileNotFoundException e)
-                        {
-                            Trace.TraceWarning(e.ToString());
-                            Trace.TraceWarning("システムサウンドが存在しません。({0})", cシステムサウンド.strファイル名);
-                        }
-                        catch (Exception e)
-                        {
-                            Trace.TraceWarning(e.ToString());
-                            Trace.TraceWarning("システムサウンドの読み込みに失敗しました。({0})", cシステムサウンド.strファイル名);
-                        }
-                    }
+                    continue;
+                }
+
+                try
+                {
+                    cシステムサウンド.t読み込み();
+                    Trace.TraceInformation("システムサウンドを読み込みました。({0})", cシステムサウンド.strファイル名);
+                }
+                catch (FileNotFoundException e)
+                {
+                    Trace.TraceWarning(e.ToString());
+                    Trace.TraceWarning("システムサウンドが存在しません。({0})", cシステムサウンド.strファイル名);
+                }
+                catch (Exception e)
+                {
+                    Trace.TraceWarning(e.ToString());
+                    Trace.TraceWarning("システムサウンドの読み込みに失敗しました。({0})", cシステムサウンド.strファイル名);
                 }
             }
         }
@@ -820,15 +738,6 @@ namespace TJAPlayer3
                 }
             }
 
-        }
-
-        /// <summary>
-        /// 変数の初期化
-        /// </summary>
-        public void tSkinConfigInit()
-        {
-            this.eDiffDispMode = E難易度表示タイプ.mtaikoに画像で表示;
-            this.b現在のステージ数を表示しない = false;
         }
 
         public void tReadSkinConfig()
@@ -2359,15 +2268,6 @@ namespace TJAPlayer3
             }
         }
 
-        private void t座標の追従設定()
-        {
-            //
-            if (bFieldBgPointOverride == true)
-            {
-
-            }
-        }
-
         #region [ IDisposable 実装 ]
         //-----------------
         public void Dispose()
@@ -2400,12 +2300,6 @@ namespace TJAPlayer3
         #region[ 座標 ]
         //2017.08.11 kairera0467 DP実用化に向けてint配列に変更
         //2019.01.05 rhimm 自由化のため、レーン座標・判定枠関連を 新・SkinConfig>Lane 下に移動
-
-        //フィールド背景画像
-        //ScrollField座標への追従設定が可能。
-        //分岐背景、ゴーゴー背景が連動する。(全て同じ大きさ、位置で作成すること。)
-        //左上基準描画
-        public bool bFieldBgPointOverride = false;
 
         //SEnotes
         //音符座標に加算

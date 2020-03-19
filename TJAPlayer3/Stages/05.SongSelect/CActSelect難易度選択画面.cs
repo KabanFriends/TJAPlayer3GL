@@ -1,15 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Globalization;
-using System.Runtime.InteropServices;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.Diagnostics;
-using System.Drawing.Text;
-
-using SlimDX;
-using FDK;
+﻿using FDK;
 
 namespace TJAPlayer3
 {
@@ -32,7 +21,6 @@ namespace TJAPlayer3
 				return true;
 			}
 		}
-        public bool bIsDifficltSelect;
 
 		// コンストラクタ
 
@@ -90,50 +78,6 @@ namespace TJAPlayer3
                 //    this.n現在の選択行 = this.t指定した方向に近い難易度番号を返す( 1, 5 );
                 //}
 			}
-		}
-		public void t選択画面初期化()
-		{
-			//かんたんから一番近いところにカーソルを移動させる。
-            for( int i = 0; i < (int)Difficulty.Total; i++ )
-            {
-                if( TJAPlayer3.stage選曲.r現在選択中の曲.arスコア[ i ] != null )
-                {
-                    this.n現在の選択行 = i;
-                    break;
-                }
-            }
-
-            int n譜面数 = 0;
-            for( int i = 0; i < (int)Difficulty.Total; i++ )
-			{
-                if( TJAPlayer3.stage選曲.r現在選択中の曲.arスコア[ i ] != null ) n譜面数++;
-            }
-            for( int i = 0; i < (int)Difficulty.Total; i++ )
-			{
-                //描画順と座標を決める。
-                switch( n譜面数 )
-                {
-                    case 1:
-                    case 2:
-                        this.n描画順 = new[] { 0, 1, 2, 3, 4 };
-                        this.n踏み台座標 = new[] { 12, 252, 492, 732, 972 };
-                        break;
-                    case 3:
-                        this.n描画順 = new[] { 0, 2, 1, 3, 4 };
-                        this.n踏み台座標 = new[] { 12, 492, 252, 732, 972 };
-                        break;
-                    case 4:
-                        this.n描画順 = new[] { 0, 2, 1, 3, 4 };
-                        this.n踏み台座標 = new[] { 12, 492, 252, 732, 972 };
-                        break;
-                    case 5:
-                        this.n描画順 = new[] { 0, 3, 1, 4, 2 };
-                        this.n踏み台座標 = new[] { 12, 492, 972, 252, 732 };
-                        break;
-                }
-
-            }
-            this.b初めての進行描画 = true;
 		}
 
 		// CActivity 実装
@@ -302,10 +246,6 @@ namespace TJAPlayer3
                             }
                             break;
                     }
-                }
-                else if( TJAPlayer3.Input管理.Keyboard.bキーが押された( (int) SlimDX.DirectInput.Key.F7 ) )
-                {
-                    this.bIsDifficltSelect = false;
                 }
 
 				//-----------------

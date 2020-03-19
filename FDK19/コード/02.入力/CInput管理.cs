@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
-using SlimDX;
 using SlimDX.DirectInput;
 
 namespace FDK
@@ -60,15 +58,6 @@ namespace FDK
 		// コンストラクタ
 		public CInput管理( IntPtr hWnd )
 		{
-			CInput管理初期化( hWnd, true );
-		}
-		public CInput管理( IntPtr hWnd, bool bUseMidiIn )
-		{
-			CInput管理初期化( hWnd, bUseMidiIn );
-		}
-
-		public void CInput管理初期化( IntPtr hWnd, bool bUseMidiIn )
-		{
 			this.directInput = new DirectInput();
 			// this.timer = new CTimer( CTimer.E種別.MultiMedia );
 
@@ -80,35 +69,28 @@ namespace FDK
 				this.list入力デバイス.Add( new CInputJoystick( hWnd, instance, directInput ) );
 			}
 
-			if ( bUseMidiIn )
+			this.proc = new CWin32.MidiInProc( this.MidiInCallback );
+			uint nMidiDevices = CWin32.midiInGetNumDevs();
+			Trace.TraceInformation( "MIDI入力デバイス数: {0}", nMidiDevices );
+			for ( uint i = 0; i < nMidiDevices; i++ )
 			{
-				this.proc = new CWin32.MidiInProc( this.MidiInCallback );
-				uint nMidiDevices = CWin32.midiInGetNumDevs();
-				Trace.TraceInformation( "MIDI入力デバイス数: {0}", nMidiDevices );
-				for ( uint i = 0; i < nMidiDevices; i++ )
+				CInputMIDI item = new CInputMIDI( i );
+				this.list入力デバイス.Add( item );
+				CWin32.MIDIINCAPS lpMidiInCaps = new CWin32.MIDIINCAPS();
+				uint num3 = CWin32.midiInGetDevCaps( i, ref lpMidiInCaps, (uint) Marshal.SizeOf( lpMidiInCaps ) );
+				if ( num3 != 0 )
 				{
-					CInputMIDI item = new CInputMIDI( i );
-					this.list入力デバイス.Add( item );
-					CWin32.MIDIINCAPS lpMidiInCaps = new CWin32.MIDIINCAPS();
-					uint num3 = CWin32.midiInGetDevCaps( i, ref lpMidiInCaps, (uint) Marshal.SizeOf( lpMidiInCaps ) );
-					if ( num3 != 0 )
-					{
-						Trace.TraceError( "MIDI In: Device{0}: midiInDevCaps(): {1:X2}: ", i, num3 );
-					}
-					else if ( ( CWin32.midiInOpen( ref item.hMidiIn, i, this.proc, 0, 0x30000 ) == 0 ) && ( item.hMidiIn != 0 ) )
-					{
-						CWin32.midiInStart( item.hMidiIn );
-						Trace.TraceInformation( "MIDI In: [{0}] \"{1}\" の入力受付を開始しました。", i, lpMidiInCaps.szPname );
-					}
-					else
-					{
-						Trace.TraceError( "MIDI In: [{0}] \"{1}\" の入力受付の開始に失敗しました。", i, lpMidiInCaps.szPname );
-					}
+					Trace.TraceError( "MIDI In: Device{0}: midiInDevCaps(): {1:X2}: ", i, num3 );
 				}
-			}
-			else
-			{
-				Trace.TraceInformation( "DTXVモードのため、MIDI入力は使用しません。" );
+				else if ( ( CWin32.midiInOpen( ref item.hMidiIn, i, this.proc, 0, 0x30000 ) == 0 ) && ( item.hMidiIn != 0 ) )
+				{
+					CWin32.midiInStart( item.hMidiIn );
+					Trace.TraceInformation( "MIDI In: [{0}] \"{1}\" の入力受付を開始しました。", i, lpMidiInCaps.szPname );
+				}
+				else
+				{
+					Trace.TraceError( "MIDI In: [{0}] \"{1}\" の入力受付の開始に失敗しました。", i, lpMidiInCaps.szPname );
+				}
 			}
 		}
 		
@@ -126,17 +108,7 @@ namespace FDK
 			}
 			return null;
 		}
-		public IInputDevice Joystick( string GUID )
-		{
-			foreach( IInputDevice device in this.list入力デバイス )
-			{
-				if( ( device.e入力デバイス種別 == E入力デバイス種別.Joystick ) && device.GUID.Equals( GUID ) )
-				{
-					return device;
-				}
-			}
-			return null;
-		}
+
 		public IInputDevice MidiIn( int ID )
 		{
 			foreach( IInputDevice device in this.list入力デバイス )
@@ -227,12 +199,13 @@ namespace FDK
 
 		#region [ private ]
 		//-----------------
-		private DirectInput directInput;
-		private IInputDevice _Keyboard;
+		private readonly DirectInput directInput;
+        private readonly object objMidiIn排他用 = new object();
+
+        private IInputDevice _Keyboard;
 		private IInputDevice _Mouse;
 		private bool bDisposed済み;
 		private List<uint> listHMIDIIN = new List<uint>( 8 );
-		private object objMidiIn排他用 = new object();
 		private CWin32.MidiInProc proc;
 //		private CTimer timer;
 

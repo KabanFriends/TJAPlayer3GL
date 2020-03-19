@@ -9,11 +9,6 @@ namespace TJAPlayer3
             base.b活性化してない = true;
         }
 
-        public override void On活性化()
-        {
-            base.On活性化();
-        }
-
         public override void On非活性化()
         {
             TJAPlayer3.t安全にDisposeする( ref this.ct分岐アニメ進行 );
@@ -41,18 +36,6 @@ namespace TJAPlayer3
             TJAPlayer3.Tx.Lane_Base[0].Opacity = 255;
 
             base.OnManagedリソースの作成();
-        }
-
-        public override void OnManagedリソースの解放()
-        {
-            //CDTXMania.tテクスチャの解放( ref this.tx普通譜面[ 0 ] );
-            //CDTXMania.tテクスチャの解放( ref this.tx玄人譜面[ 0 ] );
-            //CDTXMania.tテクスチャの解放( ref this.tx達人譜面[ 0 ] );
-            //CDTXMania.tテクスチャの解放( ref this.tx普通譜面[ 1 ] );
-            //CDTXMania.tテクスチャの解放( ref this.tx玄人譜面[ 1 ] );
-            //CDTXMania.tテクスチャの解放( ref this.tx達人譜面[ 1 ] );
-
-            base.OnManagedリソースの解放();
         }
 
         public override int On進行描画()

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Net;
-using System.Security.Authentication;
 using System.Windows.Forms;
 using Newtonsoft.Json;
 
@@ -27,11 +26,6 @@ namespace TJAPlayer3.Updates
 
         private static string GetLatestReleaseJson()
         {
-            // .NET 3.5 Framework workaround for TLS 1.2, though still assumes
-            // that the Windows system executing this code has the necessary
-            // updates installed. Remove upon upgrade past .NET 3.5.
-            ServicePointManager.SecurityProtocol = (SecurityProtocolType) (SslProtocols) 0x00000C00;
-
             var client = new WebClientWithTimeout(TimeSpan.FromSeconds(2));
             client.Headers.Add("User-Agent", "twopointzero/TJAPlayer3");
 
