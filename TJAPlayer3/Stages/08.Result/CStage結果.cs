@@ -272,7 +272,7 @@ namespace TJAPlayer3
 		}
 		public override int On進行描画()
 		{
-			if ( !base.b活性化してない )
+			if( !base.b活性化してない )
 			{
 				int num;
 				if( base.b初めての進行描画 )
