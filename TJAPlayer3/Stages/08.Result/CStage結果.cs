@@ -349,6 +349,7 @@ namespace TJAPlayer3
 					if( this.actFI.On進行描画() != 0 )
 					{
 						base.eフェーズID = CStage.Eフェーズ.共通_通常状態;
+                        TJAPlayer3.Skin.bgm結果画面.t再生する();
 					}
 				}
 				else if( ( base.eフェーズID == CStage.Eフェーズ.共通_フェードアウト ) )			//&& ( this.actFO.On進行描画() != 0 ) )
