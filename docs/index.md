@@ -8,6 +8,7 @@
 - [Song Selection](#song-selection)
   - [Song Ratings / Favorites](#song-ratings--favorites)
   - [Song List Files](#song-list-files)
+- [Skinning](#skinning)
 
 ## The Current State of TJAPlayer3 Documentation
 
@@ -30,3 +31,9 @@ Required: TJAPlayer3 v4.7.0 or greater
 You might want one song to appear in multiple locations within the song selection tree. You might want a set of songs to appear in a completely customized order. Instead of copying files and renaming them to control the order in which they appear, you can create and use Song List Files.
 
 Read more in [Song List Files](song-list-files.md).
+
+## [Skinning](skinning.md)
+
+TJAPlayer3 supports skinning of its user interface via image, audio, and configuration files.
+
+Read more in [Skinning](skinning.md).
