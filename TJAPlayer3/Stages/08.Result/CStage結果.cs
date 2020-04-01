@@ -272,7 +272,7 @@ namespace TJAPlayer3
 		}
 		public override int On進行描画()
 		{
-            if ( !base.b活性化してない )
+			if ( !base.b活性化してない )
 			{
 				int num;
 				if( base.b初めての進行描画 )
@@ -285,7 +285,7 @@ namespace TJAPlayer3
 						this.rResultSound.t再生を開始する();
 					}
 					base.b初めての進行描画 = false;
-                }
+				}
 				this.bアニメが完了 = true;
 				if( this.ct登場用.b進行中 )
 				{

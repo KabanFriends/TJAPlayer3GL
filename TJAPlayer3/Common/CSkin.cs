@@ -17,7 +17,7 @@ namespace TJAPlayer3
 		BGM起動画面,
 		BGM選曲画面,
         BGM結果画面,
-        SOUNDステージ失敗音,
+		SOUNDステージ失敗音,
 		SOUNDカーソル移動音,
 		SOUNDゲーム開始音,
 		SOUNDゲーム終了音,
