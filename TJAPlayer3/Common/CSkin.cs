@@ -5,6 +5,7 @@ using System.Diagnostics;
 using FDK;
 using System.Drawing;
 using System.Linq;
+using TJAPlayer3.Common;
 
 namespace TJAPlayer3
 {
@@ -2507,7 +2508,7 @@ namespace TJAPlayer3
         public int[] Game_Lyric_XY = new int[] { 640, 630 };
         public int Game_MusicName_FontSize = 30;
         public ReferencePoint Game_MusicName_ReferencePoint = ReferencePoint.Right;
-        public string Game_Lyric_FontName = "MS UI Gothic";
+        public string Game_Lyric_FontName = FontUtilities.FallbackFontName;
         public int Game_Lyric_FontSize = 38;
         public ReferencePoint Game_Lyric_ReferencePoint = ReferencePoint.Center;
 

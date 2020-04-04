@@ -8,6 +8,7 @@ using System.Linq;
 using CSharpTest.Net.Collections;
 using SlimDX;
 using FDK;
+using TJAPlayer3.Common;
 
 namespace TJAPlayer3
 {
@@ -519,18 +520,12 @@ namespace TJAPlayer3
             // enter or return to the song select screen.
             TJAPlayer3.IsPerformingCalibration = false;
 
-            if (!string.IsNullOrEmpty(TJAPlayer3.ConfigIni.FontName))
-            {
-                this.pfMusicName = new CPrivateFastFont(new FontFamily(TJAPlayer3.ConfigIni.FontName), 28);
-                this.pfSubtitle = new CPrivateFastFont(new FontFamily(TJAPlayer3.ConfigIni.FontName), 20);
-            }
-            else
-            {
-                this.pfMusicName = new CPrivateFastFont(new FontFamily("MS UI Gothic"), 28);
-                this.pfSubtitle = new CPrivateFastFont(new FontFamily("MS UI Gothic"), 20);
-            }
+            var fontFamily = FontUtilities.GetFontFamilyOrFallback(TJAPlayer3.ConfigIni.FontName);
 
-		    _titleTextures.ItemRemoved += OnTitleTexturesOnItemRemoved;
+            this.pfMusicName = new CPrivateFastFont(fontFamily, 28);
+            this.pfSubtitle = new CPrivateFastFont(fontFamily, 20);
+
+            _titleTextures.ItemRemoved += OnTitleTexturesOnItemRemoved;
 		    _titleTextures.ItemUpdated += OnTitleTexturesOnItemUpdated;
 
             this.e楽器パート = E楽器パート.DRUMS;
@@ -543,7 +538,7 @@ namespace TJAPlayer3
 			// 曲リスト文字は２倍（面積４倍）でテクスチャに描画してから縮小表示するので、フォントサイズは２倍とする。
 
 			FontStyle regular = FontStyle.Regular;
-			this.ft曲リスト用フォント = new Font( TJAPlayer3.ConfigIni.FontName, 40f, regular, GraphicsUnit.Pixel );
+			this.ft曲リスト用フォント = new Font( fontFamily, 40f, regular, GraphicsUnit.Pixel );
 			
 
 			// 現在選択中の曲がない（＝はじめての活性化）なら、現在選択中の曲をルートの先頭ノードに設定する。
@@ -564,7 +559,8 @@ namespace TJAPlayer3
 
 			this.t選択曲が変更された(true);		// #27648 2012.3.31 yyagi 選曲画面に入った直後の 現在位置/全アイテム数 の表示を正しく行うため
 		}
-		public override void On非活性化()
+
+        public override void On非活性化()
 		{
 			if( this.b活性化してない )
 				return;
