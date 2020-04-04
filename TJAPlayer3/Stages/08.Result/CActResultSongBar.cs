@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Drawing;
-using System.Diagnostics;
-using SlimDX;
+﻿using System.Drawing;
 using FDK;
+using TJAPlayer3.Common;
 
 namespace TJAPlayer3
 {
@@ -37,8 +33,8 @@ namespace TJAPlayer3
             }
             else
             {
-                this.pfMusicName = new CPrivateFastFont(new FontFamily("MS UI Gothic"), TJAPlayer3.Skin.Result_MusicName_FontSize);
-                this.pfStageText = new CPrivateFastFont(new FontFamily("MS UI Gothic"), TJAPlayer3.Skin.Result_StageText_FontSize);
+                this.pfMusicName = new CPrivateFastFont(new FontFamily(FontUtilities.FallbackFontName), TJAPlayer3.Skin.Result_MusicName_FontSize);
+                this.pfStageText = new CPrivateFastFont(new FontFamily(FontUtilities.FallbackFontName), TJAPlayer3.Skin.Result_StageText_FontSize);
             }
 
 		    // After performing calibration, inform the player that

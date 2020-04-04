@@ -2,6 +2,7 @@ using System;
 using System.Drawing;
 using System.Diagnostics;
 using FDK;
+using TJAPlayer3.Common;
 
 namespace TJAPlayer3
 {
@@ -143,7 +144,7 @@ namespace TJAPlayer3
                 //this.pf縦書きテスト = new CPrivateFastFont( new FontFamily( CDTXMania.ConfigIni.strPrivateFontで使うフォント名 ), 22 );
             }
             else
-                this.pfMusicName = new CPrivateFastFont( new FontFamily("MS UI Gothic"), TJAPlayer3.Skin.Game_MusicName_FontSize);
+                this.pfMusicName = new CPrivateFastFont( new FontFamily(FontUtilities.FallbackFontName), TJAPlayer3.Skin.Game_MusicName_FontSize);
 
             if( !string.IsNullOrEmpty(TJAPlayer3.Skin.Game_Lyric_FontName))
             {
@@ -151,7 +152,7 @@ namespace TJAPlayer3
             }
             else
             {
-                this.pf歌詞フォント = new CPrivateFastFont(new FontFamily("MS UI Gothic"), TJAPlayer3.Skin.Game_Lyric_FontSize);
+                this.pf歌詞フォント = new CPrivateFastFont(new FontFamily(FontUtilities.FallbackFontName), TJAPlayer3.Skin.Game_Lyric_FontSize);
             }
 
 			this.txPanel = null;

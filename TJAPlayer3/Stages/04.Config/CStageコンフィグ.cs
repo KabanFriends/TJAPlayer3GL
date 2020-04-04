@@ -4,6 +4,7 @@ using System.Runtime.InteropServices;
 using System.Drawing;
 using System.Diagnostics;
 using FDK;
+using TJAPlayer3.Common;
 
 namespace TJAPlayer3
 {
@@ -63,7 +64,7 @@ namespace TJAPlayer3
                 }
                 else
                 {
-                    this.ftフォント = new Font("MS UI Gothic", 18.0f, FontStyle.Bold, GraphicsUnit.Pixel);
+                    this.ftフォント = new Font(FontUtilities.FallbackFontName, 18.0f, FontStyle.Bold, GraphicsUnit.Pixel);
                 }
 				for( int i = 0; i < 4; i++ )													//
 				{																				//
