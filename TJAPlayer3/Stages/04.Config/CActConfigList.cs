@@ -1479,10 +1479,7 @@ namespace TJAPlayer3
 			nSkinSampleIndex = -1;
 			#endregion
 
-            if ( !string.IsNullOrEmpty(TJAPlayer3.ConfigIni.FontName))
-			    this.prvFont = new CPrivateFastFont(new FontFamily(TJAPlayer3.ConfigIni.FontName), 20 );	// t項目リストの設定 の前に必要
-            else
-                this.prvFont = new CPrivateFastFont(new FontFamily(FontUtilities.FallbackFontName), 20);
+            this.prvFont = new CPrivateFastFont(FontUtilities.GetFontFamilyOrFallback(TJAPlayer3.ConfigIni.FontName), 20); // t項目リストの設定 の前に必要
 
             //			this.listMenu = new List<stMenuItemRight>();
 
