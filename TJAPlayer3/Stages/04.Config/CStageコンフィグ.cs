@@ -4,6 +4,7 @@ using System.Runtime.InteropServices;
 using System.Drawing;
 using System.Diagnostics;
 using FDK;
+using TJAPlayer3.Common;
 
 namespace TJAPlayer3
 {
@@ -56,20 +57,13 @@ namespace TJAPlayer3
 			Trace.Indent();
 			try
 			{
-				this.n現在のメニュー番号 = 0;                                                    //
-                if (!string.IsNullOrEmpty(TJAPlayer3.ConfigIni.FontName))
-                {
-                    this.ftフォント = new Font(TJAPlayer3.ConfigIni.FontName, 18.0f, FontStyle.Bold, GraphicsUnit.Pixel);
-                }
-                else
-                {
-                    this.ftフォント = new Font("MS UI Gothic", 18.0f, FontStyle.Bold, GraphicsUnit.Pixel);
-                }
-				for( int i = 0; i < 4; i++ )													//
-				{																				//
-					this.ctキー反復用[ i ] = new CCounter( 0, 0, 0, TJAPlayer3.Timer );			//
-				}																				//
-				this.bメニューにフォーカス中 = true;											// ここまでOPTIONと共通
+				this.n現在のメニュー番号 = 0;
+                this.ftフォント = new Font(FontUtilities.GetFontFamilyOrFallback(TJAPlayer3.ConfigIni.FontName), 18.0f, FontStyle.Bold, GraphicsUnit.Pixel);
+				for( int i = 0; i < 4; i++ )
+				{
+					this.ctキー反復用[ i ] = new CCounter( 0, 0, 0, TJAPlayer3.Timer );
+				}
+				this.bメニューにフォーカス中 = true;
 				this.eItemPanelモード = EItemPanelモード.パッド一覧;
 			}
 			finally
@@ -114,42 +108,42 @@ namespace TJAPlayer3
 				Trace.Unindent();
 			}
 		}
-		public override void OnManagedリソースの作成()											// OPTIONと画像以外共通
-		{
-			if( !base.b活性化してない )
-			{
-				//this.tx背景 = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\4_background.jpg" ), false );
-				//this.tx上部パネル = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\4_header panel.png" ) );
-				//this.tx下部パネル = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\4_footer panel.png" ) );
-				//this.txMenuカーソル = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenConfig menu cursor.png" ) );
-			    string[] strMenuItem = {"System", "Drums", "Exit"};
-			    txMenuItemLeft = new CTexture[strMenuItem.Length, 2];
-			    using (var prvFont = new CPrivateFastFont(CSkin.Path(@"mplus-1p-heavy.ttf"), 20))
-			    {
-			        for (int i = 0; i < strMenuItem.Length; i++)
-			        {
-			            using (var bmpStr = prvFont.DrawPrivateFont(strMenuItem[i], Color.White, Color.Black))
-			            {
-			                txMenuItemLeft[i, 0] = TJAPlayer3.tテクスチャの生成(bmpStr, false);
-			            }
-			            using (var bmpStr = prvFont.DrawPrivateFont(strMenuItem[i], Color.White, Color.Black, Color.Yellow, Color.OrangeRed))
-			            {
-			                txMenuItemLeft[i, 1] = TJAPlayer3.tテクスチャの生成(bmpStr, false);
-			            }
-			        }
-			    }
 
-			    if( this.bメニューにフォーカス中 )
-				{
-					this.t説明文パネルに現在選択されているメニューの説明を描画する();
-				}
-				else
-				{
-					this.t説明文パネルに現在選択されている項目の説明を描画する();
-				}
-				base.OnManagedリソースの作成();
-			}
-		}
+        public override void OnManagedリソースの作成()
+        {
+            if (!b活性化してない)
+            {
+                string[] strMenuItem = {"System", "Drums", "Exit"};
+                txMenuItemLeft = new CTexture[strMenuItem.Length, 2];
+                using (var prvFont = new CPrivateFastFont(CSkin.Path(@"mplus-1p-heavy.ttf"), 20))
+                {
+                    for (var i = 0; i < strMenuItem.Length; i++)
+                    {
+                        using (var bmpStr = prvFont.DrawPrivateFont(strMenuItem[i], Color.White, Color.Black))
+                        {
+                            txMenuItemLeft[i, 0] = TJAPlayer3.tテクスチャの生成(bmpStr, false);
+                        }
+
+                        using (var bmpStr = prvFont.DrawPrivateFont(strMenuItem[i], Color.White, Color.Black, Color.Yellow, Color.OrangeRed))
+                        {
+                            txMenuItemLeft[i, 1] = TJAPlayer3.tテクスチャの生成(bmpStr, false);
+                        }
+                    }
+                }
+
+                if (bメニューにフォーカス中)
+                {
+                    t説明文パネルに現在選択されているメニューの説明を描画する();
+                }
+                else
+                {
+                    t説明文パネルに現在選択されている項目の説明を描画する();
+                }
+
+                base.OnManagedリソースの作成();
+            }
+        }
+
 		public override void OnManagedリソースの解放()											// OPTIONと同じ(COnfig.iniの書き出しタイミングのみ異なるが、無視して良い)
 		{
 			if( !base.b活性化してない )

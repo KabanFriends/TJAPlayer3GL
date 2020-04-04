@@ -7,6 +7,7 @@ using System.IO;
 using System.Diagnostics;
 using FDK;
 using FDK.ExtensionMethods;
+using TJAPlayer3.Common;
 
 namespace TJAPlayer3
 {
@@ -1273,7 +1274,7 @@ namespace TJAPlayer3
 			this.n表示可能な最小コンボ数.Guitar = 2;
 			this.n表示可能な最小コンボ数.Bass = 2;
 			this.n表示可能な最小コンボ数.Taiko = 3;
-            this.FontName = "MS UI Gothic";
+            this.FontName = FontUtilities.FallbackFontName;
 		    this.ApplyLoudnessMetadata = true;
 
 		    // 2018-08-28 twopointzero:

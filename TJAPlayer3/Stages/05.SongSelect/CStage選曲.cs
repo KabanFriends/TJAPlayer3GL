@@ -147,7 +147,6 @@ namespace TJAPlayer3
 			{
                 this.eフェードアウト完了時の戻り値 = E戻り値.継続;
 				this.bBGM再生済み = false;
-				this.ftフォント = new Font("MS UI Gothic", 26f, GraphicsUnit.Pixel );
 				for( int i = 0; i < 4; i++ )
 					this.ctキー反復用[ i ] = new CCounter( 0, 0, 0, TJAPlayer3.Timer );
 
@@ -172,11 +171,6 @@ namespace TJAPlayer3
 			Trace.Indent();
 			try
 			{
-				if( this.ftフォント != null )
-				{
-					this.ftフォント.Dispose();
-					this.ftフォント = null;
-				}
 				for( int i = 0; i < 4; i++ )
 				{
 					this.ctキー反復用[ i ] = null;
@@ -771,7 +765,6 @@ namespace TJAPlayer3
 		public CCounter ct登場時アニメ用共通;
 		private CCounter ct背景スクロール用タイマー;
 		private E戻り値 eフェードアウト完了時の戻り値;
-		private Font ftフォント;
 		//private CTexture tx下部パネル;
 		//private CTexture tx上部パネル;
 		//private CTexture tx背景;

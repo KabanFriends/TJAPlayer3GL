@@ -5,6 +5,7 @@ using System.IO;
 using SlimDX;
 using System.Drawing.Text;
 using FDK;
+using TJAPlayer3.Common;
 
 namespace TJAPlayer3
 {
@@ -32,16 +33,11 @@ namespace TJAPlayer3
 			{
 				this.str曲タイトル = "";
 				this.strSTAGEFILE = "";
-                if( !string.IsNullOrEmpty( TJAPlayer3.ConfigIni.FontName ) )
-                {
-                    this.pfTITLE = new CPrivateFastFont( new FontFamily( TJAPlayer3.ConfigIni.FontName ), TJAPlayer3.Skin.SongLoading_Title_FontSize );
-                    this.pfSUBTITLE = new CPrivateFastFont( new FontFamily( TJAPlayer3.ConfigIni.FontName ), TJAPlayer3.Skin.SongLoading_SubTitle_FontSize);
-                }
-                else
-                {
-                    this.pfTITLE = new CPrivateFastFont( new FontFamily("MS UI Gothic"), TJAPlayer3.Skin.SongLoading_Title_FontSize);
-                    this.pfSUBTITLE = new CPrivateFastFont( new FontFamily("MS UI Gothic" ), TJAPlayer3.Skin.SongLoading_SubTitle_FontSize);
-                }
+
+                var fontFamily = FontUtilities.GetFontFamilyOrFallback(TJAPlayer3.ConfigIni.FontName);
+                this.pfTITLE = new CPrivateFastFont(fontFamily, TJAPlayer3.Skin.SongLoading_Title_FontSize);
+                this.pfSUBTITLE = new CPrivateFastFont(fontFamily, TJAPlayer3.Skin.SongLoading_SubTitle_FontSize);
+
 				this.nBGM再生開始時刻 = -1;
 				this.nBGMの総再生時間ms = 0;
 				if( this.sd読み込み音 != null )
@@ -211,7 +207,7 @@ namespace TJAPlayer3
 				bitmapFilename = new Bitmap( 640, 24 );
 				graphicsFilename = Graphics.FromImage( bitmapFilename );
 				graphicsFilename.TextRenderingHint = TextRenderingHint.AntiAlias;
-				ftFilename = new Font("MS UI Gothic", 24f, FontStyle.Bold, GraphicsUnit.Pixel );
+				ftFilename = new Font(FontUtilities.FallbackFontName, 24f, FontStyle.Bold, GraphicsUnit.Pixel );
 			}
 			//-----------------------------
 			#endregion
@@ -339,48 +335,36 @@ namespace TJAPlayer3
                             // 段位認定モード用。
                             if (TJAPlayer3.stage選曲.n確定された曲の難易度 == (int)Difficulty.Dan && TJAPlayer3.DTX.List_DanSongs != null)
                             {
-                                CPrivateFont pfTitle;
-                                CPrivateFont pfSubTitle;
-                                if (!string.IsNullOrEmpty(TJAPlayer3.ConfigIni.FontName))
+                                var fontFamily = FontUtilities.GetFontFamilyOrFallback(TJAPlayer3.ConfigIni.FontName);
+                                using (var pfTitle = new CPrivateFont(fontFamily, 30))
+                                using (var pfSubTitle = new CPrivateFont(fontFamily, 22))
                                 {
-                                    pfTitle = new CPrivateFont(new FontFamily(TJAPlayer3.ConfigIni.FontName), 30);
-                                    pfSubTitle = new CPrivateFont(new FontFamily(TJAPlayer3.ConfigIni.FontName), 22);
-                                }
-                                else
-                                {
-                                    pfTitle = new CPrivateFont(new FontFamily("MS UI Gothic"), 30);
-                                    pfSubTitle = new CPrivateFont(new FontFamily("MS UI Gothic"), 22);
-                                }
+                                    var titleForeColor = TJAPlayer3.Skin.Game_DanC_Title_ForeColor;
+                                    var titleBackColor = TJAPlayer3.Skin.Game_DanC_Title_BackColor;
+                                    var subtitleForeColor = TJAPlayer3.Skin.Game_DanC_SubTitle_ForeColor;
+                                    var subtitleBackColor = TJAPlayer3.Skin.Game_DanC_SubTitle_BackColor;
 
-                                var titleForeColor = TJAPlayer3.Skin.Game_DanC_Title_ForeColor;
-                                var titleBackColor = TJAPlayer3.Skin.Game_DanC_Title_BackColor;
-                                var subtitleForeColor = TJAPlayer3.Skin.Game_DanC_SubTitle_ForeColor;
-                                var subtitleBackColor = TJAPlayer3.Skin.Game_DanC_SubTitle_BackColor;
-
-                                for (int i = 0; i < TJAPlayer3.DTX.List_DanSongs.Count; i++)
-                                {
-                                    if (!string.IsNullOrEmpty(TJAPlayer3.DTX.List_DanSongs[i].Title))
+                                    foreach (var danSong in TJAPlayer3.DTX.List_DanSongs)
                                     {
-                                        using (var bmpSongTitle = pfTitle.DrawPrivateFont(TJAPlayer3.DTX.List_DanSongs[i].Title, titleForeColor, titleBackColor))
+                                        if (!string.IsNullOrEmpty(danSong.Title))
                                         {
-                                            TJAPlayer3.DTX.List_DanSongs[i].TitleTex = TJAPlayer3.tテクスチャの生成(bmpSongTitle, false);
-                                            TJAPlayer3.DTX.List_DanSongs[i].TitleTex.vc拡大縮小倍率.X = TJAPlayer3.GetSongNameXScaling(ref TJAPlayer3.DTX.List_DanSongs[i].TitleTex, 710);
+                                            using (var bmpSongTitle = pfTitle.DrawPrivateFont(danSong.Title, titleForeColor, titleBackColor))
+                                            {
+                                                danSong.TitleTex = TJAPlayer3.tテクスチャの生成(bmpSongTitle, false);
+                                                danSong.TitleTex.vc拡大縮小倍率.X = TJAPlayer3.GetSongNameXScaling(ref danSong.TitleTex, 710);
+                                            }
+                                        }
+
+                                        if (!string.IsNullOrEmpty(danSong.SubTitle))
+                                        {
+                                            using (var bmpSongSubTitle = pfSubTitle.DrawPrivateFont(danSong.SubTitle, subtitleForeColor, subtitleBackColor))
+                                            {
+                                                danSong.SubTitleTex = TJAPlayer3.tテクスチャの生成(bmpSongSubTitle, false);
+                                                danSong.SubTitleTex.vc拡大縮小倍率.X = TJAPlayer3.GetSongNameXScaling(ref danSong.SubTitleTex, 710);
+                                            }
                                         }
                                     }
-
-                                    if (!string.IsNullOrEmpty(TJAPlayer3.DTX.List_DanSongs[i].SubTitle))
-                                    {
-                                        using (var bmpSongSubTitle = pfSubTitle.DrawPrivateFont(TJAPlayer3.DTX.List_DanSongs[i].SubTitle, subtitleForeColor, subtitleBackColor))
-                                        {
-                                            TJAPlayer3.DTX.List_DanSongs[i].SubTitleTex = TJAPlayer3.tテクスチャの生成(bmpSongSubTitle, false);
-                                            TJAPlayer3.DTX.List_DanSongs[i].SubTitleTex.vc拡大縮小倍率.X = TJAPlayer3.GetSongNameXScaling(ref TJAPlayer3.DTX.List_DanSongs[i].SubTitleTex, 710);
-                                        }
-                                    }
-
                                 }
-
-                                pfTitle?.Dispose();
-                                pfSubTitle?.Dispose();
                             }
                         }
 

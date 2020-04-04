@@ -2,6 +2,7 @@ using System;
 using System.Drawing;
 using System.Diagnostics;
 using FDK;
+using TJAPlayer3.Common;
 
 namespace TJAPlayer3
 {
@@ -137,22 +138,8 @@ namespace TJAPlayer3
 
 		public override void On活性化()
 		{
-            if( !string.IsNullOrEmpty( TJAPlayer3.ConfigIni.FontName ) )
-            {
-                this.pfMusicName = new CPrivateFastFont( new FontFamily( TJAPlayer3.ConfigIni.FontName), TJAPlayer3.Skin.Game_MusicName_FontSize);
-                //this.pf縦書きテスト = new CPrivateFastFont( new FontFamily( CDTXMania.ConfigIni.strPrivateFontで使うフォント名 ), 22 );
-            }
-            else
-                this.pfMusicName = new CPrivateFastFont( new FontFamily("MS UI Gothic"), TJAPlayer3.Skin.Game_MusicName_FontSize);
-
-            if( !string.IsNullOrEmpty(TJAPlayer3.Skin.Game_Lyric_FontName))
-            {
-                this.pf歌詞フォント = new CPrivateFastFont(new FontFamily(TJAPlayer3.Skin.Game_Lyric_FontName), TJAPlayer3.Skin.Game_Lyric_FontSize);
-            }
-            else
-            {
-                this.pf歌詞フォント = new CPrivateFastFont(new FontFamily("MS UI Gothic"), TJAPlayer3.Skin.Game_Lyric_FontSize);
-            }
+            this.pfMusicName = new CPrivateFastFont(FontUtilities.GetFontFamilyOrFallback(TJAPlayer3.ConfigIni.FontName), TJAPlayer3.Skin.Game_MusicName_FontSize);
+            this.pf歌詞フォント = new CPrivateFastFont(FontUtilities.GetFontFamilyOrFallback(TJAPlayer3.Skin.Game_Lyric_FontName), TJAPlayer3.Skin.Game_Lyric_FontSize);
 
 			this.txPanel = null;
 			this.ct進行用 = new CCounter();

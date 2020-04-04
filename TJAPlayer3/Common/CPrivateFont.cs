@@ -4,37 +4,10 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Diagnostics;
 using FDK.ExtensionMethods;
+using TJAPlayer3.Common;
 
 namespace TJAPlayer3
 {
-    /// <summary>
-    /// プライベートフォントでの描画を扱うクラス。
-    /// </summary>
-    /// <exception cref="FileNotFoundException">フォントファイルが見つからない時に例外発生</exception>
-    /// <exception cref="ArgumentException">スタイル指定不正時に例外発生</exception>
-    /// <remarks>
-    /// 簡単な使い方
-    /// CPrivateFont prvFont = new CPrivateFont( CSkin.Path( @"Graphics\fonts\mplus-1p-bold.ttf" ), 36 );	// プライベートフォント
-    /// とか
-    /// CPrivateFont prvFont = new CPrivateFont( new FontFamily("MS UI Gothic"), 36, FontStyle.Bold );		// システムフォント
-    /// とかした上で、
-    /// Bitmap bmp = prvFont.DrawPrivateFont( "ABCDE", Color.White, Color.Black );							// フォント色＝白、縁の色＝黒の例。縁の色は省略可能
-    /// とか
-    /// Bitmap bmp = prvFont.DrawPrivateFont( "ABCDE", Color.White, Color.Black, Color.Yellow, Color.OrangeRed ); // 上下グラデーション(Yellow→OrangeRed)
-    /// とかして、
-    /// CTexture ctBmp = CDTXMania.tテクスチャの生成( bmp, false );
-    /// ctBMP.t2D描画( ～～～ );
-    /// で表示してください。
-    /// 
-    /// 注意点
-    /// 任意のフォントでのレンダリングは結構負荷が大きいので、なるべｋなら描画フレーム毎にフォントを再レンダリングするようなことはせず、
-    /// 一旦レンダリングしたものを描画に使い回すようにしてください。
-    /// また、長い文字列を与えると、返されるBitmapも横長になります。この横長画像をそのままテクスチャとして使うと、
-    /// 古いPCで問題を発生させやすいです。これを回避するには、一旦Bitmapとして取得したのち、256pixや512pixで分割して
-    /// テクスチャに定義するようにしてください。
-    /// </remarks>
-
-
     public class CPrivateFont : IDisposable
 	{
 		#region [ コンストラクタ ]
@@ -73,26 +46,11 @@ namespace TJAPlayer3
 				}
 				catch (System.IO.FileNotFoundException)
 				{
-					Trace.TraceWarning("プライベートフォントの追加に失敗しました({0})。代わりにMS UI Gothicの使用を試みます。", fontpath);
+					Trace.TraceWarning($"プライベートフォントの追加に失敗しました({fontpath})。代わりに{FontUtilities.FallbackFontName}の使用を試みます。");
 					//throw new FileNotFoundException( "プライベートフォントの追加に失敗しました。({0})", Path.GetFileName( fontpath ) );
 					//return;
 					_fontfamily = null;
 				}
-
-				//foreach ( FontFamily ff in _pfc.Families )
-				//{
-				//	Debug.WriteLine( "fontname=" + ff.Name );
-				//	if ( ff.Name == Path.GetFileNameWithoutExtension( fontpath ) )
-				//	{
-				//		_fontfamily = ff;
-				//		break;
-				//	}
-				//}
-				//if ( _fontfamily == null )
-				//{
-				//	Trace.TraceError( "プライベートフォントの追加後、検索に失敗しました。({0})", fontpath );
-				//	return;
-				//}
 			}
 
 			// 指定されたフォントスタイルが適用できない場合は、フォント内で定義されているスタイルから候補を選んで使用する
@@ -123,24 +81,19 @@ namespace TJAPlayer3
 				//HighDPI対応のため、pxサイズで指定
 			}
 			else
-			// フォントファイルが見つからなかった場合 (MS PGothicを代わりに指定する)
-			{
-				float emSize = pt * 96.0f / 72.0f;
-				this._font = new Font("MS UI Gothic", emSize, style, GraphicsUnit.Pixel);	//MS PGothicのFontオブジェクトを作成する
-				FontFamily[] ffs = new System.Drawing.Text.InstalledFontCollection().Families;
-				int lcid = System.Globalization.CultureInfo.GetCultureInfo("en-us").LCID;
-				foreach (FontFamily ff in ffs)
-				{
-					// Trace.WriteLine( lcid ) );
-					if (ff.GetName(lcid) == "MS UI Gothic")
-					{
-						this._fontfamily = ff;
-						Trace.TraceInformation("MS UI Gothicを代わりに指定しました。");
-						return;
-					}
-				}
-				throw new FileNotFoundException("プライベートフォントの追加に失敗し、MS UI Gothicでの代替処理にも失敗しました。({0})", Path.GetFileName(fontpath));
-			}
+            {
+                try
+                {
+                    _fontfamily = new FontFamily(FontUtilities.FallbackFontName);
+                    float emSize = pt * 96.0f / 72.0f;
+                    _font = new Font(_fontfamily, emSize, style, GraphicsUnit.Pixel);
+                    Trace.TraceInformation($"{FontUtilities.FallbackFontName}を代わりに指定しました。");
+                }
+                catch (Exception e)
+                {
+                    throw new FileNotFoundException($"プライベートフォントの追加に失敗し、{FontUtilities.FallbackFontName}での代替処理にも失敗しました。({Path.GetFileName(fontpath)})", e);
+                }
+            }
 		}
 
 		[Flags]
@@ -183,7 +136,7 @@ namespace TJAPlayer3
 		/// <returns>描画済テクスチャ</returns>
 		protected Bitmap DrawPrivateFont( string drawstr, DrawMode drawmode, Color fontColor, Color edgeColor, Color gradationTopColor, Color gradationBottomColor )
 		{
-			if ( this._fontfamily == null || drawstr == null || drawstr == "" )
+			if ( this._fontfamily == null || _font == null || drawstr == null || drawstr == "" )
 			{
 				// nullを返すと、その後bmp→texture処理や、textureのサイズを見て__の処理で全部例外が発生することになる。
 				// それは非常に面倒なので、最小限のbitmapを返してしまう。
@@ -290,7 +243,7 @@ namespace TJAPlayer3
 		/// <returns>描画済テクスチャ</returns>
 		protected Bitmap DrawPrivateFont_V( string drawstr, Color fontColor, Color edgeColor, bool bVertical )
 		{
-			if ( this._fontfamily == null || drawstr == null || drawstr == "" )
+			if ( this._fontfamily == null || _font == null || drawstr == null || drawstr == "" )
 			{
 				// nullを返すと、その後bmp→texture処理や、textureのサイズを見て__の処理で全部例外が発生することになる。
 				// それは非常に面倒なので、最小限のbitmapを返してしまう。
