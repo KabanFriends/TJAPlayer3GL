@@ -135,7 +135,7 @@ Being an open source project supported only by free contribution of time, only a
 - Only the latest official release package is supported, unless you've been asked to reproduce an issue with a specific pre-release package or by building from source using a specific commit.
 - Only the SimpleStyle skin is supported, unless working on a pre-agreed effort to expand skinning capabilities (contact twopointzero.)
 - There is no formal monitoring of, or support via, any other application or service (e.g. Discord.)
-- twopointzero is present on Reddit from time to time, as [twopointzero_TJAP](https://www.reddit.com/user/twopointzero_TJAP/), but only on an informal basis.
+- If, after troubleshooting, you have isolated a problem to the TJAPlayer3 software itself, please refer to the section below and open a GitHub Issue.
 
 ## Issue Tracking
 
