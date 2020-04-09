@@ -1,2 +1,5 @@
 mode: ContinuousDelivery
 next-version: 4.7.0
+branches:
+  develop:
+    increment: Patch
