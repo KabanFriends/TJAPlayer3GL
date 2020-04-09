@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Security.Cryptography;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -22,11 +24,17 @@ namespace TJAPlayer3.ErrorReporting
             {
                 o.Dsn = new Dsn("https://d13a7e78ae024f678e110c64bbf7e7f2@sentry.io/3365560");
                 o.Environment = GetEnvironment(appInformationalVersion);
+                o.ServerName = ToSha256InBase64(Environment.MachineName);
                 o.ShutdownTimeout = TimeSpan.FromSeconds(5);
             }))
             {
                 try
                 {
+                    SentrySdk.ConfigureScope(scope =>
+                    {
+                        scope.User.Username = ToSha256InBase64(Environment.UserName);
+                    });
+
                     Application.ThreadException += (sender, args) =>
                     {
                         ReportError(args.Exception);
@@ -47,6 +55,16 @@ namespace TJAPlayer3.ErrorReporting
 
                     NotifyUserOfError(e);
                 }
+            }
+        }
+
+        public static string ToSha256InBase64(string value)
+        {
+            using (var sha256 = SHA256.Create())
+            {
+                var utf8Bytes = Encoding.UTF8.GetBytes(value);
+                var sha256Bytes = sha256.ComputeHash(utf8Bytes);
+                return Convert.ToBase64String(sha256Bytes);
             }
         }
 
