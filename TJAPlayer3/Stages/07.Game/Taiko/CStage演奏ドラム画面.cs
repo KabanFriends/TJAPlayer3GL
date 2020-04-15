@@ -501,8 +501,13 @@ namespace TJAPlayer3
         private readonly ST文字位置[] st小文字位置;
 		//-----------------
 
-		private bool tドラムヒット処理( long nHitTime, Eパッド type, CDTX.CChip pChip, bool b両手入力, int nPlayer )
+		private void tドラムヒット処理( long nHitTime, Eパッド type, CDTX.CChip pChip, bool b両手入力, int nPlayer )
 		{
+            if( pChip == null )
+            {
+                return;
+            }
+
             int nInput = 0;
 
             switch( type )
@@ -525,54 +530,41 @@ namespace TJAPlayer3
                     break;
             }
 
-
-		    if( pChip == null )
-			{
-				return false;
-			}
-			int index = pChip.nチャンネル番号;
+            int index = pChip.nチャンネル番号;
 			if ( ( index >= 0x11 ) && ( index <= 0x12 ) )
 			{
-				index -= 0x11;
 			}
 			else if ( ( index >= 0x13 ) && ( index <= 0x14 ) )
 			{
-				index -= 0x13;
 			}
 			else if ( ( index >= 0x1A ) && ( index <= 0x1B ) )
 			{
-				index -= 0x1A;
 			}
             else if( index == 0x1F )
             {
-				index = 0x11 - 0x11;
             }
-            else if( pChip.nチャンネル番号 >= 0x15 && pChip.nチャンネル番号 <= 0x17 )
+            else if( index >= 0x15 && index <= 0x17 )
             {
 			    this.tチップのヒット処理( nHitTime, pChip, E楽器パート.TAIKO, true, nInput, nPlayer );
-                return true;
+                return;
             }
             else
             {
-                return false;
+                return;
             }
-            
-
-			int nLane = index;
-			int nPad = index;
 
 			E判定 e判定 = this.e指定時刻からChipのJUDGEを返す( nHitTime, pChip );
             this.actGame.t叩ききりまショー_判定から各数値を増加させる( e判定, (int)( nHitTime - pChip.n発声時刻ms ) );
 			if( e判定 == E判定.Miss )
 			{
-				return false;
+				return;
 			}
 			this.tチップのヒット処理( nHitTime, pChip, E楽器パート.TAIKO, true, nInput, nPlayer );
 			if( ( e判定 != E判定.Poor ) && ( e判定 != E判定.Miss ) )
 			{
                 TJAPlayer3.stage演奏ドラム画面.actLaneTaiko.Start( pChip.nチャンネル番号, e判定, b両手入力, nPlayer );
 
-                int nFly = 0;
+                int nFly;
                 switch(pChip.nチャンネル番号)
                 {
                     case 0x11:
@@ -600,8 +592,6 @@ namespace TJAPlayer3
                 this.actTaikoLaneFlash.PlayerLane[nPlayer].Start(PlayerLane.FlashType.Hit);
                 this.FlyingNotes.Start(nFly, nPlayer);
 			}
-
-			return true;
 		}
 
 		protected override void ドラムスクロール速度アップ()
