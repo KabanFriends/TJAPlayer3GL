@@ -1473,9 +1473,6 @@ namespace TJAPlayer3
                         {
 
                         }
-
-
-                            this.t紙吹雪_開始();
                     }
                     #endregion
 
@@ -4095,7 +4092,6 @@ namespace TJAPlayer3
 		{
 			this.act譜面スクロール速度.On進行描画();
 		}
-        protected abstract void t紙吹雪_開始();
 		protected abstract void t背景テクスチャの生成();
 		protected void t背景テクスチャの生成( string DefaultBgFilename, Rectangle bgrect, string bgfilename )
 		{
