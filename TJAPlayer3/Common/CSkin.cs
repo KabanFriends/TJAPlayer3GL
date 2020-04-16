@@ -452,6 +452,11 @@ namespace TJAPlayer3
         private static string strSystemSkinSubfolderFullName;           // Config画面で設定されたスキン
         private static string strBoxDefSkinSubfolderFullName = "";      // box.defで指定されているスキン
 
+        public string GetCurrentSkinName(bool fromUserConfig = false)
+        {
+            return GetSkinName(TJAPlayer3.Skin.GetCurrentSkinSubfolderFullName(fromUserConfig));
+        }
+
         /// <summary>
         /// スキンパス名をフルパスで取得する
         /// </summary>

@@ -16,6 +16,9 @@ namespace TJAPlayer3.ErrorReporting
         private const string EnvironmentDevelopment = "development";
         private const string EnvironmentProduction = "production";
 
+        public const string GetCurrentSkinNameOrNullFallbackForNullSkin = "[GetCurrentSkinNameOrNull null skin]";
+        public const string GetCurrentSkinNameOrNullFallbackForExceptionEncountered = "[GetCurrentSkinNameOrNull exception encountered]";
+
         public static void WithErrorReporting(Action action)
         {
             var appInformationalVersion = TJAPlayer3.AppInformationalVersion;
@@ -101,7 +104,16 @@ namespace TJAPlayer3.ErrorReporting
 #if !DEBUG
             try
             {
-                SentrySdk.CaptureException(e);
+                SentrySdk.WithScope(scope =>
+                {
+                    var skinName = GetCurrentSkinNameOrNull();
+                    if (skinName != null)
+                    {
+                        scope.SetTag("skin.name", ToSha256InBase64(skinName));
+                    }
+
+                    SentrySdk.CaptureException(e);
+                });
             }
             catch (TimeoutException)
             {
@@ -112,6 +124,26 @@ namespace TJAPlayer3.ErrorReporting
                 Trace.WriteLine("Unexpected exception encountered when attempting to report an error: " + exception);
             }
 #endif
+        }
+
+        private static string GetCurrentSkinNameOrNull()
+        {
+            try
+            {
+                var skin = TJAPlayer3.Skin;
+                if (skin == null)
+                {
+                    return GetCurrentSkinNameOrNullFallbackForNullSkin;
+                }
+
+                return skin.GetCurrentSkinName();
+            }
+            catch (Exception e)
+            {
+                Trace.WriteLine("Unexpected exception encountered when attempting to get the current skin name: " + e);
+
+                return GetCurrentSkinNameOrNullFallbackForExceptionEncountered;
+            }
         }
 
         private static void NotifyUserOfError(Exception exception)
