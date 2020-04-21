@@ -198,23 +198,23 @@ namespace TJAPlayer3
                 if (TJAPlayer3.stage演奏ドラム画面.bUseBranch[i] == true)
                 {
                     #region[ 動いていない ]
-                    switch (TJAPlayer3.stage演奏ドラム画面.n次回のコース[i])
+                    switch (TJAPlayer3.stage演奏ドラム画面.nレーン用表示コース[i])
                     {
-                        case 0:
+                        case CDTX.ECourse.eNormal:
                             if (TJAPlayer3.Tx.Lane_Base[0] != null)
                             {
                                 TJAPlayer3.Tx.Lane_Base[0].Opacity = 255;
                                 TJAPlayer3.Tx.Lane_Base[0].t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.nScrollFieldBGX[i], TJAPlayer3.Skin.nScrollFieldY[i]);
                             }
                             break;
-                        case 1:
+                        case CDTX.ECourse.eExpert:
                             if (TJAPlayer3.Tx.Lane_Base[1] != null)
                             {
                                 TJAPlayer3.Tx.Lane_Base[1].Opacity = 255;
                                 TJAPlayer3.Tx.Lane_Base[1].t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.nScrollFieldBGX[i], TJAPlayer3.Skin.nScrollFieldY[i]);
                             }
                             break;
-                        case 2:
+                        case CDTX.ECourse.eMaster:
                             if (TJAPlayer3.Tx.Lane_Base[2] != null)
                             {
                                 TJAPlayer3.Tx.Lane_Base[2].Opacity = 255;
@@ -239,7 +239,7 @@ namespace TJAPlayer3
 
                             #region[ 普通譜面_レベルアップ ]
                             //普通→玄人
-                            if (this.stBranch[i].nBefore == 0 && this.stBranch[i].nAfter == 1)
+                            if (this.stBranch[i].nBefore == CDTX.ECourse.eNormal && this.stBranch[i].nAfter == CDTX.ECourse.eExpert)
                             {
                                 if (TJAPlayer3.Tx.Lane_Base[0] != null && TJAPlayer3.Tx.Lane_Base[1] != null)
                                 {
@@ -249,7 +249,7 @@ namespace TJAPlayer3
                                 }
                             }
                             //普通→達人
-                            if (this.stBranch[i].nBefore == 0 && this.stBranch[i].nAfter == 2)
+                            if (this.stBranch[i].nBefore == CDTX.ECourse.eNormal && this.stBranch[i].nAfter == CDTX.ECourse.eMaster)
                             {
                                 if (this.stBranch[i].ct分岐アニメ進行.n現在の値 < 100)
                                 {
@@ -264,7 +264,7 @@ namespace TJAPlayer3
                             }
                             #endregion
                             #region[ 玄人譜面_レベルアップ ]
-                            if (this.stBranch[i].nBefore == 1 && this.stBranch[i].nAfter == 2)
+                            if (this.stBranch[i].nBefore == CDTX.ECourse.eExpert && this.stBranch[i].nAfter == CDTX.ECourse.eMaster)
                             {
                                 if (TJAPlayer3.Tx.Lane_Base[1] != null && TJAPlayer3.Tx.Lane_Base[2] != null)
                                 {
@@ -275,7 +275,7 @@ namespace TJAPlayer3
                             }
                             #endregion
                             #region[ 玄人譜面_レベルダウン ]
-                            if (this.stBranch[i].nBefore == 1 && this.stBranch[i].nAfter == 0)
+                            if (this.stBranch[i].nBefore == CDTX.ECourse.eExpert && this.stBranch[i].nAfter == CDTX.ECourse.eNormal)
                             {
                                 if (TJAPlayer3.Tx.Lane_Base[1] != null && TJAPlayer3.Tx.Lane_Base[0] != null)
                                 {
@@ -286,7 +286,7 @@ namespace TJAPlayer3
                             }
                             #endregion
                             #region[ 達人譜面_レベルダウン ]
-                            if (this.stBranch[i].nBefore == 2 && this.stBranch[i].nAfter == 0)
+                            if (this.stBranch[i].nBefore == CDTX.ECourse.eMaster && this.stBranch[i].nAfter == CDTX.ECourse.eNormal)
                             {
                                 if (TJAPlayer3.Tx.Lane_Base[2] != null && TJAPlayer3.Tx.Lane_Base[0] != null)
                                 {
@@ -353,17 +353,17 @@ namespace TJAPlayer3
                     {
                         if (!this.stBranch[i].ct分岐アニメ進行.b進行中)
                         {
-                            switch (TJAPlayer3.stage演奏ドラム画面.n次回のコース[i])
+                            switch (TJAPlayer3.stage演奏ドラム画面.nレーン用表示コース[i])
                             {
-                                case 0:
+                                case CDTX.ECourse.eNormal:
                                     TJAPlayer3.Tx.Lane_Text[0].Opacity = 255;
                                     TJAPlayer3.Tx.Lane_Text[0].t2D描画(TJAPlayer3.app.Device, 333, TJAPlayer3.Skin.nScrollFieldY[i]);
                                     break;
-                                case 1:
+                                case CDTX.ECourse.eExpert:
                                     TJAPlayer3.Tx.Lane_Text[1].Opacity = 255;
                                     TJAPlayer3.Tx.Lane_Text[1].t2D描画(TJAPlayer3.app.Device, 333, TJAPlayer3.Skin.nScrollFieldY[i]);
                                     break;
-                                case 2:
+                                case CDTX.ECourse.eMaster:
                                     TJAPlayer3.Tx.Lane_Text[2].Opacity = 255;
                                     TJAPlayer3.Tx.Lane_Text[2].t2D描画(TJAPlayer3.app.Device, 333, TJAPlayer3.Skin.nScrollFieldY[i]);
                                     break;
@@ -373,7 +373,7 @@ namespace TJAPlayer3
                         {
                             #region[ 普通譜面_レベルアップ ]
                             //普通→玄人
-                            if (this.stBranch[i].nBefore == 0 && this.stBranch[i].nAfter == 1)
+                            if (this.stBranch[i].nBefore == 0 && this.stBranch[i].nAfter == CDTX.ECourse.eExpert)
                             {
                                 TJAPlayer3.Tx.Lane_Text[0].Opacity = 255;
                                 TJAPlayer3.Tx.Lane_Text[1].Opacity = 255;
@@ -397,8 +397,8 @@ namespace TJAPlayer3
                             }
 
                             //普通→達人
-                            if (this.stBranch[i].nBefore == 0 && this.stBranch[i].nAfter == 2)
-                            {
+                            if (this.stBranch[i].nBefore == 0 && this.stBranch[i].nAfter == CDTX.ECourse.eMaster)
+							{
                                 TJAPlayer3.Tx.Lane_Text[0].Opacity = 255;
                                 TJAPlayer3.Tx.Lane_Text[1].Opacity = 255;
                                 TJAPlayer3.Tx.Lane_Text[2].Opacity = 255;
@@ -439,8 +439,8 @@ namespace TJAPlayer3
                             #endregion
                             #region[ 玄人譜面_レベルアップ ]
                             //玄人→達人
-                            if (this.stBranch[i].nBefore == 1 && this.stBranch[i].nAfter == 2)
-                            {
+                            if (this.stBranch[i].nBefore == CDTX.ECourse.eExpert && this.stBranch[i].nAfter == CDTX.ECourse.eMaster)
+							{
                                 TJAPlayer3.Tx.Lane_Text[0].Opacity = 255;
                                 TJAPlayer3.Tx.Lane_Text[1].Opacity = 255;
                                 TJAPlayer3.Tx.Lane_Text[2].Opacity = 255;
@@ -459,7 +459,7 @@ namespace TJAPlayer3
                             }
                             #endregion
                             #region[ 玄人譜面_レベルダウン ]
-                            if (this.stBranch[i].nBefore == 1 && this.stBranch[i].nAfter == 0)
+                            if (this.stBranch[i].nBefore == CDTX.ECourse.eExpert && this.stBranch[i].nAfter == CDTX.ECourse.eNormal)
                             {
                                 TJAPlayer3.Tx.Lane_Text[0].Opacity = 255;
                                 TJAPlayer3.Tx.Lane_Text[1].Opacity = 255;
@@ -479,7 +479,7 @@ namespace TJAPlayer3
                             }
                             #endregion
                             #region[ 達人譜面_レベルダウン ]
-                            if (this.stBranch[i].nBefore == 2 && this.stBranch[i].nAfter == 0)
+                            if (this.stBranch[i].nBefore == CDTX.ECourse.eMaster && this.stBranch[i].nAfter == CDTX.ECourse.eNormal)
                             {
                                 TJAPlayer3.Tx.Lane_Text[0].Opacity = 255;
                                 TJAPlayer3.Tx.Lane_Text[1].Opacity = 255;
@@ -512,7 +512,7 @@ namespace TJAPlayer3
                                     TJAPlayer3.Tx.Lane_Text[0].t2D描画(TJAPlayer3.app.Device, 333, TJAPlayer3.Skin.nScrollFieldY[i]);
                                 }
                             }
-                            if (this.stBranch[i].nBefore == 2 && this.stBranch[i].nAfter == 1)
+                            if (this.stBranch[i].nBefore == CDTX.ECourse.eMaster && this.stBranch[i].nAfter == CDTX.ECourse.eExpert)
                             {
                                 TJAPlayer3.Tx.Lane_Text[0].Opacity = 255;
                                 TJAPlayer3.Tx.Lane_Text[1].Opacity = 255;
@@ -543,37 +543,37 @@ namespace TJAPlayer3
 
                         if (this.stBranch[i].nY座標 == 0)
                         {
-                            switch (TJAPlayer3.stage演奏ドラム画面.n次回のコース[0])
+                            switch (TJAPlayer3.stage演奏ドラム画面.nレーン用表示コース[0])
                             {
-                                case 0:
+                                case CDTX.ECourse.eNormal:
                                     TJAPlayer3.Tx.Lane_Text[0].Opacity = 255;
                                     TJAPlayer3.Tx.Lane_Text[0].t2D描画(TJAPlayer3.app.Device, 333, 192);
                                     break;
-                                case 1:
+                                case CDTX.ECourse.eExpert:
                                     TJAPlayer3.Tx.Lane_Text[1].Opacity = 255;
                                     TJAPlayer3.Tx.Lane_Text[1].t2D描画(TJAPlayer3.app.Device, 333, 192);
                                     break;
-                                case 2:
+                                case CDTX.ECourse.eMaster:
                                     TJAPlayer3.Tx.Lane_Text[2].Opacity = 255;
                                     TJAPlayer3.Tx.Lane_Text[2].t2D描画(TJAPlayer3.app.Device, 333, 192);
                                     break;
                             }
                         }
 
-
+						//fuck
                         if (this.stBranch[i].nY座標 != 0)
                         {
                             #region[ 普通譜面_レベルアップ ]
                             //普通→玄人
-                            if (this.stBranch[i].nBefore == 0 && this.stBranch[i].nAfter == 1)
-                            {
+                            if (this.stBranch[i].nBefore == CDTX.ECourse.eNormal && this.stBranch[i].nAfter == CDTX.ECourse.eExpert)
+							{
                                 TJAPlayer3.Tx.Lane_Text[0].t2D描画(TJAPlayer3.app.Device, 333, 192 - this.stBranch[i].nY座標);
                                 TJAPlayer3.Tx.Lane_Text[1].t2D描画(TJAPlayer3.app.Device, 333, 212 - this.stBranch[i].nY座標);
                                 TJAPlayer3.Tx.Lane_Text[0].Opacity = this.stBranch[i].nBranchレイヤー透明度;
                             }
                             //普通→達人
-                            if (this.stBranch[i].nBefore == 0 && this.stBranch[i].nAfter == 2)
-                            {
+                            if (this.stBranch[i].nBefore == CDTX.ECourse.eNormal && this.stBranch[i].nAfter == CDTX.ECourse.eMaster)
+							{
                                 TJAPlayer3.Tx.Lane_Text[0].t2D描画(TJAPlayer3.app.Device, 333, 192 - this.stBranch[i].nY座標);
                                 TJAPlayer3.Tx.Lane_Text[2].t2D描画(TJAPlayer3.app.Device, 333, 212 - this.stBranch[i].nY座標);
                                 TJAPlayer3.Tx.Lane_Text[0].Opacity = this.stBranch[i].nBranchレイヤー透明度;
@@ -581,29 +581,29 @@ namespace TJAPlayer3
                             #endregion
                             #region[ 玄人譜面_レベルアップ ]
                             //玄人→達人
-                            if (this.stBranch[i].nBefore == 1 && this.stBranch[i].nAfter == 2)
-                            {
+                            if (this.stBranch[i].nBefore == CDTX.ECourse.eExpert && this.stBranch[i].nAfter == CDTX.ECourse.eMaster)
+							{
                                 TJAPlayer3.Tx.Lane_Text[1].t2D描画(TJAPlayer3.app.Device, 333, 192 - this.stBranch[i].nY座標);
                                 TJAPlayer3.Tx.Lane_Text[2].t2D描画(TJAPlayer3.app.Device, 333, 212 - this.stBranch[i].nY座標);
                                 TJAPlayer3.Tx.Lane_Text[1].Opacity = this.stBranch[i].nBranchレイヤー透明度;
                             }
                             #endregion
                             #region[ 玄人譜面_レベルダウン ]
-                            if (this.stBranch[i].nBefore == 1 && this.stBranch[i].nAfter == 0)
-                            {
+                            if (this.stBranch[i].nBefore == CDTX.ECourse.eExpert && this.stBranch[i].nAfter == CDTX.ECourse.eNormal)
+							{
                                 TJAPlayer3.Tx.Lane_Text[1].t2D描画(TJAPlayer3.app.Device, 333, 192 + this.stBranch[i].nY座標);
                                 TJAPlayer3.Tx.Lane_Text[0].t2D描画(TJAPlayer3.app.Device, 333, 168 + this.stBranch[i].nY座標);
                                 TJAPlayer3.Tx.Lane_Text[1].Opacity = this.stBranch[i].nBranchレイヤー透明度;
                             }
                             #endregion
                             #region[ 達人譜面_レベルダウン ]
-                            if (this.stBranch[i].nBefore == 2 && this.stBranch[i].nAfter == 0)
-                            {
+                            if (this.stBranch[i].nBefore == CDTX.ECourse.eMaster && this.stBranch[i].nAfter == CDTX.ECourse.eNormal)
+							{
                                 TJAPlayer3.Tx.Lane_Text[2].t2D描画(TJAPlayer3.app.Device, 333, 192 + this.stBranch[i].nY座標);
                                 TJAPlayer3.Tx.Lane_Text[0].t2D描画(TJAPlayer3.app.Device, 333, 168 + this.stBranch[i].nY座標);
                                 TJAPlayer3.Tx.Lane_Text[2].Opacity = this.stBranch[i].nBranchレイヤー透明度;
                             }
-                            if (this.stBranch[i].nBefore == 2 && this.stBranch[i].nAfter == 1)
+                            if (this.stBranch[i].nBefore == CDTX.ECourse.eMaster && this.stBranch[i].nAfter == CDTX.ECourse.eExpert)
                             {
                                 TJAPlayer3.Tx.Lane_Text[2].t2D描画(TJAPlayer3.app.Device, 333, 192 + this.stBranch[i].nY座標);
                                 TJAPlayer3.Tx.Lane_Text[1].t2D描画(TJAPlayer3.app.Device, 333, 168 + this.stBranch[i].nY座標);
@@ -898,7 +898,7 @@ namespace TJAPlayer3
         }
 
 
-        public void t分岐レイヤー_コース変化(int n現在, int n次回, int nPlayer)
+        public void t分岐レイヤー_コース変化(CDTX.ECourse n現在, CDTX.ECourse n次回, int nPlayer)
         {
             if (n現在 == n次回)
             {
@@ -973,13 +973,13 @@ namespace TJAPlayer3
 
 
 
-        protected STBRANCH[] stBranch = new STBRANCH[4];
+		public STBRANCH[] stBranch = new STBRANCH[4];
         [StructLayout(LayoutKind.Sequential)]
-        protected struct STBRANCH
+		public struct STBRANCH
         {
             public CCounter ct分岐アニメ進行;
-            public int nBefore;
-            public int nAfter;
+            public CDTX.ECourse nBefore;
+            public CDTX.ECourse nAfter;
 
             public long nフラッシュ制御タイマ;
             public int nBranchレイヤー透明度;

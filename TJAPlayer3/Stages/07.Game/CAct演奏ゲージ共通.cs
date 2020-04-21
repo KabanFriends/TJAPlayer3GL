@@ -250,23 +250,43 @@ namespace TJAPlayer3
                 }
             }
 
-            //ゲージ値計算
-            //実機に近い計算
+			//ゲージ値計算
+			//実機に近い計算
 
-            this.dbゲージ増加量[0] = (float)nGaugeRankValue / 100.0f;
+			//計算結果がInfintyだった場合も考える。2020.04.21.akasoko26
+			#region [ 計算結果がInfintyだった場合も考えて ]
+			float fIsDontInfinty = 0.4f;//適当に0.4で
+			float[] fAddVolume = new float[] { 1.0f, 0.5f, dbDamageRate };
+
+
+			for (int i = 0; i < 3; i++)
+			{
+				for (int l = 0; l < 3; l++)
+				{
+					if (!double.IsInfinity(nGaugeRankValue_branch[i] / 100.0f))//値がInfintyかチェック
+					{
+						fIsDontInfinty = (float)(nGaugeRankValue_branch[i] / 100.0f);
+						this.dbゲージ増加量_Branch[i, l] = fIsDontInfinty * fAddVolume[l];
+					}
+				}
+			}
+			for (int i = 0; i < 3; i++)
+			{
+				for (int l = 0; l < 3; l++)
+				{
+					if (double.IsInfinity(nGaugeRankValue_branch[i] / 100.0f))//値がInfintyかチェック
+					{
+						//Infintyだった場合はInfintyではない値 * 3.0をしてその値を利用する。
+						this.dbゲージ増加量_Branch[i, l] = (fIsDontInfinty * fAddVolume[l]) * 3f;
+					}
+				}
+			}
+			#endregion
+
+
+			this.dbゲージ増加量[0] = (float)nGaugeRankValue / 100.0f;
             this.dbゲージ増加量[1] = (float)(nGaugeRankValue / 100.0f) * 0.5f;
             this.dbゲージ増加量[2] = (float)(nGaugeRankValue / 100.0f) * dbDamageRate;
-
-            for (int i = 0; i < 3; i++ )
-            {
-                this.dbゲージ増加量_Branch[i, 0] = (float)nGaugeRankValue_branch[i] / 100.0f;
-                this.dbゲージ増加量_Branch[i, 1] = (float)(nGaugeRankValue_branch[i] / 100.0f) * 0.5f;
-                this.dbゲージ増加量_Branch[i, 2] = (float)(nGaugeRankValue_branch[i] / 100.0f) * dbDamageRate;
-            }
-
-            //this.dbゲージ増加量[ 0 ] = CDTXMania.DTX.bチップがある.Branch ? ( 130.0 / CDTXMania.DTX.nノーツ数[ 0 ] ) : ( 130.0 / CDTXMania.DTX.nノーツ数[ 3 ] );
-            //this.dbゲージ増加量[ 1 ] = CDTXMania.DTX.bチップがある.Branch ? ( 65.0 / CDTXMania.DTX.nノーツ数[ 0 ] ) : 65.0 / CDTXMania.DTX.nノーツ数[ 3 ];
-            //this.dbゲージ増加量[ 2 ] = CDTXMania.DTX.bチップがある.Branch ? ( -260.0 / CDTXMania.DTX.nノーツ数[ 0 ] ) : -260.0 / CDTXMania.DTX.nノーツ数[ 3 ];
 
             //2015.03.26 kairera0467 計算を初期化時にするよう修正。
 
@@ -337,8 +357,10 @@ namespace TJAPlayer3
                 dbゲージ増加量_Branch[i, 1] = increaseBranch[i, 1];
                 dbゲージ増加量_Branch[i, 2] = increaseBranch[i, 2];
             }
-            #endregion
-        }
+			#endregion
+
+
+		}
 
         #region [ DAMAGE ]
 #if true       // DAMAGELEVELTUNING
@@ -373,10 +395,12 @@ namespace TJAPlayer3
 #endregion
 #endif
 
-		public void Damage( E楽器パート screenmode, E楽器パート part, E判定 e今回の判定, int player )
+		public void Damage(CDTX.ECourse eHitCourse, E楽器パート screenmode, E楽器パート part, E判定 e今回の判定, int player )
 		{
 			float fDamage;
-            int nコース = TJAPlayer3.stage演奏ドラム画面.n現在のコース[ player ];
+
+			//現在のコースを当てるのではなくヒットしたノーツのコースを当ててあげる.2020.04.21.akasoko26
+            var nコース = eHitCourse;
 
 
 #if true	// DAMAGELEVELTUNING
@@ -387,7 +411,7 @@ namespace TJAPlayer3
                     {
                         if( TJAPlayer3.DTX.bチップがある.Branch )
                         {
-                            fDamage = this.dbゲージ増加量_Branch[ nコース, 0 ];
+                            fDamage = this.dbゲージ増加量_Branch[(int)nコース, 0 ];
                         }
                         else
 					        fDamage = this.dbゲージ増加量[ 0 ];
@@ -397,7 +421,7 @@ namespace TJAPlayer3
                     {
                         if( TJAPlayer3.DTX.bチップがある.Branch )
                         {
-                            fDamage = this.dbゲージ増加量_Branch[ nコース, 1 ];
+                            fDamage = this.dbゲージ増加量_Branch[(int)nコース, 1 ];
                         }
                         else
 					        fDamage = this.dbゲージ増加量[ 1 ];
@@ -408,7 +432,7 @@ namespace TJAPlayer3
                     {
                         if( TJAPlayer3.DTX.bチップがある.Branch )
                         {
-                            fDamage = this.dbゲージ増加量_Branch[ nコース, 2 ];
+                            fDamage = this.dbゲージ増加量_Branch[(int)nコース, 2 ];
                         }
                         else
 					        fDamage = this.dbゲージ増加量[ 2 ];
@@ -435,7 +459,7 @@ namespace TJAPlayer3
                         {
                             if( TJAPlayer3.DTX.bチップがある.Branch )
                             {
-                                fDamage = this.dbゲージ増加量_Branch[ nコース, 0 ];
+                                fDamage = this.dbゲージ増加量_Branch[(int)nコース, 0 ];
                             }
                             else
 					            fDamage = this.dbゲージ増加量[ 0 ];

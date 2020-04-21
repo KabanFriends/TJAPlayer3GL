@@ -378,6 +378,9 @@ namespace TJAPlayer3
                     }
                 }
 			}
+			TJAPlayer3.act文字コンソール.tPrint(900, 20, C文字コンソール.Eフォント種別.白, this.dbゲージ増加量_Branch[1, 0].ToString());
+			TJAPlayer3.act文字コンソール.tPrint(900, 40, C文字コンソール.Eフォント種別.白, this.dbゲージ増加量_Branch[2, 0].ToString());
+			TJAPlayer3.act文字コンソール.tPrint(900, 0, C文字コンソール.Eフォント種別.白, this.dbゲージ増加量_Branch[0, 0].ToString());
 			return 0;
 		}
 

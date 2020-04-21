@@ -205,7 +205,7 @@ namespace TJAPlayer3
             public double dbBPM値;
             public double bpm_change_time;
             public double bpm_change_bmscroll_time;
-            public int bpm_change_course;
+            public ECourse bpm_change_course = ECourse.eNormal;
             public int n内部番号;
             public int n表記上の番号;
 
@@ -281,9 +281,9 @@ namespace TJAPlayer3
             public double delay_time;
             public double delay_bmscroll_time;
             public double delay_bpm;
-            public int delay_course;
+            public ECourse delay_course = ECourse.eNormal;
 
-            public override string ToString()
+			public override string ToString()
             {
                 StringBuilder builder = new StringBuilder(0x80);
                 if (this.n内部番号 != this.n表記上の番号)
@@ -298,10 +298,16 @@ namespace TJAPlayer3
                 return builder.ToString();
             }
         }
-
+		public enum E分岐種類
+		{
+			e精度分岐,
+			e連打分岐,
+			eスコア分岐,
+			e大音符のみ精度分岐
+		}
         public class CBRANCH
         {
-            public int n分岐の種類; //0:精度分岐 1:連打分岐 2:スコア分岐 3:大音符のみの精度分岐
+            public E分岐種類 e分岐の種類; //0:精度分岐 1:連打分岐 2:スコア分岐 3:大音符のみの精度分岐
             public double n条件数値A;
             public double n条件数値B;
             public double db分岐時間;
@@ -327,7 +333,7 @@ namespace TJAPlayer3
                 {
                     builder.Append(string.Format("CBRANCH{0}", CDTX.tZZ(this.n表記上の番号)));
                 }
-                builder.Append(string.Format(", BRANCH:{0}", this.n分岐の種類));
+                builder.Append(string.Format(", BRANCH:{0}", this.e分岐の種類));
                 return builder.ToString();
             }
         }
@@ -338,13 +344,17 @@ namespace TJAPlayer3
             public bool bHit;
             public bool b可視 = true;
             public bool bShow;
-            public bool bBranch = false;
+			public bool bShowRoll;
+			public bool bBranch = false;
             public double dbチップサイズ倍率 = 1.0;
             public double db実数値;
             public double dbBPM;
-            public double dbSCROLL;
+			public float fNow_Measure_s = 4.0f;//強制分岐のために追加.2020.04.21.akasoko26
+			public float fNow_Measure_m = 4.0f;//強制分岐のために追加.2020.04.21.akasoko26
+			public bool IsEndedBranching = false;//分岐が終わった時の連打譜面が非可視化になってしまうためフラグを追加.2020.04.21.akasoko26
+			public double dbSCROLL;
             public double dbSCROLL_Y;
-            public int nコース;
+            public ECourse nコース;
             public int nSenote;
             public int nState;
             public int nRollCount;
@@ -359,15 +369,25 @@ namespace TJAPlayer3
             public STDGBVALUE<int> nバーからの距離dot;
             public STDGBVALUE<int> nバーからのノーツ末端距離dot;
             public int n整数値;
-            public int n整数値_内部番号;
+			public int n文字数 = 16;
+
+			public int n整数値_内部番号;
             public int n総移動時間;
             public int n透明度 = 0xff;
             public int n発声位置;
-            public double db発声位置;  // 発声時刻を格納していた変数のうちの１つをfloat型からdouble型に変更。(kairera0467)
+			public double n条件数値A;
+			public double n条件数値B;
+			public double db分岐時間のズレ;
+			public E分岐種類 e分岐の種類;
+
+			public double db発声位置;  // 発声時刻を格納していた変数のうちの１つをfloat型からdouble型に変更。(kairera0467)
             public double fBMSCROLLTime;
             public double fBMSCROLLTime_end;
             public int n発声時刻ms;
-            public double db発声時刻ms;
+			public double n分岐時刻ms;
+
+
+			public double db発声時刻ms;
             public int nノーツ終了位置;
             public int nノーツ終了時刻ms;
             public int nノーツ出現時刻ms;
@@ -386,7 +406,9 @@ namespace TJAPlayer3
             public int nList上の位置;
             public bool IsFixedSENote;
             public bool IsHitted = false;
-            public bool bBPMチップである
+			public bool IsMissed = false;
+
+			public bool bBPMチップである
             {
                 get
                 {
@@ -424,7 +446,10 @@ namespace TJAPlayer3
                     return true;
                 }
             }
-            public bool b演奏終了後も再生が続くチップである;	// #32248 2013.10.14 yyagi
+
+
+
+			public bool b演奏終了後も再生が続くチップである;	// #32248 2013.10.14 yyagi
             public CCounter RollDelay; // 18.9.22 AioiLight Add 連打時に赤くなるやつのタイマー
             public CCounter RollInputTime; // 18.9.22 AioiLight Add  連打入力後、RollDelayが作動するまでのタイマー
             public int RollEffectLevel; // 18.9.22 AioiLight Add 連打時に赤くなるやつの度合い
@@ -471,7 +496,9 @@ namespace TJAPlayer3
                 this.nバーからのノーツ末端距離dot.Taiko = 0;
                 this.n総移動時間 = 0;
                 this.dbBPM = 120.0;
-                this.nスクロール方向 = 0;
+				this.fNow_Measure_m = 4.0f;
+				this.fNow_Measure_s = 4.0f;
+				this.nスクロール方向 = 0;
                 this.dbSCROLL = 1.0;
                 this.dbSCROLL_Y = 0.0f;
             }
@@ -1097,20 +1124,46 @@ namespace TJAPlayer3
                 }
             }
         }
-
+		public enum ECourse
+		{
+			eNormal,
+			eExpert,
+			eMaster
+		}
         public class CLine
         {
             public int n小節番号;
             public int n文字数;
             public double db発声時刻;
             public double dbBMS時刻;
-            public int nコース;
+            public ECourse nコース = ECourse.eNormal;
             public int nタイプ;
         }
 
-        // プロパティ
+		// プロパティ
 
-        public int nBGMAdjust
+
+		public class CBranchStartInfo
+		{
+			public int nMeasureCount;
+			public double dbTime;
+			public double dbBPM;
+			public double dbSCROLL;
+			public double dbSCROLLY;
+			public double dbBMScollTime;
+			public double db移動待機時刻;
+			public double db出現時刻;
+			public double db再生速度;
+			public float fMeasure_s;
+			public float fMeasure_m;
+		}
+		
+		/// <summary>
+		/// 分岐開始時の情報を記録するためのあれ 2020.04.21
+		/// </summary>
+		public CBranchStartInfo cBranchStart = new CBranchStartInfo();
+
+		public int nBGMAdjust
         {
             get;
             private set;
@@ -1199,7 +1252,7 @@ namespace TJAPlayer3
         //分岐関連
         private int n現在の発声時刻;
         private int n現在の発声時刻ms;
-        private int n現在のコース;
+        private ECourse n現在のコース = ECourse.eNormal;
 
         private bool b最初の分岐である;
         public int[] nノーツ数 = new int[4]; //0～2:各コース 3:共通
@@ -1212,7 +1265,7 @@ namespace TJAPlayer3
 
         private List<CLine> listLine;
         private int nLineCountTemp; //分岐開始時の小節数を記録。
-        private int nLineCountCourseTemp; //現在カウント中のコースを記録。
+        private ECourse nLineCountCourseTemp = ECourse.eNormal; //現在カウント中のコースを記録。
 
         public int n参照中の難易度 = 3;
         public int nScoreModeTmp = 99; //2017.01.28 DD
@@ -1277,7 +1330,8 @@ namespace TJAPlayer3
         public bool bHIDDENBRANCH; //2016.04.01 kairera0467 選曲画面上、譜面分岐開始前まで譜面分岐の表示を隠す
         public bool bGOGOTIME; //2018.03.11 kairera0467
 
-        public bool IsEndedBranching; // BRANCHENDが呼び出されたかどうか
+		public bool[] IsBranchBarDraw = new bool[4]; // 仕様変更により、黄色lineの表示法を変更.2020.04.21.akasoko26
+		public bool IsEndedBranching; // BRANCHENDが呼び出されたかどうか
         public Dan_C[] Dan_C;
 
         public bool IsEnabledFixSENote;
@@ -1992,7 +2046,7 @@ namespace TJAPlayer3
                 this.dbNowSCROLL_Normal = new double[] { 1.0, 0.0 };
                 this.dbNowSCROLL_Expert = new double[] { 1.0, 0.0 };
                 this.dbNowSCROLL_Master = new double[] { 1.0, 0.0 };
-                this.n現在のコース = 0;
+                this.n現在のコース = ECourse.eNormal;
                 #endregion
                 CharEnumerator ce = str全入力文字列.GetEnumerator();
                 if (ce.MoveNext())
@@ -2538,16 +2592,33 @@ namespace TJAPlayer3
                                     }
                                 case 0xDE:
                                     {
-                                        if (this.bOFFSETの値がマイナスである)
-                                            chip.n発声時刻ms += this.nOFFSET;
-                                        //chip.n発声時刻ms += this.nDELAY;
+										if (this.bOFFSETの値がマイナスである)
+										{
+											chip.n発声時刻ms += this.nOFFSET;
+											chip.n分岐時刻ms += this.nOFFSET;
+										}
+											//chip.n発声時刻ms += this.nDELAY;
                                         //chip.dbBPM = this.dbNowBPM;
                                         //chip.dbSCROLL = this.dbNowSCROLL;
                                         this.b次の小節が分岐である = true;
                                         this.n現在のコース = chip.nコース;
                                         continue;
                                     }
-                                case 0xDF:
+								case 0x52:
+									{
+										if (this.bOFFSETの値がマイナスである)
+										{
+											chip.n発声時刻ms += this.nOFFSET;
+											chip.n分岐時刻ms += this.nOFFSET;
+										}
+										//chip.n発声時刻ms += this.nDELAY;
+										//chip.dbBPM = this.dbNowBPM;
+										//chip.dbSCROLL = this.dbNowSCROLL;
+										this.b次の小節が分岐である = true;
+										this.n現在のコース = chip.nコース;
+										continue;
+									}
+								case 0xDF:
                                     {
                                         if (this.bOFFSETの値がマイナスである)
                                             chip.n発声時刻ms += this.nOFFSET;
@@ -2592,7 +2663,6 @@ namespace TJAPlayer3
                                 chip.nノーツ終了時刻ms = (int)(((double)chip.nノーツ終了時刻ms) / _db再生速度);
                             }
                         }
-                        this.listChip.Sort();
                         #endregion
                         //span = (TimeSpan) ( DateTime.Now - timeBeginLoad );
                         //Trace.TraceInformation( "発声時刻計算:             {0}", span.ToString() );
@@ -2698,7 +2768,6 @@ namespace TJAPlayer3
                         //        this.listChip[n].dbSCROLL = nRan / 10.0;
                         //    }
                         //}
-                        this.listChip.Sort();
                         int n整数値管理 = 0;
                         foreach (CChip chip in this.listChip)
                         {
@@ -2840,28 +2909,29 @@ namespace TJAPlayer3
             int nCount = 0;
 
             if (InputText.StartsWith("#BRANCHSTART"))
-            {
-                this.nLineCountTemp = this.n現在の小節数;
+			{
+				this.nLineCountTemp = this.n現在の小節数;
                 return;
             }
             else if (InputText.StartsWith("#N"))
             {
-                this.nLineCountCourseTemp = 0;
+                this.nLineCountCourseTemp = ECourse.eNormal;
                 this.n現在の小節数 = this.nLineCountTemp;
                 return;
             }
             else if (InputText.StartsWith("#E"))
             {
-                this.nLineCountCourseTemp = 1;
+                this.nLineCountCourseTemp = ECourse.eExpert;
                 this.n現在の小節数 = this.nLineCountTemp;
                 return;
             }
             else if (InputText.StartsWith("#M"))
             {
-                this.nLineCountCourseTemp = 2;
+                this.nLineCountCourseTemp = ECourse.eMaster;
                 this.n現在の小節数 = this.nLineCountTemp;
                 return;
             }
+			
 
 
             var line = new CLine();
@@ -3288,608 +3358,709 @@ namespace TJAPlayer3
             var argumentMatchGroup = match.Groups[2];
             var argument = argumentMatchGroup.Success ? argumentMatchGroup.Value : null;
 
-            char[] chDelimiter = new char[] { ' ' };
+
+			char[] chDelimiter = new char[] { ' ' };
             string[] strArray = null;
 
-            if (command == "#START")
-            {
-                //#STARTと同時に鳴らすのはどうかと思うけどしゃーなしだな。
-                AddMusicPreTimeMs(); // 音源を鳴らす前に遅延。
-                var chip = new CChip();
-
-                chip.nチャンネル番号 = 0x01;
-                chip.n発声位置 = 384;
-                chip.n発声時刻ms = (int)this.dbNowTime;
-                chip.fBMSCROLLTime = this.dbNowBMScollTime;
-                chip.n整数値 = 0x01;
-                chip.n整数値_内部番号 = 1;
-
-                // チップを配置。
-                this.listChip.Add(chip);
-
-                var chip1 = new CChip();
-                chip1.nチャンネル番号 = 0x54;
-                //chip1.n発声位置 = 384;
-                //chip1.n発声時刻ms = (int)this.dbNowTime;
-                if (this.nMOVIEOFFSET == 0)
-                    chip1.n発声時刻ms = (int)this.dbNowTime;
-                else
-                    chip1.n発声時刻ms = (int)this.nMOVIEOFFSET;
-                chip1.dbBPM = this.dbNowBPM;
-                chip1.dbSCROLL = this.dbNowScroll;
-                chip1.n整数値 = 0x01;
-                chip1.n整数値_内部番号 = 1;
-                chip1.eAVI種別 = EAVI種別.AVI;
-
-                // チップを配置。
-
-                this.listChip.Add(chip1);
-            }
-            else if (command == "#END")
-            {
-                //ためしに割り込む。
-                var chip = new CChip();
-
-                chip.nチャンネル番号 = 0xFF;
-                chip.n発声位置 = ((this.n現在の小節数 + 2) * 384);
-                //chip.n発声時刻ms = (int)( this.dbNowTime + ((15000.0 / this.dbNowBPM * ( 4.0 / 4.0 )) * 16.0) * 2  );
-                chip.n発声時刻ms = (int)(this.dbNowTime + 1000); //2016.07.16 kairera0467 終了時から1秒後に設置するよう変更。
-                chip.n整数値 = 0xFF;
-                chip.n整数値_内部番号 = 1;
-                // チップを配置。
-
-                this.listChip.Add(chip);
-
-                if (this.bチップがある.Branch)
-                {
-                    for (int f = 0; f <= 2; f++)
-                    {
-                        this.nノーツ数[f] = this.nノーツ数[f] + this.nノーツ数[3];
-                    }
-                }
-            }
-
-            else if (command == "#BPMCHANGE")
-            {
-                double dbBPM = Convert.ToDouble(argument);
-                this.dbNowBPM = dbBPM;
-
-                this.listBPM.Add(this.n内部番号BPM1to - 1, new CBPM() { n内部番号 = this.n内部番号BPM1to - 1, n表記上の番号 = 0, dbBPM値 = dbBPM, bpm_change_time = this.dbNowTime, bpm_change_bmscroll_time = this.dbNowBMScollTime, bpm_change_course = this.n現在のコース });
-
-
-                //チップ追加して割り込んでみる。
-                var chip = new CChip();
-
-                chip.nチャンネル番号 = 0x08;
-                chip.n発声位置 = ((this.n現在の小節数) * 384);
-                chip.n発声時刻ms = (int)this.dbNowTime;
-                chip.fBMSCROLLTime = (float)this.dbNowBMScollTime;
-                chip.dbBPM = dbBPM;
-                chip.n整数値_内部番号 = this.n内部番号BPM1to - 1;
-
-                // チップを配置。
-
-                this.listChip.Add(chip);
-
-                var chip1 = new CChip();
-                chip1.nチャンネル番号 = 0x9C;
-                chip1.n発声位置 = ((this.n現在の小節数) * 384);
-                chip1.n発声時刻ms = (int)this.dbNowTime;
-                chip1.fBMSCROLLTime = (float)this.dbNowBMScollTime;
-                chip1.dbBPM = dbBPM;
-                chip1.dbSCROLL = this.dbNowScroll;
-                chip1.n整数値_内部番号 = this.n内部番号BPM1to - 1;
-
-                // チップを配置。
-
-                this.listChip.Add(chip1);
-
-                this.n内部番号BPM1to++;
-            }
-            else if (command == "#SCROLL")
-            {
-                //2016.08.13 kairera0467 複素数スクロールもどきのテスト
-                if (argument.IndexOf('i') != -1)
-                {
-                    //iが入っていた場合、複素数スクロールとみなす。
-
-                    double[] dbComplexNum = new double[2];
-                    this.tParsedComplexNumber(argument, ref dbComplexNum);
-
-                    this.dbNowScroll = dbComplexNum[0];
-                    this.dbNowScrollY = dbComplexNum[1];
-
-                    this.listSCROLL.Add(this.n内部番号SCROLL1to, new CSCROLL() { n内部番号 = this.n内部番号SCROLL1to, n表記上の番号 = 0, dbSCROLL値 = dbComplexNum[0], dbSCROLL値Y = dbComplexNum[1] });
-
-                    switch (this.n現在のコース)
-                    {
-                        case 0:
-                            this.dbNowSCROLL_Normal[0] = dbComplexNum[0];
-                            this.dbNowSCROLL_Normal[1] = dbComplexNum[1];
-                            break;
-                        case 1:
-                            this.dbNowSCROLL_Expert[0] = dbComplexNum[0];
-                            this.dbNowSCROLL_Expert[1] = dbComplexNum[1];
-                            break;
-                        case 2:
-                            this.dbNowSCROLL_Master[0] = dbComplexNum[0];
-                            this.dbNowSCROLL_Master[1] = dbComplexNum[1];
-                            break;
-                    }
-
-                    //チップ追加して割り込んでみる。
-                    var chip = new CChip();
-
-                    chip.nチャンネル番号 = 0x9D;
-                    chip.n発声位置 = ((this.n現在の小節数) * 384) - 1;
-                    chip.n発声時刻ms = (int)this.dbNowTime;
-                    chip.n整数値_内部番号 = this.n内部番号SCROLL1to;
-                    chip.dbSCROLL = dbComplexNum[0];
-                    chip.dbSCROLL_Y = dbComplexNum[1];
-                    chip.nコース = this.n現在のコース;
-
-                    // チップを配置。
-
-                    this.listChip.Add(chip);
-                }
-                else
-                {
-                    double dbSCROLL = Convert.ToDouble(argument);
-                    this.dbNowScroll = dbSCROLL;
-                    this.dbNowScrollY = 0.0;
-
-                    this.listSCROLL.Add(this.n内部番号SCROLL1to, new CSCROLL() { n内部番号 = this.n内部番号SCROLL1to, n表記上の番号 = 0, dbSCROLL値 = dbSCROLL, dbSCROLL値Y = 0.0 });
-
-                    switch (this.n現在のコース)
-                    {
-                        case 0:
-                            this.dbNowSCROLL_Normal[0] = dbSCROLL;
-                            break;
-                        case 1:
-                            this.dbNowSCROLL_Expert[0] = dbSCROLL;
-                            break;
-                        case 2:
-                            this.dbNowSCROLL_Master[0] = dbSCROLL;
-                            break;
-                    }
-
-                    //チップ追加して割り込んでみる。
-                    var chip = new CChip();
-
-                    chip.nチャンネル番号 = 0x9D;
-                    chip.n発声位置 = ((this.n現在の小節数) * 384) - 1;
-                    chip.n発声時刻ms = (int)this.dbNowTime;
-                    chip.n整数値_内部番号 = this.n内部番号SCROLL1to;
-                    chip.dbSCROLL = dbSCROLL;
-                    chip.dbSCROLL_Y = 0.0;
-                    chip.nコース = this.n現在のコース;
-
-                    // チップを配置。
-
-                    this.listChip.Add(chip);
-                }
-
-
-
-
-                this.n内部番号SCROLL1to++;
-            }
-            else if (command == "#MEASURE")
-            {
-                strArray = argument.Split(new char[] { '/' });
-                WarnSplitLength("#MEASURE subsplit", strArray, 2);
-
-                double[] dbLength = new double[2];
-                dbLength[0] = Convert.ToDouble(strArray[0]);
-                dbLength[1] = Convert.ToDouble(strArray[1]);
-
-                double db小節長倍率 = dbLength[0] / dbLength[1];
-                this.dbBarLength = db小節長倍率;
-                this.fNow_Measure_m = (float)dbLength[1];
-                this.fNow_Measure_s = (float)dbLength[0];
-
-                var chip = new CChip();
-
-                chip.nチャンネル番号 = 0x02;
-                chip.n発声位置 = ((this.n現在の小節数) * 384);
-                chip.n発声時刻ms = (int)this.dbNowTime;
-                chip.dbSCROLL = this.dbNowScroll;
-                chip.db実数値 = db小節長倍率;
-                chip.n整数値_内部番号 = 1;
-                // チップを配置。
-
-                this.listChip.Add(chip);
-
-                //lbMaster.Items.Add( ";拍子変更 " + strArray[0] + "/" + strArray[1] );
-            }
-            else if (command == "#DELAY")
-            {
-                double nDELAY = (Convert.ToDouble(argument) * 1000.0);
-
-
-                this.listDELAY.Add(this.n内部番号DELAY1to, new CDELAY() { n内部番号 = this.n内部番号DELAY1to, n表記上の番号 = 0, nDELAY値 = (int)nDELAY, delay_bmscroll_time = this.dbLastBMScrollTime, delay_bpm = this.dbNowBPM, delay_course = this.n現在のコース, delay_time = this.dbLastTime });
-
-
-                //チップ追加して割り込んでみる。
-                var chip = new CChip();
-
-                chip.nチャンネル番号 = 0xDC;
-                chip.n発声位置 = ((this.n現在の小節数) * 384);
-                chip.db発声時刻ms = this.dbNowTime;
-                chip.nコース = this.n現在のコース;
-                chip.n整数値_内部番号 = this.n内部番号DELAY1to;
-                chip.fBMSCROLLTime = this.dbNowBMScollTime;
-                // チップを配置。
-
-                this.dbNowTime += nDELAY;
-                this.dbNowBMScollTime += nDELAY * this.dbNowBPM / 15000;
-
-                this.listChip.Add(chip);
-                this.n内部番号DELAY1to++;
-            }
-
-            else if (command == "#GOGOSTART")
-            {
-                var chip = new CChip();
-
-                chip.nチャンネル番号 = 0x9E;
-                chip.n発声位置 = ((this.n現在の小節数) * 384);
-                chip.dbBPM = this.dbNowBPM;
-                chip.n発声時刻ms = (int)this.dbNowTime;
-                chip.n整数値_内部番号 = 1;
-                this.bGOGOTIME = true;
-
-                // チップを配置。
-                this.listChip.Add(chip);
-            }
-            else if (command == "#GOGOEND")
-            {
-                var chip = new CChip();
-
-                chip.nチャンネル番号 = 0x9F;
-                chip.n発声位置 = ((this.n現在の小節数) * 384);
-                chip.n発声時刻ms = (int)this.dbNowTime;
-                chip.dbBPM = this.dbNowBPM;
-                chip.n整数値_内部番号 = 1;
-                this.bGOGOTIME = false;
-
-                // チップを配置。
-                this.listChip.Add(chip);
-            }
-            else if (command == "#SECTION")
-            {
-                //分岐:条件リセット
-                var chip = new CChip();
-
-                chip.nチャンネル番号 = 0xDD;
-                chip.n発声位置 = ((this.n現在の小節数 - 1) * 384);
-                chip.n発声時刻ms = (int)this.dbNowTime;
-                chip.n整数値_内部番号 = 1;
-                chip.db発声時刻ms = this.dbNowTime;
-                // チップを配置。
-                this.listChip.Add(chip);
-            }
-            else if (command == "#BRANCHSTART")
-            {
-                IsEndedBranching = false;
-                this.bチップがある.Branch = true;
-                this.b最初の分岐である = false;
-
-                //分岐:分岐スタート
-                int n条件 = 0;
-
-                //条件数値。
-                double[] nNum = new double[2];
-
-                var branchStartArgumentMatch = BranchStartArgumentRegex.Match(argument);
-                if (!branchStartArgumentMatch.Success)
-                {
-                    Trace.TraceWarning($"正常ではない.tjaファイルを読み込みました。 #BRANCHSTART 命令が正しく記述されていません。 ({strファイル名の絶対パス})");
-                    return;
-                }
-
-                nNum[0] = Convert.ToDouble(branchStartArgumentMatch.Groups[2].Value);
-                nNum[1] = Convert.ToDouble(branchStartArgumentMatch.Groups[3].Value);
-                switch (branchStartArgumentMatch.Groups[1].Value)
-                {
-                    case "p":
-                        n条件 = 0;
-                        break;
-                    case "r":
-                        n条件 = 1;
-                        break;
-                    case "s":
-                        n条件 = 2;
-                        break;
-                    case "d":
-                        n条件 = 3;
-                        break;
-                    default:
-                        n条件 = 0;
-                        break;
-                }
-
-                //まずはリストに現在の小節、発声位置、分岐条件を追加。
-                var branch = new CBRANCH();
-                branch.db判定時間 = this.dbNowTime;
-                branch.db分岐時間 = ((this.n現在の小節数 + 1) * 384);
-                branch.db分岐時間ms = this.dbNowTime; //ここがうまく計算できてないので後からバグが出る。
-                //branch.db分岐時間ms = this.dbNowTime + ((((60.0 / this.dbNowBPM) / 4.0 ) * 16.0) * 1000.0);
-                branch.dbBPM = this.dbNowBPM;
-                branch.dbSCROLL = this.dbNowScroll;
-                branch.dbBMScrollTime = this.dbNowBMScollTime;
-                branch.n現在の小節 = this.n現在の小節数;
-                branch.n条件数値A = nNum[0];
-                branch.n条件数値B = nNum[1];
-                branch.n内部番号 = this.n内部番号BRANCH1to;
-                branch.n表記上の番号 = 0;
-                branch.n分岐の種類 = n条件;
-                branch.n命令時のChipList番号 = this.listChip.Count;
-
-                this.listBRANCH.Add(this.n内部番号BRANCH1to, branch);
-
-
-                //分岐アニメ開始時(分岐の1小節前)に設置。
-                var chip = new CChip();
-
-                chip.nチャンネル番号 = 0xDE;
-                chip.n発声位置 = ((this.n現在の小節数 - 1) * 384);
-                chip.n発声時刻ms = (int)(this.dbNowTime - ((15000.0 / this.dbNowBPM * (this.fNow_Measure_s / this.fNow_Measure_m)) * 16.0)); //ここの時間設定は前の小節の開始時刻である必要があるのだが...
-                //chip.n発声時刻ms = (int)this.dbLastTime;
-                chip.dbSCROLL = this.dbNowScroll;
-                chip.dbBPM = this.dbNowBPM;
-                chip.n整数値_内部番号 = this.n内部番号BRANCH1to;
-
-                // チップを配置。
-                this.listChip.Add(chip);
-
-                //実質的な位置に配置
-                var chip2 = new CChip();
-
-                chip2.nチャンネル番号 = 0xDF;
-                chip2.n発声位置 = ((this.n現在の小節数) * 384);
-                chip2.n発声時刻ms = (int)this.dbNowTime;
-                chip2.dbSCROLL = this.dbNowScroll;
-                chip2.dbBPM = this.dbNowBPM;
-                chip2.n整数値_内部番号 = this.n内部番号BRANCH1to;
-
-                this.listChip.Add(chip2);
-
-                this.n内部番号BRANCH1to++;
-            }
-            else if (command == "#N")
-            {
-                //分岐:普通譜面
-                this.n現在のコース = 0;
-                if (!listBRANCH.TryGetValue(this.n内部番号BRANCH1to - 1, out var branch))
-                {
-                    Trace.TraceWarning($"正常ではない.tjaファイルを読み込みました。 #N 命令がありません。 ({strファイル名の絶対パス})");
-                    return;
-                }
-                this.n現在の小節数 = branch.n現在の小節;
-                this.dbNowTime = branch.db分岐時間ms;
-                this.dbNowBPM = branch.dbBPM;
-                this.dbNowScroll = branch.dbSCROLL;
-                this.dbNowBMScollTime = branch.dbBMScrollTime;
-            }
-            else if (command == "#E")
-            {
-                //分岐:玄人譜面
-                this.n現在のコース = 1;
-                if (!listBRANCH.TryGetValue(this.n内部番号BRANCH1to - 1, out var branch))
-                {
-                    Trace.TraceWarning($"正常ではない.tjaファイルを読み込みました。 #E 命令がありません。 ({strファイル名の絶対パス})");
-                    return;
-                }
-                this.n現在の小節数 = branch.n現在の小節;
-                this.dbNowTime = branch.db分岐時間ms;
-                this.dbNowBPM = branch.dbBPM;
-                this.dbNowScroll = branch.dbSCROLL;
-                this.dbNowBMScollTime = branch.dbBMScrollTime;
-            }
-            else if (command == "#M")
-            {
-                //分岐:達人譜面
-                this.n現在のコース = 2;
-                if (!listBRANCH.TryGetValue(this.n内部番号BRANCH1to - 1, out var branch))
-                {
-                    Trace.TraceWarning($"正常ではない.tjaファイルを読み込みました。 #M 命令がありません。 ({strファイル名の絶対パス})");
-                    return;
-                }
-                this.n現在の小節数 = branch.n現在の小節;
-                this.dbNowTime = branch.db分岐時間ms;
-                this.dbNowBPM = branch.dbBPM;
-                this.dbNowScroll = branch.dbSCROLL;
-                this.dbNowBMScollTime = branch.dbBMScrollTime;
-            }
-            else if (command == "#LEVELHOLD")
-            {
-                var chip = new CChip();
-
-                chip.nチャンネル番号 = 0xE1;
-                chip.n発声位置 = ((this.n現在の小節数) * 384) - 1;
-                chip.nコース = this.n現在のコース;
-                chip.n発声時刻ms = (int)this.dbNowTime;
-                chip.n整数値_内部番号 = 1;
-
-                this.listChip.Add(chip);
-            }
-            else if (command == "#BRANCHEND")
-            {
-                IsEndedBranching = true;
-            }
-            else if (command == "#BARLINEOFF")
-            {
-                var chip = new CChip();
-
-                chip.nチャンネル番号 = 0xE0;
-                chip.n発声位置 = ((this.n現在の小節数) * 384) - 1;
-                chip.n発声時刻ms = (int)this.dbNowTime + 1;
-                chip.n整数値_内部番号 = 1;
-                chip.nコース = this.n現在のコース;
-                this.bBARLINECUE[0] = 1;
-
-                this.listChip.Add(chip);
-            }
-            else if (command == "#BARLINEON")
-            {
-                var chip = new CChip();
-
-                chip.nチャンネル番号 = 0xE0;
-                chip.n発声位置 = ((this.n現在の小節数) * 384) - 1;
-                chip.n発声時刻ms = (int)this.dbNowTime + 1;
-                chip.n整数値_内部番号 = 2;
-                chip.nコース = this.n現在のコース;
-                this.bBARLINECUE[0] = 0;
-
-                this.listChip.Add(chip);
-            }
-            else if (command == "#LYRIC")
-            {
-                this.listLiryc.Add(argument);
-
-                var chip = new CChip();
-
-                chip.nチャンネル番号 = 0xF1;
-                chip.n発声時刻ms = (int)this.dbNowTime;
-                chip.n整数値_内部番号 = 0;
-                chip.nコース = this.n現在のコース;
-
-                // チップを配置。
-
-                this.listChip.Add(chip);
-            }
-            else if (command == "#DIRECTION")
-            {
-                double dbSCROLL = Convert.ToDouble(argument);
-                this.nスクロール方向 = (int)dbSCROLL;
-
-                //チップ追加して割り込んでみる。
-                var chip = new CChip();
-
-                chip.nチャンネル番号 = 0xF2;
-                chip.n発声位置 = ((this.n現在の小節数) * 384) - 1;
-                chip.n発声時刻ms = (int)this.dbNowTime;
-                chip.n整数値_内部番号 = 0;
-                chip.nスクロール方向 = (int)dbSCROLL;
-                chip.nコース = this.n現在のコース;
-
-                // チップを配置。
-
-                this.listChip.Add(chip);
-            }
-            else if (command == "#SUDDEN")
-            {
-                strArray = argument.Split(chDelimiter);
-                WarnSplitLength("#SUDDEN", strArray, 2);
-                double db出現時刻 = Convert.ToDouble(strArray[0]);
-                double db移動待機時刻 = Convert.ToDouble(strArray[1]);
-                this.db出現時刻 = db出現時刻;
-                this.db移動待機時刻 = db移動待機時刻;
-
-                //チップ追加して割り込んでみる。
-                var chip = new CChip();
-
-                chip.nチャンネル番号 = 0xF3;
-                chip.n発声位置 = ((this.n現在の小節数) * 384) - 1;
-                chip.n発声時刻ms = (int)this.dbNowTime;
-                chip.n整数値_内部番号 = 0;
-                chip.nノーツ出現時刻ms = (int)this.db出現時刻;
-                chip.nノーツ移動開始時刻ms = (int)this.db移動待機時刻;
-                chip.nコース = this.n現在のコース;
-
-                // チップを配置。
-
-                this.listChip.Add(chip);
-            }
-            else if (command == "#JPOSSCROLL")
-            {
-                strArray = argument.Split(chDelimiter);
-                WarnSplitLength("#JPOSSCROLL", strArray, 3);
-                double db移動時刻 = Convert.ToDouble(strArray[0]);
-                int n移動px = Convert.ToInt32(strArray[1]);
-                int n移動方向 = Convert.ToInt32(strArray[2]);
-
-                //チップ追加して割り込んでみる。
-                var chip = new CChip();
-
-                chip.nチャンネル番号 = 0xE2;
-                chip.n発声位置 = ((this.n現在の小節数) * 384) - 1;
-                chip.n発声時刻ms = (int)this.dbNowTime;
-                chip.n整数値_内部番号 = 0;
-                chip.nコース = this.n現在のコース;
-
-                // チップを配置。
-
-                this.listJPOSSCROLL.Add(this.n内部番号JSCROLL1to, new CJPOSSCROLL() { n内部番号 = this.n内部番号JSCROLL1to, n表記上の番号 = 0, db移動時間 = db移動時刻, n移動距離px = n移動px, n移動方向 = n移動方向 });
-                this.listChip.Add(chip);
-                this.n内部番号JSCROLL1to++;
-            }
-            else if (command == "#SENOTECHANGE")
-            {
-                FixSENote = int.Parse(argument);
-                IsEnabledFixSENote = true;
-            }
-            else if (command == "#NEXTSONG")
-            {
-                var delayTime = 6200.0; // 6.2秒ディレイ
-                //チップ追加して割り込んでみる。
-                var chip = new CChip();
-
-                chip.nチャンネル番号 = 0x9B;
-                chip.n発声位置 = ((this.n現在の小節数) * 384) - 1;
-                chip.n発声時刻ms = (int)this.dbNowTime;
-                this.dbNowTime += delayTime;
-                this.dbNowBMScollTime += delayTime * this.dbNowBPM / 15000;
-                chip.n整数値_内部番号 = 0;
-                chip.nコース = this.n現在のコース;
-
-                // チップを配置。
-                this.listChip.Add(chip);
-
-                AddMusicPreTimeMs(); // 段位の幕が開いてからの遅延。
-
-                strArray = SplitComma(argument); // \,をエスケープ処理するメソッドだぞっ
-                
-                WarnSplitLength("#NEXTSONG", strArray, 6);
-                var dansongs = new DanSongs();
-                dansongs.Title = strArray[0];
-                dansongs.SubTitle = strArray[1];
-                dansongs.Genre = strArray[2];
-                dansongs.FileName = strArray[3];
-                dansongs.ScoreInit = int.Parse(strArray[4]);
-                dansongs.ScoreDiff = int.Parse(strArray[5]);
-                dansongs.Wave = new CWAV
-                {
-                    n内部番号 = this.n内部番号WAV1to,
-                    n表記上の番号 = this.n内部番号WAV1to,
-                    nチップサイズ = this.n無限管理SIZE[this.n内部番号WAV1to],
-                    n位置 = this.n無限管理PAN[this.n内部番号WAV1to],
-                    SongVol = this.SongVol,
-                    SongLoudnessMetadata = this.SongLoudnessMetadata,
-                    strファイル名 = CDTXCompanionFileFinder.FindFileName(this.strフォルダ名, strファイル名, dansongs.FileName),
-                    strコメント文 = "TJA BGM"
-                };
-                dansongs.Wave.SongLoudnessMetadata = LoudnessMetadataScanner.LoadForAudioPath(dansongs.Wave.strファイル名);
-                List_DanSongs.Add(dansongs);
-                this.listWAV.Add(this.n内部番号WAV1to, dansongs.Wave);
-                this.n内部番号WAV1to++;
-
-                var nextSongnextSongChip = new CChip();
-
-                nextSongnextSongChip.nチャンネル番号 = 0x01;
-                nextSongnextSongChip.n発声位置 = 384;
-                nextSongnextSongChip.n発声時刻ms = (int)this.dbNowTime;
-                nextSongnextSongChip.n整数値 = 0x01;
-                nextSongnextSongChip.n整数値_内部番号 = 1 + List_DanSongs.Count;
-
-                this.listWAV[1].strファイル名 = "";
-
-                // チップを配置。
-                this.listChip.Add(nextSongnextSongChip);
-
-            }
+			if (command == "#START")
+			{
+				//#STARTと同時に鳴らすのはどうかと思うけどしゃーなしだな。
+				AddMusicPreTimeMs(); // 音源を鳴らす前に遅延。
+				var chip = new CChip();
+
+				chip.nチャンネル番号 = 0x01;
+				chip.n発声位置 = 384;
+				chip.n発声時刻ms = (int)this.dbNowTime;
+				chip.fNow_Measure_m = this.fNow_Measure_m;
+				chip.fNow_Measure_s = this.fNow_Measure_s;
+				chip.fBMSCROLLTime = this.dbNowBMScollTime;
+				chip.n整数値 = 0x01;
+				chip.n整数値_内部番号 = 1;
+
+				// チップを配置。
+				this.listChip.Add(chip);
+
+				var chip1 = new CChip();
+				chip1.nチャンネル番号 = 0x54;
+				//chip1.n発声位置 = 384;
+				//chip1.n発声時刻ms = (int)this.dbNowTime;
+				if (this.nMOVIEOFFSET == 0)
+					chip1.n発声時刻ms = (int)this.dbNowTime;
+				else
+					chip1.n発声時刻ms = (int)this.nMOVIEOFFSET;
+				chip1.dbBPM = this.dbNowBPM;
+				chip1.fNow_Measure_m = this.fNow_Measure_m;
+				chip1.fNow_Measure_s = this.fNow_Measure_s;
+				chip1.dbSCROLL = this.dbNowScroll;
+				chip1.n整数値 = 0x01;
+				chip1.n整数値_内部番号 = 1;
+				chip1.eAVI種別 = EAVI種別.AVI;
+
+				// チップを配置。
+
+				this.listChip.Add(chip1);
+			}
+			else if (command == "#END")
+			{
+				//ためしに割り込む。
+				var chip = new CChip();
+
+				chip.nチャンネル番号 = 0xFF;
+				chip.n発声位置 = ((this.n現在の小節数 + 2) * 384);
+				//chip.n発声時刻ms = (int)( this.dbNowTime + ((15000.0 / this.dbNowBPM * ( 4.0 / 4.0 )) * 16.0) * 2  );
+				chip.n発声時刻ms = (int)(this.dbNowTime + 1000); //2016.07.16 kairera0467 終了時から1秒後に設置するよう変更。
+				chip.fNow_Measure_m = this.fNow_Measure_m;
+				chip.fNow_Measure_s = this.fNow_Measure_s;
+				chip.n整数値 = 0xFF;
+				chip.n整数値_内部番号 = 1;
+				// チップを配置。
+
+				this.listChip.Add(chip);
+
+				if (this.bチップがある.Branch)
+				{
+					for (int f = 0; f <= 2; f++)
+					{
+						this.nノーツ数[f] = this.nノーツ数[f] + this.nノーツ数[3];
+					}
+				}
+			}
+
+			else if (command == "#BPMCHANGE")
+			{
+				double dbBPM = Convert.ToDouble(argument);
+				this.dbNowBPM = dbBPM;
+
+				this.listBPM.Add(this.n内部番号BPM1to - 1, new CBPM() { n内部番号 = this.n内部番号BPM1to - 1, n表記上の番号 = 0, dbBPM値 = dbBPM, bpm_change_time = this.dbNowTime, bpm_change_bmscroll_time = this.dbNowBMScollTime, bpm_change_course = this.n現在のコース });
+
+
+				//チップ追加して割り込んでみる。
+				var chip = new CChip();
+
+				chip.nチャンネル番号 = 0x08;
+				chip.n発声位置 = ((this.n現在の小節数) * 384);
+				chip.n発声時刻ms = (int)this.dbNowTime;
+				chip.fNow_Measure_m = this.fNow_Measure_m;
+				chip.fNow_Measure_s = this.fNow_Measure_s;
+				chip.fBMSCROLLTime = (float)this.dbNowBMScollTime;
+				chip.dbBPM = dbBPM;
+				chip.n整数値_内部番号 = this.n内部番号BPM1to - 1;
+
+				// チップを配置。
+
+				this.listChip.Add(chip);
+
+				var chip1 = new CChip();
+				chip1.nチャンネル番号 = 0x9C;
+				chip1.n発声位置 = ((this.n現在の小節数) * 384);
+				chip1.n発声時刻ms = (int)this.dbNowTime;
+				chip.fNow_Measure_m = this.fNow_Measure_m;
+				chip.fNow_Measure_s = this.fNow_Measure_s;
+				chip1.fBMSCROLLTime = (float)this.dbNowBMScollTime;
+				chip1.dbBPM = dbBPM;
+				chip1.dbSCROLL = this.dbNowScroll;
+				chip1.n整数値_内部番号 = this.n内部番号BPM1to - 1;
+
+				// チップを配置。
+
+				this.listChip.Add(chip1);
+
+				this.n内部番号BPM1to++;
+			}
+			else if (command == "#SCROLL")
+			{
+				//2016.08.13 kairera0467 複素数スクロールもどきのテスト
+				if (argument.IndexOf('i') != -1)
+				{
+					//iが入っていた場合、複素数スクロールとみなす。
+
+					double[] dbComplexNum = new double[2];
+					this.tParsedComplexNumber(argument, ref dbComplexNum);
+
+					this.dbNowScroll = dbComplexNum[0];
+					this.dbNowScrollY = dbComplexNum[1];
+
+					this.listSCROLL.Add(this.n内部番号SCROLL1to, new CSCROLL() { n内部番号 = this.n内部番号SCROLL1to, n表記上の番号 = 0, dbSCROLL値 = dbComplexNum[0], dbSCROLL値Y = dbComplexNum[1] });
+
+					switch (this.n現在のコース)
+					{
+						case ECourse.eNormal:
+							this.dbNowSCROLL_Normal[0] = dbComplexNum[0];
+							this.dbNowSCROLL_Normal[1] = dbComplexNum[1];
+							break;
+						case ECourse.eExpert:
+							this.dbNowSCROLL_Expert[0] = dbComplexNum[0];
+							this.dbNowSCROLL_Expert[1] = dbComplexNum[1];
+							break;
+						case ECourse.eMaster:
+							this.dbNowSCROLL_Master[0] = dbComplexNum[0];
+							this.dbNowSCROLL_Master[1] = dbComplexNum[1];
+							break;
+						default:
+							this.dbNowSCROLL_Normal[0] = dbComplexNum[0];
+							this.dbNowSCROLL_Normal[1] = dbComplexNum[1];
+							break;
+					}
+
+					//チップ追加して割り込んでみる。
+					var chip = new CChip();
+
+					chip.nチャンネル番号 = 0x9D;
+					chip.n発声位置 = ((this.n現在の小節数) * 384) - 1;
+					chip.n発声時刻ms = (int)this.dbNowTime;
+					chip.fNow_Measure_m = this.fNow_Measure_m;
+					chip.fNow_Measure_s = this.fNow_Measure_s;
+					chip.n整数値_内部番号 = this.n内部番号SCROLL1to;
+					chip.dbSCROLL = dbComplexNum[0];
+					chip.dbSCROLL_Y = dbComplexNum[1];
+					chip.nコース = this.n現在のコース;
+
+					// チップを配置。
+
+					this.listChip.Add(chip);
+				}
+				else
+				{
+					double dbSCROLL = Convert.ToDouble(argument);
+					this.dbNowScroll = dbSCROLL;
+					this.dbNowScrollY = 0.0;
+
+					this.listSCROLL.Add(this.n内部番号SCROLL1to, new CSCROLL() { n内部番号 = this.n内部番号SCROLL1to, n表記上の番号 = 0, dbSCROLL値 = dbSCROLL, dbSCROLL値Y = 0.0 });
+
+					switch (this.n現在のコース)
+					{
+						case ECourse.eNormal:
+							this.dbNowSCROLL_Normal[0] = dbSCROLL;
+							break;
+						case ECourse.eExpert:
+							this.dbNowSCROLL_Expert[0] = dbSCROLL;
+							break;
+						case ECourse.eMaster:
+							this.dbNowSCROLL_Master[0] = dbSCROLL;
+							break;
+					}
+
+					//チップ追加して割り込んでみる。
+					var chip = new CChip();
+
+					chip.nチャンネル番号 = 0x9D;
+					chip.n発声位置 = ((this.n現在の小節数) * 384) - 1;
+					chip.n発声時刻ms = (int)this.dbNowTime;
+					chip.fNow_Measure_m = this.fNow_Measure_m;
+					chip.fNow_Measure_s = this.fNow_Measure_s;
+					chip.n整数値_内部番号 = this.n内部番号SCROLL1to;
+					chip.dbSCROLL = dbSCROLL;
+					chip.dbSCROLL_Y = 0.0;
+					chip.nコース = this.n現在のコース;
+
+					// チップを配置。
+
+					this.listChip.Add(chip);
+				}
+
+
+
+
+				this.n内部番号SCROLL1to++;
+			}
+			else if (command == "#MEASURE")
+			{
+				strArray = argument.Split(new char[] { '/' });
+				WarnSplitLength("#MEASURE subsplit", strArray, 2);
+
+				double[] dbLength = new double[2];
+				dbLength[0] = Convert.ToDouble(strArray[0]);
+				dbLength[1] = Convert.ToDouble(strArray[1]);
+
+				double db小節長倍率 = dbLength[0] / dbLength[1];
+				this.dbBarLength = db小節長倍率;
+				this.fNow_Measure_m = (float)dbLength[1];
+				this.fNow_Measure_s = (float)dbLength[0];
+
+				var chip = new CChip();
+
+				chip.nチャンネル番号 = 0x02;
+				chip.n発声位置 = ((this.n現在の小節数) * 384);
+				chip.n発声時刻ms = (int)this.dbNowTime;
+				chip.fNow_Measure_m = this.fNow_Measure_m;
+				chip.fNow_Measure_s = this.fNow_Measure_s;
+				chip.dbSCROLL = this.dbNowScroll;
+				chip.db実数値 = db小節長倍率;
+				chip.n整数値_内部番号 = 1;
+				// チップを配置。
+
+				this.listChip.Add(chip);
+
+				//lbMaster.Items.Add( ";拍子変更 " + strArray[0] + "/" + strArray[1] );
+			}
+			else if (command == "#DELAY")
+			{
+				double nDELAY = (Convert.ToDouble(argument) * 1000.0);
+
+
+				this.listDELAY.Add(this.n内部番号DELAY1to, new CDELAY() { n内部番号 = this.n内部番号DELAY1to, n表記上の番号 = 0, nDELAY値 = (int)nDELAY, delay_bmscroll_time = this.dbLastBMScrollTime, delay_bpm = this.dbNowBPM, delay_course = this.n現在のコース, delay_time = this.dbLastTime });
+
+
+				//チップ追加して割り込んでみる。
+				var chip = new CChip();
+
+				chip.nチャンネル番号 = 0xDC;
+				chip.n発声位置 = ((this.n現在の小節数) * 384);
+				chip.db発声時刻ms = this.dbNowTime;
+				chip.fNow_Measure_m = this.fNow_Measure_m;
+				chip.fNow_Measure_s = this.fNow_Measure_s;
+				chip.nコース = this.n現在のコース;
+				chip.n整数値_内部番号 = this.n内部番号DELAY1to;
+				chip.fBMSCROLLTime = this.dbNowBMScollTime;
+				// チップを配置。
+
+				this.dbNowTime += nDELAY;
+				this.dbNowBMScollTime += nDELAY * this.dbNowBPM / 15000;
+
+				this.listChip.Add(chip);
+				this.n内部番号DELAY1to++;
+			}
+
+			else if (command == "#GOGOSTART")
+			{
+				var chip = new CChip();
+
+				chip.nチャンネル番号 = 0x9E;
+				chip.n発声位置 = ((this.n現在の小節数) * 384);
+				chip.dbBPM = this.dbNowBPM;
+				chip.n発声時刻ms = (int)this.dbNowTime;
+				chip.fNow_Measure_m = this.fNow_Measure_m;
+				chip.fNow_Measure_s = this.fNow_Measure_s;
+				chip.n整数値_内部番号 = 1;
+				this.bGOGOTIME = true;
+
+				// チップを配置。
+				this.listChip.Add(chip);
+			}
+			else if (command == "#GOGOEND")
+			{
+				var chip = new CChip();
+
+				chip.nチャンネル番号 = 0x9F;
+				chip.n発声位置 = ((this.n現在の小節数) * 384);
+				chip.n発声時刻ms = (int)this.dbNowTime;
+				chip.fNow_Measure_m = this.fNow_Measure_m;
+				chip.fNow_Measure_s = this.fNow_Measure_s;
+				chip.dbBPM = this.dbNowBPM;
+				chip.n整数値_内部番号 = 1;
+				this.bGOGOTIME = false;
+
+				// チップを配置。
+				this.listChip.Add(chip);
+			}
+			else if (command == "#SECTION")
+			{
+				//分岐:条件リセット
+				var chip = new CChip();
+
+				chip.nチャンネル番号 = 0xDD;
+				chip.n発声位置 = ((this.n現在の小節数 - 1) * 384);
+				chip.n発声時刻ms = (int)this.dbNowTime;
+				chip.fNow_Measure_m = this.fNow_Measure_m;
+				chip.fNow_Measure_s = this.fNow_Measure_s;
+				chip.n整数値_内部番号 = 1;
+				chip.db発声時刻ms = this.dbNowTime;
+				// チップを配置。
+				this.listChip.Add(chip);
+			}
+			else if (command == "#BRANCHSTART")
+			{
+				#region [ 譜面分岐のパース方法を作り直し ]   
+				this.bチップがある.Branch = true;
+				this.b最初の分岐である = false;
+
+				//分岐:分岐スタート
+				E分岐種類 e条件;
+
+				//条件数値。
+				double[] nNum = new double[2];
+
+				var branchStartArgumentMatch = BranchStartArgumentRegex.Match(argument);
+				nNum[0] = Convert.ToDouble(branchStartArgumentMatch.Groups[2].Value);
+				nNum[1] = Convert.ToDouble(branchStartArgumentMatch.Groups[3].Value);
+
+				switch (branchStartArgumentMatch.Groups[1].Value)
+				{
+					case "p":
+						e条件 = E分岐種類.e精度分岐;
+						break;
+					case "r":
+						e条件 = E分岐種類.e連打分岐;
+						break;
+					case "s":
+						e条件 = E分岐種類.eスコア分岐;
+						break;
+					case "d":
+						e条件 = E分岐種類.e大音符のみ精度分岐;
+						break;
+					default:
+						e条件 = E分岐種類.e精度分岐;
+						break;
+				}
+
+				#region [ 分岐開始時のチップ情報を記録 ]
+				//現在のチップ情報を記録する必要がある。
+				this.t現在のチップ情報を記録する(true);
+				#endregion
+
+				#region [ 一小節前の分岐開始Chip ]
+				//16分前に戻す計算なんか当てにしちゃだめよ。。(by Akasoko)
+				var c小節前の小節線情報 = c一小節前の小節線情報を返す(listChip, e条件);
+				CChip c小節前の連打開始位置 = null;
+
+				var chip = new CChip();
+
+				if (e条件 == E分岐種類.e連打分岐)
+				{
+					/*
+					c小節前の連打開始位置 = c一小節前の小節線情報を返す(listChip, e条件, true);
+
+					//連打分岐の位置を再現
+					//この計算式はあてにならないと思うが、まあどうしようもないんでこれで
+					//なるべく連打のケツの部分に
+					var f連打の長さの半分 = (c小節前の小節線情報.n発声時刻ms - c小節前の連打開始位置.n発声時刻ms) / 2.0f;
+					*/
+
+					chip.n発声時刻ms = c小節前の小節線情報.n発声時刻ms;
+				}
+				else chip.n発声時刻ms = c小節前の小節線情報.n発声時刻ms;
+
+				chip.nチャンネル番号 = 0xDE;
+				chip.fNow_Measure_m = c小節前の小節線情報.fNow_Measure_m;
+				chip.fNow_Measure_s = c小節前の小節線情報.fNow_Measure_s;
+
+				//ノーツ * 0.5分後ろにして、ノーツが残らないようにする
+				chip.n分岐時刻ms = this.dbNowTime - ((15000.0 / this.dbNowBPM * (this.fNow_Measure_s / this.fNow_Measure_m)) * 0.5);
+				chip.e分岐の種類 = e条件;
+				chip.n条件数値A = nNum[0];// listに追加していたが仕様を変更。
+				chip.n条件数値B = nNum[1];// ""
+				chip.dbSCROLL = c小節前の小節線情報.dbSCROLL;
+				chip.dbBPM = c小節前の小節線情報.dbBPM;
+				this.listChip.Add(chip);
+				#endregion
+
+				for (int i = 0; i < 3; i++)
+					IsBranchBarDraw[i] = true;//3コース分の黄色小説線表示㋫ラブ
+
+				IsEndedBranching = false;
+				#endregion
+			}
+			else if (command == "#N" || command == "#E" || command == "#M")//これCourseを全部集めてあとから分岐させればいい件
+			{
+				//開始時の情報にセット
+				t現在のチップ情報を記録する(false);
+
+				if (command == "#N")
+					this.n現在のコース = ECourse.eNormal;//分岐:普通譜面
+				else if (command == "#E")
+					this.n現在のコース = ECourse.eExpert;//分岐:玄人譜面
+				else if (command == "#M")
+					this.n現在のコース = ECourse.eMaster;//分岐:達人譜面
+			}
+			else if (command == "#LEVELHOLD")
+			{
+				var chip = new CChip();
+				chip.nチャンネル番号 = 0xE1;
+				chip.n発声位置 = ((this.n現在の小節数) * 384) - 1;
+				chip.n発声時刻ms = (int)this.dbNowTime;
+				chip.fNow_Measure_m = this.fNow_Measure_m;
+				chip.fNow_Measure_s = this.fNow_Measure_s;
+				chip.n整数値_内部番号 = 1;
+
+				this.listChip.Add(chip);
+			}
+			else if (command == "#BRANCHEND")
+			{
+				var GoBranch = new CChip();
+
+				//End用チャンネルをEmptyから引っ張ってきた。
+				GoBranch.nチャンネル番号 = 0x52;
+				GoBranch.n発声位置 = ((this.n現在の小節数) * 384) - 1;
+				GoBranch.n発声時刻ms = (int)this.dbNowTime;
+				GoBranch.fNow_Measure_m = this.fNow_Measure_m;
+				GoBranch.fNow_Measure_s = this.fNow_Measure_s;
+				GoBranch.dbSCROLL = this.dbNowScroll;
+				GoBranch.dbBPM = this.dbNowBPM;
+				GoBranch.n整数値_内部番号 = 1;
+
+				this.listChip.Add(GoBranch);
+
+				//End時にも黄色い小節線あったべ？
+				for (int i = 0; i < 3; i++)
+					IsBranchBarDraw[i] = true;//3コース分の黄色小説線表示㋫ラブ
+
+				IsEndedBranching = true;
+			}
+			else if (command == "#BARLINEOFF")
+			{
+				var chip = new CChip();
+
+				chip.nチャンネル番号 = 0xE0;
+				chip.n発声位置 = ((this.n現在の小節数) * 384) - 1;
+				chip.n発声時刻ms = (int)this.dbNowTime + 1;
+				chip.n整数値_内部番号 = 1;
+				chip.nコース = this.n現在のコース;
+				this.bBARLINECUE[0] = 1;
+
+				this.listChip.Add(chip);
+			}
+			else if (command == "#BARLINEON")
+			{
+				var chip = new CChip();
+
+				chip.nチャンネル番号 = 0xE0;
+				chip.n発声位置 = ((this.n現在の小節数) * 384) - 1;
+				chip.n発声時刻ms = (int)this.dbNowTime + 1;
+				chip.fNow_Measure_m = this.fNow_Measure_m;
+				chip.fNow_Measure_s = this.fNow_Measure_s;
+				chip.n整数値_内部番号 = 2;
+				chip.nコース = this.n現在のコース;
+				this.bBARLINECUE[0] = 0;
+
+				this.listChip.Add(chip);
+			}
+			else if (command == "#LYRIC")
+			{
+				this.listLiryc.Add(argument);
+
+				var chip = new CChip();
+
+				chip.nチャンネル番号 = 0xF1;
+				chip.n発声時刻ms = (int)this.dbNowTime;
+				chip.fNow_Measure_m = this.fNow_Measure_m;
+				chip.fNow_Measure_s = this.fNow_Measure_s;
+				chip.n整数値_内部番号 = 0;
+				chip.nコース = this.n現在のコース;
+
+				// チップを配置。
+
+				this.listChip.Add(chip);
+			}
+			else if (command == "#DIRECTION")
+			{
+				double dbSCROLL = Convert.ToDouble(argument);
+				this.nスクロール方向 = (int)dbSCROLL;
+
+				//チップ追加して割り込んでみる。
+				var chip = new CChip();
+
+				chip.nチャンネル番号 = 0xF2;
+				chip.n発声位置 = ((this.n現在の小節数) * 384) - 1;
+				chip.n発声時刻ms = (int)this.dbNowTime;
+				chip.fNow_Measure_m = this.fNow_Measure_m;
+				chip.fNow_Measure_s = this.fNow_Measure_s;
+				chip.n整数値_内部番号 = 0;
+				chip.nスクロール方向 = (int)dbSCROLL;
+				chip.nコース = this.n現在のコース;
+
+				// チップを配置。
+
+				this.listChip.Add(chip);
+			}
+			else if (command == "#SUDDEN")
+			{
+				strArray = argument.Split(chDelimiter);
+				WarnSplitLength("#SUDDEN", strArray, 2);
+				double db出現時刻 = Convert.ToDouble(strArray[0]);
+				double db移動待機時刻 = Convert.ToDouble(strArray[1]);
+				this.db出現時刻 = db出現時刻;
+				this.db移動待機時刻 = db移動待機時刻;
+
+				//チップ追加して割り込んでみる。
+				var chip = new CChip();
+
+				chip.nチャンネル番号 = 0xF3;
+				chip.n発声位置 = ((this.n現在の小節数) * 384) - 1;
+				chip.n発声時刻ms = (int)this.dbNowTime;
+				chip.fNow_Measure_m = this.fNow_Measure_m;
+				chip.fNow_Measure_s = this.fNow_Measure_s;
+				chip.n整数値_内部番号 = 0;
+				chip.nノーツ出現時刻ms = (int)this.db出現時刻;
+				chip.nノーツ移動開始時刻ms = (int)this.db移動待機時刻;
+				chip.nコース = this.n現在のコース;
+
+				// チップを配置。
+
+				this.listChip.Add(chip);
+			}
+			else if (command == "#JPOSSCROLL")
+			{
+				strArray = argument.Split(chDelimiter);
+				WarnSplitLength("#JPOSSCROLL", strArray, 3);
+				double db移動時刻 = Convert.ToDouble(strArray[0]);
+				int n移動px = Convert.ToInt32(strArray[1]);
+				int n移動方向 = Convert.ToInt32(strArray[2]);
+
+				//チップ追加して割り込んでみる。
+				var chip = new CChip();
+
+				chip.nチャンネル番号 = 0xE2;
+				chip.n発声位置 = ((this.n現在の小節数) * 384) - 1;
+				chip.n発声時刻ms = (int)this.dbNowTime;
+				chip.fNow_Measure_m = this.fNow_Measure_m;
+				chip.fNow_Measure_s = this.fNow_Measure_s;
+				chip.n整数値_内部番号 = 0;
+				chip.nコース = this.n現在のコース;
+
+				// チップを配置。
+
+				this.listJPOSSCROLL.Add(this.n内部番号JSCROLL1to, new CJPOSSCROLL() { n内部番号 = this.n内部番号JSCROLL1to, n表記上の番号 = 0, db移動時間 = db移動時刻, n移動距離px = n移動px, n移動方向 = n移動方向 });
+				this.listChip.Add(chip);
+				this.n内部番号JSCROLL1to++;
+			}
+			else if (command == "#SENOTECHANGE")
+			{
+				FixSENote = int.Parse(argument);
+				IsEnabledFixSENote = true;
+			}
+			else if (command == "#NEXTSONG")
+			{
+				var delayTime = 6200.0; // 6.2秒ディレイ
+										//チップ追加して割り込んでみる。
+				var chip = new CChip();
+
+				chip.nチャンネル番号 = 0x9B;
+				chip.n発声位置 = ((this.n現在の小節数) * 384) - 1;
+				chip.n発声時刻ms = (int)this.dbNowTime;
+				chip.fNow_Measure_m = this.fNow_Measure_m;
+				chip.fNow_Measure_s = this.fNow_Measure_s;
+				this.dbNowTime += delayTime;
+				this.dbNowBMScollTime += delayTime * this.dbNowBPM / 15000;
+				chip.n整数値_内部番号 = 0;
+				chip.nコース = this.n現在のコース;
+
+				// チップを配置。
+				this.listChip.Add(chip);
+
+				AddMusicPreTimeMs(); // 段位の幕が開いてからの遅延。
+
+				strArray = SplitComma(argument); // \,をエスケープ処理するメソッドだぞっ
+
+				WarnSplitLength("#NEXTSONG", strArray, 6);
+				var dansongs = new DanSongs();
+				dansongs.Title = strArray[0];
+				dansongs.SubTitle = strArray[1];
+				dansongs.Genre = strArray[2];
+				dansongs.FileName = strArray[3];
+				dansongs.ScoreInit = int.Parse(strArray[4]);
+				dansongs.ScoreDiff = int.Parse(strArray[5]);
+				dansongs.Wave = new CWAV
+				{
+					n内部番号 = this.n内部番号WAV1to,
+					n表記上の番号 = this.n内部番号WAV1to,
+					nチップサイズ = this.n無限管理SIZE[this.n内部番号WAV1to],
+					n位置 = this.n無限管理PAN[this.n内部番号WAV1to],
+					SongVol = this.SongVol,
+					SongLoudnessMetadata = this.SongLoudnessMetadata,
+					strファイル名 = CDTXCompanionFileFinder.FindFileName(this.strフォルダ名, strファイル名, dansongs.FileName),
+					strコメント文 = "TJA BGM"
+				};
+				dansongs.Wave.SongLoudnessMetadata = LoudnessMetadataScanner.LoadForAudioPath(dansongs.Wave.strファイル名);
+				List_DanSongs.Add(dansongs);
+				this.listWAV.Add(this.n内部番号WAV1to, dansongs.Wave);
+				this.n内部番号WAV1to++;
+
+				var nextSongnextSongChip = new CChip();
+
+				nextSongnextSongChip.nチャンネル番号 = 0x01;
+				nextSongnextSongChip.n発声位置 = 384;
+				nextSongnextSongChip.n発声時刻ms = (int)this.dbNowTime;
+				nextSongnextSongChip.fNow_Measure_m = this.fNow_Measure_m;
+				nextSongnextSongChip.fNow_Measure_s = this.fNow_Measure_s;
+				nextSongnextSongChip.n整数値 = 0x01;
+				nextSongnextSongChip.n整数値_内部番号 = 1 + List_DanSongs.Count;
+
+				this.listWAV[1].strファイル名 = "";
+
+				// チップを配置。
+				this.listChip.Add(nextSongnextSongChip);
+
+			}
         }
+
+		void t現在のチップ情報を記録する(bool bInPut)
+		{
+			//2020.04.21 こうなってしまったのは仕方がないな。。 
+			if (bInPut)
+			{
+				#region [ 記録する ]
+				cBranchStart.dbTime = this.dbNowTime;
+				cBranchStart.dbSCROLL = this.dbNowScroll;
+				cBranchStart.dbSCROLLY = this.dbNowScrollY;
+				cBranchStart.dbBMScollTime = this.dbNowBMScollTime;
+				cBranchStart.dbBPM = this.dbNowBPM;
+				cBranchStart.fMeasure_s = this.fNow_Measure_s;
+				cBranchStart.fMeasure_m = this.fNow_Measure_m;
+				cBranchStart.nMeasureCount = this.n現在の小節数;
+				cBranchStart.db移動待機時刻 = this.db移動待機時刻;
+				cBranchStart.db再生速度 = this.db再生速度;
+				cBranchStart.db出現時刻 = this.db出現時刻;
+				#endregion
+			}
+			else
+			{
+				#region [ 記録した情報をNow~に適応 ]
+				this.dbNowTime = cBranchStart.dbTime;
+				this.dbNowScroll= cBranchStart.dbSCROLL;
+				this.dbNowScrollY = cBranchStart.dbSCROLLY;
+				this.dbNowBMScollTime = cBranchStart.dbBMScollTime;
+				this.dbNowBPM = cBranchStart.dbBPM;
+				this.fNow_Measure_s = cBranchStart.fMeasure_s;
+				this.fNow_Measure_m = cBranchStart.fMeasure_m;
+				this.n現在の小節数 = cBranchStart.nMeasureCount;
+				this.db移動待機時刻 = cBranchStart.db移動待機時刻;
+				this.db再生速度 = cBranchStart.db再生速度;
+				this.db出現時刻 = cBranchStart.db出現時刻;
+				#endregion
+			}
+		}
+
+		/// <summary>
+		/// 一小節前の小節線情報を返すMethod 2020.04.21.akasoko26
+		/// </summary>
+		/// <param name="listChips"></param>
+		/// <returns></returns>
+		private CChip c一小節前の小節線情報を返す(List<CChip> listChips, E分岐種類 e分岐種類, bool b分岐前の連打開始 = false)
+		{
+			//2020.04.20 c一小節前の小節線情報を返すMethodを追加
+			//連打分岐時は現在の小節以降の連打の終わり部分の時刻を取得する
+
+			int? nReturnChip = null;
+
+			//--して取得しないとだめよ～ダメダメ💛
+			for (int i = listChips.Count - 1; i >= 0; i--)
+			{
+				if (b分岐前の連打開始)
+				{
+					if (listChips[i].nチャンネル番号 == 0x15 || listChips[i].nチャンネル番号 == 0x16)
+					{
+						if (nReturnChip == null)
+							nReturnChip = i;
+						
+						//ReturnChipがnullであったら適応
+					}
+				}
+				else
+				{
+					var Flag = e分岐種類 == E分岐種類.e連打分岐 ? 0x18 : 0x50;
+
+					if (listChips[i].nチャンネル番号 == Flag)
+					{
+						if (nReturnChip == null)
+							nReturnChip = i;
+						//ReturnChipがnullであったら適応
+					}
+				}
+			}
+
+			//もし、nReturnChipがnullだったらlistChipのCount - 1にセットする。
+			return listChips[nReturnChip == null ? listChips.Count - 1 : (int)nReturnChip];
+		}
 
         private void WarnSplitLength(string name, string[] strArray, int minimumLength)
         {
@@ -3904,84 +4075,111 @@ namespace TJAPlayer3
         {
             if (!String.IsNullOrEmpty(InputText))
             {
-                int n文字数 = 16;
+				int n文字数 = 16;
 
-                //現在のコース、小節に当てはまるものをリストから探して文字数を返す。
-                for (int i = 0; i < this.listLine.Count; i++)
-                {
-                    if (this.listLine[i].n小節番号 == this.n現在の小節数 && this.listLine[i].nコース == this.n現在のコース)
-                    {
-                        n文字数 = this.listLine[i].n文字数;
-                    }
+				//現在のコース、小節に当てはまるものをリストから探して文字数を返す。
+				for (int i = 0; i < this.listLine.Count; i++)
+				{
+					if (this.listLine[i].n小節番号 == this.n現在の小節数 && this.listLine[i].nコース == this.n現在のコース)
+					{
+						n文字数 = this.listLine[i].n文字数;
+					}
 
-                }
+				}
 
-                if (InputText.StartsWith("#"))
+
+				if (InputText.StartsWith("#"))
                 {
                     this.t命令を挿入する(InputText);
                     return;
                 }
                 else
                 {
-                    if (this.b小節線を挿入している == false)
-                    {
-                        CChip chip = new CChip();
-                        chip.n発声位置 = ((this.n現在の小節数) * 384);
-                        chip.nチャンネル番号 = 0x50;
-                        chip.n発声時刻ms = (int)this.dbNowTime;
-                        chip.n整数値 = this.n現在の小節数;
-                        chip.n整数値_内部番号 = this.n現在の小節数;
-                        chip.dbBPM = this.dbNowBPM;
-                        chip.dbSCROLL = this.dbNowScroll;
-                        chip.dbSCROLL_Y = this.dbNowScrollY;
-                        chip.fBMSCROLLTime = (float)this.dbNowBMScollTime;
-                        chip.nコース = this.n現在のコース;
+					if (this.b小節線を挿入している == false)
+					{
+						// 小節線にもやってあげないと
+						// IsEndedBranchingがfalseで1回
+						// trueで3回だよ3回
+						for (int i = 0; i < (IsEndedBranching == true ? 3 : 1); i++)
+						{
+							CChip chip = new CChip();
+							chip.n発声位置 = ((this.n現在の小節数) * 384);
+							chip.nチャンネル番号 = 0x50;
+							chip.n発声時刻ms = (int)this.dbNowTime;
+							chip.n整数値 = this.n現在の小節数;
+							chip.n文字数 = n文字数;
+							chip.n整数値_内部番号 = this.n現在の小節数;
+							chip.dbBPM = this.dbNowBPM;
+							chip.fNow_Measure_m = this.fNow_Measure_m;
+							chip.fNow_Measure_s = this.fNow_Measure_s;
+							chip.IsEndedBranching = IsEndedBranching;
+							chip.dbSCROLL = this.dbNowScroll;
+							chip.dbSCROLL_Y = this.dbNowScrollY;
+							chip.fBMSCROLLTime = (float)this.dbNowBMScollTime;
+							if (IsEndedBranching)
+								chip.nコース = (ECourse)i;
+							else
+								chip.nコース = n現在のコース;
 
-                        if (this.bBARLINECUE[0] == 1)
-                        {
-                            chip.b可視 = false;
-                        }
+							if (this.bBARLINECUE[0] == 1)
+							{
+								chip.b可視 = false;
+							}
+							#region [ 作り直し ]  
+							if (IsEndedBranching)
+							{
+								if (this.IsBranchBarDraw[i])
+									chip.bBranch = true;
+							}else
+							{
+								if (this.IsBranchBarDraw[(int)n現在のコース])
+									chip.bBranch = true;
+							}
+							#endregion
+
+							this.listChip.Add(chip);
+
+							#region [ 作り直し ]  
+							if (IsEndedBranching)
+								this.IsBranchBarDraw[i] = false;
+							else this.IsBranchBarDraw[(int)n現在のコース] = false;
+							#endregion
+						}
 
 
-                        if (this.listBRANCH.Count != 0)
-                        {
-                            if (this.listBRANCH[this.n内部番号BRANCH1to - 1].n現在の小節 == this.n現在の小節数)
-                            {
-                                chip.bBranch = true;
-                            }
-                        }
-                        this.listChip.Add(chip);
+						this.dbLastTime = this.dbNowTime;
+						this.b小節線を挿入している = true;
 
-                        this.dbLastTime = this.dbNowTime;
-                        this.b小節線を挿入している = true;
+						#region[ 拍線チップテスト ]
+						//1拍の時間を計算
+						double db1拍 = (60.0 / this.dbNowBPM) / 4.0;
+						//forループ(拍数)
+						for (int measure = 1; measure < this.fNow_Measure_s; measure++)
+						{
+							CChip hakusen = new CChip();
+							hakusen.n発声位置 = ((this.n現在の小節数) * 384);
+							hakusen.n発声時刻ms = (int)(this.dbNowTime + (((db1拍 * 4.0)) * measure) * 1000.0);
+							hakusen.nチャンネル番号 = 0x51;
+							//hakusen.n発声時刻ms = (int)this.dbNowTime;
+							hakusen.fBMSCROLLTime = this.dbNowBMScollTime;
+							hakusen.n整数値_内部番号 = this.n現在の小節数;
+							hakusen.n整数値 = 0;
+							hakusen.dbBPM = this.dbNowBPM;
+							hakusen.dbSCROLL = this.dbNowScroll;
+							hakusen.fNow_Measure_m = this.fNow_Measure_m;
+							hakusen.fNow_Measure_s = this.fNow_Measure_s;
+							hakusen.dbSCROLL_Y = this.dbNowScrollY;
+							hakusen.nコース = n現在のコース;
 
-                        #region[ 拍線チップテスト ]
-                        //1拍の時間を計算
-                        double db1拍 = (60.0 / this.dbNowBPM) / 4.0;
-                        //forループ(拍数)
-                        for (int measure = 1; measure < this.fNow_Measure_s; measure++)
-                        {
-                            CChip hakusen = new CChip();
-                            hakusen.n発声位置 = ((this.n現在の小節数) * 384);
-                            hakusen.n発声時刻ms = (int)(this.dbNowTime + (((db1拍 * 4.0)) * measure) * 1000.0);
-                            hakusen.nチャンネル番号 = 0x51;
-                            //hakusen.n発声時刻ms = (int)this.dbNowTime;
-                            hakusen.fBMSCROLLTime = this.dbNowBMScollTime;
-                            hakusen.n整数値_内部番号 = this.n現在の小節数;
-                            hakusen.n整数値 = 0;
-                            hakusen.dbBPM = this.dbNowBPM;
-                            hakusen.dbSCROLL = this.dbNowScroll;
-                            hakusen.dbSCROLL_Y = this.dbNowScrollY;
-                            hakusen.nコース = this.n現在のコース;
+							this.listChip.Add(hakusen);
+							//--全ての拍線の時間を出力する--
+							//Trace.WriteLine( string.Format( "|| {0,3:##0} Time:{1} Beat:{2}", this.n現在の小節数, hakusen.n発声時刻ms, measure ) );
+							//--------------------------------
+						}
 
-                            this.listChip.Add(hakusen);
-                            //--全ての拍線の時間を出力する--
-                            //Trace.WriteLine( string.Format( "|| {0,3:##0} Time:{1} Beat:{2}", this.n現在の小節数, hakusen.n発声時刻ms, measure ) );
-                            //--------------------------------
-                        }
+						#endregion
 
-                        #endregion
-                    }
+					}
 
                     for (int n = 0; n < InputText.Length; n++)
                     {
@@ -4000,201 +4198,207 @@ namespace TJAPlayer3
 
                         int nObjectNum = this.CharConvertNote(InputText.Substring(n, 1));
 
-                        if (nObjectNum != 0)
-                        {
-                            if ((nObjectNum >= 5 && nObjectNum <= 7) || nObjectNum == 9)
-                            {
-                                if (nNowRoll != 0)
-                                {
-                                    this.dbNowTime += (15000.0 / this.dbNowBPM * (this.fNow_Measure_s / this.fNow_Measure_m) * (16.0 / n文字数));
-                                    this.dbNowBMScollTime += (double)((this.dbBarLength) * (16.0 / n文字数));
-                                    continue;
-                                }
-                                else
-                                {
-                                    this.nNowRollCount = listChip.Count;
-                                    nNowRoll = nObjectNum;
-                                }
-                            }
+						if (nObjectNum != 0)
+						{
+							if ((nObjectNum >= 5 && nObjectNum <= 7) || nObjectNum == 9)
+							{
+								if (nNowRoll != 0)
+								{
+									this.dbNowTime += (15000.0 / this.dbNowBPM * (this.fNow_Measure_s / this.fNow_Measure_m) * (16.0 / n文字数));
+									this.dbNowBMScollTime += (double)((this.dbBarLength) * (16.0 / n文字数));
+									continue;
+								}
+								else
+								{
+									this.nNowRollCount = listChip.Count;
+									nNowRoll = nObjectNum;
+								}
+							}
 
-                            for (int i = 0; i < (IsEndedBranching == true ? 3 : 1); i++)
-                            {
-                                // IsEndedBranchingがfalseで1回
-                                // trueで3回だよ3回
-                                var chip = new CChip();
+							// IsEndedBranchingがfalseで1回
+							// trueで3回だよ3回
+							for (int i = 0; i < (IsEndedBranching == true ? 3 : 1); i++)
+							{
+								var chip = new CChip();
 
-                                chip.bHit = false;
-                                chip.b可視 = true;
-                                chip.bShow = true;
-                                chip.nチャンネル番号 = 0x10 + nObjectNum;
-                                //chip.n発声位置 = (this.n現在の小節数 * 384) + ((384 * n) / n文字数);
-                                chip.n発声位置 = (int)((this.n現在の小節数 * 384.0) + ((384.0 * n) / n文字数));
-                                chip.db発声位置 = this.dbNowTime;
-                                chip.n発声時刻ms = (int)this.dbNowTime;
-                                //chip.fBMSCROLLTime = (float)(( this.dbBarLength ) * (16.0f / this.n各小節の文字数[this.n現在の小節数]));
-                                chip.fBMSCROLLTime = (float)this.dbNowBMScollTime;
-                                chip.n整数値 = nObjectNum;
-                                chip.n整数値_内部番号 = 1;
-                                chip.dbBPM = this.dbNowBPM;
-                                chip.dbSCROLL = this.dbNowScroll;
-                                chip.dbSCROLL_Y = this.dbNowScrollY;
-                                chip.nスクロール方向 = this.nスクロール方向;
-                                if (IsEndedBranching)
-                                    chip.nコース = i;
-                                else
-                                    chip.nコース = n現在のコース;
-                                chip.n分岐回数 = this.n内部番号BRANCH1to;
-                                chip.e楽器パート = E楽器パート.TAIKO;
-                                chip.nノーツ出現時刻ms = (int)(this.db出現時刻 * 1000.0);
-                                chip.nノーツ移動開始時刻ms = (int)(this.db移動待機時刻 * 1000.0);
-                                chip.nPlayerSide = this.nPlayerSide;
-                                chip.bGOGOTIME = this.bGOGOTIME;
+								chip.bHit = false;
+								chip.b可視 = true;
+								chip.bShow = true;
+								chip.bShowRoll = true;
+								chip.nチャンネル番号 = 0x10 + nObjectNum;
+								//chip.n発声位置 = (this.n現在の小節数 * 384) + ((384 * n) / n文字数);
+								chip.n発声位置 = (int)((this.n現在の小節数 * 384.0) + ((384.0 * n) / n文字数));
+								chip.db発声位置 = this.dbNowTime;
+								chip.n発声時刻ms = (int)this.dbNowTime;
+								//chip.fBMSCROLLTime = (float)(( this.dbBarLength ) * (16.0f / this.n各小節の文字数[this.n現在の小節数]));
+								chip.fBMSCROLLTime = (float)this.dbNowBMScollTime;
+								chip.n整数値 = nObjectNum;
+								chip.n整数値_内部番号 = 1;
+								chip.IsEndedBranching = IsEndedBranching;
+								chip.fNow_Measure_m = this.fNow_Measure_m;
+								chip.fNow_Measure_s = this.fNow_Measure_s;
+								chip.dbBPM = this.dbNowBPM;
+								chip.dbSCROLL = this.dbNowScroll;
+								chip.dbSCROLL_Y = this.dbNowScrollY;
+								chip.nスクロール方向 = this.nスクロール方向;
 
-                                if (nObjectNum == 7 || nObjectNum == 9)
-                                {
-                                    switch (this.n現在のコース)
-                                    {
-                                        case 0:
-                                            if (this.listBalloon_Normal.Count == 0)
-                                            {
-                                                chip.nBalloon = 5;
-                                                break;
-                                            }
+								if (IsEndedBranching)
+									chip.nコース = (ECourse)i;
+								else
+									chip.nコース = n現在のコース;
 
-                                            if (this.listBalloon_Normal.Count > this.listBalloon_Normal_数値管理)
-                                            {
-                                                chip.nBalloon = this.listBalloon_Normal[this.listBalloon_Normal_数値管理];
-                                                this.listBalloon_Normal_数値管理++;
-                                                break;
-                                            }
-                                            //else if( this.listBalloon.Count != 0 )
-                                            //{
-                                            //    chip.nBalloon = this.listBalloon[ this.listBalloon_Normal_数値管理 ];
-                                            //    this.listBalloon_Normal_数値管理++;
-                                            //    break;
-                                            //}
-                                            break;
-                                        case 1:
-                                            if (this.listBalloon_Expert.Count == 0)
-                                            {
-                                                chip.nBalloon = 5;
-                                                break;
-                                            }
+								chip.n分岐回数 = this.n内部番号BRANCH1to;
+								chip.e楽器パート = E楽器パート.TAIKO;
+								chip.nノーツ出現時刻ms = (int)(this.db出現時刻 * 1000.0);
+								chip.nノーツ移動開始時刻ms = (int)(this.db移動待機時刻 * 1000.0);
+								chip.nPlayerSide = this.nPlayerSide;
+								chip.bGOGOTIME = this.bGOGOTIME;
 
-                                            if (this.listBalloon_Expert.Count > this.listBalloon_Expert_数値管理)
-                                            {
-                                                chip.nBalloon = this.listBalloon_Expert[this.listBalloon_Expert_数値管理];
-                                                this.listBalloon_Expert_数値管理++;
-                                                break;
-                                            }
-                                            //else if( this.listBalloon.Count != 0 )
-                                            //{
-                                            //    chip.nBalloon = this.listBalloon[ this.listBalloon_Normal_数値管理 ];
-                                            //    this.listBalloon_Normal_数値管理++;
-                                            //    break;
-                                            //}
-                                            break;
-                                        case 2:
-                                            if (this.listBalloon_Master.Count == 0)
-                                            {
-                                                chip.nBalloon = 5;
-                                                break;
-                                            }
+								if (nObjectNum == 7 || nObjectNum == 9)
+								{
+									//this.n現在のコースをswitchで分岐していたため風船の値がうまく割り当てられていない 2020.04.21 akasoko26
 
-                                            if (this.listBalloon_Master.Count > this.listBalloon_Master_数値管理)
-                                            {
-                                                chip.nBalloon = this.listBalloon_Master[this.listBalloon_Master_数値管理];
-                                                this.listBalloon_Master_数値管理++;
-                                                break;
-                                            }
-                                            //else if( this.listBalloon.Count != 0 )
-                                            //{
-                                            //    chip.nBalloon = this.listBalloon[ this.listBalloon_Normal_数値管理 ];
-                                            //    this.listBalloon_Normal_数値管理++;
-                                            //    break;
-                                            //}
-                                            break;
-                                    }
-                                }
-                                if (nObjectNum == 8)
-                                {
-                                    chip.nノーツ終了位置 = (this.n現在の小節数 * 384) + ((384 * n) / n文字数);
-                                    chip.nノーツ終了時刻ms = (int)this.dbNowTime;
-                                    chip.fBMSCROLLTime_end = (float)this.dbNowBMScollTime;
+									switch (chip.nコース)
+									{
+										case ECourse.eNormal:
+											if (this.listBalloon_Normal.Count == 0)
+											{
+												chip.nBalloon = 5;
+												break;
+											}
 
-                                    chip.nノーツ出現時刻ms = listChip[nNowRollCount].nノーツ出現時刻ms;
-                                    chip.nノーツ移動開始時刻ms = listChip[nNowRollCount].nノーツ移動開始時刻ms;
+											if (this.listBalloon_Normal.Count > this.listBalloon_Normal_数値管理)
+											{
+												chip.nBalloon = this.listBalloon_Normal[this.listBalloon_Normal_数値管理];
+												this.listBalloon_Normal_数値管理++;
+												break;
+											}
+											//else if( this.listBalloon.Count != 0 )
+											//{
+											//    chip.nBalloon = this.listBalloon[ this.listBalloon_Normal_数値管理 ];
+											//    this.listBalloon_Normal_数値管理++;
+											//    break;
+											//}
+											break;
+										case ECourse.eExpert:
+											if (this.listBalloon_Expert.Count == 0)
+											{
+												chip.nBalloon = 5;
+												break;
+											}
 
-                                    chip.n連打音符State = nNowRoll;
-                                    listChip[nNowRollCount].nノーツ終了位置 = (this.n現在の小節数 * 384) + ((384 * n) / n文字数);
-                                    listChip[nNowRollCount].nノーツ終了時刻ms = (int)this.dbNowTime;
-                                    listChip[nNowRollCount].fBMSCROLLTime_end = (int)this.dbNowBMScollTime;
-                                    //listChip[ nNowRollCount ].dbBPM = this.dbNowBPM;
-                                    //listChip[ nNowRollCount ].dbSCROLL = this.dbNowSCROLL;
-                                    nNowRoll = 0;
-                                    //continue;
-                                }
+											if (this.listBalloon_Expert.Count > this.listBalloon_Expert_数値管理)
+											{
+												chip.nBalloon = this.listBalloon_Expert[this.listBalloon_Expert_数値管理];
+												this.listBalloon_Expert_数値管理++;
+												break;
+											}
+											//else if( this.listBalloon.Count != 0 )
+											//{
+											//    chip.nBalloon = this.listBalloon[ this.listBalloon_Normal_数値管理 ];
+											//    this.listBalloon_Normal_数値管理++;
+											//    break;
+											//}
+											break;
+										case ECourse.eMaster:
+											if (this.listBalloon_Master.Count == 0)
+											{
+												chip.nBalloon = 5;
+												break;
+											}
 
-                                if (IsEnabledFixSENote)
-                                {
-                                    chip.IsFixedSENote = true;
-                                    chip.nSenote = FixSENote - 1;
-                                }
+											if (this.listBalloon_Master.Count > this.listBalloon_Master_数値管理)
+											{
+												chip.nBalloon = this.listBalloon_Master[this.listBalloon_Master_数値管理];
+												this.listBalloon_Master_数値管理++;
+												break;
+											}
+											//else if( this.listBalloon.Count != 0 )
+											//{
+											//    chip.nBalloon = this.listBalloon[ this.listBalloon_Normal_数値管理 ];
+											//    this.listBalloon_Normal_数値管理++;
+											//    break;
+											//}
+											break;
+									}
+								}
+								if (nObjectNum == 8)
+								{
+									chip.nノーツ終了位置 = (this.n現在の小節数 * 384) + ((384 * n) / n文字数);
+									chip.nノーツ終了時刻ms = (int)this.dbNowTime;
+									chip.fBMSCROLLTime_end = (float)this.dbNowBMScollTime;
 
-                                #region[ 固定される種類のsenotesはここで設定しておく。 ]
-                                switch (nObjectNum)
-                                {
-                                    case 3:
-                                        chip.nSenote = 5;
-                                        break;
-                                    case 4:
-                                        chip.nSenote = 6;
-                                        break;
-                                    case 5:
-                                        chip.nSenote = 7;
-                                        break;
-                                    case 6:
-                                        chip.nSenote = 0xA;
-                                        break;
-                                    case 7:
-                                        chip.nSenote = 0xB;
-                                        break;
-                                    case 8:
-                                        chip.nSenote = 0xC;
-                                        break;
-                                    case 9:
-                                        chip.nSenote = 0xD;
-                                        break;
-                                    case 10:
-                                        chip.nSenote = 0xE;
-                                        break;
-                                    case 11:
-                                        chip.nSenote = 0xF;
-                                        break;
-                                }
-                                #endregion
+									chip.nノーツ出現時刻ms = listChip[nNowRollCount].nノーツ出現時刻ms;
+									chip.nノーツ移動開始時刻ms = listChip[nNowRollCount].nノーツ移動開始時刻ms;
 
-                                if (nObjectNum < 5)
-                                {
-                                    if (this.b最初の分岐である == false)
-                                        this.nノーツ数[this.n現在のコース]++;
-                                    else
-                                        this.nノーツ数[3]++;
-                                }
-                                else if (nObjectNum == 7)
-                                {
-                                    if (this.b最初の分岐である == false)
-                                        this.n風船数[this.n現在のコース]++;
-                                    else
-                                        this.n風船数[3]++;
-                                }
+									chip.n連打音符State = nNowRoll;
+									listChip[nNowRollCount].nノーツ終了位置 = (this.n現在の小節数 * 384) + ((384 * n) / n文字数);
+									listChip[nNowRollCount].nノーツ終了時刻ms = (int)this.dbNowTime;
+									listChip[nNowRollCount].fBMSCROLLTime_end = (int)this.dbNowBMScollTime;
+									//listChip[ nNowRollCount ].dbBPM = this.dbNowBPM;
+									//listChip[ nNowRollCount ].dbSCROLL = this.dbNowSCROLL;
+									nNowRoll = 0;
+									//continue;
+								}
+
+								if (IsEnabledFixSENote)
+								{
+									chip.IsFixedSENote = true;
+									chip.nSenote = FixSENote - 1;
+								}
+
+								#region[ 固定される種類のsenotesはここで設定しておく。 ]
+								switch (nObjectNum)
+								{
+									case 3:
+										chip.nSenote = 5;
+										break;
+									case 4:
+										chip.nSenote = 6;
+										break;
+									case 5:
+										chip.nSenote = 7;
+										break;
+									case 6:
+										chip.nSenote = 0xA;
+										break;
+									case 7:
+										chip.nSenote = 0xB;
+										break;
+									case 8:
+										chip.nSenote = 0xC;
+										break;
+									case 9:
+										chip.nSenote = 0xD;
+										break;
+									case 10:
+										chip.nSenote = 0xE;
+										break;
+									case 11:
+										chip.nSenote = 0xF;
+										break;
+								}
+								#endregion
+
+								if (nObjectNum < 5)
+								{
+									if (this.b最初の分岐である == false)
+										this.nノーツ数[(int)this.n現在のコース]++;
+									else
+										this.nノーツ数[3]++;
+								}
+								else if (nObjectNum == 7)
+								{
+									if (this.b最初の分岐である == false)
+										this.n風船数[(int)this.n現在のコース]++;
+									else
+										this.n風船数[3]++;
+								}
 
 
-                                this.listChip.Add(chip);
-
-                            }
-                        }
-
+								this.listChip.Add(chip);
+							}
+						}
                         if (IsEnabledFixSENote) IsEnabledFixSENote = false;
 
                         this.dbLastTime = this.dbNowTime;
@@ -4206,12 +4410,12 @@ namespace TJAPlayer3
             }
         }
 
-        /// <summary>
-        /// 難易度ごとによって変わるヘッダ値を読み込む。
-        /// (BALLOONなど。)
-        /// </summary>
-        /// <param name="InputText"></param>
-        private void t難易度別ヘッダ(string InputText)
+		/// <summary>
+		/// 難易度ごとによって変わるヘッダ値を読み込む。
+		/// (BALLOONなど。)
+		/// </summary>
+		/// <param name="InputText"></param>
+		private void t難易度別ヘッダ(string InputText)
         {
             if (InputText.Equals("#HBSCROLL") && TJAPlayer3.ConfigIni.bスクロールモードを上書き == false)
             {
@@ -5318,13 +5522,13 @@ namespace TJAPlayer3
 
                     switch (chip.nコース)
                     {
-                        case 0:
+                        case ECourse.eNormal:
                             list普通譜面のみのリスト.Add(chip);
                             break;
-                        case 1:
+                        case ECourse.eExpert:
                             list玄人譜面のみのリスト.Add(chip);
                             break;
-                        case 2:
+                        case ECourse.eMaster:
                             list達人譜面のみのリスト.Add(chip);
                             break;
                     }
@@ -6810,6 +7014,7 @@ namespace TJAPlayer3
         {
             if (!base.b活性化してない)
             {
+
                 if (this.listAVI != null)
                 {
                     foreach (CAVI cavi in this.listAVI.Values)

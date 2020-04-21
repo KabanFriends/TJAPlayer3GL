@@ -71,8 +71,8 @@ namespace TJAPlayer3
             //    this.txコースシンボル[ i ] = CDTXMania.tテクスチャの生成( CSkin.Path( this.strCourseSymbolFileName[ i ] ) );
             //}
             this.ctレベルアップダウン = new CCounter[ 4 ];
-            this.After = new int[ 4 ];
-            this.Before = new int[ 4 ];
+            this.After = new CDTX.ECourse[ 4 ];
+            this.Before = new CDTX.ECourse[ 4 ];
             for( int i = 0; i < 4; i++ )
             {
                 //this.ctレベルアップダウン = new CCounter( 0, 1000, 1, CDTXMania.Timer );
@@ -416,7 +416,7 @@ namespace TJAPlayer3
 
         }
 
-        public void tBranchEvent( int Before, int After, int player )
+        public void tBranchEvent(CDTX.ECourse Before, CDTX.ECourse After, int player )
         {
             if( After != Before )
                 this.ctレベルアップダウン[ player ] = new CCounter( 0, 1000, 1, TJAPlayer3.Timer );
@@ -463,8 +463,8 @@ namespace TJAPlayer3
 
         //譜面分岐
         private CCounter[] ctレベルアップダウン;
-        private int[] After;
-        private int[] Before;
+		public CDTX.ECourse[] After;
+		public CDTX.ECourse[] Before;
         //private CTexture txレベルアップ;
         //private CTexture txレベルダウン;
         //-----------------
