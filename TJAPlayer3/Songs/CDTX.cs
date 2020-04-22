@@ -1168,11 +1168,10 @@ namespace TJAPlayer3
             get;
             private set;
         }
-        public int nPlayerSide; //2017.08.14 kairera0467 引数で指定する
-        public bool bDP譜面が存在する;
-        public bool bSession譜面を読み込む;
-        public bool IsDanChallenge; // 2018/8/24 段位チャレンジが存在するか否か (AioiLight)
+		public bool b分岐を一回でも開始した = false; //2020.04.22 akasoko26 分岐譜面のみ値を代入するように。
 
+		public int nPlayerSide; //2017.08.14 kairera0467 引数で指定する
+        public bool bSession譜面を読み込む;
         public string ARTIST;
         public string BACKGROUND;
         public string BACKGROUND_GR;
@@ -1181,7 +1180,6 @@ namespace TJAPlayer3
         public STチップがある bチップがある;
         public string COMMENT;
         public double db再生速度;
-        public E種別 e種別;
         public string GENRE;
         public Eジャンル eジャンル;
         public bool HIDDENLEVEL;
@@ -1199,12 +1197,6 @@ namespace TJAPlayer3
         public Dictionary<int, CSCROLL> listSCROLL_Master;
         public Dictionary<int, CJPOSSCROLL> listJPOSSCROLL;
         public List<DanSongs> List_DanSongs;
-
-
-        private int listSCROLL_Normal_数値管理;
-        private int listSCROLL_Expert_数値管理;
-        private int listSCROLL_Master_数値管理;
-
         private double[] dbNowSCROLL_Normal;
         private double[] dbNowSCROLL_Expert;
         private double[] dbNowSCROLL_Master;
@@ -1230,16 +1222,10 @@ namespace TJAPlayer3
         public int nデモBGMオフセット;
 
         private int n現在の小節数 = 1;
-        private bool bBarLine = true;
-        private int n命令数 = 0;
-
         private int nNowRoll = 0;
         private int nNowRollCount = 0;
 
         private int[] n連打チップ_temp = new int[3];
-
-
-        private int nCount = 0;
 
         public int nOFFSET = 0;
         private bool bOFFSETの値がマイナスである = false;
@@ -1250,19 +1236,11 @@ namespace TJAPlayer3
         public bool[] bHasBranch = new bool[(int)Difficulty.Total] { false, false, false, false, false, false, false };
 
         //分岐関連
-        private int n現在の発声時刻;
-        private int n現在の発声時刻ms;
         private ECourse n現在のコース = ECourse.eNormal;
-
-        private bool b最初の分岐である;
-        public int[] nノーツ数 = new int[4]; //0～2:各コース 3:共通
-        public int[] n風船数 = new int[4]; //0～2:各コース 3:共通
-        private bool b次の小節が分岐である;
-        private bool b次の分岐で数値リセット; //2018.03.16 kairera0467 SECTION処理を分岐判定と同時に行う。
-        private int n文字数;
-        private bool b直前の行に小節末端定義が無かった = false;
-        private int n命令行のチップ番号_temp = 0;
-
+		private bool b最初の分岐である;
+        public int[] nノーツ数 = new int[4]; //3:共通
+		public int[] nノーツ数_Branch = new int[4]; //
+		public int[] n風船数 = new int[4]; //0～2:各コース 3:共通
         private List<CLine> listLine;
         private int nLineCountTemp; //分岐開始時の小節数を記録。
         private ECourse nLineCountCourseTemp = ECourse.eNormal; //現在カウント中のコースを記録。
@@ -1434,13 +1412,9 @@ namespace TJAPlayer3
                 this.b配点が指定されている[1, y] = false;
                 this.b配点が指定されている[2, y] = false;
             }
-
-            this.bBarLine = true;
-
             this.dbBarLength = 1.0;
 
             this.b最初の分岐である = true;
-            this.b次の小節が分岐である = false;
 
             this.SongVol = CSound.DefaultSongVol;
             this.SongLoudnessMetadata = null;
@@ -2312,17 +2286,7 @@ namespace TJAPlayer3
                                 chip.n発声時刻ms = ms + ((int)(((625 * (chip.n発声位置 - n発声位置)) * this.dbBarLength) / bpm));
                             else if ((chip.nチャンネル番号 > 0x9F && chip.nチャンネル番号 < 0xA0) || (chip.nチャンネル番号 >= 0xF0 && chip.nチャンネル番号 < 0xFE))
                                 chip.n発声時刻ms = ms + ((int)(((625 * (chip.n発声位置 - n発声位置)) * this.dbBarLength) / bpm));
-                            //else if( chip.nチャンネル番号 > 0xDF )
-                            //    chip.n発声時刻ms = ms + ( (int) ( ( ( 625 * ( chip.n発声位置 - n発声位置 ) ) * this.dbBarLength ) / bpm ) );
 
-                            //chip.n発声時刻ms += nDELAY;
-                            //chip.nノーツ終了時刻ms += nDELAY;
-                            if (((this.e種別 == E種別.BMS) || (this.e種別 == E種別.BME)) && ((this.dbBarLength != 1.0) && ((chip.n発声位置 / 384) != nBar)))
-                            {
-                                n発声位置 = chip.n発声位置;
-                                ms = chip.n発声時刻ms;
-                                this.dbBarLength = 1.0;
-                            }
                             nBar = chip.n発声位置 / 384;
                             ch = chip.nチャンネル番号;
 
@@ -2407,7 +2371,6 @@ namespace TJAPlayer3
                                         if (this.listBRANCH[this.n内部番号BRANCH1to].n現在の小節 == nBar)
                                         {
                                             chip.bBranch = true;
-                                            this.b次の小節が分岐である = false;
                                             this.n内部番号BRANCH1to++;
                                         }
 
@@ -2597,10 +2560,7 @@ namespace TJAPlayer3
 											chip.n発声時刻ms += this.nOFFSET;
 											chip.n分岐時刻ms += this.nOFFSET;
 										}
-											//chip.n発声時刻ms += this.nDELAY;
-                                        //chip.dbBPM = this.dbNowBPM;
-                                        //chip.dbSCROLL = this.dbNowSCROLL;
-                                        this.b次の小節が分岐である = true;
+							
                                         this.n現在のコース = chip.nコース;
                                         continue;
                                     }
@@ -2611,10 +2571,6 @@ namespace TJAPlayer3
 											chip.n発声時刻ms += this.nOFFSET;
 											chip.n分岐時刻ms += this.nOFFSET;
 										}
-										//chip.n発声時刻ms += this.nDELAY;
-										//chip.dbBPM = this.dbNowBPM;
-										//chip.dbSCROLL = this.dbNowSCROLL;
-										this.b次の小節が分岐である = true;
 										this.n現在のコース = chip.nコース;
 										continue;
 									}
@@ -3417,13 +3373,6 @@ namespace TJAPlayer3
 
 				this.listChip.Add(chip);
 
-				if (this.bチップがある.Branch)
-				{
-					for (int f = 0; f <= 2; f++)
-					{
-						this.nノーツ数[f] = this.nノーツ数[f] + this.nノーツ数[3];
-					}
-				}
 			}
 
 			else if (command == "#BPMCHANGE")
@@ -3674,6 +3623,7 @@ namespace TJAPlayer3
 				#region [ 譜面分岐のパース方法を作り直し ]   
 				this.bチップがある.Branch = true;
 				this.b最初の分岐である = false;
+				this.b分岐を一回でも開始した = true;
 
 				//分岐:分岐スタート
 				E分岐種類 e条件;
@@ -4117,6 +4067,7 @@ namespace TJAPlayer3
 							chip.dbSCROLL = this.dbNowScroll;
 							chip.dbSCROLL_Y = this.dbNowScrollY;
 							chip.fBMSCROLLTime = (float)this.dbNowBMScollTime;
+
 							if (IsEndedBranching)
 								chip.nコース = (ECourse)i;
 							else
@@ -4383,13 +4334,27 @@ namespace TJAPlayer3
 
 								if (nObjectNum < 5)
 								{
-									if (this.b最初の分岐である == false)
-										this.nノーツ数[(int)this.n現在のコース]++;
-									else
-										this.nノーツ数[3]++;
+									#region [ 作り直し ]
+									//譜面分岐がない譜面でも値は加算されてしまうがしゃあない
+									//分岐を開始しない間は共通譜面としてみなす。
+									if (IsEndedBranching)
+										this.nノーツ数_Branch[i]++;
+									else this.nノーツ数_Branch[(int)chip.nコース]++;
+
+									if (!IsEndedBranching && !this.b分岐を一回でも開始した)
+									{
+										//IsEndedBranching==false = forloopが行われていないときのみ
+										for (int l = 0; l < 3; l++)
+											this.nノーツ数_Branch[l]++;
+									}
+
+									this.nノーツ数[3]++;
+									#endregion
 								}
 								else if (nObjectNum == 7)
 								{
+									//風船はこのままでも機能しているので何もしない.
+
 									if (this.b最初の分岐である == false)
 										this.n風船数[(int)this.n現在のコース]++;
 									else
@@ -7951,30 +7916,8 @@ namespace TJAPlayer3
             //-----------------
             int nチャンネル番号 = -1;
 
-            // ファイルフォーマットによって処理が異なる。
-
-            if (this.e種別 == E種別.GDA || this.e種別 == E種別.G2D)
-            {
-                #region [ (A) GDA, G2D の場合：チャンネル文字列をDTXのチャンネル番号へ置き換える。]
-                //-----------------
-                string strチャンネル文字列 = strコマンド.Substring(3, 2);
-
-                foreach (STGDAPARAM param in this.stGDAParam)
-                {
-                    if (strチャンネル文字列.Equals(param.strGDAのチャンネル文字列, StringComparison.OrdinalIgnoreCase))
-                    {
-                        nチャンネル番号 = param.nDTXのチャンネル番号;
-                        break;  // 置き換え成功
-                    }
-                }
-                if (nチャンネル番号 < 0)
-                    return false;   // 置き換え失敗
-                                    //-----------------
-                #endregion
-            }
-            else
-            {
-                #region [ (B) その他の場合：チャンネル番号は16進数2桁。]
+             // ファイルフォーマットによって処理が異なる。
+            #region [ (B) その他の場合：チャンネル番号は16進数2桁。]
                 //-----------------
                 nチャンネル番号 = C変換.n16進数2桁の文字列を数値に変換して返す(strコマンド.Substring(3, 2));
 
@@ -7982,7 +7925,6 @@ namespace TJAPlayer3
                     return false;
                 //-----------------
                 #endregion
-            }
             //-----------------
             #endregion
             #region [ 取得したチャンネル番号で、this.bチップがある に該当があれば設定する。]

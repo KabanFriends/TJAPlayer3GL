@@ -160,9 +160,10 @@ namespace TJAPlayer3
                         if (TJAPlayer3.DTX.bチップがある.Branch)
                         {
                             dbGaugeMaxComboValue = TJAPlayer3.DTX.nノーツ数[ 3 ] * ( this.fGaugeMaxRate[ 0 ] / 100.0f );
-                            for( int i = 0; i < 3; i++ )
+
+							for ( int i = 0; i < 3; i++ )
                             {
-                                dbGaugeMaxComboValue_branch[i] = TJAPlayer3.DTX.nノーツ数[i] * ( this.fGaugeMaxRate[ 0 ] / 100.0f );
+                                dbGaugeMaxComboValue_branch[i] = TJAPlayer3.DTX.nノーツ数_Branch[i] * ( this.fGaugeMaxRate[ 0 ] / 100.0f );
                             }
                             dbDamageRate = 0.625f;
                         }
@@ -182,7 +183,7 @@ namespace TJAPlayer3
                             dbGaugeMaxComboValue = TJAPlayer3.DTX.nノーツ数[ 3 ] * ( this.fGaugeMaxRate[ 1 ] / 100.0f );
                             for( int i = 0; i < 3; i++ )
                             {
-                                dbGaugeMaxComboValue_branch[i] = TJAPlayer3.DTX.nノーツ数[i] * ( this.fGaugeMaxRate[ 1 ] / 100.0f );
+                                dbGaugeMaxComboValue_branch[i] = TJAPlayer3.DTX.nノーツ数_Branch[i] * ( this.fGaugeMaxRate[ 1 ] / 100.0f );
                             }
                             dbDamageRate = 0.625f;
                         }
@@ -202,7 +203,7 @@ namespace TJAPlayer3
                             dbGaugeMaxComboValue = TJAPlayer3.DTX.nノーツ数[ 3 ] * ( this.fGaugeMaxRate[ 2 ] / 100.0f );
                             for( int i = 0; i < 3; i++ )
                             {
-                                dbGaugeMaxComboValue_branch[i] = TJAPlayer3.DTX.nノーツ数[i] * ( this.fGaugeMaxRate[ 2 ] / 100.0f );
+                                dbGaugeMaxComboValue_branch[i] = TJAPlayer3.DTX.nノーツ数_Branch[i] * ( this.fGaugeMaxRate[ 2 ] / 100.0f );
                             }
                         }
                         else
@@ -219,7 +220,7 @@ namespace TJAPlayer3
                             dbGaugeMaxComboValue = TJAPlayer3.DTX.nノーツ数[ 3 ] * ( this.fGaugeMaxRate[ 2 ] / 100.0f );
                             for( int i = 0; i < 3; i++ )
                             {
-                                dbGaugeMaxComboValue_branch[i] = TJAPlayer3.DTX.nノーツ数[i] * ( this.fGaugeMaxRate[ 2 ] / 100.0f );
+                                dbGaugeMaxComboValue_branch[i] = TJAPlayer3.DTX.nノーツ数_Branch[i] * ( this.fGaugeMaxRate[ 2 ] / 100.0f );
                             }
                         }
                         else
