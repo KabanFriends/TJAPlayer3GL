@@ -378,9 +378,11 @@ namespace TJAPlayer3
                     }
                 }
 			}
+#if DEBUG
 			TJAPlayer3.act文字コンソール.tPrint(900, 20, C文字コンソール.Eフォント種別.白, this.dbゲージ増加量_Branch[1, 0].ToString());
 			TJAPlayer3.act文字コンソール.tPrint(900, 40, C文字コンソール.Eフォント種別.白, this.dbゲージ増加量_Branch[2, 0].ToString());
 			TJAPlayer3.act文字コンソール.tPrint(900, 0, C文字コンソール.Eフォント種別.白, this.dbゲージ増加量_Branch[0, 0].ToString());
+#endif
 			return 0;
 		}
 
@@ -389,7 +391,7 @@ namespace TJAPlayer3
 
 		#region [ private ]
 		//-----------------
-        protected STSTATUS[] st花火状態 = new STSTATUS[ 32 ];
+		protected STSTATUS[] st花火状態 = new STSTATUS[ 32 ];
         protected STSTATUS[] st花火状態2P = new STSTATUS[ 32 ];
         [StructLayout(LayoutKind.Sequential)]
         protected struct STSTATUS

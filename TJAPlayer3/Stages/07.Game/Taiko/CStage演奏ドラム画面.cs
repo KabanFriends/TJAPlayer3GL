@@ -2079,13 +2079,15 @@ namespace TJAPlayer3
 		/// </summary>
 		public void t全体制御メソッド()
 		{
-			TJAPlayer3.act文字コンソール.tPrint(0, 0, C文字コンソール.Eフォント種別.白, "NextCourse= " + this.n現在のコース[0].ToString());
+#if DEBUG
+			TJAPlayer3.act文字コンソール.tPrint(0, 0, C文字コンソール.Eフォント種別.白, "NowCourse= " + this.n現在のコース[0].ToString());
 			TJAPlayer3.act文字コンソール.tPrint(0, 20, C文字コンソール.Eフォント種別.白, "dbRate= " + (((double)(this.CBranchScore[0].nGreat) / (double)(this.CBranchScore[0].nGreat + this.CBranchScore[0].nGood + this.CBranchScore[0].nMiss)) * 100.0).ToString());
 			TJAPlayer3.act文字コンソール.tPrint(0, 40, C文字コンソール.Eフォント種別.白, "Time= " + CSound管理.rc演奏用タイマ.n現在時刻ms.ToString());
 			TJAPlayer3.act文字コンソール.tPrint(300, 0, C文字コンソール.Eフォント種別.白, "LevelHold= " + this.bLEVELHOLD[0].ToString());
 			TJAPlayer3.act文字コンソール.tPrint(300, 20, C文字コンソール.Eフォント種別.白, "BranchA= " + this.nBranch条件数値A.ToString());
 			TJAPlayer3.act文字コンソール.tPrint(300, 40, C文字コンソール.Eフォント種別.白, "BranchB= " + this.nBranch条件数値B.ToString());
 			TJAPlayer3.act文字コンソール.tPrint(600, 0, C文字コンソール.Eフォント種別.白, "BranchCount= " + this.n分岐した回数[0].ToString());
+#endif
 			int t = (int)CSound管理.rc演奏用タイマ.n現在時刻ms;
 			//CDTXMania.act文字コンソール.tPrint( 0, 16, C文字コンソール.Eフォント種別.白, t.ToString() );
 

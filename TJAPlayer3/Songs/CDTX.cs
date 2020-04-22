@@ -3665,6 +3665,7 @@ namespace TJAPlayer3
 				chip.fNow_Measure_s = this.fNow_Measure_s;
 				chip.n整数値_内部番号 = 1;
 				chip.db発声時刻ms = this.dbNowTime;
+
 				// チップを配置。
 				this.listChip.Add(chip);
 			}

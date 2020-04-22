@@ -3639,7 +3639,16 @@ namespace TJAPlayer3
 							pChip.bHit = true;
 						}
                         break;
-                    case 0xDE: //Judgeに応じたCourseを取得
+					case 0xDD: //SECTION
+						if (!pChip.bHit && (pChip.nバーからの距離dot.Drums < 0))
+						{   
+							// 分岐毎にリセットしていたのでSECTIONの命令が来たらリセットする。
+							this.tBranchReset(nPlayer);
+							pChip.bHit = true;
+						}
+						break;
+
+					case 0xDE: //Judgeに応じたCourseを取得
 						int n分岐位置 = pChip.n発声時刻ms;
 
 						if ( !pChip.bHit && CSound管理.rc演奏用タイマ.n現在時刻ms >= n分岐位置)
@@ -3668,9 +3677,6 @@ namespace TJAPlayer3
 								TJAPlayer3.stage演奏ドラム画面.actMtaiko.tBranchEvent(TJAPlayer3.stage演奏ドラム画面.actMtaiko.After[nPlayer], this.n次回のコース[nPlayer], nPlayer);
 								this.n現在のコース[nPlayer] = this.n次回のコース[nPlayer];
 							}
-							//リセットしろおおおおおおお
-							this.tBranchReset(nPlayer);
-
 							this.n分岐した回数[nPlayer]++;
 							pChip.bHit = true;
                         }
@@ -3910,7 +3916,7 @@ namespace TJAPlayer3
 			}
 			else if (e種類 == CDTX.E分岐種類.e連打分岐)
 			{
-				if (!(pChip.n条件数値A == 0 && pChip.n条件数値A == 0))
+				if (!(pChip.n条件数値A == 0 && pChip.n条件数値B == 0))
 				{
 					if (dbRate < pChip.n条件数値A)
 					{
@@ -3928,11 +3934,10 @@ namespace TJAPlayer3
 						this.n次回のコース[nPlayer] = CDTX.ECourse.eMaster;
 					}
 				}
-				this.CBranchScore[ nPlayer ].nRoll = 0;
 			}
 			else if (e種類 == CDTX.E分岐種類.e大音符のみ精度分岐)
 			{
-				if (!(pChip.n条件数値A == 0 && pChip.n条件数値A == 0))
+				if (!(pChip.n条件数値A == 0 && pChip.n条件数値B == 0))
 				{
 					if (dbRate < pChip.n条件数値A)
 					{
