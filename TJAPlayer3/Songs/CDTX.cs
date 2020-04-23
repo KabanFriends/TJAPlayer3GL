@@ -3631,6 +3631,17 @@ namespace TJAPlayer3
 				//条件数値。
 				double[] nNum = new double[2];
 
+				//名前と条件Aの間に,が無いと正常に動作しなくなる.2020.04.23.akasoko26
+				#region [ 名前と条件Aの間に,が無いと正常に動作しなくなる ]
+				//空白を削除する。
+				argument = Regex.Replace(argument, @"\s", "");
+				//2文字目が,か数値かをチェック
+				var IsNumber = bIsNumber(argument[1]);
+				//IsNumber == true であったら,が無いということなので,を2文字目にぶち込む・・・
+				if (IsNumber)
+					argument = argument.Insert(1, ",");
+				#endregion
+
 				var branchStartArgumentMatch = BranchStartArgumentRegex.Match(argument);
 				nNum[0] = Convert.ToDouble(branchStartArgumentMatch.Groups[2].Value);
 				nNum[1] = Convert.ToDouble(branchStartArgumentMatch.Groups[3].Value);
@@ -4991,6 +5002,20 @@ namespace TJAPlayer3
                 this.nScoreModeTmp = TJAPlayer3.ConfigIni.nScoreMode;
             }
         }
+		/// <summary>
+		/// 指定した文字が数値かを返すメソッド
+		/// </summary>
+		/// <param name="str"></param>
+		/// <returns></returns>
+		public bool bIsNumber(char Char)
+		{
+			if ((Char >= '0') && (Char <= '9'))
+				return true;
+			else
+				return false;
+		}
+
+
         /// <summary>
         /// string型からint型に変換する。
         /// TJAP2から持ってきた。
