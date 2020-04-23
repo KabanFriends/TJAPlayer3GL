@@ -4197,28 +4197,23 @@ namespace TJAPlayer3
             if( dTX == null ) return; //CDTXがnullの場合はプレイヤーが居ないのでその場で処理終了
 
 
-#region [ 再生開始小節の変更 ]
+			#region [ 再生開始小節の変更 ]
 			//nStartBar++;									// +1が必要
 
-#region [ 演奏済みフラグのついたChipをリセットする ]
-			for ( int i = 0; i < dTX.listChip.Count; i++ )
+			#region [ 演奏済みフラグのついたChipをリセットする ]
+			for (int i = 0; i < dTX.listChip.Count; i++)
 			{
-				CDTX.CChip pChip = dTX.listChip[ i ];
-				if ( pChip.bHit )
-				{
-					CDTX.CChip p = (CDTX.CChip) pChip.Clone();
-					p.bHit = false;
-					p.bShow = true;
-					p.b可視 = true;
-					p.IsHitted = false;
-					p.IsMissed = false;
-					//2016.11.23 kairera0467 太鼓用に追加
-					p.eNoteState = ENoteState.none;
-                    p.nProcessTime = 0;
-                    p.nRollCount = 0;
-                    dTX.listChip[ i ].nRollCount = 0;
-					dTX.listChip[ i ] = p;
-				}
+				//if(dTX.listChip[i].bHit) フラグが付いてなくてもすべてのチップをリセットする。(必要がある).2020.04.23.akasoko26
+
+				dTX.listChip[i].bHit = false;
+				dTX.listChip[i].bShow = true;
+				dTX.listChip[i].b可視 = true;
+				dTX.listChip[i].IsHitted = false;
+				dTX.listChip[i].IsMissed = false;
+				dTX.listChip[i].eNoteState = ENoteState.none;
+				dTX.listChip[i].nProcessTime = 0;
+				dTX.listChip[i].nRollCount = 0;
+				dTX.listChip[i].nRollCount = 0;
 			}
 #endregion
 

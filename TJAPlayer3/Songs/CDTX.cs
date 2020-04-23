@@ -483,7 +483,8 @@ namespace TJAPlayer3
                 this.nList上の位置 = 0;
                 this.dbチップサイズ倍率 = 1.0;
                 this.bHit = false;
-                this.b可視 = true;
+				this.IsMissed = false;
+				this.b可視 = true;
                 this.e楽器パート = E楽器パート.UNKNOWN;
                 this.n透明度 = 0xff;
                 this.nバーからの距離dot.Drums = 0;
@@ -4184,6 +4185,7 @@ namespace TJAPlayer3
 							{
 								var chip = new CChip();
 
+								chip.IsMissed = false;
 								chip.bHit = false;
 								chip.b可視 = true;
 								chip.bShow = true;
