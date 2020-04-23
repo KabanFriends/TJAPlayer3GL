@@ -827,29 +827,29 @@ namespace TJAPlayer3
                 //Debug.WriteLine("nAbsTime=" + (nTime - pChip.n発声時刻ms) + ", nDeltaTime=" + (nTime + nInputAdjustTime - pChip.n発声時刻ms));
                 if( pChip.nチャンネル番号 == 0x15 || pChip.nチャンネル番号 == 0x16 )
                 {
-				    if ( CSound管理.rc演奏用タイマ.n現在時刻ms > pChip.n発声時刻ms && CSound管理.rc演奏用タイマ.n現在時刻ms < pChip.nノーツ終了時刻ms )
+				    if (( CSound管理.rc演奏用タイマ.n現在時刻ms * (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0)) > pChip.n発声時刻ms && (CSound管理.rc演奏用タイマ.n現在時刻ms * (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0)) < pChip.nノーツ終了時刻ms )
 				    {
 					    return E判定.Perfect;
 				    }
                 }
                 else if( pChip.nチャンネル番号 == 0x17 )
                 {
-				    if ( CSound管理.rc演奏用タイマ.n現在時刻ms >= pChip.n発声時刻ms - 17 && CSound管理.rc演奏用タイマ.n現在時刻ms < pChip.nノーツ終了時刻ms )
+				    if ((CSound管理.rc演奏用タイマ.n現在時刻ms * (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0)) >= pChip.n発声時刻ms - 17 && (CSound管理.rc演奏用タイマ.n現在時刻ms * (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0)) < pChip.nノーツ終了時刻ms )
 				    {
 					    return E判定.Perfect;
 				    }
                 }
-				if ( nDeltaTime <= TJAPlayer3.nPerfect範囲ms )
+				if ( nDeltaTime <= TJAPlayer3.nPerfect範囲ms * (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0))
 				{
 					return E判定.Perfect;
 				}
-				if ( nDeltaTime <= TJAPlayer3.nGood範囲ms )
+				if ( nDeltaTime <= TJAPlayer3.nGood範囲ms * (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0))
 				{
                     if( TJAPlayer3.ConfigIni.bJust )
                         return E判定.Poor;
 					return E判定.Good;
 				}
-				if ( nDeltaTime <= TJAPlayer3.nPoor範囲ms )
+				if ( nDeltaTime <= TJAPlayer3.nPoor範囲ms * (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0))
 				{
 					return E判定.Poor;
 				}
@@ -1385,14 +1385,14 @@ namespace TJAPlayer3
 										TJAPlayer3.stage演奏ドラム画面.actMtaiko.tMtaikoEvent(pChip.nチャンネル番号, this.nHand[nPlayer], nPlayer);
 
 
-										this.tRollProcess(pChip, CSound管理.rc演奏用タイマ.n現在時刻ms, 1, 0, 0, nPlayer);
+										this.tRollProcess(pChip, (CSound管理.rc演奏用タイマ.n現在時刻 * (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0)), 1, 0, 0, nPlayer);
 									}
 								}
 							}
 							else
 							{
 								this.eRollState = E連打State.roll;
-								this.tRollProcess(pChip, CSound管理.rc演奏用タイマ.n現在時刻ms, 1, nNowInput, 0, nPlayer);
+								this.tRollProcess(pChip, (CSound管理.rc演奏用タイマ.n現在時刻 * (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0)), 1, nNowInput, 0, nPlayer);
 							}
 
 							//if ((int)CSound管理.rc演奏用タイマ.n現在時刻ms >= pChip.nノーツ終了時刻ms)
@@ -1435,13 +1435,13 @@ namespace TJAPlayer3
 										TJAPlayer3.stage演奏ドラム画面.actTaikoLaneFlash.PlayerLane[nPlayer].Start(PlayerLane.FlashType.Red);
 										TJAPlayer3.stage演奏ドラム画面.actMtaiko.tMtaikoEvent(pChip.nチャンネル番号, this.nHand[nPlayer], nPlayer);
 
-										this.tBalloonProcess(pChip, CSound管理.rc演奏用タイマ.n現在時刻ms, nPlayer);
+										this.tBalloonProcess(pChip, (CSound管理.rc演奏用タイマ.n現在時刻 * (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0)), nPlayer);
 									}
 								}
 							}
 							else
 							{
-								this.tBalloonProcess(pChip, CSound管理.rc演奏用タイマ.n現在時刻ms, nPlayer);
+								this.tBalloonProcess(pChip, (CSound管理.rc演奏用タイマ.n現在時刻 * (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0)), nPlayer);
 							}
 							break;
 							#endregion
@@ -2646,12 +2646,12 @@ namespace TJAPlayer3
 
 					//判定枠に一番近いチップの情報を元に一小節分の値を計算する. 2020.04.21 akasoko26
 
-					var p判定枠に最も近いチップ = r指定時刻に一番近い未ヒットChipを過去方向優先で検索する(CSound管理.rc演奏用タイマ.n現在時刻ms, 0);
+					var p判定枠に最も近いチップ = r指定時刻に一番近い未ヒットChipを過去方向優先で検索する((long)(CSound管理.rc演奏用タイマ.n現在時刻 * (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0)), 0);
 					double db一小節後 = 0.0;
 					if(p判定枠に最も近いチップ != null)
 						db一小節後 = ((15000.0 / p判定枠に最も近いチップ.dbBPM * (p判定枠に最も近いチップ.fNow_Measure_s / p判定枠に最も近いチップ.fNow_Measure_m)) * 16.0);
 
-					this.t分岐処理(CDTX.ECourse.eNormal, 0, CSound管理.rc演奏用タイマ.n現在時刻ms + db一小節後);
+					this.t分岐処理(CDTX.ECourse.eNormal, 0, (CSound管理.rc演奏用タイマ.n現在時刻 * (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0)) + db一小節後);
 
                     TJAPlayer3.stage演奏ドラム画面.actLaneTaiko.t分岐レイヤー_コース変化(TJAPlayer3.stage演奏ドラム画面.actLaneTaiko.stBranch[0].nAfter, CDTX.ECourse.eNormal, 0 );
                     TJAPlayer3.stage演奏ドラム画面.actMtaiko.tBranchEvent(TJAPlayer3.stage演奏ドラム画面.actMtaiko.After[0], CDTX.ECourse.eNormal, 0 );
@@ -2669,13 +2669,13 @@ namespace TJAPlayer3
 					//rc演奏用タイマ.n現在時刻msから引っ張ることに
 
 					//判定枠に一番近いチップの情報を元に一小節分の値を計算する. 2020.04.21 akasoko26
-					var p判定枠に最も近いチップ = r指定時刻に一番近い未ヒットChipを過去方向優先で検索する(CSound管理.rc演奏用タイマ.n現在時刻ms, 0);
+					var p判定枠に最も近いチップ = r指定時刻に一番近い未ヒットChipを過去方向優先で検索する((long)(CSound管理.rc演奏用タイマ.n現在時刻 * (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0)), 0);
 
 					double db一小節後 = 0.0;
 					if (p判定枠に最も近いチップ != null)
 						db一小節後 = ((15000.0 / p判定枠に最も近いチップ.dbBPM * (p判定枠に最も近いチップ.fNow_Measure_s / p判定枠に最も近いチップ.fNow_Measure_m)) * 16.0);
 
-					this.t分岐処理(CDTX.ECourse.eExpert, 0, CSound管理.rc演奏用タイマ.n現在時刻ms + db一小節後);
+					this.t分岐処理(CDTX.ECourse.eExpert, 0, (CSound管理.rc演奏用タイマ.n現在時刻 * (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0)) + db一小節後);
 
 					TJAPlayer3.stage演奏ドラム画面.actLaneTaiko.t分岐レイヤー_コース変化(TJAPlayer3.stage演奏ドラム画面.actLaneTaiko.stBranch[0].nAfter, CDTX.ECourse.eExpert, 0 );
                     TJAPlayer3.stage演奏ドラム画面.actMtaiko.tBranchEvent(TJAPlayer3.stage演奏ドラム画面.actMtaiko.After[0], CDTX.ECourse.eExpert, 0 );
@@ -2694,13 +2694,13 @@ namespace TJAPlayer3
 					//rc演奏用タイマ.n現在時刻msから引っ張ることに
 
 					//判定枠に一番近いチップの情報を元に一小節分の値を計算する. 2020.04.21 akasoko26
-					var p判定枠に最も近いチップ = r指定時刻に一番近い未ヒットChipを過去方向優先で検索する(CSound管理.rc演奏用タイマ.n現在時刻ms, 0);
+					var p判定枠に最も近いチップ = r指定時刻に一番近い未ヒットChipを過去方向優先で検索する((long)(CSound管理.rc演奏用タイマ.n現在時刻 * (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0)), 0);
 
 					double db一小節後 = 0.0;
 					if (p判定枠に最も近いチップ != null)
 						db一小節後 = ((15000.0 / p判定枠に最も近いチップ.dbBPM * (p判定枠に最も近いチップ.fNow_Measure_s / p判定枠に最も近いチップ.fNow_Measure_m)) * 16.0);
 
-					this.t分岐処理(CDTX.ECourse.eMaster, 0, CSound管理.rc演奏用タイマ.n現在時刻ms + db一小節後);
+					this.t分岐処理(CDTX.ECourse.eMaster, 0, (CSound管理.rc演奏用タイマ.n現在時刻 * (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0)) + db一小節後);
 
 					TJAPlayer3.stage演奏ドラム画面.actLaneTaiko.t分岐レイヤー_コース変化(TJAPlayer3.stage演奏ドラム画面.actLaneTaiko.stBranch[0].nAfter, CDTX.ECourse.eMaster, 0 );
                     TJAPlayer3.stage演奏ドラム画面.actMtaiko.tBranchEvent(TJAPlayer3.stage演奏ドラム画面.actMtaiko.After[0], CDTX.ECourse.eMaster, 0 );
@@ -2887,7 +2887,7 @@ namespace TJAPlayer3
                 return true;
             }
 
-			var n現在時刻ms = CSound管理.rc演奏用タイマ.n現在時刻ms;
+			var n現在時刻ms = (long)(CSound管理.rc演奏用タイマ.n現在時刻ms * (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0));
 
 			if( this.r指定時刻に一番近い未ヒットChip( (long)n現在時刻ms, 0x50, 0, 1000000, nPlayer ) == null )
             {
@@ -3035,7 +3035,7 @@ namespace TJAPlayer3
 						if ( !pChip.bHit && ( pChip.nバーからの距離dot.Drums < 0 ) )
 						{
 							pChip.bHit = true;
-							this.actPlayInfo.dbBPM = ( ( ( (double) configIni.n演奏速度 ) / 20.0 ) ) * dTX.BASEBPM; //2016.07.10 kairera0467 太鼓の仕様にあわせて修正。(そもそもの仕様が不明&コードミス疑惑)
+							this.actPlayInfo.dbBPM = dTX.BASEBPM; //2016.07.10 kairera0467 太鼓の仕様にあわせて修正。(そもそもの仕様が不明&コードミス疑惑)
 						}
 						break;
 #endregion
@@ -3413,7 +3413,7 @@ namespace TJAPlayer3
                             {
 							    if ( dTX.listBPM.TryGetValue( pChip.n整数値_内部番号, out CDTX.CBPM cBPM ) )
 							    {
-                                    this.actPlayInfo.dbBPM = cBPM.dbBPM値 * ( ( (double) configIni.n演奏速度 ) / 20.0 );// + dTX.BASEBPM;
+                                    this.actPlayInfo.dbBPM = cBPM.dbBPM値;// + dTX.BASEBPM;
 							    }
 
 
@@ -3640,7 +3640,7 @@ namespace TJAPlayer3
 						}
                         break;
 					case 0xDD: //SECTION
-						if (!pChip.bHit && (pChip.nバーからの距離dot.Drums < 0))
+						if (!pChip.bHit && (pChip.nバーからの距離dot.Drums < -10))
 						{   
 							// 分岐毎にリセットしていたのでSECTIONの命令が来たらリセットする。
 							this.tBranchReset(nPlayer);
@@ -3649,10 +3649,8 @@ namespace TJAPlayer3
 						break;
 
 					case 0xDE: //Judgeに応じたCourseを取得
-						int n分岐位置 = pChip.n発声時刻ms;
-
-						if ( !pChip.bHit && CSound管理.rc演奏用タイマ.n現在時刻ms >= n分岐位置)
-                        {
+						if (!pChip.bHit && (pChip.nバーからの距離dot.Drums < 0))
+						{
 							this.b強制分岐譜面[nPlayer] = false;
 
 							//分岐の種類はプレイヤー関係ないと思う
@@ -3682,7 +3680,6 @@ namespace TJAPlayer3
                         }
                         break;
 					case 0x52://End処理
-
 						if (!pChip.bHit && (pChip.nバーからの距離dot.Drums < 0))
 						{
 
@@ -3785,7 +3782,7 @@ namespace TJAPlayer3
                     break;
             }
 
-			var n現在時刻ms = CSound管理.rc演奏用タイマ.n現在時刻ms;
+			var n現在時刻ms = (long)(CSound管理.rc演奏用タイマ.n現在時刻 * (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0));
 
             //for ( int nCurrentTopChip = this.n現在のトップChip; nCurrentTopChip < dTX.listChip.Count; nCurrentTopChip++ )
             for ( int nCurrentTopChip = dTX.listChip.Count - 1; nCurrentTopChip > 0; nCurrentTopChip-- )
@@ -4278,7 +4275,7 @@ namespace TJAPlayer3
 
 						if ( ( wc.bIsBGMSound && TJAPlayer3.ConfigIni.bBGM音を発声する ) || ( !wc.bIsBGMSound ) )
 						{
-							TJAPlayer3.DTX.tチップの再生( pChip, CSound管理.rc演奏用タイマ.n前回リセットした時のシステム時刻 + pChip.n発声時刻ms, (int) Eレーン.BGM );
+							TJAPlayer3.DTX.tチップの再生( pChip, (long)((CSound管理.rc演奏用タイマ.n前回リセットした時のシステム時刻 * (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0))) + pChip.n発声時刻ms, (int) Eレーン.BGM );
 #region [ PAUSEする ]
 							int j = wc.n現在再生中のサウンド番号;
 							if ( wc.rSound[ j ] != null )

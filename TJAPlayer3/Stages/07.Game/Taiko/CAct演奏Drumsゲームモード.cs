@@ -647,7 +647,7 @@ namespace TJAPlayer3
                 #endregion
 
 
-                this.n最後に時間延長した時刻 = (int)CSound管理.rc演奏用タイマ.n現在時刻ms;
+                this.n最後に時間延長した時刻 = (int)(CSound管理.rc演奏用タイマ.n現在時刻 * (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0));
                 if( n延長する時間 < 0 )
                     n延長する時間 = 0;
                 if( this.st叩ききりまショー.n区間ノート数 == 0 )
@@ -718,7 +718,7 @@ namespace TJAPlayer3
                 }
 
 
-                this.n最後に時間延長した時刻 = (int)CSound管理.rc演奏用タイマ.n現在時刻ms;
+                this.n最後に時間延長した時刻 = (int)(CSound管理.rc演奏用タイマ.n現在時刻 * (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0));
                 if( n延長する時間 < 0 )
                     n延長する時間 = 0;
 
