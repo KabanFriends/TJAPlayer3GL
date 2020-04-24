@@ -4350,11 +4350,14 @@ namespace TJAPlayer3
 									#region [ 作り直し ]
 									//譜面分岐がない譜面でも値は加算されてしまうがしゃあない
 									//分岐を開始しない間は共通譜面としてみなす。
-									if (IsEndedBranching)
-										this.nノーツ数_Branch[i]++;
-									else this.nノーツ数_Branch[(int)chip.nコース]++;
 
-									if (!IsEndedBranching && !this.b分岐を一回でも開始した)
+									if (this.b分岐を一回でも開始した)//一回も分岐していないのに加算させるのはおかしいだろハゲFu**
+									{
+										if (IsEndedBranching)
+											this.nノーツ数_Branch[i]++;
+										else this.nノーツ数_Branch[(int)chip.nコース]++;
+									}
+									if (!this.b分岐を一回でも開始した)
 									{
 										//IsEndedBranching==false = forloopが行われていないときのみ
 										for (int l = 0; l < 3; l++)
