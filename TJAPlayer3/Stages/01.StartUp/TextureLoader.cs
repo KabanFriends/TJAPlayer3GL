@@ -911,8 +911,7 @@ namespace TJAPlayer3
         public CTexture[] SongSelect_GenreBack = new CTexture[9],
             SongSelect_ScoreWindow = new CTexture[(int)Difficulty.Total],
             SongSelect_Bar_Genre = new CTexture[9],
-            SongSelect_Frame_Box = new CTexture[9],
-            SongSelect_NamePlate = new CTexture[1];
+            SongSelect_Frame_Box = new CTexture[9];
         #endregion
 
         #region 4_読み込み画面
