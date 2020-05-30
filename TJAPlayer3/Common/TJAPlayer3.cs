@@ -1366,6 +1366,20 @@ for (int i = 0; i < 3; i++) {
             obj = null;
         }
 
+        public static void t安全にDisposeする<T>(T[] array) where T : class, IDisposable
+        {
+            if (array == null)
+            {
+                return;
+            }
+
+            for (var i = 0; i < array.Length; i++)
+            {
+                array[i]?.Dispose();
+                array[i] = null;
+            }
+        }
+
         /// <summary>
         /// そのフォルダの連番画像の最大値を返す。
         /// </summary>

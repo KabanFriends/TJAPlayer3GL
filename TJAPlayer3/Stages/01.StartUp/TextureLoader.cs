@@ -538,10 +538,7 @@ namespace TJAPlayer3
             TJAPlayer3.t安全にDisposeする(ref Enum_Song);
             TJAPlayer3.t安全にDisposeする(ref Scanning_Loudness);
             TJAPlayer3.t安全にDisposeする(ref Overlay);
-            for (int i = 0; i < 2; i++)
-            {
-                TJAPlayer3.t安全にDisposeする(ref NamePlate[i]);
-            }
+            TJAPlayer3.t安全にDisposeする(NamePlate);
 
             #endregion
             #region 1_タイトル画面
