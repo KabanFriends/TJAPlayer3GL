@@ -138,18 +138,18 @@ namespace TJAPlayer3
 			if( this.b活性化してない )
 				return;
 
-            TJAPlayer3.tテクスチャの解放( ref this.tx背景 );
-            TJAPlayer3.tテクスチャの解放( ref this.txヘッダー );
-            TJAPlayer3.tテクスチャの解放( ref this.txフッター );
+            TJAPlayer3.t安全にDisposeする(ref this.tx背景);
+            TJAPlayer3.t安全にDisposeする(ref this.txヘッダー);
+            TJAPlayer3.t安全にDisposeする(ref this.txフッター);
 
-            TJAPlayer3.tテクスチャの解放( ref this.tx説明背景 );
-            TJAPlayer3.tテクスチャの解放( ref this.tx説明1 );
+            TJAPlayer3.t安全にDisposeする(ref this.tx説明背景);
+            TJAPlayer3.t安全にDisposeする(ref this.tx説明1);
 
             TJAPlayer3.t安全にDisposeする( ref this.soundSelectAnnounce );
 
             for( int i = 0; i < (int)Difficulty.Total; i++ )
             {
-                TJAPlayer3.tテクスチャの解放( ref this.tx踏み台[ i ] );
+                TJAPlayer3.t安全にDisposeする(ref this.tx踏み台[ i ]);
             }
 
 			base.OnManagedリソースの解放();

@@ -1573,7 +1573,7 @@ namespace TJAPlayer3
 			if( this.b活性化してない )
 				return;
 
-			TJAPlayer3.tテクスチャの解放( ref this.txSkinSample1 );
+			TJAPlayer3.t安全にDisposeする(ref this.txSkinSample1);
 			//CDTXMania.tテクスチャの解放( ref this.tx通常項目行パネル );
 			//CDTXMania.tテクスチャの解放( ref this.txその他項目行パネル );
 			//CDTXMania.tテクスチャの解放( ref this.tx三角矢印 );

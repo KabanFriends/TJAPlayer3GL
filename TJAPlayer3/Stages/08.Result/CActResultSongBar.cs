@@ -70,8 +70,8 @@ namespace TJAPlayer3
 		{
 			if( !base.b活性化してない )
 			{
-                TJAPlayer3.tテクスチャの解放( ref this.txMusicName );
-                TJAPlayer3.tテクスチャの解放(ref this.txStageText);
+                TJAPlayer3.t安全にDisposeする(ref this.txMusicName);
+                TJAPlayer3.t安全にDisposeする(ref this.txStageText);
                 base.OnManagedリソースの解放();
 			}
 		}

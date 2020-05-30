@@ -49,9 +49,9 @@ namespace TJAPlayer3
 		{
 			if( !base.b活性化してない )
 			{
-				TJAPlayer3.tテクスチャの解放( ref this.txInfo_Back );
-				TJAPlayer3.tテクスチャの解放( ref this.txInfo[ 0 ] );
-				TJAPlayer3.tテクスチャの解放( ref this.txInfo[ 1 ] );
+				TJAPlayer3.t安全にDisposeする(ref this.txInfo_Back);
+				TJAPlayer3.t安全にDisposeする(ref this.txInfo[ 0 ]);
+				TJAPlayer3.t安全にDisposeする(ref this.txInfo[ 1 ]);
 				base.OnManagedリソースの解放();
 			}
 		}

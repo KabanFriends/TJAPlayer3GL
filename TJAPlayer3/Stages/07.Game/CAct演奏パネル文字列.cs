@@ -30,7 +30,7 @@ namespace TJAPlayer3
 		{
 			if( base.b活性化してる )
 			{
-				TJAPlayer3.tテクスチャの解放( ref this.txPanel );
+				TJAPlayer3.t安全にDisposeする(ref this.txPanel);
 				if( (songName != null ) && (songName.Length > 0 ) )
 				{
 					try
@@ -163,11 +163,11 @@ namespace TJAPlayer3
 		{
 			if( !base.b活性化してない )
 			{
-				TJAPlayer3.tテクスチャの解放( ref this.txPanel );
-				TJAPlayer3.tテクスチャの解放( ref this.txMusicName );
-                TJAPlayer3.tテクスチャの解放( ref this.txGENRE );
-                TJAPlayer3.tテクスチャの解放(ref this.txPanel);
-                TJAPlayer3.tテクスチャの解放(ref this.tx歌詞テクスチャ);
+				TJAPlayer3.t安全にDisposeする(ref this.txPanel);
+				TJAPlayer3.t安全にDisposeする(ref this.txMusicName);
+                TJAPlayer3.t安全にDisposeする(ref this.txGENRE);
+                TJAPlayer3.t安全にDisposeする(ref this.txPanel);
+                TJAPlayer3.t安全にDisposeする(ref this.tx歌詞テクスチャ);
                 TJAPlayer3.t安全にDisposeする(ref this.pfMusicName);
                 TJAPlayer3.t安全にDisposeする(ref this.pf歌詞フォント);
                 base.OnManagedリソースの解放();
