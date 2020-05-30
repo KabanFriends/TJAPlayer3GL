@@ -105,9 +105,10 @@ If the information above still leaves you feeling uncomfortable, your computer o
 
 ### System Requirements
 
-- Windows 7 or greater is required. However...
-- Windows 10 is strongly recommended. Correct behaviour on Windows versions lower than 10 is possible but no longer a tested configuration.
+- Windows 10 is required.
+  - Windows 7 and 8 users are few but their automatic crash reports are relatively many and relatively unique. Windows 7 is completely retired by Microsoft. Windows 8 was always crap. Windows 10 was released in 2015. Upgrade.
 - .NET Framework 4.8 is required.
+  - No, Mono is not supported. Mono crash reports distract from more important work like, for example, entirely removing the .NET Framework requirement by porting to .NET Core. Please stop.
 - DirectX 9c is required.
 
 ### Installation
