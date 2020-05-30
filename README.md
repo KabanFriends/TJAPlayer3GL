@@ -16,7 +16,7 @@ the ability to consistently work on just about anything has gone out the window.
 Priorities, interests, available time, and even ability (especially to focus,)
 have all changed unpredictably for all of us.
 
-For twpointzero, family and work receive the vast majority of time and energy.
+For twopointzero, family and work receive the vast majority of time and energy.
 What little time remains for hobbies must necessarily be focused on only one,
 and that hobby is unfortunately not TJAPlayer3 development.
 
