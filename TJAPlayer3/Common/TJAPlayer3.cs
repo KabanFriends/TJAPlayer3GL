@@ -1357,15 +1357,17 @@ for (int i = 0; i < 3; i++) {
         /// <summary>プロパティ、インデクサには ref は使用できないので注意。</summary>
         public static void t安全にDisposeする<T>(ref T obj)
         {
-            if (obj == null)
+            if (EqualityComparer<T>.Default.Equals(obj, default))
+            {
                 return;
+            }
 
-            var d = obj as IDisposable;
-
-            if (d != null)
+            if (obj is IDisposable d)
+            {
                 d.Dispose();
+            }
 
-            obj = default(T);
+            obj = default;
         }
 
         /// <summary>
