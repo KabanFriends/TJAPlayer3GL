@@ -693,15 +693,15 @@ namespace TJAPlayer3
             TJAPlayer3.t安全にDisposeする(ref Runner);
             #endregion
             #region DanC
-            DanC_Background?.Dispose();
+            TJAPlayer3.t安全にDisposeする(ref DanC_Background);
             TJAPlayer3.t安全にDisposeする(DanC_Gauge);
-            DanC_Base?.Dispose();
-            DanC_Failed?.Dispose();
-            DanC_Number?.Dispose();
-            DanC_ExamRange?.Dispose(); // TODO DanC texture management is likely bugged, as its assignment and disposal are conditional but its usage is not.
-            DanC_ExamUnit?.Dispose();
-            DanC_ExamType?.Dispose();
-            DanC_Screen?.Dispose();
+            TJAPlayer3.t安全にDisposeする(ref DanC_Base);
+            TJAPlayer3.t安全にDisposeする(ref DanC_Failed);
+            TJAPlayer3.t安全にDisposeする(ref DanC_Number);
+            TJAPlayer3.t安全にDisposeする(ref DanC_ExamRange);
+            TJAPlayer3.t安全にDisposeする(ref DanC_ExamUnit);
+            TJAPlayer3.t安全にDisposeする(ref DanC_ExamType);
+            TJAPlayer3.t安全にDisposeする(ref DanC_Screen);
             #endregion
             #region PuchiChara
             TJAPlayer3.t安全にDisposeする(ref PuchiChara);

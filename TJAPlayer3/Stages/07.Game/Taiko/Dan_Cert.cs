@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using FDK;
 using System.IO;
-using TJAPlayer3;
 
 namespace TJAPlayer3
 {
@@ -27,7 +24,7 @@ namespace TJAPlayer3
         {
             NowShowingNumber = number;
             Counter_In = new CCounter(0, 999, 1, TJAPlayer3.Timer);
-            ScreenPoint = new double[] { TJAPlayer3.Skin.Game_Lane_Background_X[0] - TJAPlayer3.Tx.DanC_Screen.szテクスチャサイズ.Width / 2, 1280 };
+            ScreenPoint = new double[] { TJAPlayer3.Skin.Game_Lane_Background_X[0] - (TJAPlayer3.Tx.DanC_Screen?.szテクスチャサイズ.Width ?? 1280) / 2, 1280 };
             TJAPlayer3.stage演奏ドラム画面.ReSetScore(TJAPlayer3.DTX.List_DanSongs[NowShowingNumber].ScoreInit, TJAPlayer3.DTX.List_DanSongs[NowShowingNumber].ScoreDiff);
             IsAnimating = true;
             TJAPlayer3.stage演奏ドラム画面.actPanel.SetPanelString(TJAPlayer3.DTX.List_DanSongs[NowShowingNumber].Title, TJAPlayer3.DTX.List_DanSongs[NowShowingNumber].Genre, 1 + NowShowingNumber + "曲目");
@@ -484,7 +481,7 @@ namespace TJAPlayer3
                 #region 条件達成失敗の画像を描画する。
                 if (dan_C[i].GetReached())
                 {
-                    TJAPlayer3.Tx.DanC_Failed.t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_DanC_X[count - 1], TJAPlayer3.Skin.Game_DanC_Y[count - 1] + TJAPlayer3.Skin.Game_DanC_Size[1] * i + (i * TJAPlayer3.Skin.Game_DanC_Padding));
+                    TJAPlayer3.Tx.DanC_Failed?.t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_DanC_X[count - 1], TJAPlayer3.Skin.Game_DanC_Y[count - 1] + TJAPlayer3.Skin.Game_DanC_Size[1] * i + (i * TJAPlayer3.Skin.Game_DanC_Padding));
                 }
                 #endregion
             }
@@ -500,19 +497,20 @@ namespace TJAPlayer3
         /// <param name="scaleX">拡大率X</param>
         /// <param name="scaleY">拡大率Y</param>
         /// <param name="scaleJump">アニメーション用拡大率(Yに加算される)。</param>
-        private void DrawNumber(int value, int x, int y, int padding, float scaleX = 1.0f, float scaleY = 1.0f, float scaleJump = 0.0f)
+        private static void DrawNumber(int value, int x, int y, int padding, float scaleX = 1.0f, float scaleY = 1.0f, float scaleJump = 0.0f)
         {
             var notesRemainDigit = 0;
             for (int i = value.ToString().Length; i > 0; i--)
             {
-                var number = Convert.ToInt32(value.ToString()[i - 1].ToString());
-                Rectangle rectangle = new Rectangle(TJAPlayer3.Skin.Game_DanC_Number_Size[0] * number - 1, 0, TJAPlayer3.Skin.Game_DanC_Number_Size[0], TJAPlayer3.Skin.Game_DanC_Number_Size[1]);
                 if(TJAPlayer3.Tx.DanC_Number != null)
                 {
                     TJAPlayer3.Tx.DanC_Number.vc拡大縮小倍率.X = scaleX;
                     TJAPlayer3.Tx.DanC_Number.vc拡大縮小倍率.Y = scaleY + scaleJump;
+
+                    var number = Convert.ToInt32(value.ToString()[i - 1].ToString());
+                    Rectangle rectangle = new Rectangle(TJAPlayer3.Skin.Game_DanC_Number_Size[0] * number - 1, 0, TJAPlayer3.Skin.Game_DanC_Number_Size[0], TJAPlayer3.Skin.Game_DanC_Number_Size[1]);
+                    TJAPlayer3.Tx.DanC_Number.t2D拡大率考慮下中心基準描画(TJAPlayer3.app.Device, x - (notesRemainDigit * padding), y, rectangle);
                 }
-                TJAPlayer3.Tx.DanC_Number?.t2D拡大率考慮下中心基準描画(TJAPlayer3.app.Device, x - (notesRemainDigit * padding), y, rectangle);
                 notesRemainDigit++;
             }
         }
