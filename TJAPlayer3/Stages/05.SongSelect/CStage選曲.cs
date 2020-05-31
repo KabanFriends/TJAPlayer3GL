@@ -301,10 +301,7 @@ namespace TJAPlayer3
                 #region ネームプレート
                 for (int i = 0; i < TJAPlayer3.ConfigIni.nPlayerCount; i++)
                 {
-                    if (TJAPlayer3.Tx.NamePlate[i] != null)
-                    {
-                        TJAPlayer3.Tx.NamePlate[i].t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.SongSelect_NamePlate_X[i], TJAPlayer3.Skin.SongSelect_NamePlate_Y[i]);
-                    }
+                    TJAPlayer3.Tx.NamePlate[i]?.t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.SongSelect_NamePlate_X[i], TJAPlayer3.Skin.SongSelect_NamePlate_Y[i]);
                 }
                 #endregion
 

@@ -30,7 +30,7 @@ namespace TJAPlayer3
 		{
 			if( base.b活性化してる )
 			{
-				TJAPlayer3.tテクスチャの解放( ref this.txPanel );
+				TJAPlayer3.t安全にDisposeする(ref this.txPanel);
 				if( (songName != null ) && (songName.Length > 0 ) )
 				{
 					try
@@ -159,20 +159,22 @@ namespace TJAPlayer3
 				base.OnManagedリソースの作成();
 			}
 		}
-		public override void OnManagedリソースの解放()
-		{
-			if( !base.b活性化してない )
-			{
-				TJAPlayer3.tテクスチャの解放( ref this.txPanel );
-				TJAPlayer3.tテクスチャの解放( ref this.txMusicName );
-                TJAPlayer3.tテクスチャの解放( ref this.txGENRE );
-                TJAPlayer3.tテクスチャの解放(ref this.txPanel);
-                TJAPlayer3.tテクスチャの解放(ref this.tx歌詞テクスチャ);
-                TJAPlayer3.t安全にDisposeする(ref this.pfMusicName);
-                TJAPlayer3.t安全にDisposeする(ref this.pf歌詞フォント);
+
+        public override void OnManagedリソースの解放()
+        {
+            if (!b活性化してない)
+            {
+                TJAPlayer3.t安全にDisposeする(ref txPanel);
+                TJAPlayer3.t安全にDisposeする(ref txMusicName);
+                TJAPlayer3.t安全にDisposeする(ref txGENRE);
+                TJAPlayer3.t安全にDisposeする(ref txPanel);
+                TJAPlayer3.t安全にDisposeする(ref tx歌詞テクスチャ);
+                TJAPlayer3.t安全にDisposeする(ref pfMusicName);
+                TJAPlayer3.t安全にDisposeする(ref pf歌詞フォント);
                 base.OnManagedリソースの解放();
-			}
-		}
+            }
+        }
+
 		public override int On進行描画()
 		{
 			throw new InvalidOperationException( "t進行描画(x,y)のほうを使用してください。" );

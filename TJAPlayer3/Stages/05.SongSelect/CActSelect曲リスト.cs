@@ -692,17 +692,17 @@ namespace TJAPlayer3
 
 			//CDTXMania.t安全にDisposeする( ref this.txアイテム数数字 );
 
-			for( int i = 0; i < 13; i++ )
+			for( int i = 0; i < stバー情報.Length; i++ )
             {
-                TJAPlayer3.tテクスチャの解放( ref this.stバー情報[ i ].txタイトル名 );
+                TJAPlayer3.t安全にDisposeする(ref this.stバー情報[ i ].txタイトル名);
                 this.stバー情報[ i ].ttkタイトル = null;
             }
 
 		    ClearTitleTextureCache();
 
             //CDTXMania.t安全にDisposeする( ref this.txスキル数字 );
-            TJAPlayer3.tテクスチャの解放( ref this.txEnumeratingSongs );
-            TJAPlayer3.tテクスチャの解放( ref this.txSongNotFound );
+            TJAPlayer3.t安全にDisposeする(ref this.txEnumeratingSongs);
+            TJAPlayer3.t安全にDisposeする(ref this.txSongNotFound);
             //CDTXMania.t安全にDisposeする( ref this.tx曲名バー.Score );
             //CDTXMania.t安全にDisposeする( ref this.tx曲名バー.Box );
             //CDTXMania.t安全にDisposeする( ref this.tx曲名バー.Other );

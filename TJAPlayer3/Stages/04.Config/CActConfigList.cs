@@ -1186,10 +1186,7 @@ namespace TJAPlayer3
 				g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
 				g.DrawImage( bmSrc, new Rectangle( 0, 0, bmSrc.Width / 4, bmSrc.Height / 4 ),
 					0, 0, bmSrc.Width, bmSrc.Height, GraphicsUnit.Pixel );
-				if ( txSkinSample1 != null )
-				{
-					TJAPlayer3.t安全にDisposeする( ref txSkinSample1 );
-				}
+				TJAPlayer3.t安全にDisposeする( ref txSkinSample1 );
 				txSkinSample1 = TJAPlayer3.tテクスチャの生成( bmDest, false );
 				g.Dispose();
 				bmDest.Dispose();
@@ -1573,7 +1570,7 @@ namespace TJAPlayer3
 			if( this.b活性化してない )
 				return;
 
-			TJAPlayer3.tテクスチャの解放( ref this.txSkinSample1 );
+			TJAPlayer3.t安全にDisposeする(ref this.txSkinSample1);
 			//CDTXMania.tテクスチャの解放( ref this.tx通常項目行パネル );
 			//CDTXMania.tテクスチャの解放( ref this.txその他項目行パネル );
 			//CDTXMania.tテクスチャの解放( ref this.tx三角矢印 );

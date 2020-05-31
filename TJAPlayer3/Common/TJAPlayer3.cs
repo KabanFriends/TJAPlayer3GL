@@ -1298,10 +1298,7 @@ for (int i = 0; i < 3; i++) {
 				return null;
 			}
 		}
-		public static void tテクスチャの解放(ref CTexture tx )
-		{
-			TJAPlayer3.t安全にDisposeする( ref tx );
-		}
+
 		public static CTexture tテクスチャの生成( Bitmap bitmap )
 		{
 			return tテクスチャの生成( bitmap, false );
@@ -1358,17 +1355,29 @@ for (int i = 0; i < 3; i++) {
 		}
 
         /// <summary>プロパティ、インデクサには ref は使用できないので注意。</summary>
-        public static void t安全にDisposeする<T>(ref T obj)
+        public static void t安全にDisposeする<T>(ref T obj) where T : class, IDisposable
         {
             if (obj == null)
+            {
                 return;
+            }
 
-            var d = obj as IDisposable;
+            obj.Dispose();
+            obj = null;
+        }
 
-            if (d != null)
-                d.Dispose();
+        public static void t安全にDisposeする<T>(T[] array) where T : class, IDisposable
+        {
+            if (array == null)
+            {
+                return;
+            }
 
-            obj = default(T);
+            for (var i = 0; i < array.Length; i++)
+            {
+                array[i]?.Dispose();
+                array[i] = null;
+            }
         }
 
         /// <summary>

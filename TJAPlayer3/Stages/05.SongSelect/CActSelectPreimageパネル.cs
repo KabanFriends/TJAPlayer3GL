@@ -73,9 +73,9 @@ namespace TJAPlayer3
 		{
 			if( !base.b活性化してない )
 			{
-				TJAPlayer3.tテクスチャの解放( ref this.txパネル本体 );
-				TJAPlayer3.tテクスチャの解放( ref this.txプレビュー画像 );
-				TJAPlayer3.tテクスチャの解放( ref this.txプレビュー画像がないときの画像 );
+				TJAPlayer3.t安全にDisposeする(ref this.txパネル本体);
+				TJAPlayer3.t安全にDisposeする(ref this.txプレビュー画像);
+				TJAPlayer3.t安全にDisposeする(ref this.txプレビュー画像がないときの画像);
 				if( this.sfAVI画像 != null )
 				{
 					this.sfAVI画像.Dispose();
@@ -240,7 +240,7 @@ namespace TJAPlayer3
 			string str = cスコア.ファイル情報.フォルダの絶対パス + cスコア.譜面情報.Preimage;
 			if( !str.Equals( this.str現在のファイル名 ) )
 			{
-				TJAPlayer3.tテクスチャの解放( ref this.txプレビュー画像 );
+				TJAPlayer3.t安全にDisposeする(ref this.txプレビュー画像);
 				this.str現在のファイル名 = str;
 				if( !File.Exists( this.str現在のファイル名 ) )
 				{
@@ -314,7 +314,7 @@ namespace TJAPlayer3
 					Trace.TraceWarning( "ファイルが存在しません。({0})", new object[] { path } );
 					return false;
 				}
-				TJAPlayer3.tテクスチャの解放( ref this.txプレビュー画像 );
+				TJAPlayer3.t安全にDisposeする(ref this.txプレビュー画像);
 				this.str現在のファイル名 = path;
 				Bitmap image = null;
 				Bitmap bitmap2 = null;

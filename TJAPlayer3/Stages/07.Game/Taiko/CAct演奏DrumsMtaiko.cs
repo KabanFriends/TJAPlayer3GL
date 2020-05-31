@@ -147,15 +147,13 @@ namespace TJAPlayer3
 
             //if(CDTXMania.Tx.Taiko_Frame[ 0 ] != null )
                // CDTXMania.Tx.Taiko_Frame[ 0 ].t2D描画( CDTXMania.app.Device, 0, 184 );
-            if(TJAPlayer3.Tx.Taiko_Background[0] != null ) 
-                TJAPlayer3.Tx.Taiko_Background[0].t2D描画( TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Taiko_Background_X[0], TJAPlayer3.Skin.Game_Taiko_Background_Y[0] );
+            TJAPlayer3.Tx.Taiko_Background[0]?.t2D描画( TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Taiko_Background_X[0], TJAPlayer3.Skin.Game_Taiko_Background_Y[0] );
 
             if ( TJAPlayer3.stage演奏ドラム画面.bDoublePlay )
             {
                 //if(CDTXMania.Tx.Taiko_Frame[ 1 ] != null )
                     //CDTXMania.Tx.Taiko_Frame[ 1 ].t2D描画( CDTXMania.app.Device, 0, 360 );
-                if(TJAPlayer3.Tx.Taiko_Background[1] != null )
-                    TJAPlayer3.Tx.Taiko_Background[1].t2D描画( TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Taiko_Background_X[1], TJAPlayer3.Skin.Game_Taiko_Background_Y[1]);
+                TJAPlayer3.Tx.Taiko_Background[1]?.t2D描画( TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Taiko_Background_X[1], TJAPlayer3.Skin.Game_Taiko_Background_Y[1]);
             }
             
             if(TJAPlayer3.Tx.Taiko_Base != null )
@@ -293,44 +291,30 @@ namespace TJAPlayer3
                 //    else if( CDTXMania.ConfigIni.eSTEALTH == Eステルスモード.DORON )
                 //        this.txオプションパネル_特殊.t2D描画( CDTXMania.app.Device, 0, 300, new Rectangle( 0, 44, 162, 44 ) );
                 //}
-                if (TJAPlayer3.Tx.Couse_Symbol[TJAPlayer3.stage選曲.n確定された曲の難易度] != null)
+                TJAPlayer3.Tx.Course_Symbol[TJAPlayer3.stage選曲.n確定された曲の難易度]?.t2D描画(TJAPlayer3.app.Device,
+                    TJAPlayer3.Skin.Game_CourseSymbol_X[i],
+                    TJAPlayer3.Skin.Game_CourseSymbol_Y[i]
+                    );
+
+                if (TJAPlayer3.ConfigIni.ShinuchiMode)
                 {
-                    TJAPlayer3.Tx.Couse_Symbol[TJAPlayer3.stage選曲.n確定された曲の難易度].t2D描画(TJAPlayer3.app.Device,
+                    TJAPlayer3.Tx.Course_Symbol[(int)Difficulty.Total]?.t2D描画(TJAPlayer3.app.Device,
                         TJAPlayer3.Skin.Game_CourseSymbol_X[i],
                         TJAPlayer3.Skin.Game_CourseSymbol_Y[i]
                         );
                 }
-
-                if (TJAPlayer3.ConfigIni.ShinuchiMode)
-                {
-                    if (TJAPlayer3.Tx.Couse_Symbol[(int)Difficulty.Total] != null)
-                    {
-                        TJAPlayer3.Tx.Couse_Symbol[(int)Difficulty.Total].t2D描画(TJAPlayer3.app.Device,
-                            TJAPlayer3.Skin.Game_CourseSymbol_X[i],
-                            TJAPlayer3.Skin.Game_CourseSymbol_Y[i]
-                            );
-                    }
-
-                }
-
-
-            }
-            if (TJAPlayer3.Tx.Taiko_NamePlate[0] != null)
-            {
-                TJAPlayer3.Tx.Taiko_NamePlate[0].t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Taiko_NamePlate_X[0], TJAPlayer3.Skin.Game_Taiko_NamePlate_Y[0]);
-            }
-            if(TJAPlayer3.stage演奏ドラム画面.bDoublePlay && TJAPlayer3.Tx.Taiko_NamePlate[1] != null)
-            {
-                TJAPlayer3.Tx.Taiko_NamePlate[1].t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Taiko_NamePlate_X[1], TJAPlayer3.Skin.Game_Taiko_NamePlate_Y[1]);
             }
 
-            if (TJAPlayer3.Tx.Taiko_PlayerNumber[0] != null)
+            TJAPlayer3.Tx.Taiko_NamePlate[0]?.t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Taiko_NamePlate_X[0], TJAPlayer3.Skin.Game_Taiko_NamePlate_Y[0]);
+            if(TJAPlayer3.stage演奏ドラム画面.bDoublePlay)
             {
-                TJAPlayer3.Tx.Taiko_PlayerNumber[0].t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Taiko_PlayerNumber_X[0], TJAPlayer3.Skin.Game_Taiko_PlayerNumber_Y[0]);
+                TJAPlayer3.Tx.Taiko_NamePlate[1]?.t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Taiko_NamePlate_X[1], TJAPlayer3.Skin.Game_Taiko_NamePlate_Y[1]);
             }
-            if (TJAPlayer3.stage演奏ドラム画面.bDoublePlay && TJAPlayer3.Tx.Taiko_PlayerNumber[1] != null)
+
+            TJAPlayer3.Tx.Taiko_PlayerNumber[0]?.t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Taiko_PlayerNumber_X[0], TJAPlayer3.Skin.Game_Taiko_PlayerNumber_Y[0]);
+            if (TJAPlayer3.stage演奏ドラム画面.bDoublePlay)
             {
-                TJAPlayer3.Tx.Taiko_PlayerNumber[1].t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Taiko_PlayerNumber_X[1], TJAPlayer3.Skin.Game_Taiko_PlayerNumber_Y[1]);
+                TJAPlayer3.Tx.Taiko_PlayerNumber[1]?.t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Taiko_PlayerNumber_X[1], TJAPlayer3.Skin.Game_Taiko_PlayerNumber_Y[1]);
             }
 
             //if (CDTXMania.Input管理.Keyboard.bキーが押された((int)SlimDX.DirectInput.Key.V))

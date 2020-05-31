@@ -152,7 +152,7 @@ namespace TJAPlayer3
 				//CDTXMania.tテクスチャの解放( ref this.tx上部パネル );
 				//CDTXMania.tテクスチャの解放( ref this.tx下部パネル );
 				//CDTXMania.tテクスチャの解放( ref this.txMenuカーソル );
-				TJAPlayer3.tテクスチャの解放( ref this.tx説明文パネル );
+				TJAPlayer3.t安全にDisposeする(ref this.tx説明文パネル);
 				for ( int i = 0; i < txMenuItemLeft.GetLength( 0 ); i++ )
 				{
 					txMenuItemLeft[ i, 0 ].Dispose();

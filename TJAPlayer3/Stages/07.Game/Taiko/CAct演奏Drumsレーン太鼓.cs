@@ -551,17 +551,11 @@ namespace TJAPlayer3
 
 
 
-            if (TJAPlayer3.Tx.Taiko_Frame[0] != null)
-            {
-                TJAPlayer3.Tx.Taiko_Frame[0].t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Taiko_Frame_X[0], TJAPlayer3.Skin.Game_Taiko_Frame_Y[0]);
+            TJAPlayer3.Tx.Taiko_Frame[0]?.t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Taiko_Frame_X[0], TJAPlayer3.Skin.Game_Taiko_Frame_Y[0]);
 
-                if (TJAPlayer3.stage演奏ドラム画面.bDoublePlay)
-                {
-                    if(TJAPlayer3.Tx.Taiko_Frame[1] != null)
-                    {
-                        TJAPlayer3.Tx.Taiko_Frame[1].t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Taiko_Frame_X[1], TJAPlayer3.Skin.Game_Taiko_Frame_Y[1]);
-                    }
-                }
+            if (TJAPlayer3.stage演奏ドラム画面.bDoublePlay)
+            {
+                TJAPlayer3.Tx.Taiko_Frame[1]?.t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Taiko_Frame_X[1], TJAPlayer3.Skin.Game_Taiko_Frame_Y[1]);
             }
 
 

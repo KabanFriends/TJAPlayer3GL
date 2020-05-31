@@ -49,9 +49,8 @@ namespace TJAPlayer3
 		{
 			if( !base.b活性化してない )
 			{
-				TJAPlayer3.tテクスチャの解放( ref this.txInfo_Back );
-				TJAPlayer3.tテクスチャの解放( ref this.txInfo[ 0 ] );
-				TJAPlayer3.tテクスチャの解放( ref this.txInfo[ 1 ] );
+				TJAPlayer3.t安全にDisposeする(ref this.txInfo_Back);
+				TJAPlayer3.t安全にDisposeする(txInfo);
 				base.OnManagedリソースの解放();
 			}
 		}
@@ -142,7 +141,7 @@ namespace TJAPlayer3
 			new STINFO( 1, 0, 147 )
 		};
         private CTexture txInfo_Back;
-		private CTexture[] txInfo = new CTexture[ 2 ];
+		private readonly CTexture[] txInfo = new CTexture[ 2 ];
         private bool bFirst;
         private CCounter ct進行用;
 		//-----------------
