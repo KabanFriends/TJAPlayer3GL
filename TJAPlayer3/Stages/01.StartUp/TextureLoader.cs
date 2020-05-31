@@ -71,7 +71,6 @@ namespace TJAPlayer3
             Enum_Song = TxC(@"Enum_Song.png");
             Scanning_Loudness = TxC(@"Scanning_Loudness.png");
             Overlay = TxC(@"Overlay.png");
-            NamePlate = new CTexture[2];
             NamePlate[0] = TxC(@"1P_NamePlate.png");
             NamePlate[1] = TxC(@"2P_NamePlate.png");
             #endregion
@@ -281,8 +280,7 @@ namespace TJAPlayer3
             TJAPlayer3.Skin.Game_Dancer_Ptn = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path(BASE + GAME + DANCER + @"1\"));
             if (TJAPlayer3.Skin.Game_Dancer_Ptn != 0)
             {
-                Dancer = new CTexture[5][];
-                for (int i = 0; i < 5; i++)
+                for (int i = 0; i < Dancer.Length; i++)
                 {
                     Dancer[i] = new CTexture[TJAPlayer3.Skin.Game_Dancer_Ptn];
                     for (int p = 0; p < TJAPlayer3.Skin.Game_Dancer_Ptn; p++)
@@ -305,10 +303,8 @@ namespace TJAPlayer3
             #endregion
             #region 背景
             Background = TxC(GAME + Background + @"0\" + @"Background.png");
-            Background_Up = new CTexture[2];
             Background_Up[0] = TxC(GAME + BACKGROUND + @"0\" + @"1P_Up.png");
             Background_Up[1] = TxC(GAME + BACKGROUND + @"0\" + @"2P_Up.png");
-            Background_Up_Clear = new CTexture[2];
             Background_Up_Clear[0] = TxC(GAME + BACKGROUND + @"0\" + @"1P_Up_Clear.png");
             Background_Up_Clear[1] = TxC(GAME + BACKGROUND + @"0\" + @"2P_Up_Clear.png");
             Background_Down = TxC(GAME + BACKGROUND + @"0\" + @"Down.png");
@@ -317,16 +313,12 @@ namespace TJAPlayer3
 
             #endregion
             #region 太鼓
-            Taiko_Background = new CTexture[2];
             Taiko_Background[0] = TxC(GAME + TAIKO + @"1P_Background.png");
             Taiko_Background[1] = TxC(GAME + TAIKO + @"2P_Background.png");
-            Taiko_Frame = new CTexture[2];
             Taiko_Frame[0] = TxC(GAME + TAIKO + @"1P_Frame.png");
             Taiko_Frame[1] = TxC(GAME + TAIKO + @"2P_Frame.png");
-            Taiko_PlayerNumber = new CTexture[2];
             Taiko_PlayerNumber[0] = TxC(GAME + TAIKO + @"1P_PlayerNumber.png");
             Taiko_PlayerNumber[1] = TxC(GAME + TAIKO + @"2P_PlayerNumber.png");
-            Taiko_NamePlate = new CTexture[2];
             Taiko_NamePlate[0] = TxC(GAME + TAIKO + @"1P_NamePlate.png");
             Taiko_NamePlate[1] = TxC(GAME + TAIKO + @"2P_NamePlate.png");
             Taiko_Base = TxC(GAME + TAIKO + @"Base.png");
@@ -336,45 +328,33 @@ namespace TJAPlayer3
             Taiko_Ka_Right = TxC(GAME + TAIKO + @"Ka.png");
             Taiko_LevelUp = TxC(GAME + TAIKO + @"LevelUp.png");
             Taiko_LevelDown = TxC(GAME + TAIKO + @"LevelDown.png");
-            Course_Symbol = new CTexture[(int)Difficulty.Total + 1]; // +1は真打ちモードの分
-            string[] course_Symbols = new string[(int)Difficulty.Total + 1] { "Easy", "Normal", "Hard", "Oni", "Edit", "Tower", "Dan", "Shin" };
-            for (int i = 0; i < (int)Difficulty.Total + 1; i++)
+            for (int i = 0; i < Course_Symbol.Length; i++)
             {
-                Course_Symbol[i] = TxC(GAME + COURSESYMBOL + course_Symbols[i] + ".png");
+                Course_Symbol[i] = TxC(GAME + COURSESYMBOL + Course_Symbols[i] + ".png");
             }
-            Taiko_Score = new CTexture[3];
             Taiko_Score[0] = TxC(GAME + TAIKO + @"Score.png");
             Taiko_Score[1] = TxC(GAME + TAIKO + @"Score_1P.png");
             Taiko_Score[2] = TxC(GAME + TAIKO + @"Score_2P.png");
-            Taiko_Combo = new CTexture[2];
             Taiko_Combo[0] = TxC(GAME + TAIKO + @"Combo.png");
             Taiko_Combo[1] = TxC(GAME + TAIKO + @"Combo_Big.png");
             Taiko_Combo_Effect = TxC(GAME + TAIKO + @"Combo_Effect.png");
             Taiko_Combo_Text = TxC(GAME + TAIKO + @"Combo_Text.png");
             #endregion
             #region ゲージ
-            Gauge = new CTexture[2];
             Gauge[0] = TxC(GAME + GAUGE + @"1P.png");
             Gauge[1] = TxC(GAME + GAUGE + @"2P.png");
-            Gauge_Hard = new CTexture[2];
             Gauge_Hard[0] = TxC(GAME + GAUGE + @"1P_Hard.png");
             Gauge_Hard[1] = TxC(GAME + GAUGE + @"2P_Hard.png");
-            Gauge_ExHard = new CTexture[2];
             Gauge_ExHard[0] = TxC(GAME + GAUGE + @"1P_ExHard.png");
             Gauge_ExHard[1] = TxC(GAME + GAUGE + @"2P_ExHard.png");
-            Gauge_Base = new CTexture[2];
             Gauge_Base[0] = TxC(GAME + GAUGE + @"1P_Base.png");
             Gauge_Base[1] = TxC(GAME + GAUGE + @"2P_Base.png");
-            Gauge_Base_Hard = new CTexture[2];
             Gauge_Base_Hard[0] = TxC(GAME + GAUGE + @"1P_Base_Hard.png");
             Gauge_Base_Hard[1] = TxC(GAME + GAUGE + @"2P_Base_Hard.png");
-            Gauge_Base_ExHard = new CTexture[2];
             Gauge_Base_ExHard[0] = TxC(GAME + GAUGE + @"1P_Base_ExHard.png");
             Gauge_Base_ExHard[1] = TxC(GAME + GAUGE + @"2P_Base_ExHard.png");
-            Gauge_Line = new CTexture[2];
             Gauge_Line[0] = TxC(GAME + GAUGE + @"1P_Line.png");
             Gauge_Line[1] = TxC(GAME + GAUGE + @"2P_Line.png");
-            Gauge_Line_Hard = new CTexture[2];
             Gauge_Line_Hard[0] = TxC(GAME + GAUGE + @"1P_Line_Hard.png");
             Gauge_Line_Hard[1] = TxC(GAME + GAUGE + @"2P_Line_Hard.png");
             TJAPlayer3.Skin.Game_Gauge_Rainbow_Ptn = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path(BASE + GAME + GAUGE + @"Rainbow\"));
@@ -388,12 +368,10 @@ namespace TJAPlayer3
             }
             Gauge_Soul = TxC(GAME + GAUGE + @"Soul.png");
             Gauge_Soul_Fire = TxC(GAME + GAUGE + @"Fire.png");
-            Gauge_Soul_Explosion = new CTexture[2];
             Gauge_Soul_Explosion[0] = TxC(GAME + GAUGE + @"1P_Explosion.png");
             Gauge_Soul_Explosion[1] = TxC(GAME + GAUGE + @"2P_Explosion.png");
             #endregion
             #region 吹き出し
-            Balloon_Combo = new CTexture[2];
             Balloon_Combo[0] = TxC(GAME + BALLOON + @"Combo_1P.png");
             Balloon_Combo[1] = TxC(GAME + BALLOON + @"Combo_2P.png");
             Balloon_Roll = TxC(GAME + BALLOON + @"Roll.png");
@@ -401,8 +379,7 @@ namespace TJAPlayer3
             Balloon_Number_Roll = TxC(GAME + BALLOON + @"Number_Roll.png");
             Balloon_Number_Combo = TxC(GAME + BALLOON + @"Number_Combo.png");
 
-            Balloon_Breaking = new CTexture[6];
-            for (int i = 0; i < 6; i++)
+            for (int i = 0; i < Balloon_Breaking.Length; i++)
             {
                 Balloon_Breaking[i] = TxC(GAME + BALLOON + @"Breaking_" + i.ToString() + ".png");
             }
@@ -423,16 +400,12 @@ namespace TJAPlayer3
 
             Effects_GoGoSplash = TxC(GAME + EFFECTS + @"GoGoSplash.png");
             if (Effects_GoGoSplash != null) Effects_GoGoSplash.b加算合成 = TJAPlayer3.Skin.Game_Effect_GoGoSplash_AddBlend;
-            Effects_Hit_Great = new CTexture[15];
-            Effects_Hit_Great_Big = new CTexture[15];
-            Effects_Hit_Good = new CTexture[15];
-            Effects_Hit_Good_Big = new CTexture[15];
-            for (int i = 0; i < 15; i++)
+            for (int i = 0; i < Effects_Hit_Good.Length; i++)
             {
-                Effects_Hit_Great[i] = TxC(GAME + EFFECTS + @"Hit\" + @"Great\" + i.ToString() + ".png");
-                Effects_Hit_Great_Big[i] = TxC(GAME + EFFECTS + @"Hit\" + @"Great_Big\" + i.ToString() + ".png");
                 Effects_Hit_Good[i] = TxC(GAME + EFFECTS + @"Hit\" + @"Good\" + i.ToString() + ".png");
                 Effects_Hit_Good_Big[i] = TxC(GAME + EFFECTS + @"Hit\" + @"Good_Big\" + i.ToString() + ".png");
+                Effects_Hit_Great[i] = TxC(GAME + EFFECTS + @"Hit\" + @"Great\" + i.ToString() + ".png");
+                Effects_Hit_Great_Big[i] = TxC(GAME + EFFECTS + @"Hit\" + @"Great_Big\" + i.ToString() + ".png");
             }
             TJAPlayer3.Skin.Game_Effect_Roll_Ptn = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path(BASE + GAME + EFFECTS + @"Roll\"));
             Effects_Roll = new CTexture[TJAPlayer3.Skin.Game_Effect_Roll_Ptn];
@@ -442,10 +415,8 @@ namespace TJAPlayer3
             }
             #endregion
             #region レーン
-            Lane_Base = new CTexture[3];
-            Lane_Text = new CTexture[3];
             string[] Lanes = new string[3] { "Normal", "Expert", "Master" };
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < Lane_Base.Length; i++)
             {
                 Lane_Base[i] = TxC(GAME + LANE + "Base_" + Lanes[i] + ".png");
                 Lane_Text[i] = TxC(GAME + LANE + "Text_" + Lanes[i] + ".png");
@@ -459,9 +430,7 @@ namespace TJAPlayer3
 
             #endregion
             #region 終了演出
-            End_Clear_L = new CTexture[5];
-            End_Clear_R = new CTexture[5];
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < End_Clear_L.Length; i++)
             {
                 End_Clear_L[i] = TxC(GAME + END + @"Clear_L_" + i.ToString() + ".png");
                 End_Clear_R[i] = TxC(GAME + END + @"Clear_R_" + i.ToString() + ".png");
@@ -688,10 +657,10 @@ namespace TJAPlayer3
 
             TJAPlayer3.t安全にDisposeする(ref Effects_GoGoSplash);
 
-            TJAPlayer3.t安全にDisposeする(Effects_Hit_Great);
-            TJAPlayer3.t安全にDisposeする(Effects_Hit_Great_Big);
             TJAPlayer3.t安全にDisposeする(Effects_Hit_Good);
             TJAPlayer3.t安全にDisposeする(Effects_Hit_Good_Big);
+            TJAPlayer3.t安全にDisposeする(Effects_Hit_Great);
+            TJAPlayer3.t安全にDisposeする(Effects_Hit_Great_Big);
 
             TJAPlayer3.t安全にDisposeする(Effects_Roll);
             #endregion
@@ -771,7 +740,7 @@ namespace TJAPlayer3
             Enum_Song,
             Scanning_Loudness,
             Overlay;
-        public CTexture[] NamePlate;
+        public readonly CTexture[] NamePlate = new CTexture[2];
         #endregion
         #region 1_タイトル画面
         public CTexture Title_Background,
@@ -850,7 +819,7 @@ namespace TJAPlayer3
             Chara_Balloon_Miss;
         #endregion
         #region 踊り子
-        public CTexture[][] Dancer;
+        public readonly CTexture[][] Dancer = new CTexture[5][];
         #endregion
         #region モブ
         public CTexture[] Mob;
@@ -861,12 +830,14 @@ namespace TJAPlayer3
             Background_Down,
             Background_Down_Clear,
             Background_Down_Scroll;
-        public CTexture[] Background_Up,
-            Background_Up_Clear;
+        public readonly CTexture[] Background_Up = new CTexture[2];
+        public readonly CTexture[] Background_Up_Clear = new CTexture[2];
+
         #endregion
         #region 太鼓
-        public CTexture[] Taiko_Frame, // MTaiko下敷き
-            Taiko_Background;
+
+        public readonly CTexture[] Taiko_Frame = new CTexture[2]; // MTaiko下敷き
+        public readonly CTexture[] Taiko_Background = new CTexture[2];
         public CTexture Taiko_Base,
             Taiko_Don_Left,
             Taiko_Don_Right,
@@ -876,34 +847,37 @@ namespace TJAPlayer3
             Taiko_LevelDown,
             Taiko_Combo_Effect,
             Taiko_Combo_Text;
-        public CTexture[] Course_Symbol, // コースシンボル
-            Taiko_PlayerNumber,
-            Taiko_NamePlate; // ネームプレート
-        public CTexture[] Taiko_Score,
-            Taiko_Combo;
+
+        private static readonly string[] Course_Symbols = { "Easy", "Normal", "Hard", "Oni", "Edit", "Tower", "Dan", "Shin" };
+        public readonly CTexture[] Course_Symbol = new CTexture[Course_Symbols.Length];
+        public readonly CTexture[] Taiko_PlayerNumber = new CTexture[2];
+        public readonly CTexture[] Taiko_NamePlate = new CTexture[2]; // ネームプレート
+        public readonly CTexture[] Taiko_Score = new CTexture[3];
+        public readonly CTexture[] Taiko_Combo = new CTexture[2];
         #endregion
         #region ゲージ
-        public CTexture[] Gauge,
-            Gauge_Hard,
-            Gauge_ExHard,
-            Gauge_Base,
-            Gauge_Base_Hard,
-            Gauge_Base_ExHard,
-            Gauge_Line,
-            Gauge_Line_Hard,
-            Gauge_Rainbow,
-            Gauge_Soul_Explosion;
+        public readonly CTexture[] Gauge = new CTexture[2];
+        public readonly CTexture[] Gauge_Hard = new CTexture[2];
+        public readonly CTexture[] Gauge_ExHard = new CTexture[2];
+        public readonly CTexture[] Gauge_Base = new CTexture[2];
+        public readonly CTexture[] Gauge_Base_Hard = new CTexture[2];
+        public readonly CTexture[] Gauge_Base_ExHard = new CTexture[2];
+        public readonly CTexture[] Gauge_Line = new CTexture[2];
+        public readonly CTexture[] Gauge_Line_Hard = new CTexture[2];
+        public CTexture[] Gauge_Rainbow;
+        public readonly CTexture[] Gauge_Soul_Explosion = new CTexture[2];
+
         public CTexture Gauge_Soul,
             Gauge_Soul_Fire;
         #endregion
         #region 吹き出し
-        public CTexture[] Balloon_Combo;
+        public readonly CTexture[] Balloon_Combo = new CTexture[2];
         public CTexture Balloon_Roll,
             Balloon_Balloon,
             Balloon_Number_Roll,
             Balloon_Number_Combo/*,*/
                                 /*Balloon_Broken*/;
-        public CTexture[] Balloon_Breaking;
+        public readonly CTexture[] Balloon_Breaking = new CTexture[6];
         #endregion
         #region エフェクト
         public CTexture Effects_Hit_Explosion,
@@ -912,15 +886,18 @@ namespace TJAPlayer3
             Effects_Rainbow,
             Effects_GoGoSplash,
             Effects_Hit_FireWorks;
-        public CTexture[] Effects_Hit_Great,
-            Effects_Hit_Good,
-            Effects_Hit_Great_Big,
-            Effects_Hit_Good_Big;
+
+        public readonly CTexture[] Effects_Hit_Good = new CTexture[15];
+        public readonly CTexture[] Effects_Hit_Good_Big = new CTexture[15];
+        public readonly CTexture[] Effects_Hit_Great = new CTexture[15];
+        public readonly CTexture[] Effects_Hit_Great_Big = new CTexture[15];
+
         public CTexture[] Effects_Roll;
         #endregion
         #region レーン
-        public CTexture[] Lane_Base,
-            Lane_Text;
+        public readonly CTexture[] Lane_Base = new CTexture[3];
+        public readonly CTexture[] Lane_Text = new CTexture[3];
+
         public CTexture Lane_Red,
             Lane_Blue,
             Lane_Yellow;
@@ -929,8 +906,9 @@ namespace TJAPlayer3
             Lane_Background_GoGo;
         #endregion
         #region 終了演出
-        public CTexture[] End_Clear_L,
-            End_Clear_R;
+        public readonly CTexture[] End_Clear_L = new CTexture[5];
+        public readonly CTexture[] End_Clear_R = new CTexture[5];
+
         public CTexture End_Clear_Text,
             End_Clear_Text_Effect;
         #endregion

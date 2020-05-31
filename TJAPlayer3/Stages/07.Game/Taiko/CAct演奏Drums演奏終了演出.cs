@@ -240,10 +240,8 @@ namespace TJAPlayer3
                                 }
                                 else if (this.ct進行メイン.n現在の値 <= 35)
                                 {
-                                    if (TJAPlayer3.Tx.End_Clear_L[0] != null)
-                                        TJAPlayer3.Tx.End_Clear_L[0].t2D描画(TJAPlayer3.app.Device, 697 - (int)((this.ct進行メイン.n現在の値 - 12) * 10), y[i] - 30);
-                                    if (TJAPlayer3.Tx.End_Clear_R[0] != null)
-                                        TJAPlayer3.Tx.End_Clear_R[0].t2D描画(TJAPlayer3.app.Device, 738 + (int)((this.ct進行メイン.n現在の値 - 12) * 10), y[i] - 30);
+                                    TJAPlayer3.Tx.End_Clear_L[0]?.t2D描画(TJAPlayer3.app.Device, 697 - (int)((this.ct進行メイン.n現在の値 - 12) * 10), y[i] - 30);
+                                    TJAPlayer3.Tx.End_Clear_R[0]?.t2D描画(TJAPlayer3.app.Device, 738 + (int)((this.ct進行メイン.n現在の値 - 12) * 10), y[i] - 30);
                                 }
                                 else if (this.ct進行メイン.n現在の値 <= 46)
                                 {
@@ -253,38 +251,29 @@ namespace TJAPlayer3
                                         float[] fRet = new float[] { 1.0f, 0.99f, 0.98f, 0.97f, 0.96f, 0.95f, 0.96f, 0.97f, 0.98f, 0.99f, 1.0f };
                                         TJAPlayer3.Tx.End_Clear_L[0].t2D描画(TJAPlayer3.app.Device, 466, y[i] - 30);
                                         TJAPlayer3.Tx.End_Clear_L[0].vc拡大縮小倍率 = new SlimDX.Vector3(fRet[this.ct進行メイン.n現在の値 - 36], 1.0f, 1.0f);
-                                        //CDTXMania.Tx.End_Clear_R[ 0 ].t2D描画( CDTXMania.app.Device, 956 + (( this.ct進行メイン.n現在の値 - 36 ) / 2), 180 );
                                         TJAPlayer3.Tx.End_Clear_R[0].t2D描画(TJAPlayer3.app.Device, 1136 - 180 * fRet[this.ct進行メイン.n現在の値 - 36], y[i] - 30);
                                         TJAPlayer3.Tx.End_Clear_R[0].vc拡大縮小倍率 = new SlimDX.Vector3(fRet[this.ct進行メイン.n現在の値 - 36], 1.0f, 1.0f);
                                     }
                                 }
                                 else if (this.ct進行メイン.n現在の値 <= 49)
                                 {
-                                    if (TJAPlayer3.Tx.End_Clear_L[1] != null)
-                                        TJAPlayer3.Tx.End_Clear_L[1].t2D描画(TJAPlayer3.app.Device, 466, y[i] - 30);
-                                    if (TJAPlayer3.Tx.End_Clear_R[1] != null)
-                                        TJAPlayer3.Tx.End_Clear_R[1].t2D描画(TJAPlayer3.app.Device, 956, y[i] - 30);
+                                    TJAPlayer3.Tx.End_Clear_L[1]?.t2D描画(TJAPlayer3.app.Device, 466, y[i] - 30);
+                                    TJAPlayer3.Tx.End_Clear_R[1]?.t2D描画(TJAPlayer3.app.Device, 956, y[i] - 30);
                                 }
                                 else if (this.ct進行メイン.n現在の値 <= 54)
                                 {
-                                    if (TJAPlayer3.Tx.End_Clear_L[2] != null)
-                                        TJAPlayer3.Tx.End_Clear_L[2].t2D描画(TJAPlayer3.app.Device, 466, y[i] - 30);
-                                    if (TJAPlayer3.Tx.End_Clear_R[2] != null)
-                                        TJAPlayer3.Tx.End_Clear_R[2].t2D描画(TJAPlayer3.app.Device, 956, y[i] - 30);
+                                    TJAPlayer3.Tx.End_Clear_L[2]?.t2D描画(TJAPlayer3.app.Device, 466, y[i] - 30);
+                                    TJAPlayer3.Tx.End_Clear_R[2]?.t2D描画(TJAPlayer3.app.Device, 956, y[i] - 30);
                                 }
                                 else if (this.ct進行メイン.n現在の値 <= 58)
                                 {
-                                    if (TJAPlayer3.Tx.End_Clear_L[3] != null)
-                                        TJAPlayer3.Tx.End_Clear_L[3].t2D描画(TJAPlayer3.app.Device, 466, y[i] - 30);
-                                    if (TJAPlayer3.Tx.End_Clear_R[3] != null)
-                                        TJAPlayer3.Tx.End_Clear_R[3].t2D描画(TJAPlayer3.app.Device, 956, y[i] - 30);
+                                    TJAPlayer3.Tx.End_Clear_L[3]?.t2D描画(TJAPlayer3.app.Device, 466, y[i] - 30);
+                                    TJAPlayer3.Tx.End_Clear_R[3]?.t2D描画(TJAPlayer3.app.Device, 956, y[i] - 30);
                                 }
                                 else
                                 {
-                                    if (TJAPlayer3.Tx.End_Clear_L[4] != null)
-                                        TJAPlayer3.Tx.End_Clear_L[4].t2D描画(TJAPlayer3.app.Device, 466, y[i] - 30);
-                                    if (TJAPlayer3.Tx.End_Clear_R[4] != null)
-                                        TJAPlayer3.Tx.End_Clear_R[4].t2D描画(TJAPlayer3.app.Device, 956, y[i] - 30);
+                                    TJAPlayer3.Tx.End_Clear_L[4]?.t2D描画(TJAPlayer3.app.Device, 466, y[i] - 30);
+                                    TJAPlayer3.Tx.End_Clear_R[4]?.t2D描画(TJAPlayer3.app.Device, 956, y[i] - 30);
                                 }
                                 #endregion
                             }

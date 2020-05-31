@@ -60,7 +60,7 @@ namespace TJAPlayer3
                 NullCheckAndRender(ref TJAPlayer3.Tx.Chara_Balloon_Miss[i]);
             }
 
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < TJAPlayer3.Tx.Dancer.Length; i++)
             {
                 for (int k = 0; k < TJAPlayer3.Skin.Game_Dancer_Ptn; k++)
                 {

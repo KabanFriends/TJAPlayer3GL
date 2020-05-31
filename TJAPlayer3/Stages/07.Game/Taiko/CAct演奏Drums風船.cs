@@ -128,8 +128,7 @@ namespace TJAPlayer3
                 {
                     if (n残り打数[j] < n連打数)
                     {
-                        if (TJAPlayer3.Tx.Balloon_Breaking[j] != null)
-                            TJAPlayer3.Tx.Balloon_Breaking[j].t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Balloon_Balloon_X[player] + (this.ct風船ふきだしアニメ.n現在の値 == 1 ? 3 : 0), TJAPlayer3.Skin.Game_Balloon_Balloon_Y[player]);
+                        TJAPlayer3.Tx.Balloon_Breaking[j]?.t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Balloon_Balloon_X[player] + (this.ct風船ふきだしアニメ.n現在の値 == 1 ? 3 : 0), TJAPlayer3.Skin.Game_Balloon_Balloon_Y[player]);
                         break;
                     }
                 }

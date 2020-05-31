@@ -53,7 +53,7 @@ namespace TJAPlayer3
 
             if (TJAPlayer3.ConfigIni.ShowDancer && this.ct踊り子モーション != null && TJAPlayer3.Skin.Game_Dancer_Ptn != 0)
             {
-                for (int i = 0; i < 5; i++)
+                for (int i = 0; i < TJAPlayer3.Tx.Dancer.Length; i++)
                 {
                     if (TJAPlayer3.Tx.Dancer[i][this.ar踊り子モーション番号[(int)this.ct踊り子モーション.db現在の値]] != null)
                     {
