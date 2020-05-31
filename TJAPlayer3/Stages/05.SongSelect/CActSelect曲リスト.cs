@@ -692,7 +692,7 @@ namespace TJAPlayer3
 
 			//CDTXMania.t安全にDisposeする( ref this.txアイテム数数字 );
 
-			for( int i = 0; i < 13; i++ )
+			for( int i = 0; i < stバー情報.Length; i++ )
             {
                 TJAPlayer3.t安全にDisposeする(ref this.stバー情報[ i ].txタイトル名);
                 this.stバー情報[ i ].ttkタイトル = null;

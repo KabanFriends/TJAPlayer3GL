@@ -1186,10 +1186,7 @@ namespace TJAPlayer3
 				g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
 				g.DrawImage( bmSrc, new Rectangle( 0, 0, bmSrc.Width / 4, bmSrc.Height / 4 ),
 					0, 0, bmSrc.Width, bmSrc.Height, GraphicsUnit.Pixel );
-				if ( txSkinSample1 != null )
-				{
-					TJAPlayer3.t安全にDisposeする( ref txSkinSample1 );
-				}
+				TJAPlayer3.t安全にDisposeする( ref txSkinSample1 );
 				txSkinSample1 = TJAPlayer3.tテクスチャの生成( bmDest, false );
 				g.Dispose();
 				bmDest.Dispose();

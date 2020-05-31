@@ -147,10 +147,7 @@ namespace TJAPlayer3
 
             TJAPlayer3.t安全にDisposeする( ref this.soundSelectAnnounce );
 
-            for( int i = 0; i < (int)Difficulty.Total; i++ )
-            {
-                TJAPlayer3.t安全にDisposeする(ref this.tx踏み台[ i ]);
-            }
+            TJAPlayer3.t安全にDisposeする(tx踏み台);
 
 			base.OnManagedリソースの解放();
 		}
@@ -342,7 +339,7 @@ namespace TJAPlayer3
 		private int n現在の選択行;
 		private int n目標のスクロールカウンタ;
 
-        private CTexture[] tx踏み台 = new CTexture[(int)Difficulty.Total];
+        private readonly CTexture[] tx踏み台 = new CTexture[(int)Difficulty.Total];
 
         private CTexture tx背景;
         private CTexture txヘッダー;
