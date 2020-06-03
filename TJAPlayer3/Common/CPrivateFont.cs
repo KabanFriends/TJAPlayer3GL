@@ -44,11 +44,9 @@ namespace TJAPlayer3
 					this._pfc.AddFontFile(fontpath);								//PrivateFontCollectionにフォントを追加する
 					_fontfamily = _pfc.Families[0];
 				}
-				catch (System.IO.FileNotFoundException)
+				catch
 				{
 					Trace.TraceWarning($"プライベートフォントの追加に失敗しました({fontpath})。代わりに{FontUtilities.FallbackFontName}の使用を試みます。");
-					//throw new FileNotFoundException( "プライベートフォントの追加に失敗しました。({0})", Path.GetFileName( fontpath ) );
-					//return;
 					_fontfamily = null;
 				}
 			}
