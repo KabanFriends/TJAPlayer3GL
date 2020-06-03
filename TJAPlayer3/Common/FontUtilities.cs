@@ -23,7 +23,16 @@ namespace TJAPlayer3.Common
             {
                 Trace.TraceError(e.Message);
 
-                return new FontFamily(FallbackFontName);
+                try
+                {
+                    return new FontFamily(FallbackFontName);
+                }
+                catch (ArgumentException fallbackException)
+                {
+                    throw new ArgumentException(
+                        $"Japanese Language Pack, or manual {FallbackFontName} font family, installation is required.",
+                        fallbackException);
+                }
             }
         }
     }

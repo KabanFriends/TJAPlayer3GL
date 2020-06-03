@@ -134,6 +134,8 @@ If the information above still leaves you feeling uncomfortable, your computer o
 - .NET Framework 4.8 is required.
   - No, Mono is not supported. Mono crash reports distract from more important work like, for example, entirely removing the .NET Framework requirement by porting to .NET Core. Please stop.
 - DirectX 9c is required.
+- Japanese Language Pack installation is required.
+- Japanese System Locale is required.
 
 ### Installation
 
