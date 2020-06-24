@@ -282,7 +282,7 @@ namespace TJAPlayer3
                 }
                 else if(TJAPlayer3.Skin.SongLoading_Title_ReferencePoint == CSkin.ReferencePoint.Right)
                 {
-                    this.txサブタイトル.t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.SongLoading_SubTitle_XY[0] - (this.txサブタイトル.sz画像サイズ.Width * txタイトル.vc拡大縮小倍率.X), TJAPlayer3.Skin.SongLoading_SubTitle_XY[1] - (this.txサブタイトル.sz画像サイズ.Height / 2));
+                    this.txサブタイトル.t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.SongLoading_SubTitle_XY[0] - (this.txサブタイトル.sz画像サイズ.Width * txサブタイトル.vc拡大縮小倍率.X), TJAPlayer3.Skin.SongLoading_SubTitle_XY[1] - (this.txサブタイトル.sz画像サイズ.Height / 2));
                 }
                 else
                 {
