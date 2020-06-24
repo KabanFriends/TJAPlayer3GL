@@ -14,7 +14,6 @@ namespace TJAPlayer3
 		public CAct演奏パネル文字列()
 		{
 			base.b活性化してない = true;
-			this.Start();
 		}
 
 
@@ -94,7 +93,6 @@ namespace TJAPlayer3
 			    this.txGENRE = genreTextureFileName == null ? null : TJAPlayer3.Tx.TxCGen(genreTextureFileName);
 
 			    this.ct進行用 = new CCounter( 0, 2000, 2, TJAPlayer3.Timer );
-				this.Start();
 			}
 		}
 
@@ -128,12 +126,6 @@ namespace TJAPlayer3
             }
         }
 
-		public void Start()
-		{
-			this.bMute = false;
-		}
-
-
 		// CActivity 実装
 
 		public override void On活性化()
@@ -143,7 +135,6 @@ namespace TJAPlayer3
 
 			this.txPanel = null;
 			this.ct進行用 = new CCounter();
-			this.Start();
             this.bFirst = true;
 			base.On活性化();
 		}
@@ -186,9 +177,14 @@ namespace TJAPlayer3
                 return;
             }
 
-			if( !base.b活性化してない && !this.bMute )
-			{
-				this.ct進行用.t進行Loop();
+            if (!base.b活性化してない)
+            {
+                if(this.b初めての進行描画)
+                {
+                    b初めての進行描画 = false;
+                }
+
+                this.ct進行用.t進行Loop();
                 if( this.bFirst )
                 {
                     this.ct進行用.n現在の値 = 300;
@@ -206,7 +202,7 @@ namespace TJAPlayer3
                         this.txMusicName.vc拡大縮小倍率.X = fRate;
                         if (TJAPlayer3.Skin.Game_MusicName_ReferencePoint == CSkin.ReferencePoint.Center)
                         {
-                            this.txMusicName.t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_MusicName_XY[0] - ((this.txMusicName.szテクスチャサイズ.Width * fRate) / 2), TJAPlayer3.Skin.Game_MusicName_XY[1]);
+                            this.txMusicName.t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_MusicName_XY[0] - ((this.txMusicName.szテクスチャサイズ.Width * txMusicName.vc拡大縮小倍率.X) / 2), TJAPlayer3.Skin.Game_MusicName_XY[1]);
                         }
                         else if (TJAPlayer3.Skin.Game_MusicName_ReferencePoint == CSkin.ReferencePoint.Left)
                         {
@@ -214,7 +210,7 @@ namespace TJAPlayer3
                         }
                         else
                         {
-                            this.txMusicName.t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_MusicName_XY[0] - (this.txMusicName.szテクスチャサイズ.Width * fRate), TJAPlayer3.Skin.Game_MusicName_XY[1]);
+                            this.txMusicName.t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_MusicName_XY[0] - (this.txMusicName.szテクスチャサイズ.Width * txMusicName.vc拡大縮小倍率.X), TJAPlayer3.Skin.Game_MusicName_XY[1]);
                         }
                     }
                 }
@@ -254,10 +250,6 @@ namespace TJAPlayer3
                     #endregion
                     if( this.txMusicName != null )
                     {
-                        if(this.b初めての進行描画)
-                        {
-                            b初めての進行描画 = false;
-                        }
                         if (TJAPlayer3.Skin.Game_MusicName_ReferencePoint == CSkin.ReferencePoint.Center)
                         {
                             this.txMusicName.t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_MusicName_XY[0] - ((this.txMusicName.szテクスチャサイズ.Width * txMusicName.vc拡大縮小倍率.X) / 2), TJAPlayer3.Skin.Game_MusicName_XY[1]);
@@ -300,7 +292,6 @@ namespace TJAPlayer3
 		private CCounter ct進行用;
 
 		private CTexture txPanel;
-		private bool bMute;
         private bool bFirst;
 
         private CTexture txMusicName;

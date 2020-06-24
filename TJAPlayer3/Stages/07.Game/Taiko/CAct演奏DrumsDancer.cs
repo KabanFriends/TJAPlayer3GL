@@ -46,7 +46,7 @@ namespace TJAPlayer3
         {
             if( this.b初めての進行描画 )
             {
-                this.b初めての進行描画 = true;
+                this.b初めての進行描画 = false;
             }
 
             if (this.ct踊り子モーション != null || TJAPlayer3.Skin.Game_Dancer_Ptn != 0) this.ct踊り子モーション.t進行LoopDb();
