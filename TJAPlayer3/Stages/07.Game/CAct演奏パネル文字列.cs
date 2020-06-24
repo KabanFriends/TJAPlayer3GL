@@ -14,7 +14,6 @@ namespace TJAPlayer3
 		public CAct演奏パネル文字列()
 		{
 			base.b活性化してない = true;
-			this.Start();
 		}
 
 
@@ -76,10 +75,11 @@ namespace TJAPlayer3
                             bmpDiff = pfMusicName.DrawPrivateFont(stageText, TJAPlayer3.Skin.Game_StageText_ForeColor, TJAPlayer3.Skin.Game_StageText_BackColor );
                         }
 
-					    using (bmpDiff)
-					    {
-					        this.tx難易度とステージ数 = TJAPlayer3.tテクスチャの生成( bmpDiff, false );
-					    }
+                        using (bmpDiff)
+                        {
+                            TJAPlayer3.t安全にDisposeする(ref tx難易度とステージ数);
+                            tx難易度とステージ数 = TJAPlayer3.tテクスチャの生成(bmpDiff, false);
+                        }
 					}
 					catch( CTextureCreateFailedException e )
 					{
@@ -94,7 +94,6 @@ namespace TJAPlayer3
 			    this.txGENRE = genreTextureFileName == null ? null : TJAPlayer3.Tx.TxCGen(genreTextureFileName);
 
 			    this.ct進行用 = new CCounter( 0, 2000, 2, TJAPlayer3.Timer );
-				this.Start();
 			}
 		}
 
@@ -128,12 +127,6 @@ namespace TJAPlayer3
             }
         }
 
-		public void Start()
-		{
-			this.bMute = false;
-		}
-
-
 		// CActivity 実装
 
 		public override void On活性化()
@@ -143,7 +136,6 @@ namespace TJAPlayer3
 
 			this.txPanel = null;
 			this.ct進行用 = new CCounter();
-			this.Start();
             this.bFirst = true;
 			base.On活性化();
 		}
@@ -171,6 +163,7 @@ namespace TJAPlayer3
                 TJAPlayer3.t安全にDisposeする(ref tx歌詞テクスチャ);
                 TJAPlayer3.t安全にDisposeする(ref pfMusicName);
                 TJAPlayer3.t安全にDisposeする(ref pf歌詞フォント);
+                TJAPlayer3.t安全にDisposeする(ref tx難易度とステージ数);
                 base.OnManagedリソースの解放();
             }
         }
@@ -186,9 +179,14 @@ namespace TJAPlayer3
                 return;
             }
 
-			if( !base.b活性化してない && !this.bMute )
-			{
-				this.ct進行用.t進行Loop();
+            if (!base.b活性化してない)
+            {
+                if(this.b初めての進行描画)
+                {
+                    b初めての進行描画 = false;
+                }
+
+                this.ct進行用.t進行Loop();
                 if( this.bFirst )
                 {
                     this.ct進行用.n現在の値 = 300;
@@ -206,7 +204,7 @@ namespace TJAPlayer3
                         this.txMusicName.vc拡大縮小倍率.X = fRate;
                         if (TJAPlayer3.Skin.Game_MusicName_ReferencePoint == CSkin.ReferencePoint.Center)
                         {
-                            this.txMusicName.t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_MusicName_XY[0] - ((this.txMusicName.szテクスチャサイズ.Width * fRate) / 2), TJAPlayer3.Skin.Game_MusicName_XY[1]);
+                            this.txMusicName.t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_MusicName_XY[0] - ((this.txMusicName.szテクスチャサイズ.Width * txMusicName.vc拡大縮小倍率.X) / 2), TJAPlayer3.Skin.Game_MusicName_XY[1]);
                         }
                         else if (TJAPlayer3.Skin.Game_MusicName_ReferencePoint == CSkin.ReferencePoint.Left)
                         {
@@ -214,7 +212,7 @@ namespace TJAPlayer3
                         }
                         else
                         {
-                            this.txMusicName.t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_MusicName_XY[0] - (this.txMusicName.szテクスチャサイズ.Width * fRate), TJAPlayer3.Skin.Game_MusicName_XY[1]);
+                            this.txMusicName.t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_MusicName_XY[0] - (this.txMusicName.szテクスチャサイズ.Width * txMusicName.vc拡大縮小倍率.X), TJAPlayer3.Skin.Game_MusicName_XY[1]);
                         }
                     }
                 }
@@ -222,42 +220,48 @@ namespace TJAPlayer3
                 {
                     #region[ 透明度制御 ]
 
-                    if( this.ct進行用.n現在の値 < 745 )
+                    if (ct進行用.n現在の値 < 745)
                     {
-                        this.bFirst = false;
-                        this.txMusicName.Opacity = 255;
-                        if( this.txGENRE != null )
-                            this.txGENRE.Opacity = 255;
-                        this.tx難易度とステージ数.Opacity = 0;
+                        bFirst = false;
                     }
-                    else if( this.ct進行用.n現在の値 >= 745 && this.ct進行用.n現在の値 < 1000 )
+
+                    var opacity = 255;
+                    if (ct進行用.n現在の値 < 745)
                     {
-                        this.txMusicName.Opacity = 255 - ( this.ct進行用.n現在の値 - 745 );
-                        if( this.txGENRE != null )
-                            this.txGENRE.Opacity = 255 - ( this.ct進行用.n現在の値 - 745 );
-                        this.tx難易度とステージ数.Opacity = this.ct進行用.n現在の値 - 745;
+                        opacity = 255;
                     }
-                    else if( this.ct進行用.n現在の値 >= 1000 && this.ct進行用.n現在の値 <= 1745 )
+                    else if (ct進行用.n現在の値 >= 745 && ct進行用.n現在の値 < 1000)
                     {
-                        this.txMusicName.Opacity = 0;
-                        if( this.txGENRE != null )
-                            this.txGENRE.Opacity = 0;
-                        this.tx難易度とステージ数.Opacity = 255;
+                        opacity = 255 - (ct進行用.n現在の値 - 745);
                     }
-                    else if( this.ct進行用.n現在の値 >= 1745 )
+                    else if (ct進行用.n現在の値 >= 1000 && ct進行用.n現在の値 <= 1745)
                     {
-                        this.txMusicName.Opacity = this.ct進行用.n現在の値 - 1745;
-                        if( this.txGENRE != null )
-                            this.txGENRE.Opacity = this.ct進行用.n現在の値 - 1745;
-                        this.tx難易度とステージ数.Opacity = 255 - ( this.ct進行用.n現在の値 - 1745 );
+                        opacity = 0;
                     }
+                    else if (ct進行用.n現在の値 >= 1745)
+                    {
+                        opacity = ct進行用.n現在の値 - 1745;
+                    }
+
+                    if (txMusicName != null)
+                    {
+                        txMusicName.Opacity = opacity;
+                    }
+
+                    if (txGENRE != null)
+                    {
+                        txGENRE.Opacity = opacity;
+                    }
+
+                    if (tx難易度とステージ数 != null)
+                    {
+                        tx難易度とステージ数.Opacity = 255 - opacity;
+                    }
+
                     #endregion
+
                     if( this.txMusicName != null )
                     {
-                        if(this.b初めての進行描画)
-                        {
-                            b初めての進行描画 = false;
-                        }
                         if (TJAPlayer3.Skin.Game_MusicName_ReferencePoint == CSkin.ReferencePoint.Center)
                         {
                             this.txMusicName.t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_MusicName_XY[0] - ((this.txMusicName.szテクスチャサイズ.Width * txMusicName.vc拡大縮小倍率.X) / 2), TJAPlayer3.Skin.Game_MusicName_XY[1]);
@@ -285,11 +289,7 @@ namespace TJAPlayer3
                             this.tx難易度とステージ数.t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_MusicName_XY[0] - this.tx難易度とステージ数.szテクスチャサイズ.Width, TJAPlayer3.Skin.Game_MusicName_XY[1]);
                         }
                 }
-
-                //CDTXMania.act文字コンソール.tPrint( 0, 0, C文字コンソール.Eフォント種別.白, this.ct進行用.n現在の値.ToString() );
-
-				//this.txMusicName.t2D描画( CDTXMania.app.Device, 1250 - this.txMusicName.szテクスチャサイズ.Width, 14 );
-			}
+            }
 		}
 
 
@@ -300,7 +300,6 @@ namespace TJAPlayer3
 		private CCounter ct進行用;
 
 		private CTexture txPanel;
-		private bool bMute;
         private bool bFirst;
 
         private CTexture txMusicName;

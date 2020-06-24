@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Drawing;
-using System.Runtime.InteropServices;
-using FDK;
+﻿using FDK;
 
 namespace TJAPlayer3
 {
@@ -37,16 +32,11 @@ namespace TJAPlayer3
             base.OnManagedリソースの作成();
         }
 
-        public override void OnManagedリソースの解放()
-        {
-            base.OnManagedリソースの解放();
-        }
-
         public override int On進行描画()
         {
             if( this.b初めての進行描画 )
             {
-                this.b初めての進行描画 = true;
+                this.b初めての進行描画 = false;
             }
 
             if (this.ct踊り子モーション != null || TJAPlayer3.Skin.Game_Dancer_Ptn != 0) this.ct踊り子モーション.t進行LoopDb();

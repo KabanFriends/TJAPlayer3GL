@@ -3935,7 +3935,6 @@ namespace TJAPlayer3
 			CSound管理.rc演奏用タイマ.t再開();
 			//CDTXMania.Timer.t再開();
 			this.bPAUSE = false;								// システムがPAUSE状態だったら、強制解除
-			this.actPanel.Start();
 #endregion
 #endregion
 		}
