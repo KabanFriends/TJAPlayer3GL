@@ -75,10 +75,11 @@ namespace TJAPlayer3
                             bmpDiff = pfMusicName.DrawPrivateFont(stageText, TJAPlayer3.Skin.Game_StageText_ForeColor, TJAPlayer3.Skin.Game_StageText_BackColor );
                         }
 
-					    using (bmpDiff)
-					    {
-					        this.tx難易度とステージ数 = TJAPlayer3.tテクスチャの生成( bmpDiff, false );
-					    }
+                        using (bmpDiff)
+                        {
+                            TJAPlayer3.t安全にDisposeする(ref tx難易度とステージ数);
+                            tx難易度とステージ数 = TJAPlayer3.tテクスチャの生成(bmpDiff, false);
+                        }
 					}
 					catch( CTextureCreateFailedException e )
 					{
@@ -162,6 +163,7 @@ namespace TJAPlayer3
                 TJAPlayer3.t安全にDisposeする(ref tx歌詞テクスチャ);
                 TJAPlayer3.t安全にDisposeする(ref pfMusicName);
                 TJAPlayer3.t安全にDisposeする(ref pf歌詞フォント);
+                TJAPlayer3.t安全にDisposeする(ref tx難易度とステージ数);
                 base.OnManagedリソースの解放();
             }
         }
