@@ -220,36 +220,46 @@ namespace TJAPlayer3
                 {
                     #region[ 透明度制御 ]
 
-                    if( this.ct進行用.n現在の値 < 745 )
+                    if (ct進行用.n現在の値 < 745)
                     {
-                        this.bFirst = false;
-                        this.txMusicName.Opacity = 255;
-                        if( this.txGENRE != null )
-                            this.txGENRE.Opacity = 255;
-                        this.tx難易度とステージ数.Opacity = 0;
+                        bFirst = false;
                     }
-                    else if( this.ct進行用.n現在の値 >= 745 && this.ct進行用.n現在の値 < 1000 )
+
+                    var opacity = 255;
+                    if (ct進行用.n現在の値 < 745)
                     {
-                        this.txMusicName.Opacity = 255 - ( this.ct進行用.n現在の値 - 745 );
-                        if( this.txGENRE != null )
-                            this.txGENRE.Opacity = 255 - ( this.ct進行用.n現在の値 - 745 );
-                        this.tx難易度とステージ数.Opacity = this.ct進行用.n現在の値 - 745;
+                        opacity = 255;
                     }
-                    else if( this.ct進行用.n現在の値 >= 1000 && this.ct進行用.n現在の値 <= 1745 )
+                    else if (ct進行用.n現在の値 >= 745 && ct進行用.n現在の値 < 1000)
                     {
-                        this.txMusicName.Opacity = 0;
-                        if( this.txGENRE != null )
-                            this.txGENRE.Opacity = 0;
-                        this.tx難易度とステージ数.Opacity = 255;
+                        opacity = 255 - (ct進行用.n現在の値 - 745);
                     }
-                    else if( this.ct進行用.n現在の値 >= 1745 )
+                    else if (ct進行用.n現在の値 >= 1000 && ct進行用.n現在の値 <= 1745)
                     {
-                        this.txMusicName.Opacity = this.ct進行用.n現在の値 - 1745;
-                        if( this.txGENRE != null )
-                            this.txGENRE.Opacity = this.ct進行用.n現在の値 - 1745;
-                        this.tx難易度とステージ数.Opacity = 255 - ( this.ct進行用.n現在の値 - 1745 );
+                        opacity = 0;
                     }
+                    else if (ct進行用.n現在の値 >= 1745)
+                    {
+                        opacity = ct進行用.n現在の値 - 1745;
+                    }
+
+                    if (txMusicName != null)
+                    {
+                        txMusicName.Opacity = opacity;
+                    }
+
+                    if (txGENRE != null)
+                    {
+                        txGENRE.Opacity = opacity;
+                    }
+
+                    if (tx難易度とステージ数 != null)
+                    {
+                        tx難易度とステージ数.Opacity = 255 - opacity;
+                    }
+
                     #endregion
+
                     if( this.txMusicName != null )
                     {
                         if (TJAPlayer3.Skin.Game_MusicName_ReferencePoint == CSkin.ReferencePoint.Center)
