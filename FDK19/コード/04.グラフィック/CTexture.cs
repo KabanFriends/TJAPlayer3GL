@@ -367,26 +367,19 @@ namespace FDK
         // Rectangleを使う場合、座標調整のためにテクスチャサイズの値をそのまま使うとまずいことになるため、Rectragleから幅を取得して調整をする。
         public void t2D中心基準描画(Device device, int x, int y)
         {
-            this.t2D描画(device, x - (this.szテクスチャサイズ.Width / 2), y - (this.szテクスチャサイズ.Height / 2), 1f, this.rc全画像);
+            this.t2D描画(device, x, y, HorizontalReferencePoint.Center, VerticalReferencePoint.Center);
         }
+
         public void t2D中心基準描画(Device device, int x, int y, Rectangle rc画像内の描画領域)
         {
             this.t2D描画(device, x - (rc画像内の描画領域.Width / 2), y - (rc画像内の描画領域.Height / 2), 1f, rc画像内の描画領域);
         }
-        public void t2D中心基準描画(Device device, float x, float y)
-        {
-            this.t2D描画(device, (int)x - (this.szテクスチャサイズ.Width / 2), (int)y - (this.szテクスチャサイズ.Height / 2), 1f, this.rc全画像);
-        }
+
         public void t2D中心基準描画(Device device, float x, float y, float depth, Rectangle rc画像内の描画領域)
         {
             this.t2D描画(device, (int)x - (rc画像内の描画領域.Width / 2), (int)y - (rc画像内の描画領域.Height / 2), depth, rc画像内の描画領域);
         }
 
-        // 下を基準にして描画する(拡大率考慮)メソッドを追加。 (AioiLight)
-        public void t2D拡大率考慮下基準描画(Device device, int x, int y)
-        {
-            this.t2D描画(device, x, y - (szテクスチャサイズ.Height * this.vc拡大縮小倍率.Y), 1f, this.rc全画像);
-        }
         public void t2D拡大率考慮下基準描画(Device device, int x, int y, Rectangle rc画像内の描画領域)
         {
             this.t2D描画(device, x, y - (rc画像内の描画領域.Height * this.vc拡大縮小倍率.Y), 1f, rc画像内の描画領域);
@@ -404,31 +397,23 @@ namespace FDK
         {
             this.t2D描画(device, x - ((rc画像内の描画領域.Width / 2)), y - (rc画像内の描画領域.Height * this.vc拡大縮小倍率.Y), 1f, rc画像内の描画領域);
         }
-        public void t2D拡大率考慮下中心基準描画(Device device, float x, float y, Rectangle rc画像内の描画領域)
-        {
-            this.t2D拡大率考慮下中心基準描画(device, (int)x, (int)y, rc画像内の描画領域);
-        }
+
         public void t2D下中央基準描画(Device device, int x, int y)
         {
-            this.t2D描画(device, x - (this.szテクスチャサイズ.Width / 2), y - (szテクスチャサイズ.Height), this.rc全画像);
+            this.t2D描画(device, x, y, HorizontalReferencePoint.Center, VerticalReferencePoint.Bottom);
         }
+
         public void t2D下中央基準描画(Device device, int x, int y, Rectangle rc画像内の描画領域)
         {
             this.t2D描画(device, x - (rc画像内の描画領域.Width / 2), y - (rc画像内の描画領域.Height), rc画像内の描画領域);
-            //this.t2D描画(devicek x, y, rc画像内の描画領域;
         }
-
 
         public void t2D拡大率考慮中央基準描画(Device device, int x, int y)
         {
             this.t2D描画(device, x - (this.szテクスチャサイズ.Width / 2 * this.vc拡大縮小倍率.X), y - (szテクスチャサイズ.Height / 2 * this.vc拡大縮小倍率.Y), 1f, this.rc全画像);
         }
-        public void t2D拡大率考慮中央基準描画(Device device, float x, float y)
-        {
-            this.t2D拡大率考慮下中心基準描画(device, (int)x, (int)y);
-        }
 
-        // TODO Funnel overloads toward this method, inline them, and then push this logic further down toward its callee
+        // TODO Funnel overloads toward these two methods, inline the overloads, and then push this logic further down toward its lower-level callee
         public void t2D描画(
             Device device,
             int x,
@@ -436,7 +421,18 @@ namespace FDK
             HorizontalReferencePoint horizontalReferencePoint,
             VerticalReferencePoint verticalReferencePoint = VerticalReferencePoint.Top)
         {
-            t2D描画(device, x + GetTruncatedOffset(horizontalReferencePoint), y + GetTruncatedOffset(verticalReferencePoint));
+            t2D描画(device, x, y, rc全画像, horizontalReferencePoint, verticalReferencePoint);
+        }
+
+        public void t2D描画(
+            Device device,
+            int x,
+            int y,
+            Rectangle rc画像内の描画領域,
+            HorizontalReferencePoint horizontalReferencePoint,
+            VerticalReferencePoint verticalReferencePoint = VerticalReferencePoint.Top)
+        {
+            t2D描画(device, x + GetTruncatedOffset(horizontalReferencePoint), y + GetTruncatedOffset(verticalReferencePoint), 1f, rc画像内の描画領域);
         }
 
         private int GetTruncatedOffset(HorizontalReferencePoint horizontalReferencePoint)
