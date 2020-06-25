@@ -17,12 +17,14 @@ namespace FDK
             get;
             set;
         }
-        public bool b乗算合成
+
+        private bool b乗算合成
         {
             get;
             set;
         }
-        public bool b減算合成
+
+        private bool b減算合成
         {
             get;
             set;
@@ -77,24 +79,23 @@ namespace FDK
         public Format Format
         {
             get;
-            protected set;
+            private set;
         }
         public Vector3 vc拡大縮小倍率;
 
         // 画面が変わるたび以下のプロパティを設定し治すこと。
 
-        public static Size sz論理画面 = Size.Empty;
-        public static Size sz物理画面 = Size.Empty;
-        public static Rectangle rc物理画面描画領域 = Rectangle.Empty;
+        private static Rectangle rc物理画面描画領域 = Rectangle.Empty;
+
         /// <summary>
         /// <para>論理画面を1とする場合の物理画面の倍率。</para>
         /// <para>論理値×画面比率＝物理値。</para>
         /// </summary>
-        public static float f画面比率 = 1.0f;
+        private const float f画面比率 = 1.0f; // Keep this element to later help decouple coordinate systems, screen from world.
 
         // コンストラクタ
 
-        public CTexture()
+        protected CTexture()
         {
             this.sz画像サイズ = new Size(0, 0);
             this.szテクスチャサイズ = new Size(0, 0);
@@ -118,7 +119,7 @@ namespace FDK
         /// <param name="bitmap">作成元のビットマップ。</param>
         /// <param name="format">テクスチャのフォーマット。</param>
         /// <exception cref="CTextureCreateFailedException">テクスチャの作成に失敗しました。</exception>
-        public CTexture(Device device, Bitmap bitmap, Format format)
+        public CTexture(Device device, Bitmap bitmap, Format format, Pool pool = Pool.Managed)
             : this()
         {
             try
@@ -133,7 +134,7 @@ namespace FDK
                     bitmap.Save(stream, ImageFormat.Bmp);
                     stream.Seek(0L, SeekOrigin.Begin);
                     int colorKey = unchecked((int)0xFF000000);
-                    this.texture = Texture.FromStream(device.UnderlyingDevice, stream, this.szテクスチャサイズ.Width, this.szテクスチャサイズ.Height, 1, Usage.None, format, poolvar, Filter.Point, Filter.None, colorKey);
+                    this.texture = Texture.FromStream(device.UnderlyingDevice, stream, this.szテクスチャサイズ.Width, this.szテクスチャサイズ.Height, 1, Usage.None, format, pool, Filter.Point, Filter.None, colorKey);
                 }
             }
             catch (Exception e)
@@ -141,46 +142,6 @@ namespace FDK
                 this.Dispose();
                 throw new CTextureCreateFailedException("ビットマップからのテクスチャの生成に失敗しました。", e);
             }
-        }
-
-        /// <summary>
-        /// <para>空の Managed テクスチャを作成する。</para>
-        /// <para>テクスチャのサイズは、指定された希望サイズ以上、かつ、D3D9デバイスで生成可能な最小のサイズに自動的に調節される。
-        /// その際、テクスチャの調節後のサイズにあわせた画像の拡大縮小は行わない。</para>
-        /// <para>テクスチャのテクセルデータは未初期化。（おそらくゴミデータが入ったまま。）</para>
-        /// <para>その他、ミップマップ数は 1、Usage は None、イメージフィルタは Point、ミップマップフィルタは None、
-        /// カラーキーは 0x00000000（透過しない）になる。</para>
-        /// </summary>
-        /// <param name="device">Direct3D9 デバイス。</param>
-        /// <param name="n幅">テクスチャの幅（希望値）。</param>
-        /// <param name="n高さ">テクスチャの高さ（希望値）。</param>
-        /// <param name="format">テクスチャのフォーマット。</param>
-        /// <exception cref="CTextureCreateFailedException">テクスチャの作成に失敗しました。</exception>
-        public CTexture(Device device, int n幅, int n高さ, Format format)
-            : this(device, n幅, n高さ, format, Pool.Managed)
-        {
-        }
-
-        /// <summary>
-        /// <para>指定された画像ファイルから Managed テクスチャを作成する。</para>
-        /// <para>利用可能な画像形式は、BMP, JPG, PNG, TGA, DDS, PPM, DIB, HDR, PFM のいずれか。</para>
-        /// </summary>
-        /// <param name="device">Direct3D9 デバイス。</param>
-        /// <param name="strファイル名">画像ファイル名。</param>
-        /// <param name="format">テクスチャのフォーマット。</param>
-        /// <param name="b黒を透過する">画像の黒（0xFFFFFFFF）を透過させるなら true。</param>
-        /// <exception cref="CTextureCreateFailedException">テクスチャの作成に失敗しました。</exception>
-        public CTexture(Device device, string strファイル名, Format format, bool b黒を透過する)
-            : this(device, strファイル名, format, b黒を透過する, Pool.Managed)
-        {
-        }
-        public CTexture(Device device, byte[] txData, Format format, bool b黒を透過する)
-            : this(device, txData, format, b黒を透過する, Pool.Managed)
-        {
-        }
-        public CTexture(Device device, Bitmap bitmap, Format format, bool b黒を透過する)
-            : this(device, bitmap, format, b黒を透過する, Pool.Managed)
-        {
         }
 
         /// <summary>
@@ -197,12 +158,7 @@ namespace FDK
         /// <param name="format">テクスチャのフォーマット。</param>
         /// <param name="pool">テクスチャの管理方法。</param>
         /// <exception cref="CTextureCreateFailedException">テクスチャの作成に失敗しました。</exception>
-        public CTexture(Device device, int n幅, int n高さ, Format format, Pool pool)
-            : this(device, n幅, n高さ, format, pool, Usage.None)
-        {
-        }
-
-        public CTexture(Device device, int n幅, int n高さ, Format format, Pool pool, Usage usage)
+        public CTexture(Device device, int n幅, int n高さ, Format format, Pool pool, Usage usage = Usage.None)
             : this()
         {
             try
@@ -247,12 +203,13 @@ namespace FDK
         /// <param name="b黒を透過する">画像の黒（0xFFFFFFFF）を透過させるなら true。</param>
         /// <param name="pool">テクスチャの管理方法。</param>
         /// <exception cref="CTextureCreateFailedException">テクスチャの作成に失敗しました。</exception>
-        public CTexture(Device device, string strファイル名, Format format, bool b黒を透過する, Pool pool)
+        public CTexture(Device device, string strファイル名, Format format, bool b黒を透過する, Pool pool = Pool.Managed)
             : this()
         {
             MakeTexture(device, strファイル名, format, b黒を透過する, pool);
         }
-        public void MakeTexture(Device device, string strファイル名, Format format, bool b黒を透過する, Pool pool)
+
+        protected void MakeTexture(Device device, string strファイル名, Format format, bool b黒を透過する, Pool pool)
         {
             if (!File.Exists(strファイル名))     // #27122 2012.1.13 from: ImageInformation では FileNotFound 例外は返ってこないので、ここで自分でチェックする。わかりやすいログのために。
                 throw new FileNotFoundException(string.Format("ファイルが存在しません。\n[{0}]", strファイル名));
@@ -261,12 +218,7 @@ namespace FDK
             MakeTexture(device, _txData, format, b黒を透過する, pool);
         }
 
-        public CTexture(Device device, byte[] txData, Format format, bool b黒を透過する, Pool pool)
-            : this()
-        {
-            MakeTexture(device, txData, format, b黒を透過する, pool);
-        }
-        public void MakeTexture(Device device, byte[] txData, Format format, bool b黒を透過する, Pool pool)
+        private void MakeTexture(Device device, byte[] txData, Format format, bool b黒を透過する, Pool pool)
         {
             try
             {
@@ -291,12 +243,13 @@ namespace FDK
             }
         }
 
-        public CTexture(Device device, Bitmap bitmap, Format format, bool b黒を透過する, Pool pool)
+        public CTexture(Device device, Bitmap bitmap, Format format, bool b黒を透過する, Pool pool = Pool.Managed)
             : this()
         {
             MakeTexture(device, bitmap, format, b黒を透過する, pool);
         }
-        public void MakeTexture(Device device, Bitmap bitmap, Format format, bool b黒を透過する, Pool pool)
+
+        protected void MakeTexture(Device device, Bitmap bitmap, Format format, bool b黒を透過する, Pool pool)
         {
             try
             {
@@ -348,10 +301,12 @@ namespace FDK
         {
             this.t2D描画(device, x, y - (rc画像内の描画領域.Height * this.vc拡大縮小倍率.Y), 1f, rc画像内の描画領域);
         }
-        public void t2D拡大率考慮下中心基準描画(Device device, int x, int y)
+
+        private void t2D拡大率考慮下中心基準描画(Device device, int x, int y)
         {
             this.t2D描画(device, x - (this.szテクスチャサイズ.Width / 2), y - (szテクスチャサイズ.Height * this.vc拡大縮小倍率.Y), 1f, this.rc全画像);
         }
+
         public void t2D拡大率考慮下中心基準描画(Device device, float x, float y)
         {
             this.t2D拡大率考慮下中心基準描画(device, (int)x, (int)y);
@@ -388,7 +343,7 @@ namespace FDK
             t2D描画(device, x, y, rc全画像, horizontalReferencePoint, verticalReferencePoint);
         }
 
-        public void t2D描画(
+        private void t2D描画(
             Device device,
             int x,
             int y,
@@ -713,7 +668,8 @@ namespace FDK
         {
             this.t2D上下反転描画(device, x, y, 1f, rc画像内の描画領域);
         }
-        public void t2D上下反転描画(Device device, int x, int y, float depth, Rectangle rc画像内の描画領域)
+
+        private void t2D上下反転描画(Device device, int x, int y, float depth, Rectangle rc画像内の描画領域)
         {
             if (this.texture == null)
                 throw new InvalidOperationException("テクスチャは生成されていません。");
@@ -771,42 +727,6 @@ namespace FDK
             device.SetTexture(0, this.texture);
             device.VertexFormat = TransformedColoredTexturedVertex.Format;
             device.DrawUserPrimitives(PrimitiveType.TriangleStrip, 2, in this.cvTransformedColoredVertexies);
-        }
-        public void t2D上下反転描画(Device device, Point pt)
-        {
-            this.t2D上下反転描画(device, pt.X, pt.Y, 1f, this.rc全画像);
-        }
-        public void t2D上下反転描画(Device device, Point pt, Rectangle rc画像内の描画領域)
-        {
-            this.t2D上下反転描画(device, pt.X, pt.Y, 1f, rc画像内の描画領域);
-        }
-        public void t2D上下反転描画(Device device, Point pt, float depth, Rectangle rc画像内の描画領域)
-        {
-            this.t2D上下反転描画(device, pt.X, pt.Y, depth, rc画像内の描画領域);
-        }
-
-        public static Vector3 t論理画面座標をワールド座標へ変換する(int x, int y)
-        {
-            return CTexture.t論理画面座標をワールド座標へ変換する(new Vector3((float)x, (float)y, 0f));
-        }
-        public static Vector3 t論理画面座標をワールド座標へ変換する(float x, float y)
-        {
-            return CTexture.t論理画面座標をワールド座標へ変換する(new Vector3(x, y, 0f));
-        }
-        public static Vector3 t論理画面座標をワールド座標へ変換する(Point pt論理画面座標)
-        {
-            return CTexture.t論理画面座標をワールド座標へ変換する(new Vector3(pt論理画面座標.X, pt論理画面座標.Y, 0.0f));
-        }
-        public static Vector3 t論理画面座標をワールド座標へ変換する(Vector2 v2論理画面座標)
-        {
-            return CTexture.t論理画面座標をワールド座標へ変換する(new Vector3(v2論理画面座標, 0f));
-        }
-        public static Vector3 t論理画面座標をワールド座標へ変換する(Vector3 v3論理画面座標)
-        {
-            return new Vector3(
-                (v3論理画面座標.X - (CTexture.sz論理画面.Width / 2.0f)) * CTexture.f画面比率,
-                (-(v3論理画面座標.Y - (CTexture.sz論理画面.Height / 2.0f)) * CTexture.f画面比率),
-                v3論理画面座標.Z);
         }
 
         /// <summary>
@@ -899,14 +819,14 @@ namespace FDK
         private int _opacity;
         private bool bDispose完了済み;
         private PositionColoredTexturedVertex[] cvPositionColoredVertexies;
-        protected TransformedColoredTexturedVertex[] cvTransformedColoredVertexies = new TransformedColoredTexturedVertex[]
+
+        private TransformedColoredTexturedVertex[] cvTransformedColoredVertexies = new TransformedColoredTexturedVertex[]
         {
             new TransformedColoredTexturedVertex(),
             new TransformedColoredTexturedVertex(),
             new TransformedColoredTexturedVertex(),
             new TransformedColoredTexturedVertex(),
         };
-        private const Pool poolvar = Pool.Managed;
         //		byte[] _txData;
 
         /// <summary>
