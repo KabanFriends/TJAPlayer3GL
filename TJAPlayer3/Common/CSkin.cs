@@ -1111,17 +1111,17 @@ namespace TJAPlayer3
                                 if (int.Parse(strParam) > 0)
                                     SongLoading_SubTitle_FontSize = int.Parse(strParam);
                             }
-                            else if (strCommand == nameof(SongLoading_Plate_ReferencePoint))
+                            else if (strCommand == nameof(SongLoadingPlateHorizontalReferencePoint))
                             {
-                                SongLoading_Plate_ReferencePoint = (ReferencePoint)int.Parse(strParam);
+                                SongLoadingPlateHorizontalReferencePoint = (HorizontalReferencePoint)int.Parse(strParam);
                             }
-                            else if (strCommand == nameof(SongLoading_Title_ReferencePoint))
+                            else if (strCommand == nameof(SongLoadingTitleHorizontalReferencePoint))
                             {
-                                SongLoading_Title_ReferencePoint = (ReferencePoint)int.Parse(strParam);
+                                SongLoadingTitleHorizontalReferencePoint = (HorizontalReferencePoint)int.Parse(strParam);
                             }
-                            else if (strCommand == nameof(SongLoading_SubTitle_ReferencePoint))
+                            else if (strCommand == nameof(SongLoadingSubTitleHorizontalReferencePoint))
                             {
-                                SongLoading_SubTitle_ReferencePoint = (ReferencePoint)int.Parse(strParam);
+                                SongLoadingSubTitleHorizontalReferencePoint = (HorizontalReferencePoint)int.Parse(strParam);
                             }
 
                             else if (strCommand == nameof(SongLoading_Title_ForeColor))
@@ -1199,9 +1199,9 @@ namespace TJAPlayer3
                                 if (int.Parse(strParam) > 0)
                                     Game_MusicName_FontSize = int.Parse(strParam);
                             }
-                            else if (strCommand == nameof(Game_MusicName_ReferencePoint))
+                            else if (strCommand == nameof(GameMusicNameHorizontalReferencePoint))
                             {
-                                Game_MusicName_ReferencePoint = (ReferencePoint)int.Parse(strParam);
+                                GameMusicNameHorizontalReferencePoint = (HorizontalReferencePoint)int.Parse(strParam);
                             }
                             else if (strCommand == nameof(Game_Genre_XY))
                             {
@@ -1220,9 +1220,9 @@ namespace TJAPlayer3
                                 if (int.Parse(strParam) > 0)
                                     Game_Lyric_FontSize = int.Parse(strParam);
                             }
-                            else if (strCommand == nameof(Game_Lyric_ReferencePoint))
+                            else if (strCommand == nameof(GameLyricHorizontalReferencePoint))
                             {
-                                Game_Lyric_ReferencePoint = (ReferencePoint)int.Parse(strParam);
+                                GameLyricHorizontalReferencePoint = (HorizontalReferencePoint)int.Parse(strParam);
                             }
 
                             else if (strCommand == nameof(Game_MusicName_ForeColor))
@@ -2176,9 +2176,9 @@ namespace TJAPlayer3
                                 if (int.Parse(strParam) > 0)
                                     Result_MusicName_FontSize = int.Parse(strParam);
                             }
-                            else if (strCommand == nameof(Result_MusicName_ReferencePoint))
+                            else if (strCommand == nameof(ResultMusicNameHorizontalReferencePoint))
                             {
-                                Result_MusicName_ReferencePoint = (ReferencePoint)int.Parse(strParam);
+                                ResultMusicNameHorizontalReferencePoint = (HorizontalReferencePoint)int.Parse(strParam);
                             }
                             else if (strCommand == nameof(Result_StageText_XY))
                             {
@@ -2189,9 +2189,9 @@ namespace TJAPlayer3
                                 if (int.Parse(strParam) > 0)
                                     Result_StageText_FontSize = int.Parse(strParam);
                             }
-                            else if (strCommand == nameof(Result_StageText_ReferencePoint))
+                            else if (strCommand == nameof(ResultStageTextHorizontalReferencePoint))
                             {
-                                Result_StageText_ReferencePoint = (ReferencePoint)int.Parse(strParam);
+                                ResultStageTextHorizontalReferencePoint = (HorizontalReferencePoint)int.Parse(strParam);
                             }
 
                             else if (strCommand == nameof(Result_MusicName_ForeColor))
@@ -2382,12 +2382,6 @@ namespace TJAPlayer3
             All, // 旧筐体(旧作含む)
             WithoutStart // 新筐体
         }
-        public enum ReferencePoint //テクスチャ描画の基準点を変更可能にするための値(rhimm)
-        {
-            Center,
-            Left,
-            Right
-        }
 
         #region 新・SkinConfig
         #region General
@@ -2446,9 +2440,9 @@ namespace TJAPlayer3
         public int[] SongLoading_SubTitle_XY = new int[] { 640, 390 };
         public int SongLoading_Title_FontSize = 30;
         public int SongLoading_SubTitle_FontSize = 22;
-        public ReferencePoint SongLoading_Plate_ReferencePoint = ReferencePoint.Center;
-        public ReferencePoint SongLoading_Title_ReferencePoint = ReferencePoint.Center;
-        public ReferencePoint SongLoading_SubTitle_ReferencePoint = ReferencePoint.Center;
+        public HorizontalReferencePoint SongLoadingPlateHorizontalReferencePoint = HorizontalReferencePoint.Center;
+        public HorizontalReferencePoint SongLoadingTitleHorizontalReferencePoint = HorizontalReferencePoint.Center;
+        public HorizontalReferencePoint SongLoadingSubTitleHorizontalReferencePoint = HorizontalReferencePoint.Center;
         public Color SongLoading_Title_ForeColor = ColorTranslator.FromHtml("#FFFFFF");
         public Color SongLoading_Title_BackColor = ColorTranslator.FromHtml("#000000");
         public Color SongLoading_SubTitle_ForeColor = ColorTranslator.FromHtml("#FFFFFF");
@@ -2512,10 +2506,10 @@ namespace TJAPlayer3
         public int[] Game_Genre_XY = new int[] { 1114, 74 };
         public int[] Game_Lyric_XY = new int[] { 640, 630 };
         public int Game_MusicName_FontSize = 30;
-        public ReferencePoint Game_MusicName_ReferencePoint = ReferencePoint.Right;
+        public HorizontalReferencePoint GameMusicNameHorizontalReferencePoint = HorizontalReferencePoint.Right;
         public string Game_Lyric_FontName = FontUtilities.FallbackFontName;
         public int Game_Lyric_FontSize = 38;
-        public ReferencePoint Game_Lyric_ReferencePoint = ReferencePoint.Center;
+        public HorizontalReferencePoint GameLyricHorizontalReferencePoint = HorizontalReferencePoint.Center;
 
         public Color Game_MusicName_ForeColor = ColorTranslator.FromHtml("#FFFFFF");
         public Color Game_StageText_ForeColor = ColorTranslator.FromHtml("#FFFFFF");
@@ -2700,10 +2694,10 @@ namespace TJAPlayer3
         #region Result
         public int[] Result_MusicName_XY = new int[] { 1254, 6 };
         public int Result_MusicName_FontSize = 30;
-        public ReferencePoint Result_MusicName_ReferencePoint = ReferencePoint.Right;
+        public HorizontalReferencePoint ResultMusicNameHorizontalReferencePoint = HorizontalReferencePoint.Right;
         public int[] Result_StageText_XY = new int[] { 230, 6 };
         public int Result_StageText_FontSize = 30;
-        public ReferencePoint Result_StageText_ReferencePoint = ReferencePoint.Left;
+        public HorizontalReferencePoint ResultStageTextHorizontalReferencePoint = HorizontalReferencePoint.Left;
 
         public Color Result_MusicName_ForeColor = ColorTranslator.FromHtml("#FFFFFF");
         public Color Result_StageText_ForeColor = ColorTranslator.FromHtml("#FFFFFF");
