@@ -223,22 +223,18 @@ namespace FDK
             try
             {
                 var information = ImageInformation.FromMemory(txData);
+
                 this.Format = format;
                 this.sz画像サイズ = new Size(information.Width, information.Height);
                 this.rc全画像 = new Rectangle(0, 0, this.sz画像サイズ.Width, this.sz画像サイズ.Height);
-                int colorKey = (b黒を透過する) ? unchecked((int)0xFF000000) : 0;
                 this.szテクスチャサイズ = this.t指定されたサイズを超えない最適なテクスチャサイズを返す(device, this.sz画像サイズ);
-                //				lock ( lockobj )
-                //				{
-                //Trace.TraceInformation( "CTexture() start: " );
+
+                int colorKey = (b黒を透過する) ? unchecked((int)0xFF000000) : 0;
                 this.texture = Texture.FromMemory(device.UnderlyingDevice, txData, this.sz画像サイズ.Width, this.sz画像サイズ.Height, 1, Usage.None, format, pool, Filter.Point, Filter.None, colorKey);
-                //Trace.TraceInformation( "CTexture() end:   " );
-                //				}
             }
             catch
             {
                 this.Dispose();
-                // throw new CTextureCreateFailedException( string.Format( "テクスチャの生成に失敗しました。\n{0}", strファイル名 ) );
                 throw new CTextureCreateFailedException(string.Format("テクスチャの生成に失敗しました。\n"));
             }
         }
