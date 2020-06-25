@@ -49,11 +49,7 @@ namespace SampleFramework
         long windowedStyle;
         bool savedTopmost;
 
-#if TEST_Direct3D9Ex
-		internal static Direct3DEx Direct3D9Object			// yyagi
-#else
 		internal static Direct3D Direct3D9Object
-#endif
 		{
             get;
             private set;
@@ -457,47 +453,14 @@ namespace SampleFramework
 			{
 				EnsureD3D9();
 
-#if TEST_Direct3D9Ex
-				// 2011.4.26 yyagi
-				// Direct3D9.DeviceExを呼ぶ際(IDirect3D9Ex::CreateDeviceExを呼ぶ際)、
-				// フルスクリーンモードで初期化する場合はDisplayModeEx(D3DDISPLAYMODEEX *pFullscreenDisplayMode)に
-				// 適切な値を設定する必要あり。
-				// 一方、ウインドウモードで初期化する場合は、D3DDISPLAYMODEEXをNULLにする必要があるが、
-				// DisplayModeExがNULL不可と定義されているため、DeviceExのoverloadの中でDisplayModeExを引数に取らないものを
-				// 使う。(DeviceEx側でD3DDISPLAYMODEEXをNULLにしてくれる)
-				// 結局、DeviceExの呼び出しの際に、フルスクリーンかどうかで場合分けが必要となる。
-				if ( CurrentSettings.Direct3D9.PresentParameters.Windowed == false )
-				{
-					DisplayModeEx fullScreenDisplayMode = new DisplayModeEx();
-					fullScreenDisplayMode.Width = CurrentSettings.Direct3D9.PresentParameters.BackBufferWidth;
-					fullScreenDisplayMode.Height = CurrentSettings.Direct3D9.PresentParameters.BackBufferHeight;
-					fullScreenDisplayMode.RefreshRate = CurrentSettings.Direct3D9.PresentParameters.FullScreenRefreshRateInHertz;
-					fullScreenDisplayMode.Format = CurrentSettings.Direct3D9.PresentParameters.BackBufferFormat;
-
-					Device = new SlimDX.Direct3D9.DeviceEx( Direct3D9Object, CurrentSettings.Direct3D9.AdapterOrdinal,
-						CurrentSettings.Direct3D9.DeviceType, game.Window.Handle,
-						CurrentSettings.Direct3D9.CreationFlags, CurrentSettings.Direct3D9.PresentParameters, fullScreenDisplayMode );
-				}
-				else
-				{
-					Device = new SlimDX.Direct3D9.DeviceEx( Direct3D9Object, CurrentSettings.Direct3D9.AdapterOrdinal,
-						CurrentSettings.Direct3D9.DeviceType, game.Window.Handle,
-						CurrentSettings.Direct3D9.CreationFlags, CurrentSettings.Direct3D9.PresentParameters );
-				}
-				Device.MaximumFrameLatency = 1;
-#else
 				Device = new DeviceCache( new SlimDX.Direct3D9.Device( Direct3D9Object, CurrentSettings.Direct3D9.AdapterOrdinal,
 					CurrentSettings.Direct3D9.DeviceType, game.Window.Handle,
 					CurrentSettings.Direct3D9.CreationFlags, CurrentSettings.Direct3D9.PresentParameters ) );
-#endif
 				if ( Result.Last == SlimDX.Direct3D9.ResultCode.DeviceLost )
 				{
 					deviceLost = true;
 					return;
 				}
-#if TEST_Direct3D9Ex
-				Device.MaximumFrameLatency = 1;			// yyagi
-#endif
 			}
 			catch( Exception e )
 			{
@@ -662,11 +625,7 @@ namespace SampleFramework
         internal static void EnsureD3D9()
         {
 			if ( Direct3D9Object == null )
-#if TEST_Direct3D9Ex
-				Direct3D9Object = new Direct3DEx();		// yyagi
-#else
 				Direct3D9Object = new Direct3D();
-#endif
         }
     }
 }

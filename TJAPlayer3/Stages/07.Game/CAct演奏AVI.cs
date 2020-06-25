@@ -542,12 +542,8 @@ namespace TJAPlayer3
 		{
 			if ( !base.b活性化してない )
 			{
-#if TEST_Direct3D9Ex
-				this.tx描画用 = new CTexture( CDTXMania.app.Device, 320, 355, CDTXMania.app.GraphicsDeviceManager.CurrentSettings.BackBufferFormat, Pool.Default, Usage.Dynamic );
-#else
 				this.tx描画用 = new CTexture( TJAPlayer3.app.Device, 1280, 720, TJAPlayer3.app.GraphicsDeviceManager.CurrentSettings.BackBufferFormat, Pool.Managed );
 				this.tx窓描画用 = new CTexture( TJAPlayer3.app.Device, 1280, 720, TJAPlayer3.app.GraphicsDeviceManager.CurrentSettings.BackBufferFormat, Pool.Managed );
-#endif
 				base.OnManagedリソースの作成();
 			}
 		}

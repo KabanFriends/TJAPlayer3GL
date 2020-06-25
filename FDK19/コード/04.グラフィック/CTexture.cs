@@ -222,9 +222,6 @@ namespace FDK
                     {
                         bitmap.Save(stream, ImageFormat.Bmp);
                         stream.Seek(0L, SeekOrigin.Begin);
-#if TEST_Direct3D9Ex
-						pool = poolvar;
-#endif
                         // 中で更にメモリ読み込みし直していて無駄なので、Streamを使うのは止めたいところ
                         this.texture = Texture.FromStream(device.UnderlyingDevice, stream, n幅, n高さ, 1, usage, format, pool, Filter.Point, Filter.None, 0);
                     }
@@ -279,9 +276,6 @@ namespace FDK
                 this.rc全画像 = new Rectangle(0, 0, this.sz画像サイズ.Width, this.sz画像サイズ.Height);
                 int colorKey = (b黒を透過する) ? unchecked((int)0xFF000000) : 0;
                 this.szテクスチャサイズ = this.t指定されたサイズを超えない最適なテクスチャサイズを返す(device, this.sz画像サイズ);
-#if TEST_Direct3D9Ex
-				pool = poolvar;
-#endif
                 //				lock ( lockobj )
                 //				{
                 //Trace.TraceInformation( "CTexture() start: " );
@@ -311,44 +305,14 @@ namespace FDK
                 this.rc全画像 = new Rectangle(0, 0, this.sz画像サイズ.Width, this.sz画像サイズ.Height);
                 int colorKey = (b黒を透過する) ? unchecked((int)0xFF000000) : 0;
                 this.szテクスチャサイズ = this.t指定されたサイズを超えない最適なテクスチャサイズを返す(device, this.sz画像サイズ);
-#if TEST_Direct3D9Ex
-				pool = poolvar;
-#endif
                 //Trace.TraceInformation( "CTExture() start: " );
                 unsafe  // Bitmapの内部データ(a8r8g8b8)を自前でゴリゴリコピーする
                 {
-                    int tw =
-#if TEST_Direct3D9Ex
-					288;		// 32の倍数にする(グラフによっては2のべき乗にしないとダメかも)
-#else
-                    this.sz画像サイズ.Width;
-#endif
-#if TEST_Direct3D9Ex
-					this.texture = new Texture( device, tw, this.sz画像サイズ.Height, 1, Usage.Dynamic, format, Pool.Default );
-#else
                     this.texture = new Texture(device.UnderlyingDevice, this.sz画像サイズ.Width, this.sz画像サイズ.Height, 1, Usage.None, format, pool);
-#endif
                     BitmapData srcBufData = bitmap.LockBits(new Rectangle(0, 0, this.sz画像サイズ.Width, this.sz画像サイズ.Height), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
                     DataRectangle destDataRectangle = texture.LockRectangle(0, LockFlags.Discard);  // None
-#if TEST_Direct3D9Ex
-					byte[] filldata = null;
-					if ( tw > this.sz画像サイズ.Width )
-					{
-						filldata = new byte[ (tw - this.sz画像サイズ.Width) * 4 ];
-					}
-					for ( int y = 0; y < this.sz画像サイズ.Height; y++ )
-					{
-						IntPtr src_scan0 = (IntPtr) ( (Int64) srcBufData.Scan0 + y * srcBufData.Stride );
-						destDataRectangle.Data.WriteRange( src_scan0, this.sz画像サイズ.Width * 4  );
-						if ( tw > this.sz画像サイズ.Width )
-						{
-							destDataRectangle.Data.WriteRange( filldata );
-						}
-					}
-#else
                     IntPtr src_scan0 = (IntPtr)((Int64)srcBufData.Scan0);
                     destDataRectangle.Data.WriteRange(src_scan0, this.sz画像サイズ.Width * 4 * this.sz画像サイズ.Height);
-#endif
                     texture.UnlockRectangle(0);
                     bitmap.UnlockBits(srcBufData);
                 }
@@ -942,12 +906,7 @@ namespace FDK
             new TransformedColoredTexturedVertex(),
             new TransformedColoredTexturedVertex(),
         };
-        private const Pool poolvar =                                                // 2011.4.25 yyagi
-#if TEST_Direct3D9Ex
-			Pool.Default;
-#else
-            Pool.Managed;
-#endif
+        private const Pool poolvar = Pool.Managed;
         //		byte[] _txData;
 
         /// <summary>
