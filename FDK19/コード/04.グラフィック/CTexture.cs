@@ -428,6 +428,46 @@ namespace FDK
             this.t2D拡大率考慮下中心基準描画(device, (int)x, (int)y);
         }
 
+        // TODO Funnel overloads toward this method, inline them, and then push this logic further down toward its callee
+        public void t2D描画(
+            Device device,
+            int x,
+            int y,
+            HorizontalReferencePoint horizontalReferencePoint,
+            VerticalReferencePoint verticalReferencePoint = VerticalReferencePoint.Top)
+        {
+            t2D描画(device, x + GetTruncatedOffset(horizontalReferencePoint), y + GetTruncatedOffset(verticalReferencePoint));
+        }
+
+        private int GetTruncatedOffset(HorizontalReferencePoint horizontalReferencePoint)
+        {
+            switch (horizontalReferencePoint)
+            {
+                case HorizontalReferencePoint.Center:
+                    return -(szテクスチャサイズ.Width / 2);
+                case HorizontalReferencePoint.Left:
+                    return 0;
+                case HorizontalReferencePoint.Right:
+                    return -szテクスチャサイズ.Width;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(horizontalReferencePoint), horizontalReferencePoint, null);
+            }
+        }
+
+        private int GetTruncatedOffset(VerticalReferencePoint verticalReferencePoint)
+        {
+            switch (verticalReferencePoint)
+            {
+                case VerticalReferencePoint.Center:
+                    return -(szテクスチャサイズ.Height / 2);
+                case VerticalReferencePoint.Top:
+                    return 0;
+                case VerticalReferencePoint.Bottom:
+                    return -szテクスチャサイズ.Height;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(verticalReferencePoint), verticalReferencePoint, null);
+            }
+        }
 
         /// <summary>
         /// テクスチャを 2D 画像と見なして描画する。

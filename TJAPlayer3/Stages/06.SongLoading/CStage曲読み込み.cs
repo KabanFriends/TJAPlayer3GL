@@ -232,26 +232,13 @@ namespace TJAPlayer3
             this.ct曲名表示.t進行();
 			if( this.tx背景 != null )
 				this.tx背景.t2D描画( TJAPlayer3.app.Device, 0, 0 );
-            //CDTXMania.act文字コンソール.tPrint( 0, 0, C文字コンソール.Eフォント種別.灰, this.ct曲名表示.n現在の値.ToString() );
 
             if (TJAPlayer3.Tx.SongLoading_Plate != null)
             {
                 TJAPlayer3.Tx.SongLoading_Plate.bスクリーン合成 = TJAPlayer3.Skin.SongLoading_Plate_ScreenBlend; //あまりにも出番が無い
                 TJAPlayer3.Tx.SongLoading_Plate.Opacity = C変換.nParsentTo255((this.ct曲名表示.n現在の値 / 30.0));
-                if(TJAPlayer3.Skin.SongLoadingPlateHorizontalReferencePoint == HorizontalReferencePoint.Left)
-                {
-                    TJAPlayer3.Tx.SongLoading_Plate.t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.SongLoading_Plate_XY[0], TJAPlayer3.Skin.SongLoading_Plate_XY[1] - (TJAPlayer3.Tx.SongLoading_Plate.sz画像サイズ.Height / 2));
-                }
-                else if(TJAPlayer3.Skin.SongLoadingPlateHorizontalReferencePoint == HorizontalReferencePoint.Right)
-                {
-                    TJAPlayer3.Tx.SongLoading_Plate.t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.SongLoading_Plate_XY[0] - TJAPlayer3.Tx.SongLoading_Plate.sz画像サイズ.Width, TJAPlayer3.Skin.SongLoading_Plate_XY[1] - (TJAPlayer3.Tx.SongLoading_Plate.sz画像サイズ.Height / 2));
-                }
-                else
-                {
-                TJAPlayer3.Tx.SongLoading_Plate.t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.SongLoading_Plate_XY[0] - (TJAPlayer3.Tx.SongLoading_Plate.sz画像サイズ.Width / 2), TJAPlayer3.Skin.SongLoading_Plate_XY[1] - (TJAPlayer3.Tx.SongLoading_Plate.sz画像サイズ.Height / 2));
-                }
+                TJAPlayer3.Tx.SongLoading_Plate.t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.SongLoading_Plate_XY[0], TJAPlayer3.Skin.SongLoading_Plate_XY[1], TJAPlayer3.Skin.SongLoadingPlateHorizontalReferencePoint, VerticalReferencePoint.Center);
             }
-            //CDTXMania.act文字コンソール.tPrint( 0, 16, C文字コンソール.Eフォント種別.灰, C変換.nParsentTo255( ( this.ct曲名表示.n現在の値 / 30.0 ) ).ToString() );
 
 
 			int y = 720 - 45;
