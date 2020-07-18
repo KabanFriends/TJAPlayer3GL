@@ -16,8 +16,7 @@ namespace TJAPlayer3.ErrorReporting
         private const string EnvironmentDevelopment = "development";
         private const string EnvironmentProduction = "production";
 
-        public const string GetCurrentSkinNameOrNullFallbackForNullSkin = "[GetCurrentSkinNameOrNull null skin]";
-        public const string GetCurrentSkinNameOrNullFallbackForExceptionEncountered = "[GetCurrentSkinNameOrNull exception encountered]";
+        public const string GetCurrentSkinNameOrFallbackFallbackForExceptionEncountered = "[GetCurrentSkinNameOrNull exception encountered]";
 
         public static void WithErrorReporting(Action action)
         {
@@ -106,11 +105,17 @@ namespace TJAPlayer3.ErrorReporting
             {
                 SentrySdk.WithScope(scope =>
                 {
-                    var skinName = GetCurrentSkinNameOrNull();
-                    if (skinName != null)
+                    void SetSkinNameTag(string kind, Func<string> func, string scopeTagKindPart)
                     {
-                        scope.SetTag("skin.name", ToSha256InBase64(skinName));
+                        var skinName = GetCurrentSkinNameOrFallback(kind, func);
+                        if (skinName != null)
+                        {
+                            scope.SetTag($"skin.{scopeTagKindPart}.name", ToSha256InBase64(skinName));
+                        }
                     }
+
+                    SetSkinNameTag("box.def", CSkin.GetCurrentBoxDefSkinName, "boxdef");
+                    SetSkinNameTag("system", CSkin.GetCurrentSystemSkinName, "system");
 
                     SentrySdk.CaptureException(e);
                 });
@@ -126,23 +131,17 @@ namespace TJAPlayer3.ErrorReporting
 #endif
         }
 
-        private static string GetCurrentSkinNameOrNull()
+        private static string GetCurrentSkinNameOrFallback(string kind, Func<string> func)
         {
             try
             {
-                var skin = TJAPlayer3.Skin;
-                if (skin == null)
-                {
-                    return GetCurrentSkinNameOrNullFallbackForNullSkin;
-                }
-
-                return skin.GetCurrentSkinName();
+                return func();
             }
             catch (Exception e)
             {
-                Trace.WriteLine("Unexpected exception encountered when attempting to get the current skin name: " + e);
+                Trace.WriteLine($"Unexpected exception encountered when attempting to get the current {kind} skin name: " + e);
 
-                return GetCurrentSkinNameOrNullFallbackForExceptionEncountered;
+                return GetCurrentSkinNameOrFallbackFallbackForExceptionEncountered;
             }
         }
 

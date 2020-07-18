@@ -7,8 +7,7 @@ namespace TJAPlayer3.Tests.ErrorReporting
     public sealed class ErrorReporterTests
     {
         [Test]
-        [TestCase(ErrorReporter.GetCurrentSkinNameOrNullFallbackForNullSkin, "dX+hmseHos63UjL7n6bocIEgSZxo+qZ1szIFljYJf0k=")]
-        [TestCase(ErrorReporter.GetCurrentSkinNameOrNullFallbackForExceptionEncountered, "RJ1TZ22uELG4WVEWkfitV2PGE6xjdzoY4zXYqQvS/UY=")]
+        [TestCase(ErrorReporter.GetCurrentSkinNameOrFallbackFallbackForExceptionEncountered, "RJ1TZ22uELG4WVEWkfitV2PGE6xjdzoY4zXYqQvS/UY=")]
         [TestCase("", "47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=")]
         [TestCase(" ", "Nqnn8clbgv+5l0PgxcTOldg8mkMKrFn4TvPL+rYUUGg=")]
         [TestCase("Default", "IbERy/5uj8otGBxD9TrVSLIuOKypVbmCRwalBLCgei0=")]

@@ -452,9 +452,14 @@ namespace TJAPlayer3
         private static string strSystemSkinSubfolderFullName;           // Config画面で設定されたスキン
         private static string strBoxDefSkinSubfolderFullName = "";      // box.defで指定されているスキン
 
-        public string GetCurrentSkinName(bool fromUserConfig = false)
+        public static string GetCurrentBoxDefSkinName()
         {
-            return GetSkinName(TJAPlayer3.Skin.GetCurrentSkinSubfolderFullName(fromUserConfig));
+            return GetSkinName(strBoxDefSkinSubfolderFullName, false);
+        }
+
+        public static string GetCurrentSystemSkinName()
+        {
+            return GetSkinName(strSystemSkinSubfolderFullName, false);
         }
 
         /// <summary>
@@ -688,12 +693,21 @@ namespace TJAPlayer3
         /// </summary>
         /// <param name="skinpath">スキンが格納されたパス名(フルパス)</param>
         /// <returns>スキン名</returns>
-        public static string GetSkinName(string skinPathFullName)
+        public static string GetSkinName(string skinPathFullName, bool fallBackToSystemOnEmpty = true)
         {
             if (skinPathFullName != null)
             {
                 if (skinPathFullName == "")     // 「box.defで未定義」用
-                    skinPathFullName = strSystemSkinSubfolderFullName;
+                {
+                    if (fallBackToSystemOnEmpty)
+                    {
+                        skinPathFullName = strSystemSkinSubfolderFullName;
+                    }
+                    else
+                    {
+                        return skinPathFullName;
+                    }
+                }
                 string[] tmp = skinPathFullName.Split(System.IO.Path.DirectorySeparatorChar);
                 return tmp[tmp.Length - 2];     // ディレクトリ名の最後から2番目の要素がスキン名(最後の要素はnull。元stringの末尾が\なので。)
             }
