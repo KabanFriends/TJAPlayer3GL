@@ -188,18 +188,7 @@ namespace TJAPlayer3
                         if (this.txMusicName.szテクスチャサイズ.Width <= 660.0f)
                             fRate = 1.0f;
                         this.txMusicName.vc拡大縮小倍率.X = fRate;
-                        if (TJAPlayer3.Skin.GameMusicNameHorizontalReferencePoint == HorizontalReferencePoint.Center)
-                        {
-                            this.txMusicName.t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_MusicName_XY[0] - ((this.txMusicName.szテクスチャサイズ.Width * txMusicName.vc拡大縮小倍率.X) / 2), TJAPlayer3.Skin.Game_MusicName_XY[1]);
-                        }
-                        else if (TJAPlayer3.Skin.GameMusicNameHorizontalReferencePoint == HorizontalReferencePoint.Left)
-                        {
-                            this.txMusicName.t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_MusicName_XY[0], TJAPlayer3.Skin.Game_MusicName_XY[1]);
-                        }
-                        else
-                        {
-                            this.txMusicName.t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_MusicName_XY[0] - (this.txMusicName.szテクスチャサイズ.Width * txMusicName.vc拡大縮小倍率.X), TJAPlayer3.Skin.Game_MusicName_XY[1]);
-                        }
+                        this.txMusicName.t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_MusicName_XY[0], TJAPlayer3.Skin.Game_MusicName_XY[1], TJAPlayer3.Skin.GameMusicNameHorizontalReferencePoint);
                     }
                 }
                 else
@@ -246,21 +235,7 @@ namespace TJAPlayer3
 
                     #endregion
 
-                    if( this.txMusicName != null )
-                    {
-                        if (TJAPlayer3.Skin.GameMusicNameHorizontalReferencePoint == HorizontalReferencePoint.Center)
-                        {
-                            this.txMusicName.t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_MusicName_XY[0] - ((this.txMusicName.szテクスチャサイズ.Width * txMusicName.vc拡大縮小倍率.X) / 2), TJAPlayer3.Skin.Game_MusicName_XY[1]);
-                        }
-                        else if (TJAPlayer3.Skin.GameMusicNameHorizontalReferencePoint == HorizontalReferencePoint.Left)
-                        {
-                            this.txMusicName.t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_MusicName_XY[0], TJAPlayer3.Skin.Game_MusicName_XY[1]);
-                        }
-                        else
-                        {
-                            this.txMusicName.t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_MusicName_XY[0] - (this.txMusicName.szテクスチャサイズ.Width * txMusicName.vc拡大縮小倍率.X), TJAPlayer3.Skin.Game_MusicName_XY[1]);
-                        }
-                    }
+                    txMusicName?.t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_MusicName_XY[0], TJAPlayer3.Skin.Game_MusicName_XY[1], TJAPlayer3.Skin.GameMusicNameHorizontalReferencePoint);
 
                     tx難易度とステージ数?.t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_MusicName_XY[0], TJAPlayer3.Skin.Game_MusicName_XY[1], TJAPlayer3.Skin.GameMusicNameHorizontalReferencePoint);
                 }
