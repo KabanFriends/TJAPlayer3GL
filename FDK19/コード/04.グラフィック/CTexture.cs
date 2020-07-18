@@ -328,7 +328,6 @@ namespace FDK
             this.t2D描画(device, x - (this.szテクスチャサイズ.Width / 2 * this.vc拡大縮小倍率.X), y - (szテクスチャサイズ.Height / 2 * this.vc拡大縮小倍率.Y), 1f, this.rc全画像);
         }
 
-        // TODO Funnel overloads toward these two methods, inline the overloads, and then push this logic further down toward its lower-level callee
         public void t2D描画(
             Device device,
             int x,
@@ -339,6 +338,7 @@ namespace FDK
             t2D描画(device, x, y, rc全画像, horizontalReferencePoint, verticalReferencePoint);
         }
 
+        // TODO Funnel overloads toward these this method, inline the overloads, and then push this logic further down toward its lower-level callee
         private void t2D描画(
             Device device,
             int x,
