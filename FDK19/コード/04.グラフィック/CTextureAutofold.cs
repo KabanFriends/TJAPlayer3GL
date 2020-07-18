@@ -44,15 +44,12 @@ namespace FDK
 		/// <param name="b黒を透過する">画像の黒（0xFFFFFFFF）を透過させるなら true。</param>
 		/// <param name="pool">テクスチャの管理方法。</param>
 		/// <exception cref="CTextureCreateFailedException">テクスチャの作成に失敗しました。</exception>
-		public CTextureAf( Device device, string strファイル名, Format format, bool b黒を透過する, Pool pool )
+        private CTextureAf( Device device, string strファイル名, Format format, bool b黒を透過する, Pool pool )
 		{
 			MakeTexture( device, strファイル名, format, b黒を透過する, pool );
 		}
 
-
-
-
-		public new void MakeTexture( Device device, string strファイル名, Format format, bool b黒を透過する, Pool pool )
+        private new void MakeTexture( Device device, string strファイル名, Format format, bool b黒を透過する, Pool pool )
 		{
 			if ( !File.Exists( strファイル名 ) )		// #27122 2012.1.13 from: ImageInformation では FileNotFound 例外は返ってこないので、ここで自分でチェックする。わかりやすいログのために。
 				throw new FileNotFoundException( string.Format( "ファイルが存在しません。\n[{0}]", strファイル名 ) );

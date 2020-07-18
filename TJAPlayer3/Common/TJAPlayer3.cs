@@ -1330,7 +1330,8 @@ for (int i = 0; i < 3; i++) {
 		{
 			return tテクスチャの生成Af( fileName, false );
 		}
-		public static CTextureAf tテクスチャの生成Af( string fileName, bool b黒を透過する )
+
+        private static CTextureAf tテクスチャの生成Af( string fileName, bool b黒を透過する )
 		{
 			if ( app == null )
 			{

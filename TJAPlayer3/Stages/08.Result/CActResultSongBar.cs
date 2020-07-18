@@ -88,33 +88,11 @@ namespace TJAPlayer3
 			}
 			this.ct登場用.t進行();
 
-            if (TJAPlayer3.Skin.Result_MusicName_ReferencePoint == CSkin.ReferencePoint.Center)
-            {
-                this.txMusicName.t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Result_MusicName_XY[0] - ((this.txMusicName.szテクスチャサイズ.Width * txMusicName.vc拡大縮小倍率.X) / 2), TJAPlayer3.Skin.Result_MusicName_XY[1]);
-            }
-            else if (TJAPlayer3.Skin.Result_MusicName_ReferencePoint == CSkin.ReferencePoint.Left)
-            {
-                this.txMusicName.t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Result_MusicName_XY[0], TJAPlayer3.Skin.Result_MusicName_XY[1]);
-            }
-            else
-            {
-                this.txMusicName.t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Result_MusicName_XY[0] - this.txMusicName.szテクスチャサイズ.Width * txMusicName.vc拡大縮小倍率.X, TJAPlayer3.Skin.Result_MusicName_XY[1]);
-            }
+            this.txMusicName.t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Result_MusicName_XY[0], TJAPlayer3.Skin.Result_MusicName_XY[1], TJAPlayer3.Skin.ResultMusicNameHorizontalReferencePoint);
 
             if(TJAPlayer3.stage選曲.n確定された曲の難易度 != (int)Difficulty.Dan)
             {
-                if (TJAPlayer3.Skin.Result_StageText_ReferencePoint == CSkin.ReferencePoint.Center)
-                {
-                    this.txStageText.t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Result_StageText_XY[0] - ((this.txStageText.szテクスチャサイズ.Width * txStageText.vc拡大縮小倍率.X) / 2), TJAPlayer3.Skin.Result_StageText_XY[1]);
-                }
-                else if (TJAPlayer3.Skin.Result_StageText_ReferencePoint == CSkin.ReferencePoint.Right)
-                {
-                    this.txStageText.t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Result_StageText_XY[0] - this.txStageText.szテクスチャサイズ.Width, TJAPlayer3.Skin.Result_StageText_XY[1]);
-                }
-                else
-                {
-                    this.txStageText.t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Result_StageText_XY[0], TJAPlayer3.Skin.Result_StageText_XY[1]);
-                }
+                this.txStageText.t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Result_StageText_XY[0], TJAPlayer3.Skin.Result_StageText_XY[1], TJAPlayer3.Skin.ResultStageTextHorizontalReferencePoint);
             }
 
 
