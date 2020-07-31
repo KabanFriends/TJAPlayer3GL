@@ -71,6 +71,8 @@ namespace TJAPlayer3
             Enum_Song = TxC(@"Enum_Song.png");
             Scanning_Loudness = TxC(@"Scanning_Loudness.png");
             Overlay = TxC(@"Overlay.png");
+
+            NamePlate = new CTexture[2];
             NamePlate[0] = TxC(@"1P_NamePlate.png");
             NamePlate[1] = TxC(@"2P_NamePlate.png");
             #endregion
@@ -507,7 +509,7 @@ namespace TJAPlayer3
             TJAPlayer3.t安全にDisposeする(ref Enum_Song);
             TJAPlayer3.t安全にDisposeする(ref Scanning_Loudness);
             TJAPlayer3.t安全にDisposeする(ref Overlay);
-            TJAPlayer3.t安全にDisposeする(NamePlate);
+            TJAPlayer3.t安全にDisposeする(ref NamePlate);
 
             #endregion
             #region 1_タイトル画面
@@ -740,7 +742,7 @@ namespace TJAPlayer3
             Enum_Song,
             Scanning_Loudness,
             Overlay;
-        public readonly CTexture[] NamePlate = new CTexture[2];
+        public CTexture[] NamePlate;
         #endregion
         #region 1_タイトル画面
         public CTexture Title_Background,
