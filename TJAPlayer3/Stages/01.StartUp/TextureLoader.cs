@@ -118,7 +118,9 @@ namespace TJAPlayer3
             {
                 SongSelect_Frame_Box[i] = TxC(SONGSELECT + @"Frame_Box_" + i.ToString() + ".png");
             }
-            for (int i = 0; i < (int)Difficulty.Total; i++)
+
+            SongSelect_ScoreWindow = new CTexture[(int) Difficulty.Total];
+            for (int i = 0; i < SongSelect_ScoreWindow.Length; i++)
             {
                 SongSelect_ScoreWindow[i] = TxC(SONGSELECT + @"ScoreWindow_" + i.ToString() + ".png");
             }
@@ -548,7 +550,7 @@ namespace TJAPlayer3
             TJAPlayer3.t安全にDisposeする(ref SongSelect_Cursor_Right);
             TJAPlayer3.t安全にDisposeする(SongSelect_Bar_Genre);
             TJAPlayer3.t安全にDisposeする(SongSelect_Frame_Box);
-            TJAPlayer3.t安全にDisposeする(SongSelect_ScoreWindow);
+            TJAPlayer3.t安全にDisposeする(ref SongSelect_ScoreWindow);
             TJAPlayer3.t安全にDisposeする(ref SongSelect_GenreBack);
             TJAPlayer3.t安全にDisposeする(ref SongSelect_ScoreWindow_Text);
             TJAPlayer3.t安全にDisposeする(ref SongSelect_Rating);
@@ -782,7 +784,7 @@ namespace TJAPlayer3
             SongSelect_Rating;
 
         public CTexture[] SongSelect_GenreBack;
-        public readonly CTexture[] SongSelect_ScoreWindow = new CTexture[(int)Difficulty.Total];
+        public CTexture[] SongSelect_ScoreWindow;
         public readonly CTexture[] SongSelect_Bar_Genre = new CTexture[9];
         public readonly CTexture[] SongSelect_Frame_Box = new CTexture[9];
 
