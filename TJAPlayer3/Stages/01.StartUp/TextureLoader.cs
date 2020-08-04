@@ -312,8 +312,11 @@ namespace TJAPlayer3
             #endregion
             #region 背景
             Background = TxC(GAME + Background + @"0\" + @"Background.png");
+
+            Background_Up = new CTexture[2];
             Background_Up[0] = TxC(GAME + BACKGROUND + @"0\" + @"1P_Up.png");
             Background_Up[1] = TxC(GAME + BACKGROUND + @"0\" + @"2P_Up.png");
+
             Background_Up_Clear[0] = TxC(GAME + BACKGROUND + @"0\" + @"1P_Up_Clear.png");
             Background_Up_Clear[1] = TxC(GAME + BACKGROUND + @"0\" + @"2P_Up_Clear.png");
             Background_Down = TxC(GAME + BACKGROUND + @"0\" + @"Down.png");
@@ -610,7 +613,7 @@ namespace TJAPlayer3
             #endregion
             #region 背景
             TJAPlayer3.t安全にDisposeする(ref Background);
-            TJAPlayer3.t安全にDisposeする(Background_Up);
+            TJAPlayer3.t安全にDisposeする(ref Background_Up);
             TJAPlayer3.t安全にDisposeする(Background_Up_Clear);
             TJAPlayer3.t安全にDisposeする(ref Background_Down);
             TJAPlayer3.t安全にDisposeする(ref Background_Down_Clear);
@@ -839,7 +842,7 @@ namespace TJAPlayer3
             Background_Down,
             Background_Down_Clear,
             Background_Down_Scroll;
-        public readonly CTexture[] Background_Up = new CTexture[2];
+        public CTexture[] Background_Up;
         public readonly CTexture[] Background_Up_Clear = new CTexture[2];
 
         #endregion
