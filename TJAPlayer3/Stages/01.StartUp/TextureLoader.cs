@@ -327,6 +327,7 @@ namespace TJAPlayer3
 
             #endregion
             #region 太鼓
+            Taiko_Background = new CTexture[2];
             Taiko_Background[0] = TxC(GAME + TAIKO + @"1P_Background.png");
             Taiko_Background[1] = TxC(GAME + TAIKO + @"2P_Background.png");
 
@@ -626,7 +627,7 @@ namespace TJAPlayer3
 
             #endregion
             #region 太鼓
-            TJAPlayer3.t安全にDisposeする(Taiko_Background);
+            TJAPlayer3.t安全にDisposeする(ref Taiko_Background);
             TJAPlayer3.t安全にDisposeする(ref Taiko_Frame);
             TJAPlayer3.t安全にDisposeする(Taiko_PlayerNumber);
             TJAPlayer3.t安全にDisposeする(Taiko_NamePlate);
@@ -854,7 +855,7 @@ namespace TJAPlayer3
         #region 太鼓
 
         public CTexture[] Taiko_Frame; // MTaiko下敷き
-        public readonly CTexture[] Taiko_Background = new CTexture[2];
+        public CTexture[] Taiko_Background;
         public CTexture Taiko_Base,
             Taiko_Don_Left,
             Taiko_Don_Right,
