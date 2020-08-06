@@ -346,10 +346,13 @@ namespace TJAPlayer3
             Taiko_Ka_Right = TxC(GAME + TAIKO + @"Ka.png");
             Taiko_LevelUp = TxC(GAME + TAIKO + @"LevelUp.png");
             Taiko_LevelDown = TxC(GAME + TAIKO + @"LevelDown.png");
+
+            Course_Symbol = new CTexture[Course_Symbols.Length];
             for (int i = 0; i < Course_Symbol.Length; i++)
             {
                 Course_Symbol[i] = TxC(GAME + COURSESYMBOL + Course_Symbols[i] + ".png");
             }
+
             Taiko_Score[0] = TxC(GAME + TAIKO + @"Score.png");
             Taiko_Score[1] = TxC(GAME + TAIKO + @"Score_1P.png");
             Taiko_Score[2] = TxC(GAME + TAIKO + @"Score_2P.png");
@@ -638,7 +641,7 @@ namespace TJAPlayer3
             TJAPlayer3.t安全にDisposeする(ref Taiko_Ka_Right);
             TJAPlayer3.t安全にDisposeする(ref Taiko_LevelUp);
             TJAPlayer3.t安全にDisposeする(ref Taiko_LevelDown);
-            TJAPlayer3.t安全にDisposeする(Course_Symbol);
+            TJAPlayer3.t安全にDisposeする(ref Course_Symbol);
             TJAPlayer3.t安全にDisposeする(Taiko_Score);
             TJAPlayer3.t安全にDisposeする(Taiko_Combo);
             TJAPlayer3.t安全にDisposeする(ref Taiko_Combo_Effect);
@@ -867,7 +870,7 @@ namespace TJAPlayer3
             Taiko_Combo_Text;
 
         private static readonly string[] Course_Symbols = { "Easy", "Normal", "Hard", "Oni", "Edit", "Tower", "Dan", "Shin" };
-        public readonly CTexture[] Course_Symbol = new CTexture[Course_Symbols.Length];
+        public CTexture[] Course_Symbol;
         public readonly CTexture[] Taiko_PlayerNumber = new CTexture[2];
         public readonly CTexture[] Taiko_NamePlate = new CTexture[2]; // ネームプレート
         public readonly CTexture[] Taiko_Score = new CTexture[3];
