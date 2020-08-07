@@ -335,8 +335,10 @@ namespace TJAPlayer3
             Taiko_Frame[0] = TxC(GAME + TAIKO + @"1P_Frame.png");
             Taiko_Frame[1] = TxC(GAME + TAIKO + @"2P_Frame.png");
 
+            Taiko_PlayerNumber = new CTexture[2];
             Taiko_PlayerNumber[0] = TxC(GAME + TAIKO + @"1P_PlayerNumber.png");
             Taiko_PlayerNumber[1] = TxC(GAME + TAIKO + @"2P_PlayerNumber.png");
+
             Taiko_NamePlate[0] = TxC(GAME + TAIKO + @"1P_NamePlate.png");
             Taiko_NamePlate[1] = TxC(GAME + TAIKO + @"2P_NamePlate.png");
             Taiko_Base = TxC(GAME + TAIKO + @"Base.png");
@@ -632,7 +634,7 @@ namespace TJAPlayer3
             #region 太鼓
             TJAPlayer3.t安全にDisposeする(ref Taiko_Background);
             TJAPlayer3.t安全にDisposeする(ref Taiko_Frame);
-            TJAPlayer3.t安全にDisposeする(Taiko_PlayerNumber);
+            TJAPlayer3.t安全にDisposeする(ref Taiko_PlayerNumber);
             TJAPlayer3.t安全にDisposeする(Taiko_NamePlate);
             TJAPlayer3.t安全にDisposeする(ref Taiko_Base);
             TJAPlayer3.t安全にDisposeする(ref Taiko_Don_Left);
@@ -871,7 +873,7 @@ namespace TJAPlayer3
 
         private static readonly string[] Course_Symbols = { "Easy", "Normal", "Hard", "Oni", "Edit", "Tower", "Dan", "Shin" };
         public CTexture[] Course_Symbol;
-        public readonly CTexture[] Taiko_PlayerNumber = new CTexture[2];
+        public CTexture[] Taiko_PlayerNumber;
         public readonly CTexture[] Taiko_NamePlate = new CTexture[2]; // ネームプレート
         public readonly CTexture[] Taiko_Score = new CTexture[3];
         public readonly CTexture[] Taiko_Combo = new CTexture[2];
