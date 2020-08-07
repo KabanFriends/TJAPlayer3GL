@@ -375,20 +375,34 @@ namespace TJAPlayer3
             Gauge[0] = TxC(GAME + GAUGE + @"1P.png");
             Gauge[1] = TxC(GAME + GAUGE + @"2P.png");
 
+            Gauge_Hard = new CTexture[2];
             Gauge_Hard[0] = TxC(GAME + GAUGE + @"1P_Hard.png");
             Gauge_Hard[1] = TxC(GAME + GAUGE + @"2P_Hard.png");
+
+            Gauge_ExHard = new CTexture[2];
             Gauge_ExHard[0] = TxC(GAME + GAUGE + @"1P_ExHard.png");
             Gauge_ExHard[1] = TxC(GAME + GAUGE + @"2P_ExHard.png");
+
+            Gauge_Base = new CTexture[2];
             Gauge_Base[0] = TxC(GAME + GAUGE + @"1P_Base.png");
             Gauge_Base[1] = TxC(GAME + GAUGE + @"2P_Base.png");
+
+            Gauge_Base_Hard = new CTexture[2];
             Gauge_Base_Hard[0] = TxC(GAME + GAUGE + @"1P_Base_Hard.png");
             Gauge_Base_Hard[1] = TxC(GAME + GAUGE + @"2P_Base_Hard.png");
+
+            Gauge_Base_ExHard = new CTexture[2];
             Gauge_Base_ExHard[0] = TxC(GAME + GAUGE + @"1P_Base_ExHard.png");
             Gauge_Base_ExHard[1] = TxC(GAME + GAUGE + @"2P_Base_ExHard.png");
+
+            Gauge_Line = new CTexture[2];
             Gauge_Line[0] = TxC(GAME + GAUGE + @"1P_Line.png");
             Gauge_Line[1] = TxC(GAME + GAUGE + @"2P_Line.png");
+
+            Gauge_Line_Hard = new CTexture[2];
             Gauge_Line_Hard[0] = TxC(GAME + GAUGE + @"1P_Line_Hard.png");
             Gauge_Line_Hard[1] = TxC(GAME + GAUGE + @"2P_Line_Hard.png");
+
             TJAPlayer3.Skin.Game_Gauge_Rainbow_Ptn = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path(BASE + GAME + GAUGE + @"Rainbow\"));
             if (TJAPlayer3.Skin.Game_Gauge_Rainbow_Ptn != 0)
             {
@@ -400,8 +414,11 @@ namespace TJAPlayer3
             }
             Gauge_Soul = TxC(GAME + GAUGE + @"Soul.png");
             Gauge_Soul_Fire = TxC(GAME + GAUGE + @"Fire.png");
+
+            Gauge_Soul_Explosion = new CTexture[2];
             Gauge_Soul_Explosion[0] = TxC(GAME + GAUGE + @"1P_Explosion.png");
             Gauge_Soul_Explosion[1] = TxC(GAME + GAUGE + @"2P_Explosion.png");
+
             #endregion
             #region 吹き出し
             Balloon_Combo[0] = TxC(GAME + BALLOON + @"Combo_1P.png");
@@ -660,16 +677,17 @@ namespace TJAPlayer3
             #endregion
             #region ゲージ
             TJAPlayer3.t安全にDisposeする(ref Gauge);
-            TJAPlayer3.t安全にDisposeする(Gauge_Hard);
-            TJAPlayer3.t安全にDisposeする(Gauge_Base);
-            TJAPlayer3.t安全にDisposeする(Gauge_Base_Hard);
-            TJAPlayer3.t安全にDisposeする(Gauge_Base_ExHard);
-            TJAPlayer3.t安全にDisposeする(Gauge_Line);
-            TJAPlayer3.t安全にDisposeする(Gauge_Line_Hard);
-            TJAPlayer3.t安全にDisposeする(Gauge_Rainbow);
+            TJAPlayer3.t安全にDisposeする(ref Gauge_Hard);
+            TJAPlayer3.t安全にDisposeする(ref Gauge_ExHard);
+            TJAPlayer3.t安全にDisposeする(ref Gauge_Base);
+            TJAPlayer3.t安全にDisposeする(ref Gauge_Base_Hard);
+            TJAPlayer3.t安全にDisposeする(ref Gauge_Base_ExHard);
+            TJAPlayer3.t安全にDisposeする(ref Gauge_Line);
+            TJAPlayer3.t安全にDisposeする(ref Gauge_Line_Hard);
+            TJAPlayer3.t安全にDisposeする(ref Gauge_Rainbow);
             TJAPlayer3.t安全にDisposeする(ref Gauge_Soul);
             TJAPlayer3.t安全にDisposeする(ref Gauge_Soul_Fire);
-            TJAPlayer3.t安全にDisposeする(Gauge_Soul_Explosion);
+            TJAPlayer3.t安全にDisposeする(ref Gauge_Soul_Explosion);
             #endregion
             #region 吹き出し
             TJAPlayer3.t安全にDisposeする(Balloon_Combo);
@@ -889,15 +907,15 @@ namespace TJAPlayer3
         #endregion
         #region ゲージ
         public CTexture[] Gauge;
-        public readonly CTexture[] Gauge_Hard = new CTexture[2];
-        public readonly CTexture[] Gauge_ExHard = new CTexture[2];
-        public readonly CTexture[] Gauge_Base = new CTexture[2];
-        public readonly CTexture[] Gauge_Base_Hard = new CTexture[2];
-        public readonly CTexture[] Gauge_Base_ExHard = new CTexture[2];
-        public readonly CTexture[] Gauge_Line = new CTexture[2];
-        public readonly CTexture[] Gauge_Line_Hard = new CTexture[2];
+        public CTexture[] Gauge_Hard;
+        public CTexture[] Gauge_ExHard;
+        public CTexture[] Gauge_Base;
+        public CTexture[] Gauge_Base_Hard;
+        public CTexture[] Gauge_Base_ExHard;
+        public CTexture[] Gauge_Line;
+        public CTexture[] Gauge_Line_Hard;
         public CTexture[] Gauge_Rainbow;
-        public readonly CTexture[] Gauge_Soul_Explosion = new CTexture[2];
+        public CTexture[] Gauge_Soul_Explosion;
 
         public CTexture Gauge_Soul,
             Gauge_Soul_Fire;
