@@ -430,6 +430,7 @@ namespace TJAPlayer3
             Balloon_Number_Roll = TxC(GAME + BALLOON + @"Number_Roll.png");
             Balloon_Number_Combo = TxC(GAME + BALLOON + @"Number_Combo.png");
 
+            Balloon_Breaking = new CTexture[6];
             for (int i = 0; i < Balloon_Breaking.Length; i++)
             {
                 Balloon_Breaking[i] = TxC(GAME + BALLOON + @"Breaking_" + i.ToString() + ".png");
@@ -697,7 +698,7 @@ namespace TJAPlayer3
             TJAPlayer3.t安全にDisposeする(ref Balloon_Balloon);
             TJAPlayer3.t安全にDisposeする(ref Balloon_Number_Roll);
             TJAPlayer3.t安全にDisposeする(ref Balloon_Number_Combo);
-            TJAPlayer3.t安全にDisposeする(Balloon_Breaking);
+            TJAPlayer3.t安全にDisposeする(ref Balloon_Breaking);
             #endregion
             #region エフェクト
             TJAPlayer3.t安全にDisposeする(ref Effects_Hit_Explosion);
@@ -929,7 +930,7 @@ namespace TJAPlayer3
             Balloon_Number_Roll,
             Balloon_Number_Combo/*,*/
                                 /*Balloon_Broken*/;
-        public readonly CTexture[] Balloon_Breaking = new CTexture[6];
+        public CTexture[] Balloon_Breaking;
         #endregion
         #region エフェクト
         public CTexture Effects_Hit_Explosion,
