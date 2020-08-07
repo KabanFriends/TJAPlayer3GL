@@ -485,12 +485,18 @@ namespace TJAPlayer3
             }
             #endregion
             #region レーン
-            string[] Lanes = new string[3] { "Normal", "Expert", "Master" };
+            var lanes = new[] { "Normal", "Expert", "Master" };
+            Lane_Base = new CTexture[lanes.Length];
             for (int i = 0; i < Lane_Base.Length; i++)
             {
-                Lane_Base[i] = TxC(GAME + LANE + "Base_" + Lanes[i] + ".png");
-                Lane_Text[i] = TxC(GAME + LANE + "Text_" + Lanes[i] + ".png");
+                Lane_Base[i] = TxC(GAME + LANE + "Base_" + lanes[i] + ".png");
             }
+            Lane_Text = new CTexture[lanes.Length];
+            for (int i = 0; i < Lane_Text.Length; i++)
+            {
+                Lane_Text[i] = TxC(GAME + LANE + "Text_" + lanes[i] + ".png");
+            }
+
             Lane_Red = TxC(GAME + LANE + @"Red.png");
             Lane_Blue = TxC(GAME + LANE + @"Blue.png");
             Lane_Yellow = TxC(GAME + LANE + @"Yellow.png");
@@ -736,8 +742,8 @@ namespace TJAPlayer3
             TJAPlayer3.t安全にDisposeする(Effects_Roll);
             #endregion
             #region レーン
-            TJAPlayer3.t安全にDisposeする(Lane_Base);
-            TJAPlayer3.t安全にDisposeする(Lane_Text);
+            TJAPlayer3.t安全にDisposeする(ref Lane_Base);
+            TJAPlayer3.t安全にDisposeする(ref Lane_Text);
             TJAPlayer3.t安全にDisposeする(ref Lane_Red);
             TJAPlayer3.t安全にDisposeする(ref Lane_Blue);
             TJAPlayer3.t安全にDisposeする(ref Lane_Yellow);
@@ -966,8 +972,8 @@ namespace TJAPlayer3
         public CTexture[] Effects_Roll;
         #endregion
         #region レーン
-        public readonly CTexture[] Lane_Base = new CTexture[3];
-        public readonly CTexture[] Lane_Text = new CTexture[3];
+        public CTexture[] Lane_Base;
+        public CTexture[] Lane_Text;
 
         public CTexture Lane_Red,
             Lane_Blue,
