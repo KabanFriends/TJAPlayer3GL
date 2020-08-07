@@ -506,11 +506,18 @@ namespace TJAPlayer3
 
             #endregion
             #region 終了演出
+
+            End_Clear_L = new CTexture[5];
             for (int i = 0; i < End_Clear_L.Length; i++)
             {
                 End_Clear_L[i] = TxC(GAME + END + @"Clear_L_" + i.ToString() + ".png");
+            }
+            End_Clear_R = new CTexture[5];
+            for (int i = 0; i < End_Clear_R.Length; i++)
+            {
                 End_Clear_R[i] = TxC(GAME + END + @"Clear_R_" + i.ToString() + ".png");
             }
+
             End_Clear_Text = TxC(GAME + END + @"Clear_Text.png");
             End_Clear_Text_Effect = TxC(GAME + END + @"Clear_Text_Effect.png");
             if (End_Clear_Text_Effect != null) End_Clear_Text_Effect.b加算合成 = true;
@@ -753,8 +760,8 @@ namespace TJAPlayer3
 
             #endregion
             #region 終了演出
-            TJAPlayer3.t安全にDisposeする(End_Clear_L);
-            TJAPlayer3.t安全にDisposeする(End_Clear_R);
+            TJAPlayer3.t安全にDisposeする(ref End_Clear_L);
+            TJAPlayer3.t安全にDisposeする(ref End_Clear_R);
             TJAPlayer3.t安全にDisposeする(ref End_Clear_Text);
             TJAPlayer3.t安全にDisposeする(ref End_Clear_Text_Effect);
             #endregion
@@ -983,8 +990,8 @@ namespace TJAPlayer3
             Lane_Background_GoGo;
         #endregion
         #region 終了演出
-        public readonly CTexture[] End_Clear_L = new CTexture[5];
-        public readonly CTexture[] End_Clear_R = new CTexture[5];
+        public CTexture[] End_Clear_L;
+        public CTexture[] End_Clear_R;
 
         public CTexture End_Clear_Text,
             End_Clear_Text_Effect;
