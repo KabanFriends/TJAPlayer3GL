@@ -452,13 +452,31 @@ namespace TJAPlayer3
 
             Effects_GoGoSplash = TxC(GAME + EFFECTS + @"GoGoSplash.png");
             if (Effects_GoGoSplash != null) Effects_GoGoSplash.b加算合成 = TJAPlayer3.Skin.Game_Effect_GoGoSplash_AddBlend;
+
+            Effects_Hit_Good = new CTexture[15];
             for (int i = 0; i < Effects_Hit_Good.Length; i++)
             {
                 Effects_Hit_Good[i] = TxC(GAME + EFFECTS + @"Hit\" + @"Good\" + i.ToString() + ".png");
+            }
+
+            Effects_Hit_Good_Big = new CTexture[15];
+            for (int i = 0; i < Effects_Hit_Good_Big.Length; i++)
+            {
                 Effects_Hit_Good_Big[i] = TxC(GAME + EFFECTS + @"Hit\" + @"Good_Big\" + i.ToString() + ".png");
+            }
+
+            Effects_Hit_Great = new CTexture[15];
+            for (int i = 0; i < Effects_Hit_Great.Length; i++)
+            {
                 Effects_Hit_Great[i] = TxC(GAME + EFFECTS + @"Hit\" + @"Great\" + i.ToString() + ".png");
+            }
+
+            Effects_Hit_Great_Big = new CTexture[15];
+            for (int i = 0; i < Effects_Hit_Great_Big.Length; i++)
+            {
                 Effects_Hit_Great_Big[i] = TxC(GAME + EFFECTS + @"Hit\" + @"Great_Big\" + i.ToString() + ".png");
             }
+
             TJAPlayer3.Skin.Game_Effect_Roll_Ptn = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path(BASE + GAME + EFFECTS + @"Roll\"));
             Effects_Roll = new CTexture[TJAPlayer3.Skin.Game_Effect_Roll_Ptn];
             for (int i = 0; i < TJAPlayer3.Skin.Game_Effect_Roll_Ptn; i++)
@@ -710,10 +728,10 @@ namespace TJAPlayer3
 
             TJAPlayer3.t安全にDisposeする(ref Effects_GoGoSplash);
 
-            TJAPlayer3.t安全にDisposeする(Effects_Hit_Good);
-            TJAPlayer3.t安全にDisposeする(Effects_Hit_Good_Big);
-            TJAPlayer3.t安全にDisposeする(Effects_Hit_Great);
-            TJAPlayer3.t安全にDisposeする(Effects_Hit_Great_Big);
+            TJAPlayer3.t安全にDisposeする(ref Effects_Hit_Good);
+            TJAPlayer3.t安全にDisposeする(ref Effects_Hit_Good_Big);
+            TJAPlayer3.t安全にDisposeする(ref Effects_Hit_Great);
+            TJAPlayer3.t安全にDisposeする(ref Effects_Hit_Great_Big);
 
             TJAPlayer3.t安全にDisposeする(Effects_Roll);
             #endregion
@@ -940,10 +958,10 @@ namespace TJAPlayer3
             Effects_GoGoSplash,
             Effects_Hit_FireWorks;
 
-        public readonly CTexture[] Effects_Hit_Good = new CTexture[15];
-        public readonly CTexture[] Effects_Hit_Good_Big = new CTexture[15];
-        public readonly CTexture[] Effects_Hit_Great = new CTexture[15];
-        public readonly CTexture[] Effects_Hit_Great_Big = new CTexture[15];
+        public CTexture[] Effects_Hit_Good;
+        public CTexture[] Effects_Hit_Good_Big;
+        public CTexture[] Effects_Hit_Great;
+        public CTexture[] Effects_Hit_Great_Big;
 
         public CTexture[] Effects_Roll;
         #endregion
