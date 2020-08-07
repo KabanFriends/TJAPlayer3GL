@@ -370,8 +370,11 @@ namespace TJAPlayer3
             Taiko_Combo_Text = TxC(GAME + TAIKO + @"Combo_Text.png");
             #endregion
             #region ゲージ
+
+            Gauge = new CTexture[2];
             Gauge[0] = TxC(GAME + GAUGE + @"1P.png");
             Gauge[1] = TxC(GAME + GAUGE + @"2P.png");
+
             Gauge_Hard[0] = TxC(GAME + GAUGE + @"1P_Hard.png");
             Gauge_Hard[1] = TxC(GAME + GAUGE + @"2P_Hard.png");
             Gauge_ExHard[0] = TxC(GAME + GAUGE + @"1P_ExHard.png");
@@ -656,7 +659,7 @@ namespace TJAPlayer3
             TJAPlayer3.t安全にDisposeする(ref Taiko_Combo_Text);
             #endregion
             #region ゲージ
-            TJAPlayer3.t安全にDisposeする(Gauge);
+            TJAPlayer3.t安全にDisposeする(ref Gauge);
             TJAPlayer3.t安全にDisposeする(Gauge_Hard);
             TJAPlayer3.t安全にDisposeする(Gauge_Base);
             TJAPlayer3.t安全にDisposeする(Gauge_Base_Hard);
@@ -885,7 +888,7 @@ namespace TJAPlayer3
         public CTexture[] Taiko_Combo;
         #endregion
         #region ゲージ
-        public readonly CTexture[] Gauge = new CTexture[2];
+        public CTexture[] Gauge;
         public readonly CTexture[] Gauge_Hard = new CTexture[2];
         public readonly CTexture[] Gauge_ExHard = new CTexture[2];
         public readonly CTexture[] Gauge_Base = new CTexture[2];
