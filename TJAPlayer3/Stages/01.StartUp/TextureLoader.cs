@@ -357,9 +357,11 @@ namespace TJAPlayer3
                 Course_Symbol[i] = TxC(GAME + COURSESYMBOL + Course_Symbols[i] + ".png");
             }
 
+            Taiko_Score = new CTexture[3];
             Taiko_Score[0] = TxC(GAME + TAIKO + @"Score.png");
             Taiko_Score[1] = TxC(GAME + TAIKO + @"Score_1P.png");
             Taiko_Score[2] = TxC(GAME + TAIKO + @"Score_2P.png");
+
             Taiko_Combo[0] = TxC(GAME + TAIKO + @"Combo.png");
             Taiko_Combo[1] = TxC(GAME + TAIKO + @"Combo_Big.png");
             Taiko_Combo_Effect = TxC(GAME + TAIKO + @"Combo_Effect.png");
@@ -646,7 +648,7 @@ namespace TJAPlayer3
             TJAPlayer3.t安全にDisposeする(ref Taiko_LevelUp);
             TJAPlayer3.t安全にDisposeする(ref Taiko_LevelDown);
             TJAPlayer3.t安全にDisposeする(ref Course_Symbol);
-            TJAPlayer3.t安全にDisposeする(Taiko_Score);
+            TJAPlayer3.t安全にDisposeする(ref Taiko_Score);
             TJAPlayer3.t安全にDisposeする(Taiko_Combo);
             TJAPlayer3.t安全にDisposeする(ref Taiko_Combo_Effect);
             TJAPlayer3.t安全にDisposeする(ref Taiko_Combo_Text);
@@ -877,7 +879,7 @@ namespace TJAPlayer3
         public CTexture[] Course_Symbol;
         public CTexture[] Taiko_PlayerNumber;
         public CTexture[] Taiko_NamePlate; // ネームプレート
-        public readonly CTexture[] Taiko_Score = new CTexture[3];
+        public CTexture[] Taiko_Score;
         public readonly CTexture[] Taiko_Combo = new CTexture[2];
         #endregion
         #region ゲージ
