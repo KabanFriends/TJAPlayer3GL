@@ -421,8 +421,10 @@ namespace TJAPlayer3
 
             #endregion
             #region 吹き出し
+            Balloon_Combo = new CTexture[2];
             Balloon_Combo[0] = TxC(GAME + BALLOON + @"Combo_1P.png");
             Balloon_Combo[1] = TxC(GAME + BALLOON + @"Combo_2P.png");
+
             Balloon_Roll = TxC(GAME + BALLOON + @"Roll.png");
             Balloon_Balloon = TxC(GAME + BALLOON + @"Balloon.png");
             Balloon_Number_Roll = TxC(GAME + BALLOON + @"Number_Roll.png");
@@ -690,7 +692,7 @@ namespace TJAPlayer3
             TJAPlayer3.t安全にDisposeする(ref Gauge_Soul_Explosion);
             #endregion
             #region 吹き出し
-            TJAPlayer3.t安全にDisposeする(Balloon_Combo);
+            TJAPlayer3.t安全にDisposeする(ref Balloon_Combo);
             TJAPlayer3.t安全にDisposeする(ref Balloon_Roll);
             TJAPlayer3.t安全にDisposeする(ref Balloon_Balloon);
             TJAPlayer3.t安全にDisposeする(ref Balloon_Number_Roll);
@@ -921,7 +923,7 @@ namespace TJAPlayer3
             Gauge_Soul_Fire;
         #endregion
         #region 吹き出し
-        public readonly CTexture[] Balloon_Combo = new CTexture[2];
+        public CTexture[] Balloon_Combo;
         public CTexture Balloon_Roll,
             Balloon_Balloon,
             Balloon_Number_Roll,
