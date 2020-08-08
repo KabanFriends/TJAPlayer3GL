@@ -270,7 +270,7 @@ namespace TJAPlayer3
             if (TJAPlayer3.Skin.Game_Chara_Ptn_Balloon_Broke != 0)
             {
                 Chara_Balloon_Broke = new CTexture[TJAPlayer3.Skin.Game_Chara_Ptn_Balloon_Broke];
-                for (int i = 0; i < TJAPlayer3.Skin.Game_Chara_Ptn_Balloon_Broke; i++)
+                for (int i = 0; i < Chara_Balloon_Broke.Length; i++)
                 {
                     Chara_Balloon_Broke[i] = TxC(GAME + CHARA + @"Balloon_Broke\" + i.ToString() + ".png");
                 }
@@ -670,7 +670,7 @@ namespace TJAPlayer3
             TJAPlayer3.t安全にDisposeする(ref Chara_Become_Cleared);
             TJAPlayer3.t安全にDisposeする(ref Chara_Become_Maxed);
             TJAPlayer3.t安全にDisposeする(ref Chara_Balloon_Breaking);
-            TJAPlayer3.t安全にDisposeする(Chara_Balloon_Broke);
+            TJAPlayer3.t安全にDisposeする(ref Chara_Balloon_Broke);
             TJAPlayer3.t安全にDisposeする(Chara_Balloon_Miss);
             #endregion
             #region 踊り子
