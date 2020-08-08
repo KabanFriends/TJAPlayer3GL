@@ -234,7 +234,7 @@ namespace TJAPlayer3
             if (TJAPlayer3.Skin.Game_Chara_Ptn_GoGoStart_Max != 0)
             {
                 Chara_GoGoStart_Maxed = new CTexture[TJAPlayer3.Skin.Game_Chara_Ptn_GoGoStart_Max];
-                for (int i = 0; i < TJAPlayer3.Skin.Game_Chara_Ptn_GoGoStart_Max; i++)
+                for (int i = 0; i < Chara_GoGoStart_Maxed.Length; i++)
                 {
                     Chara_GoGoStart_Maxed[i] = TxC(GAME + CHARA + @"GoGoStart_Max\" + i.ToString() + ".png");
                 }
@@ -666,7 +666,7 @@ namespace TJAPlayer3
             TJAPlayer3.t安全にDisposeする(ref Chara_10Combo);
             TJAPlayer3.t安全にDisposeする(ref Chara_10Combo_Maxed);
             TJAPlayer3.t安全にDisposeする(ref Chara_GoGoStart);
-            TJAPlayer3.t安全にDisposeする(Chara_GoGoStart_Maxed);
+            TJAPlayer3.t安全にDisposeする(ref Chara_GoGoStart_Maxed);
             TJAPlayer3.t安全にDisposeする(Chara_Become_Cleared);
             TJAPlayer3.t安全にDisposeする(Chara_Become_Maxed);
             TJAPlayer3.t安全にDisposeする(Chara_Balloon_Breaking);
