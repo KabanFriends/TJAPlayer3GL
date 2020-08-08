@@ -146,7 +146,7 @@ namespace TJAPlayer3
                     if( TJAPlayer3.stage演奏ドラム画面.actGauge.db現在のゲージ値[ 0 ] >= 100.0 && TJAPlayer3.Skin.Game_Chara_Ptn_GoGo != 0 && TJAPlayer3.ConfigIni.eGaugeMode != EGaugeMode.Hard && TJAPlayer3.ConfigIni.eGaugeMode != EGaugeMode.ExHard)
                     {
                         if(TJAPlayer3.Skin.Game_Chara_Ptn_GoGo != 0)
-                            TJAPlayer3.Tx.Chara_GoGoTime_Maxed[this.arゴーゴーモーション番号[(int)this.ctChara_GoGo.db現在の値] ].t2D描画( TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Chara_X[0], TJAPlayer3.Skin.Game_Chara_Y[0] );
+                            TJAPlayer3.Tx.Chara_GoGoTime_Maxed?[this.arゴーゴーモーション番号[(int)this.ctChara_GoGo.db現在の値] ]?.t2D描画( TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Chara_X[0], TJAPlayer3.Skin.Game_Chara_Y[0] );
                     }
                     else
                     {
