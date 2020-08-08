@@ -295,7 +295,7 @@ namespace TJAPlayer3
                     {
                         CharaAction_Balloon_FadeOut.Start();
                     }
-                    if(TJAPlayer3.Tx.Chara_Balloon_Miss[CharaAction_Balloon_Miss.n現在の値] != null)
+                    if(TJAPlayer3.Tx.Chara_Balloon_Miss?[CharaAction_Balloon_Miss.n現在の値] != null)
                     {
                         TJAPlayer3.Tx.Chara_Balloon_Miss[CharaAction_Balloon_Miss.n現在の値].Opacity = nowOpacity;
                         TJAPlayer3.Tx.Chara_Balloon_Miss[CharaAction_Balloon_Miss.n現在の値].t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Chara_Balloon_X[0], TJAPlayer3.Skin.Game_Chara_Balloon_Y[0]);
