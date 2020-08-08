@@ -674,12 +674,7 @@ namespace TJAPlayer3
             TJAPlayer3.t安全にDisposeする(ref Chara_Balloon_Miss);
             #endregion
             #region 踊り子
-            for (int i = 0; i < Dancer.Length; i++)
-            {
-                TJAPlayer3.t安全にDisposeする(Dancer[i]);
-            }
-            Dancer = null;
-
+            TJAPlayer3.t安全にDisposeする(ref Dancer);
             #endregion
             #region モブ
             TJAPlayer3.t安全にDisposeする(Mob);

@@ -1367,6 +1367,22 @@ for (int i = 0; i < 3; i++) {
             obj = null;
         }
 
+        public static void t安全にDisposeする<T>(ref T[][] array) where T : class, IDisposable
+        {
+            if (array == null)
+            {
+                return;
+            }
+
+            for (var i = 0; i < array.Length; i++)
+            {
+                t安全にDisposeする(array[i]);
+                array[i] = null;
+            }
+
+            array = null;
+        }
+
         public static void t安全にDisposeする<T>(ref T[] array) where T : class, IDisposable
         {
             t安全にDisposeする(array);
