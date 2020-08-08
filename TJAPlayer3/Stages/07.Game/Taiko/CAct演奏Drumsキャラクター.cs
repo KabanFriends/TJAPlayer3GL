@@ -130,7 +130,7 @@ namespace TJAPlayer3
                     {
                         if(TJAPlayer3.Skin.Game_Chara_Ptn_Clear != 0)
                         {
-                            TJAPlayer3.Tx.Chara_Normal_Cleared[ this.arクリアモーション番号[ (int)this.ctChara_Clear.db現在の値 ] ].t2D描画( TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Chara_X[0], TJAPlayer3.Skin.Game_Chara_Y[0] );
+                            TJAPlayer3.Tx.Chara_Normal_Cleared?[ this.arクリアモーション番号[ (int)this.ctChara_Clear.db現在の値 ] ]?.t2D描画( TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Chara_X[0], TJAPlayer3.Skin.Game_Chara_Y[0] );
                         }
                     }
                     else
