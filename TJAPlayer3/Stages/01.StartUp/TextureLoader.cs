@@ -243,7 +243,7 @@ namespace TJAPlayer3
             if (TJAPlayer3.Skin.Game_Chara_Ptn_ClearIn != 0)
             {
                 Chara_Become_Cleared = new CTexture[TJAPlayer3.Skin.Game_Chara_Ptn_ClearIn];
-                for (int i = 0; i < TJAPlayer3.Skin.Game_Chara_Ptn_ClearIn; i++)
+                for (int i = 0; i < Chara_Become_Cleared.Length; i++)
                 {
                     Chara_Become_Cleared[i] = TxC(GAME + CHARA + @"ClearIn\" + i.ToString() + ".png");
                 }
@@ -667,7 +667,7 @@ namespace TJAPlayer3
             TJAPlayer3.t安全にDisposeする(ref Chara_10Combo_Maxed);
             TJAPlayer3.t安全にDisposeする(ref Chara_GoGoStart);
             TJAPlayer3.t安全にDisposeする(ref Chara_GoGoStart_Maxed);
-            TJAPlayer3.t安全にDisposeする(Chara_Become_Cleared);
+            TJAPlayer3.t安全にDisposeする(ref Chara_Become_Cleared);
             TJAPlayer3.t安全にDisposeする(Chara_Become_Maxed);
             TJAPlayer3.t安全にDisposeする(Chara_Balloon_Breaking);
             TJAPlayer3.t安全にDisposeする(Chara_Balloon_Broke);
