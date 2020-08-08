@@ -749,7 +749,7 @@ namespace TJAPlayer3
             TJAPlayer3.t安全にDisposeする(ref Effects_Hit_Great);
             TJAPlayer3.t安全にDisposeする(ref Effects_Hit_Great_Big);
 
-            TJAPlayer3.t安全にDisposeする(Effects_Roll);
+            TJAPlayer3.t安全にDisposeする(ref Effects_Roll);
             #endregion
             #region レーン
             TJAPlayer3.t安全にDisposeする(ref Lane_Base);
