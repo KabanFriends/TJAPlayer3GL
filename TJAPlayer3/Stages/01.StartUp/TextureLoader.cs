@@ -179,7 +179,7 @@ namespace TJAPlayer3
             if (TJAPlayer3.Skin.Game_Chara_Ptn_Clear != 0)
             {
                 Chara_Normal_Maxed = new CTexture[TJAPlayer3.Skin.Game_Chara_Ptn_Clear];
-                for (int i = 0; i < TJAPlayer3.Skin.Game_Chara_Ptn_Clear; i++)
+                for (int i = 0; i < Chara_Normal_Maxed.Length; i++)
                 {
                     Chara_Normal_Maxed[i] = TxC(GAME + CHARA + @"Clear_Max\" + i.ToString() + ".png");
                 }
@@ -188,7 +188,7 @@ namespace TJAPlayer3
             if (TJAPlayer3.Skin.Game_Chara_Ptn_GoGo != 0)
             {
                 Chara_GoGoTime = new CTexture[TJAPlayer3.Skin.Game_Chara_Ptn_GoGo];
-                for (int i = 0; i < TJAPlayer3.Skin.Game_Chara_Ptn_GoGo; i++)
+                for (int i = 0; i < Chara_GoGoTime.Length; i++)
                 {
                     Chara_GoGoTime[i] = TxC(GAME + CHARA + @"GoGo\" + i.ToString() + ".png");
                 }
@@ -661,7 +661,7 @@ namespace TJAPlayer3
             TJAPlayer3.t安全にDisposeする(ref Chara_Normal);
             TJAPlayer3.t安全にDisposeする(ref Chara_Normal_Cleared);
             TJAPlayer3.t安全にDisposeする(ref Chara_Normal_Maxed);
-            TJAPlayer3.t安全にDisposeする(Chara_GoGoTime);
+            TJAPlayer3.t安全にDisposeする(ref Chara_GoGoTime);
             TJAPlayer3.t安全にDisposeする(Chara_GoGoTime_Maxed);
             TJAPlayer3.t安全にDisposeする(Chara_10Combo);
             TJAPlayer3.t安全にDisposeする(Chara_10Combo_Maxed);
