@@ -162,7 +162,7 @@ namespace TJAPlayer3
             if (TJAPlayer3.Skin.Game_Chara_Ptn_Normal != 0)
             {
                 Chara_Normal = new CTexture[TJAPlayer3.Skin.Game_Chara_Ptn_Normal];
-                for (int i = 0; i < TJAPlayer3.Skin.Game_Chara_Ptn_Normal; i++)
+                for (int i = 0; i < Chara_Normal.Length; i++)
                 {
                     Chara_Normal[i] = TxC(GAME + CHARA + @"Normal\" + i.ToString() + ".png");
                 }
@@ -658,7 +658,7 @@ namespace TJAPlayer3
             #endregion
             #region キャラクター
 
-            TJAPlayer3.t安全にDisposeする(Chara_Normal);
+            TJAPlayer3.t安全にDisposeする(ref Chara_Normal);
             TJAPlayer3.t安全にDisposeする(Chara_Normal_Cleared);
             TJAPlayer3.t安全にDisposeする(Chara_Normal_Maxed);
             TJAPlayer3.t安全にDisposeする(Chara_GoGoTime);
