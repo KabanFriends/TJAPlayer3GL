@@ -225,7 +225,7 @@ namespace TJAPlayer3
             if (TJAPlayer3.Skin.Game_Chara_Ptn_GoGoStart != 0)
             {
                 Chara_GoGoStart = new CTexture[TJAPlayer3.Skin.Game_Chara_Ptn_GoGoStart];
-                for (int i = 0; i < TJAPlayer3.Skin.Game_Chara_Ptn_GoGoStart; i++)
+                for (int i = 0; i < Chara_GoGoStart.Length; i++)
                 {
                     Chara_GoGoStart[i] = TxC(GAME + CHARA + @"GoGoStart\" + i.ToString() + ".png");
                 }
@@ -665,7 +665,7 @@ namespace TJAPlayer3
             TJAPlayer3.t安全にDisposeする(ref Chara_GoGoTime_Maxed);
             TJAPlayer3.t安全にDisposeする(ref Chara_10Combo);
             TJAPlayer3.t安全にDisposeする(ref Chara_10Combo_Maxed);
-            TJAPlayer3.t安全にDisposeする(Chara_GoGoStart);
+            TJAPlayer3.t安全にDisposeする(ref Chara_GoGoStart);
             TJAPlayer3.t安全にDisposeする(Chara_GoGoStart_Maxed);
             TJAPlayer3.t安全にDisposeする(Chara_Become_Cleared);
             TJAPlayer3.t安全にDisposeする(Chara_Become_Maxed);
