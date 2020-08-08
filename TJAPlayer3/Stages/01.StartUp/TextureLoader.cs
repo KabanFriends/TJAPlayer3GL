@@ -303,7 +303,7 @@ namespace TJAPlayer3
             #region モブ
             TJAPlayer3.Skin.Game_Mob_Ptn = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path(BASE + GAME + MOB));
             Mob = new CTexture[TJAPlayer3.Skin.Game_Mob_Ptn];
-            for (int i = 0; i < TJAPlayer3.Skin.Game_Mob_Ptn; i++)
+            for (int i = 0; i < Mob.Length; i++)
             {
                 Mob[i] = TxC(GAME + MOB + i.ToString() + ".png");
             }
@@ -677,7 +677,7 @@ namespace TJAPlayer3
             TJAPlayer3.t安全にDisposeする(ref Dancer);
             #endregion
             #region モブ
-            TJAPlayer3.t安全にDisposeする(Mob);
+            TJAPlayer3.t安全にDisposeする(ref Mob);
             #endregion
             #region フッター
             TJAPlayer3.t安全にDisposeする(ref Mob_Footer);
