@@ -660,7 +660,7 @@ namespace TJAPlayer3
 
             TJAPlayer3.t安全にDisposeする(ref Chara_Normal);
             TJAPlayer3.t安全にDisposeする(ref Chara_Normal_Cleared);
-            TJAPlayer3.t安全にDisposeする(Chara_Normal_Maxed);
+            TJAPlayer3.t安全にDisposeする(ref Chara_Normal_Maxed);
             TJAPlayer3.t安全にDisposeする(Chara_GoGoTime);
             TJAPlayer3.t安全にDisposeする(Chara_GoGoTime_Maxed);
             TJAPlayer3.t安全にDisposeする(Chara_10Combo);
