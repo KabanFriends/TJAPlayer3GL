@@ -289,6 +289,7 @@ namespace TJAPlayer3
             TJAPlayer3.Skin.Game_Dancer_Ptn = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path(BASE + GAME + DANCER + @"1\"));
             if (TJAPlayer3.Skin.Game_Dancer_Ptn != 0)
             {
+                Dancer = new CTexture[5][];
                 for (int i = 0; i < Dancer.Length; i++)
                 {
                     Dancer[i] = new CTexture[TJAPlayer3.Skin.Game_Dancer_Ptn];
@@ -675,6 +676,8 @@ namespace TJAPlayer3
             {
                 TJAPlayer3.t安全にDisposeする(Dancer[i]);
             }
+            Dancer = null;
+
             #endregion
             #region モブ
             TJAPlayer3.t安全にDisposeする(Mob);
@@ -903,7 +906,7 @@ namespace TJAPlayer3
             Chara_Balloon_Miss;
         #endregion
         #region 踊り子
-        public readonly CTexture[][] Dancer = new CTexture[5][];
+        public CTexture[][] Dancer;
         #endregion
         #region モブ
         public CTexture[] Mob;

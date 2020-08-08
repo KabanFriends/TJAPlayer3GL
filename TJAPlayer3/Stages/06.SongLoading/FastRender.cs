@@ -60,11 +60,15 @@ namespace TJAPlayer3
                 NullCheckAndRender(ref TJAPlayer3.Tx.Chara_Balloon_Miss[i]);
             }
 
-            for (int i = 0; i < TJAPlayer3.Tx.Dancer.Length; i++)
+            var dancerTextures = TJAPlayer3.Tx.Dancer;
+            if (dancerTextures != null)
             {
-                for (int k = 0; k < TJAPlayer3.Skin.Game_Dancer_Ptn; k++)
+                for (int i = 0; i < dancerTextures.Length; i++)
                 {
-                    NullCheckAndRender(ref TJAPlayer3.Tx.Dancer[i][k]);
+                    for (int k = 0; k < TJAPlayer3.Skin.Game_Dancer_Ptn; k++)
+                    {
+                        NullCheckAndRender(ref dancerTextures[i][k]);
+                    }
                 }
             }
 
