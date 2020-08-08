@@ -161,9 +161,9 @@ namespace TJAPlayer3
 
                 if (this.ctキャラクターアクション_10コンボ.b進行中db)
                 {
-                    if(TJAPlayer3.Tx.Chara_10Combo[0] != null && TJAPlayer3.Skin.Game_Chara_Ptn_10combo != 0)
+                    if (TJAPlayer3.Tx.Chara_10Combo?[0] != null)
                     {
-                        TJAPlayer3.Tx.Chara_10Combo[(int)this.ctキャラクターアクション_10コンボ.db現在の値].t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Chara_X[0], TJAPlayer3.Skin.Game_Chara_Y[0] );
+                        TJAPlayer3.Tx.Chara_10Combo[(int)this.ctキャラクターアクション_10コンボ.db現在の値]?.t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Chara_X[0], TJAPlayer3.Skin.Game_Chara_Y[0] );
                     }
                     if (this.ctキャラクターアクション_10コンボ.b終了値に達したdb)
                     {
