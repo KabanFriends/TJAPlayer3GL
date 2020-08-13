@@ -539,7 +539,7 @@ namespace TJAPlayer3
 
             DanC_Gauge = new CTexture[4];
             var type = new string[] { "Normal", "Reach", "Clear", "Flush" };
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < DanC_Gauge.Length; i++)
             {
                 DanC_Gauge[i] = TxC(GAME + DANC + @"Gauge_" + type[i] + ".png");
             }
