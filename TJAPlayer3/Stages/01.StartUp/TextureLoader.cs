@@ -41,13 +41,6 @@ namespace TJAPlayer3
         const string ROLL = @"Roll\";
         const string SPLASH = @"Splash\";
 
-
-        public TextureLoader()
-        {
-            // コンストラクタ
-
-        }
-
         private CTexture[] TxC(int count, string format)
         {
             var array = new CTexture[count];
@@ -72,17 +65,29 @@ namespace TJAPlayer3
             return array;
         }
 
-        internal CTexture TxC(string FileName)
+        private CTexture TxC(string path)
         {
-            return TJAPlayer3.tテクスチャの生成(CSkin.Path(BASE + FileName));
+            return TxCUntracked(path);
         }
-        internal CTextureAf TxCAf(string FileName)
+
+        private CTextureAf TxCAf(string path)
         {
-            return TJAPlayer3.tテクスチャの生成Af(CSkin.Path(BASE + FileName));
+            return TxCAfUntracked(path);
         }
-        internal CTexture TxCGen(string FileName)
+
+        internal CTexture TxCUntracked(string path)
         {
-            return TJAPlayer3.tテクスチャの生成(CSkin.Path(BASE + GAME + GENRE + FileName + ".png"));
+            return TJAPlayer3.tテクスチャの生成(CSkin.Path(BASE + path));
+        }
+
+        private CTextureAf TxCAfUntracked(string path)
+        {
+            return TJAPlayer3.tテクスチャの生成Af(CSkin.Path(BASE + path));
+        }
+
+        internal CTexture TxCGenreUntracked(string fileNameWithoutExtension)
+        {
+            return TJAPlayer3.tテクスチャの生成(CSkin.Path(BASE + GAME + GENRE + fileNameWithoutExtension + ".png"));
         }
 
         public void LoadTexture()
