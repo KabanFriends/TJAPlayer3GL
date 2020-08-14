@@ -136,7 +136,7 @@ namespace TJAPlayer3
 
 					case CStage.Eフェーズ.起動7_完了:
                         this.list進行文字列.Add("LOADING TEXTURES...");
-                        TJAPlayer3.Tx.LoadTexture();
+                        TJAPlayer3.Tx.Load();
                         this.list進行文字列.Add("LOADING TEXTURES...OK");
                         this.str現在進行中 = "Setup done.";
                         break;

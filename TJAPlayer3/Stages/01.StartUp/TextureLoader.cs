@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using FDK;
 
 namespace TJAPlayer3
@@ -41,6 +42,8 @@ namespace TJAPlayer3
         const string ROLL = @"Roll\";
         const string SPLASH = @"Splash\";
 
+        private readonly List<CTexture> _trackedTextures = new List<CTexture>();
+
         private CTexture[] TxC(int count, string format)
         {
             var array = new CTexture[count];
@@ -67,12 +70,22 @@ namespace TJAPlayer3
 
         private CTexture TxC(string path)
         {
-            return TxCUntracked(path);
+            return Track(TxCUntracked(path));
         }
 
         private CTextureAf TxCAf(string path)
         {
-            return TxCAfUntracked(path);
+            return Track(TxCAfUntracked(path));
+        }
+
+        private T Track<T>(T texture) where T : CTexture
+        {
+            if (texture != null)
+            {
+                _trackedTextures.Add(texture);
+            }
+
+            return texture;
         }
 
         internal CTexture TxCUntracked(string path)
@@ -90,7 +103,7 @@ namespace TJAPlayer3
             return TJAPlayer3.tテクスチャの生成(CSkin.Path(BASE + GAME + GENRE + fileNameWithoutExtension + ".png"));
         }
 
-        public void LoadTexture()
+        public void Load()
         {
             #region 共通
             Tile_Black = TxC(@"Tile_Black.png");
@@ -478,239 +491,13 @@ namespace TJAPlayer3
 
         }
 
-        public void DisposeTexture()
+        public void Dispose()
         {
-            TJAPlayer3.t安全にDisposeする(ref Title_Background);
-            TJAPlayer3.t安全にDisposeする(ref Title_Menu);
-            #region 共通
-            TJAPlayer3.t安全にDisposeする(ref Tile_Black);
-            TJAPlayer3.t安全にDisposeする(ref Tile_White);
-            TJAPlayer3.t安全にDisposeする(ref Menu_Title);
-            TJAPlayer3.t安全にDisposeする(ref Menu_Highlight);
-            TJAPlayer3.t安全にDisposeする(ref Enum_Song);
-            TJAPlayer3.t安全にDisposeする(ref Scanning_Loudness);
-            TJAPlayer3.t安全にDisposeする(ref Overlay);
-            TJAPlayer3.t安全にDisposeする(ref NamePlate);
-
-            #endregion
-            #region 1_タイトル画面
-            TJAPlayer3.t安全にDisposeする(ref Title_Background);
-            TJAPlayer3.t安全にDisposeする(ref Title_Menu);
-            #endregion
-
-            #region 2_コンフィグ画面
-            TJAPlayer3.t安全にDisposeする(ref Config_Background);
-            TJAPlayer3.t安全にDisposeする(ref Config_Cursor);
-            TJAPlayer3.t安全にDisposeする(ref Config_ItemBox);
-            TJAPlayer3.t安全にDisposeする(ref Config_Arrow);
-            TJAPlayer3.t安全にDisposeする(ref Config_KeyAssign);
-            TJAPlayer3.t安全にDisposeする(ref Config_Font);
-            TJAPlayer3.t安全にDisposeする(ref Config_Font_Bold);
-            TJAPlayer3.t安全にDisposeする(ref Config_Enum_Song);
-            #endregion
-
-            #region 3_選曲画面
-            TJAPlayer3.t安全にDisposeする(ref SongSelect_Background);
-            TJAPlayer3.t安全にDisposeする(ref SongSelect_Header);
-            TJAPlayer3.t安全にDisposeする(ref SongSelect_Footer);
-            TJAPlayer3.t安全にDisposeする(ref SongSelect_Difficulty);
-            TJAPlayer3.t安全にDisposeする(ref SongSelect_Auto);
-            TJAPlayer3.t安全にDisposeする(ref SongSelect_Level);
-            TJAPlayer3.t安全にDisposeする(ref SongSelect_Branch);
-            TJAPlayer3.t安全にDisposeする(ref SongSelect_Branch_Text);
-            TJAPlayer3.t安全にDisposeする(ref SongSelect_Bar_Center);
-            TJAPlayer3.t安全にDisposeする(ref SongSelect_Frame_Score);
-            TJAPlayer3.t安全にDisposeする(ref SongSelect_Frame_BackBox);
-            TJAPlayer3.t安全にDisposeする(ref SongSelect_Frame_Random);
-            TJAPlayer3.t安全にDisposeする(ref SongSelect_Score_Select);
-            TJAPlayer3.t安全にDisposeする(ref SongSelect_GenreText);
-            TJAPlayer3.t安全にDisposeする(ref SongSelect_Cursor_Left);
-            TJAPlayer3.t安全にDisposeする(ref SongSelect_Cursor_Right);
-            TJAPlayer3.t安全にDisposeする(ref SongSelect_Bar_Genre);
-            TJAPlayer3.t安全にDisposeする(ref SongSelect_Frame_Box);
-            TJAPlayer3.t安全にDisposeする(ref SongSelect_ScoreWindow);
-            TJAPlayer3.t安全にDisposeする(ref SongSelect_GenreBack);
-            TJAPlayer3.t安全にDisposeする(ref SongSelect_ScoreWindow_Text);
-            TJAPlayer3.t安全にDisposeする(ref SongSelect_Rating);
-            #endregion
-
-            #region 4_読み込み画面
-            TJAPlayer3.t安全にDisposeする(ref SongLoading_Plate);
-            TJAPlayer3.t安全にDisposeする(ref SongLoading_FadeIn);
-            TJAPlayer3.t安全にDisposeする(ref SongLoading_FadeOut);
-            #endregion
-
-            #region 5_演奏画面
-            #region 共通
-            TJAPlayer3.t安全にDisposeする(ref Notes);
-            TJAPlayer3.t安全にDisposeする(ref Judge_Frame);
-            TJAPlayer3.t安全にDisposeする(ref SENotes);
-            TJAPlayer3.t安全にDisposeする(ref Notes_Arm);
-            TJAPlayer3.t安全にDisposeする(ref Judge);
-
-            TJAPlayer3.t安全にDisposeする(ref Judge_Meter);
-            TJAPlayer3.t安全にDisposeする(ref Bar);
-            TJAPlayer3.t安全にDisposeする(ref Bar_Branch);
-
-            #endregion
-            #region キャラクター
-
-            TJAPlayer3.t安全にDisposeする(ref Chara_Normal);
-            TJAPlayer3.t安全にDisposeする(ref Chara_Normal_Cleared);
-            TJAPlayer3.t安全にDisposeする(ref Chara_Normal_Maxed);
-            TJAPlayer3.t安全にDisposeする(ref Chara_GoGoTime);
-            TJAPlayer3.t安全にDisposeする(ref Chara_GoGoTime_Maxed);
-            TJAPlayer3.t安全にDisposeする(ref Chara_10Combo);
-            TJAPlayer3.t安全にDisposeする(ref Chara_10Combo_Maxed);
-            TJAPlayer3.t安全にDisposeする(ref Chara_GoGoStart);
-            TJAPlayer3.t安全にDisposeする(ref Chara_GoGoStart_Maxed);
-            TJAPlayer3.t安全にDisposeする(ref Chara_Become_Cleared);
-            TJAPlayer3.t安全にDisposeする(ref Chara_Become_Maxed);
-            TJAPlayer3.t安全にDisposeする(ref Chara_Balloon_Breaking);
-            TJAPlayer3.t安全にDisposeする(ref Chara_Balloon_Broke);
-            TJAPlayer3.t安全にDisposeする(ref Chara_Balloon_Miss);
-            #endregion
-            #region 踊り子
-            TJAPlayer3.t安全にDisposeする(ref Dancer);
-            #endregion
-            #region モブ
-            TJAPlayer3.t安全にDisposeする(ref Mob);
-            #endregion
-            #region フッター
-            TJAPlayer3.t安全にDisposeする(ref Mob_Footer);
-            #endregion
-            #region 背景
-            TJAPlayer3.t安全にDisposeする(ref Background);
-            TJAPlayer3.t安全にDisposeする(ref Background_Up);
-            TJAPlayer3.t安全にDisposeする(ref Background_Up_Clear);
-            TJAPlayer3.t安全にDisposeする(ref Background_Down);
-            TJAPlayer3.t安全にDisposeする(ref Background_Down_Clear);
-            TJAPlayer3.t安全にDisposeする(ref Background_Down_Scroll);
-
-            #endregion
-            #region 太鼓
-            TJAPlayer3.t安全にDisposeする(ref Taiko_Background);
-            TJAPlayer3.t安全にDisposeする(ref Taiko_Frame);
-            TJAPlayer3.t安全にDisposeする(ref Taiko_PlayerNumber);
-            TJAPlayer3.t安全にDisposeする(ref Taiko_NamePlate);
-            TJAPlayer3.t安全にDisposeする(ref Taiko_Base);
-            TJAPlayer3.t安全にDisposeする(ref Taiko_Don_Left);
-            TJAPlayer3.t安全にDisposeする(ref Taiko_Don_Right);
-            TJAPlayer3.t安全にDisposeする(ref Taiko_Ka_Left);
-            TJAPlayer3.t安全にDisposeする(ref Taiko_Ka_Right);
-            TJAPlayer3.t安全にDisposeする(ref Taiko_LevelUp);
-            TJAPlayer3.t安全にDisposeする(ref Taiko_LevelDown);
-            TJAPlayer3.t安全にDisposeする(ref Course_Symbol);
-            TJAPlayer3.t安全にDisposeする(ref Taiko_Score);
-            TJAPlayer3.t安全にDisposeする(ref Taiko_Combo);
-            TJAPlayer3.t安全にDisposeする(ref Taiko_Combo_Effect);
-            TJAPlayer3.t安全にDisposeする(ref Taiko_Combo_Text);
-            #endregion
-            #region ゲージ
-            TJAPlayer3.t安全にDisposeする(ref Gauge);
-            TJAPlayer3.t安全にDisposeする(ref Gauge_Hard);
-            TJAPlayer3.t安全にDisposeする(ref Gauge_ExHard);
-            TJAPlayer3.t安全にDisposeする(ref Gauge_Base);
-            TJAPlayer3.t安全にDisposeする(ref Gauge_Base_Hard);
-            TJAPlayer3.t安全にDisposeする(ref Gauge_Base_ExHard);
-            TJAPlayer3.t安全にDisposeする(ref Gauge_Line);
-            TJAPlayer3.t安全にDisposeする(ref Gauge_Line_Hard);
-            TJAPlayer3.t安全にDisposeする(ref Gauge_Rainbow);
-            TJAPlayer3.t安全にDisposeする(ref Gauge_Soul);
-            TJAPlayer3.t安全にDisposeする(ref Gauge_Soul_Fire);
-            TJAPlayer3.t安全にDisposeする(ref Gauge_Soul_Explosion);
-            #endregion
-            #region 吹き出し
-            TJAPlayer3.t安全にDisposeする(ref Balloon_Combo);
-            TJAPlayer3.t安全にDisposeする(ref Balloon_Roll);
-            TJAPlayer3.t安全にDisposeする(ref Balloon_Balloon);
-            TJAPlayer3.t安全にDisposeする(ref Balloon_Number_Roll);
-            TJAPlayer3.t安全にDisposeする(ref Balloon_Number_Combo);
-            TJAPlayer3.t安全にDisposeする(ref Balloon_Breaking);
-            #endregion
-            #region エフェクト
-            TJAPlayer3.t安全にDisposeする(ref Effects_Hit_Explosion);
-            TJAPlayer3.t安全にDisposeする(ref Effects_Hit_Explosion_Big);
-            TJAPlayer3.t安全にDisposeする(ref Effects_Hit_FireWorks);
-
-            TJAPlayer3.t安全にDisposeする(ref Effects_Fire);
-            TJAPlayer3.t安全にDisposeする(ref Effects_Rainbow);
-
-            TJAPlayer3.t安全にDisposeする(ref Effects_GoGoSplash);
-
-            TJAPlayer3.t安全にDisposeする(ref Effects_Hit_Good);
-            TJAPlayer3.t安全にDisposeする(ref Effects_Hit_Good_Big);
-            TJAPlayer3.t安全にDisposeする(ref Effects_Hit_Great);
-            TJAPlayer3.t安全にDisposeする(ref Effects_Hit_Great_Big);
-
-            TJAPlayer3.t安全にDisposeする(ref Effects_Roll);
-            #endregion
-            #region レーン
-            TJAPlayer3.t安全にDisposeする(ref Lane_Base);
-            TJAPlayer3.t安全にDisposeする(ref Lane_Text);
-            TJAPlayer3.t安全にDisposeする(ref Lane_Red);
-            TJAPlayer3.t安全にDisposeする(ref Lane_Blue);
-            TJAPlayer3.t安全にDisposeする(ref Lane_Yellow);
-            TJAPlayer3.t安全にDisposeする(ref Lane_Background_Main);
-            TJAPlayer3.t安全にDisposeする(ref Lane_Background_Sub);
-            TJAPlayer3.t安全にDisposeする(ref Lane_Background_GoGo);
-
-            #endregion
-            #region 終了演出
-            TJAPlayer3.t安全にDisposeする(ref End_Clear_L);
-            TJAPlayer3.t安全にDisposeする(ref End_Clear_R);
-            TJAPlayer3.t安全にDisposeする(ref End_Clear_Text);
-            TJAPlayer3.t安全にDisposeする(ref End_Clear_Text_Effect);
-            #endregion
-            #region ゲームモード
-            TJAPlayer3.t安全にDisposeする(ref GameMode_Timer_Tick);
-            TJAPlayer3.t安全にDisposeする(ref GameMode_Timer_Frame);
-            #endregion
-            #region ステージ失敗
-            TJAPlayer3.t安全にDisposeする(ref Failed_Game);
-            TJAPlayer3.t安全にDisposeする(ref Failed_Stage);
-            #endregion
-            #region ランナー
-            TJAPlayer3.t安全にDisposeする(ref Runner);
-            #endregion
-            #region DanC
-            TJAPlayer3.t安全にDisposeする(ref DanC_Background);
-            TJAPlayer3.t安全にDisposeする(ref DanC_Gauge);
-            TJAPlayer3.t安全にDisposeする(ref DanC_Base);
-            TJAPlayer3.t安全にDisposeする(ref DanC_Failed);
-            TJAPlayer3.t安全にDisposeする(ref DanC_Number);
-            TJAPlayer3.t安全にDisposeする(ref DanC_ExamRange);
-            TJAPlayer3.t安全にDisposeする(ref DanC_ExamUnit);
-            TJAPlayer3.t安全にDisposeする(ref DanC_ExamType);
-            TJAPlayer3.t安全にDisposeする(ref DanC_Screen);
-            #endregion
-            #region PuchiChara
-            TJAPlayer3.t安全にDisposeする(ref PuchiChara);
-            #endregion
-            #endregion
-
-            #region 6_結果発表
-            TJAPlayer3.t安全にDisposeする(ref Result_Background);
-            TJAPlayer3.t安全にDisposeする(ref Result_FadeIn);
-            TJAPlayer3.t安全にDisposeする(ref Result_Gauge);
-            TJAPlayer3.t安全にDisposeする(ref Result_Gauge_Base);
-            TJAPlayer3.t安全にDisposeする(ref Result_Gauge_Hard);
-            TJAPlayer3.t安全にDisposeする(ref Result_Gauge_ExHard);
-            TJAPlayer3.t安全にDisposeする(ref Result_Gauge_Base_Hard);
-            TJAPlayer3.t安全にDisposeする(ref Result_Gauge_Base_ExHard);
-            TJAPlayer3.t安全にDisposeする(ref Result_Judge);
-            TJAPlayer3.t安全にDisposeする(ref Result_Header);
-            TJAPlayer3.t安全にDisposeする(ref Result_Number);
-            TJAPlayer3.t安全にDisposeする(ref Result_Panel);
-            TJAPlayer3.t安全にDisposeする(ref Result_Score_Text);
-            TJAPlayer3.t安全にDisposeする(ref Result_Score_Number);
-            TJAPlayer3.t安全にDisposeする(ref Result_Dan);
-            #endregion
-
-            #region 7_終了画面
-            TJAPlayer3.t安全にDisposeする(ref Exit_Background);
-            #endregion
-
+            foreach (var trackedTexture in _trackedTextures)
+            {
+                trackedTexture.Dispose();
+            }
+            _trackedTextures.Clear();
         }
 
         #region 共通

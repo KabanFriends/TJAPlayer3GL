@@ -1367,28 +1367,6 @@ for (int i = 0; i < 3; i++) {
             obj = null;
         }
 
-        public static void t安全にDisposeする<T>(ref T[][] array) where T : class, IDisposable
-        {
-            if (array == null)
-            {
-                return;
-            }
-
-            for (var i = 0; i < array.Length; i++)
-            {
-                t安全にDisposeする(array[i]);
-                array[i] = null;
-            }
-
-            array = null;
-        }
-
-        public static void t安全にDisposeする<T>(ref T[] array) where T : class, IDisposable
-        {
-            t安全にDisposeする(array);
-            array = null;
-        }
-
         public static void t安全にDisposeする<T>(T[] array) where T : class, IDisposable
         {
             if (array == null)
@@ -2014,7 +1992,8 @@ for (int i = 0; i < 3; i++) {
                 //---------------------
                 #endregion
                 #region TextureLoaderの処理
-                Tx.DisposeTexture();
+                Tx.Dispose();
+                Tx = null;
                 #endregion
                 #region [ スキンの終了処理 ]
                 //---------------------
@@ -2295,8 +2274,9 @@ for (int i = 0; i < 3; i++) {
             TJAPlayer3.Skin = new CSkin(TJAPlayer3.ConfigIni.strSystemSkinSubfolderFullName, false);
 
 
-            TJAPlayer3.Tx.DisposeTexture();
-            TJAPlayer3.Tx.LoadTexture();
+            TJAPlayer3.Tx.Dispose();
+            TJAPlayer3.Tx = new TextureLoader();
+            TJAPlayer3.Tx.Load();
 
             TJAPlayer3.act文字コンソール.On活性化();
         }
