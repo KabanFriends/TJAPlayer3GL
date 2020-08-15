@@ -44,13 +44,13 @@ namespace TJAPlayer3
 
         private readonly List<CTexture> _trackedTextures = new List<CTexture>();
 
-        private CTexture[] TxC(int count, string format)
+        private CTexture[] TxC(int count, string format, int offset = 0)
         {
             var array = new CTexture[count];
 
             for (int i = 0; i < array.Length; i++)
             {
-                array[i] = TxC(string.Format(format, i));
+                array[i] = TxC(string.Format(format, i + offset));
             }
 
             return array;
@@ -114,9 +114,7 @@ namespace TJAPlayer3
             Scanning_Loudness = TxC(@"Scanning_Loudness.png");
             Overlay = TxC(@"Overlay.png");
 
-            NamePlate = new CTexture[2];
-            NamePlate[0] = TxC(@"1P_NamePlate.png");
-            NamePlate[1] = TxC(@"2P_NamePlate.png");
+            NamePlate = TxC(2, @"{0}P_NamePlate.png", 1);
             #endregion
             #region 1_タイトル画面
             Title_Background = TxC(TITLE + @"Background.png");
@@ -276,36 +274,21 @@ namespace TJAPlayer3
             #endregion
             #region 背景
             Background = TxC(GAME + Background + @"0\" + @"Background.png");
-
-            Background_Up = new CTexture[2];
-            Background_Up[0] = TxC(GAME + BACKGROUND + @"0\" + @"1P_Up.png");
-            Background_Up[1] = TxC(GAME + BACKGROUND + @"0\" + @"2P_Up.png");
-
-            Background_Up_Clear = new CTexture[2];
-            Background_Up_Clear[0] = TxC(GAME + BACKGROUND + @"0\" + @"1P_Up_Clear.png");
-            Background_Up_Clear[1] = TxC(GAME + BACKGROUND + @"0\" + @"2P_Up_Clear.png");
-
+            Background_Up = TxC(2, GAME + BACKGROUND + @"0\" + @"{0}P_Up.png", 1);
+            Background_Up_Clear = TxC(2, GAME + BACKGROUND + @"0\" + @"{0}P_Up_Clear.png", 1);
             Background_Down = TxC(GAME + BACKGROUND + @"0\" + @"Down.png");
             Background_Down_Clear = TxC(GAME + BACKGROUND + @"0\" + @"Down_Clear.png");
             Background_Down_Scroll = TxC(GAME + BACKGROUND + @"0\" + @"Down_Scroll.png");
 
             #endregion
             #region 太鼓
-            Taiko_Background = new CTexture[2];
-            Taiko_Background[0] = TxC(GAME + TAIKO + @"1P_Background.png");
-            Taiko_Background[1] = TxC(GAME + TAIKO + @"2P_Background.png");
+            Taiko_Background = TxC(2, GAME + TAIKO + @"{0}P_Background.png", 1);
 
-            Taiko_Frame = new CTexture[2];
-            Taiko_Frame[0] = TxC(GAME + TAIKO + @"1P_Frame.png");
-            Taiko_Frame[1] = TxC(GAME + TAIKO + @"2P_Frame.png");
+            Taiko_Frame = TxC(2, GAME + TAIKO + @"{0}P_Frame.png", 1);
 
-            Taiko_PlayerNumber = new CTexture[2];
-            Taiko_PlayerNumber[0] = TxC(GAME + TAIKO + @"1P_PlayerNumber.png");
-            Taiko_PlayerNumber[1] = TxC(GAME + TAIKO + @"2P_PlayerNumber.png");
+            Taiko_PlayerNumber = TxC(2, GAME + TAIKO + @"{0}P_PlayerNumber.png", 1);
 
-            Taiko_NamePlate = new CTexture[2];
-            Taiko_NamePlate[0] = TxC(GAME + TAIKO + @"1P_NamePlate.png");
-            Taiko_NamePlate[1] = TxC(GAME + TAIKO + @"2P_NamePlate.png");
+            Taiko_NamePlate = TxC(2, GAME + TAIKO + @"{0}P_NamePlate.png", 1);
 
             Taiko_Base = TxC(GAME + TAIKO + @"Base.png");
             Taiko_Don_Left = TxC(GAME + TAIKO + @"Don.png");
@@ -317,75 +300,41 @@ namespace TJAPlayer3
 
             Course_Symbol = TxC(Course_Symbols, GAME + COURSESYMBOL + "{0}.png");
 
-            Taiko_Score = new CTexture[3];
-            Taiko_Score[0] = TxC(GAME + TAIKO + @"Score.png");
-            Taiko_Score[1] = TxC(GAME + TAIKO + @"Score_1P.png");
-            Taiko_Score[2] = TxC(GAME + TAIKO + @"Score_2P.png");
+            Taiko_Score = TxC(new[] {"", "_1P", "_2P"}, GAME + TAIKO + @"Score{0}.png");
 
-            Taiko_Combo = new CTexture[2];
-            Taiko_Combo[0] = TxC(GAME + TAIKO + @"Combo.png");
-            Taiko_Combo[1] = TxC(GAME + TAIKO + @"Combo_Big.png");
-
+            Taiko_Combo = TxC(new[] {"", "_Big"}, GAME + TAIKO + @"Combo{0}.png");
             Taiko_Combo_Effect = TxC(GAME + TAIKO + @"Combo_Effect.png");
             Taiko_Combo_Text = TxC(GAME + TAIKO + @"Combo_Text.png");
             #endregion
             #region ゲージ
 
-            Gauge = new CTexture[2];
-            Gauge[0] = TxC(GAME + GAUGE + @"1P.png");
-            Gauge[1] = TxC(GAME + GAUGE + @"2P.png");
-
-            Gauge_Hard = new CTexture[2];
-            Gauge_Hard[0] = TxC(GAME + GAUGE + @"1P_Hard.png");
-            Gauge_Hard[1] = TxC(GAME + GAUGE + @"2P_Hard.png");
-
-            Gauge_ExHard = new CTexture[2];
-            Gauge_ExHard[0] = TxC(GAME + GAUGE + @"1P_ExHard.png");
-            Gauge_ExHard[1] = TxC(GAME + GAUGE + @"2P_ExHard.png");
-
-            Gauge_Base = new CTexture[2];
-            Gauge_Base[0] = TxC(GAME + GAUGE + @"1P_Base.png");
-            Gauge_Base[1] = TxC(GAME + GAUGE + @"2P_Base.png");
-
-            Gauge_Base_Hard = new CTexture[2];
-            Gauge_Base_Hard[0] = TxC(GAME + GAUGE + @"1P_Base_Hard.png");
-            Gauge_Base_Hard[1] = TxC(GAME + GAUGE + @"2P_Base_Hard.png");
-
-            Gauge_Base_ExHard = new CTexture[2];
-            Gauge_Base_ExHard[0] = TxC(GAME + GAUGE + @"1P_Base_ExHard.png");
-            Gauge_Base_ExHard[1] = TxC(GAME + GAUGE + @"2P_Base_ExHard.png");
-
-            Gauge_Line = new CTexture[2];
-            Gauge_Line[0] = TxC(GAME + GAUGE + @"1P_Line.png");
-            Gauge_Line[1] = TxC(GAME + GAUGE + @"2P_Line.png");
-
-            Gauge_Line_Hard = new CTexture[2];
-            Gauge_Line_Hard[0] = TxC(GAME + GAUGE + @"1P_Line_Hard.png");
-            Gauge_Line_Hard[1] = TxC(GAME + GAUGE + @"2P_Line_Hard.png");
+            Gauge = TxC(2, GAME + GAUGE + @"{0}P.png", 1);
+            Gauge_Hard = TxC(2, GAME + GAUGE + @"{0}P_Hard.png", 1);
+            Gauge_ExHard = TxC(2, GAME + GAUGE + @"{0}P_ExHard.png", 1);
+            Gauge_Base = TxC(2, GAME + GAUGE + @"{0}P_Base.png", 1);
+            Gauge_Base_Hard = TxC(2, GAME + GAUGE + @"{0}P_Base_Hard.png", 1);
+            Gauge_Base_ExHard = TxC(2, GAME + GAUGE + @"{0}P_Base_ExHard.png", 1);
+            Gauge_Line = TxC(2, GAME + GAUGE + @"{0}P_Line.png", 1);
+            Gauge_Line_Hard = TxC(2, GAME + GAUGE + @"{0}P_Line_Hard.png", 1);
 
             TJAPlayer3.Skin.Game_Gauge_Rainbow_Ptn = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path(BASE + GAME + GAUGE + @"Rainbow\"));
             if (TJAPlayer3.Skin.Game_Gauge_Rainbow_Ptn != 0)
             {
                 Gauge_Rainbow = TxC(TJAPlayer3.Skin.Game_Gauge_Rainbow_Ptn, GAME + GAUGE + @"Rainbow\{0}.png");
             }
+
             Gauge_Soul = TxC(GAME + GAUGE + @"Soul.png");
             Gauge_Soul_Fire = TxC(GAME + GAUGE + @"Fire.png");
 
-            Gauge_Soul_Explosion = new CTexture[2];
-            Gauge_Soul_Explosion[0] = TxC(GAME + GAUGE + @"1P_Explosion.png");
-            Gauge_Soul_Explosion[1] = TxC(GAME + GAUGE + @"2P_Explosion.png");
+            Gauge_Soul_Explosion = TxC(2, GAME + GAUGE + @"{0}P_Explosion.png", 1);
 
             #endregion
             #region 吹き出し
-            Balloon_Combo = new CTexture[2];
-            Balloon_Combo[0] = TxC(GAME + BALLOON + @"Combo_1P.png");
-            Balloon_Combo[1] = TxC(GAME + BALLOON + @"Combo_2P.png");
-
+            Balloon_Combo = TxC(2, GAME + BALLOON + @"Combo_{0}P.png", 1);
             Balloon_Roll = TxC(GAME + BALLOON + @"Roll.png");
             Balloon_Balloon = TxC(GAME + BALLOON + @"Balloon.png");
             Balloon_Number_Roll = TxC(GAME + BALLOON + @"Number_Roll.png");
             Balloon_Number_Combo = TxC(GAME + BALLOON + @"Number_Combo.png");
-
             Balloon_Breaking = TxC(6, GAME + BALLOON + @"Breaking_{0}.png");
 
             #endregion
