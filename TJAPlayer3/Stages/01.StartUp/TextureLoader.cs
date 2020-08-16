@@ -165,76 +165,86 @@ namespace TJAPlayer3
 
             #endregion
             #region キャラクター
-            TJAPlayer3.Skin.Game_Chara_Ptn_Normal = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path($@"{BASE}{GAME}{CHARA}Normal\"));
+            TJAPlayer3.Skin.Game_Chara_Ptn_Normal = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path(BASE + $@"{GAME}{CHARA}Normal\"));
             if (TJAPlayer3.Skin.Game_Chara_Ptn_Normal != 0)
             {
-                Chara_Normal = TxC(TJAPlayer3.Skin.Game_Chara_Ptn_Normal, $@"{GAME}{CHARA}Normal\{{0}}.png");
-            }
-            TJAPlayer3.Skin.Game_Chara_Ptn_Clear = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path($@"{BASE}{GAME}{CHARA}Clear\"));
-            if (TJAPlayer3.Skin.Game_Chara_Ptn_Clear != 0)
-            {
-                Chara_Normal_Cleared = TxC(TJAPlayer3.Skin.Game_Chara_Ptn_Clear, $@"{GAME}{CHARA}Clear\{{0}}.png");
-            }
-            if (TJAPlayer3.Skin.Game_Chara_Ptn_Clear != 0)
-            {
-                Chara_Normal_Maxed = TxC(TJAPlayer3.Skin.Game_Chara_Ptn_Clear, $@"{GAME}{CHARA}Clear_Max\{{0}}.png");
-            }
-            TJAPlayer3.Skin.Game_Chara_Ptn_GoGo = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path($@"{BASE}{GAME}{CHARA}GoGo\"));
-            if (TJAPlayer3.Skin.Game_Chara_Ptn_GoGo != 0)
-            {
-                Chara_GoGoTime = TxC(TJAPlayer3.Skin.Game_Chara_Ptn_GoGo, $@"{GAME}{CHARA}GoGo\{{0}}.png");
-            }
-            if (TJAPlayer3.Skin.Game_Chara_Ptn_GoGo != 0)
-            {
-                Chara_GoGoTime_Maxed = TxC(TJAPlayer3.Skin.Game_Chara_Ptn_GoGo, $@"{GAME}{CHARA}GoGo_Max\{{0}}.png");
+                Chara_Normal = TxC(TJAPlayer3.Skin.Game_Chara_Ptn_Normal, $@"{GAME}{CHARA}Normal\" + "{0}.png");
             }
 
-            TJAPlayer3.Skin.Game_Chara_Ptn_10combo = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path($@"{BASE}{GAME}{CHARA}10combo\"));
+            TJAPlayer3.Skin.Game_Chara_Ptn_Clear = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path(BASE + $@"{GAME}{CHARA}Clear\"));
+            if (TJAPlayer3.Skin.Game_Chara_Ptn_Clear != 0)
+            {
+                Chara_Normal_Cleared = TxC(TJAPlayer3.Skin.Game_Chara_Ptn_Clear, $@"{GAME}{CHARA}Clear\" + "{0}.png");
+            }
+            if (TJAPlayer3.Skin.Game_Chara_Ptn_Clear != 0)
+            {
+                Chara_Normal_Maxed = TxC(TJAPlayer3.Skin.Game_Chara_Ptn_Clear, $@"{GAME}{CHARA}Clear_Max\" + "{0}.png");
+            }
+
+            TJAPlayer3.Skin.Game_Chara_Ptn_GoGo = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path(BASE + $@"{GAME}{CHARA}GoGo\"));
+            if (TJAPlayer3.Skin.Game_Chara_Ptn_GoGo != 0)
+            {
+                Chara_GoGoTime = TxC(TJAPlayer3.Skin.Game_Chara_Ptn_GoGo, $@"{GAME}{CHARA}GoGo\" + "{0}.png");
+            }
+            if (TJAPlayer3.Skin.Game_Chara_Ptn_GoGo != 0)
+            {
+                Chara_GoGoTime_Maxed = TxC(TJAPlayer3.Skin.Game_Chara_Ptn_GoGo, $@"{GAME}{CHARA}GoGo_Max\" + "{0}.png");
+            }
+
+            TJAPlayer3.Skin.Game_Chara_Ptn_10combo = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path(BASE + $@"{GAME}{CHARA}10combo\"));
             if (TJAPlayer3.Skin.Game_Chara_Ptn_10combo != 0)
             {
-                Chara_10Combo = TxC(TJAPlayer3.Skin.Game_Chara_Ptn_10combo, $@"{GAME}{CHARA}10combo\{{0}}.png");
-            }
-            TJAPlayer3.Skin.Game_Chara_Ptn_10combo_Max = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path($@"{BASE}{GAME}{CHARA}10combo_Max\"));
-            if (TJAPlayer3.Skin.Game_Chara_Ptn_10combo_Max != 0)
-            {
-                Chara_10Combo_Maxed = TxC(TJAPlayer3.Skin.Game_Chara_Ptn_10combo_Max, $@"{GAME}{CHARA}10combo_Max\{{0}}.png");
+                Chara_10Combo = TxC(TJAPlayer3.Skin.Game_Chara_Ptn_10combo, $@"{GAME}{CHARA}10combo\" + "{0}.png");
             }
 
-            TJAPlayer3.Skin.Game_Chara_Ptn_GoGoStart = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path($@"{BASE}{GAME}{CHARA}GoGoStart\"));
+            TJAPlayer3.Skin.Game_Chara_Ptn_10combo_Max = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path(BASE + $@"{GAME}{CHARA}10combo_Max\"));
+            if (TJAPlayer3.Skin.Game_Chara_Ptn_10combo_Max != 0)
+            {
+                Chara_10Combo_Maxed = TxC(TJAPlayer3.Skin.Game_Chara_Ptn_10combo_Max, $@"{GAME}{CHARA}10combo_Max\" + "{0}.png");
+            }
+
+            TJAPlayer3.Skin.Game_Chara_Ptn_GoGoStart = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path(BASE + $@"{GAME}{CHARA}GoGoStart\"));
             if (TJAPlayer3.Skin.Game_Chara_Ptn_GoGoStart != 0)
             {
-                Chara_GoGoStart = TxC(TJAPlayer3.Skin.Game_Chara_Ptn_GoGoStart, $@"{GAME}{CHARA}GoGoStart\{{0}}.png");
+                Chara_GoGoStart = TxC(TJAPlayer3.Skin.Game_Chara_Ptn_GoGoStart, $@"{GAME}{CHARA}GoGoStart\" + "{0}.png");
             }
-            TJAPlayer3.Skin.Game_Chara_Ptn_GoGoStart_Max = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path($@"{BASE}{GAME}{CHARA}GoGoStart_Max\"));
+
+            TJAPlayer3.Skin.Game_Chara_Ptn_GoGoStart_Max = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path(BASE + $@"{GAME}{CHARA}GoGoStart_Max\"));
             if (TJAPlayer3.Skin.Game_Chara_Ptn_GoGoStart_Max != 0)
             {
-                Chara_GoGoStart_Maxed = TxC(TJAPlayer3.Skin.Game_Chara_Ptn_GoGoStart_Max, $@"{GAME}{CHARA}GoGoStart_Max\{{0}}.png");
+                Chara_GoGoStart_Maxed = TxC(TJAPlayer3.Skin.Game_Chara_Ptn_GoGoStart_Max, $@"{GAME}{CHARA}GoGoStart_Max\" + "{0}.png");
             }
-            TJAPlayer3.Skin.Game_Chara_Ptn_ClearIn = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path($@"{BASE}{GAME}{CHARA}ClearIn\"));
+
+            TJAPlayer3.Skin.Game_Chara_Ptn_ClearIn = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path(BASE + $@"{GAME}{CHARA}ClearIn\"));
             if (TJAPlayer3.Skin.Game_Chara_Ptn_ClearIn != 0)
             {
-                Chara_Become_Cleared = TxC(TJAPlayer3.Skin.Game_Chara_Ptn_ClearIn, $@"{GAME}{CHARA}ClearIn\{{0}}.png");
+                Chara_Become_Cleared = TxC(TJAPlayer3.Skin.Game_Chara_Ptn_ClearIn, $@"{GAME}{CHARA}ClearIn\" + "{0}.png");
             }
-            TJAPlayer3.Skin.Game_Chara_Ptn_SoulIn = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path($@"{BASE}{GAME}{CHARA}SoulIn\"));
+
+            TJAPlayer3.Skin.Game_Chara_Ptn_SoulIn = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path(BASE + $@"{GAME}{CHARA}SoulIn\"));
             if (TJAPlayer3.Skin.Game_Chara_Ptn_SoulIn != 0)
             {
-                Chara_Become_Maxed = TxC(TJAPlayer3.Skin.Game_Chara_Ptn_SoulIn, $@"{GAME}{CHARA}SoulIn\{{0}}.png");
+                Chara_Become_Maxed = TxC(TJAPlayer3.Skin.Game_Chara_Ptn_SoulIn, $@"{GAME}{CHARA}SoulIn\" + "{0}.png");
             }
-            TJAPlayer3.Skin.Game_Chara_Ptn_Balloon_Breaking = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path($@"{BASE}{GAME}{CHARA}Balloon_Breaking\"));
+
+            TJAPlayer3.Skin.Game_Chara_Ptn_Balloon_Breaking = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path(BASE + $@"{GAME}{CHARA}Balloon_Breaking\"));
             if (TJAPlayer3.Skin.Game_Chara_Ptn_Balloon_Breaking != 0)
             {
-                Chara_Balloon_Breaking = TxC(TJAPlayer3.Skin.Game_Chara_Ptn_Balloon_Breaking, $@"{GAME}{CHARA}Balloon_Breaking\{{0}}.png");
+                Chara_Balloon_Breaking = TxC(TJAPlayer3.Skin.Game_Chara_Ptn_Balloon_Breaking, $@"{GAME}{CHARA}Balloon_Breaking\" + "{0}.png");
             }
-            TJAPlayer3.Skin.Game_Chara_Ptn_Balloon_Broke = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path($@"{BASE}{GAME}{CHARA}Balloon_Broke\"));
+
+            TJAPlayer3.Skin.Game_Chara_Ptn_Balloon_Broke = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path(BASE + $@"{GAME}{CHARA}Balloon_Broke\"));
             if (TJAPlayer3.Skin.Game_Chara_Ptn_Balloon_Broke != 0)
             {
-                Chara_Balloon_Broke = TxC(TJAPlayer3.Skin.Game_Chara_Ptn_Balloon_Broke, $@"{GAME}{CHARA}Balloon_Broke\{{0}}.png");
+                Chara_Balloon_Broke = TxC(TJAPlayer3.Skin.Game_Chara_Ptn_Balloon_Broke, $@"{GAME}{CHARA}Balloon_Broke\" + "{0}.png");
             }
-            TJAPlayer3.Skin.Game_Chara_Ptn_Balloon_Miss = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path($@"{BASE}{GAME}{CHARA}Balloon_Miss\"));
+
+            TJAPlayer3.Skin.Game_Chara_Ptn_Balloon_Miss = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path(BASE + $@"{GAME}{CHARA}Balloon_Miss\"));
             if (TJAPlayer3.Skin.Game_Chara_Ptn_Balloon_Miss != 0)
             {
-                Chara_Balloon_Miss = TxC(TJAPlayer3.Skin.Game_Chara_Ptn_Balloon_Miss, $@"{GAME}{CHARA}Balloon_Miss\{{0}}.png");
+                Chara_Balloon_Miss = TxC(TJAPlayer3.Skin.Game_Chara_Ptn_Balloon_Miss, $@"{GAME}{CHARA}Balloon_Miss\" + "{0}.png");
             }
+
             #endregion
             #region 踊り子
             TJAPlayer3.Skin.Game_Dancer_Ptn = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path($@"{BASE}{GAME}{DANCER}1\"));
@@ -252,8 +262,11 @@ namespace TJAPlayer3
             }
             #endregion
             #region モブ
-            TJAPlayer3.Skin.Game_Mob_Ptn = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path(BASE + GAME + MOB));
-            Mob = TxC(TJAPlayer3.Skin.Game_Mob_Ptn, $"{GAME}{MOB}{{0}}.png");
+            TJAPlayer3.Skin.Game_Mob_Ptn = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path(BASE + $"{GAME}{MOB}"));
+            if (TJAPlayer3.Skin.Game_Mob_Ptn != 0)
+            {
+                Mob = TxC(TJAPlayer3.Skin.Game_Mob_Ptn, $"{GAME}{MOB}" + "{0}.png");
+            }
 
             #endregion
             #region フッター
@@ -304,10 +317,10 @@ namespace TJAPlayer3
             Gauge_Line = TxC(2, $"{GAME}{GAUGE}{{0}}P_Line.png", 1);
             Gauge_Line_Hard = TxC(2, $"{GAME}{GAUGE}{{0}}P_Line_Hard.png", 1);
 
-            TJAPlayer3.Skin.Game_Gauge_Rainbow_Ptn = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path($@"{BASE}{GAME}{GAUGE}Rainbow\"));
+            TJAPlayer3.Skin.Game_Gauge_Rainbow_Ptn = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path(BASE + $@"{GAME}{GAUGE}Rainbow\"));
             if (TJAPlayer3.Skin.Game_Gauge_Rainbow_Ptn != 0)
             {
-                Gauge_Rainbow = TxC(TJAPlayer3.Skin.Game_Gauge_Rainbow_Ptn, $@"{GAME}{GAUGE}Rainbow\{{0}}.png");
+                Gauge_Rainbow = TxC(TJAPlayer3.Skin.Game_Gauge_Rainbow_Ptn, $@"{GAME}{GAUGE}Rainbow\" + "{0}.png");
             }
 
             Gauge_Soul = TxC($"{GAME}{GAUGE}Soul.png");
@@ -347,8 +360,11 @@ namespace TJAPlayer3
             Effects_Hit_Great = TxC(15, $@"{GAME}{EFFECTS}Hit\Great\{{0}}.png");
             Effects_Hit_Great_Big = TxC(15, $@"{GAME}{EFFECTS}Hit\Great_Big\{{0}}.png");
 
-            TJAPlayer3.Skin.Game_Effect_Roll_Ptn = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path($@"{BASE}{GAME}{EFFECTS}Roll\"));
-            Effects_Roll = TxC(TJAPlayer3.Skin.Game_Effect_Roll_Ptn, $@"{GAME}{EFFECTS}Roll\{{0}}.png");
+            TJAPlayer3.Skin.Game_Effect_Roll_Ptn = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path(BASE + $@"{GAME}{EFFECTS}Roll\"));
+            if (TJAPlayer3.Skin.Game_Effect_Roll_Ptn != 0)
+            {
+                Effects_Roll = TxC(TJAPlayer3.Skin.Game_Effect_Roll_Ptn, $@"{GAME}{EFFECTS}Roll\" + "{0}.png");
+            }
 
             #endregion
             #region レーン
