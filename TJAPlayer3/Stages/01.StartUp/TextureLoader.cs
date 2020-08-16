@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using FDK;
@@ -43,7 +44,8 @@ namespace TJAPlayer3
         const string ROLL = @"Roll\";
         const string SPLASH = @"Splash\";
 
-        private readonly List<CTexture> _trackedTextures = new List<CTexture>();
+        private readonly Dictionary<string, CTexture> _trackedTextures = new Dictionary<string, CTexture>();
+        private readonly Dictionary<string, CTextureAf> _trackedTextureAfs = new Dictionary<string, CTextureAf>();
 
         private (int skinGameCharaPtnNormal, CTexture[] charaNormal) TxCFolder(string folder)
         {
@@ -64,22 +66,29 @@ namespace TJAPlayer3
 
         private CTexture TxC(string path)
         {
-            return Track(TxCUntracked(path));
+            return Resolve(_trackedTextures, path, TxCUntracked);
         }
 
         private CTextureAf TxCAf(string path)
         {
-            return Track(TxCAfUntracked(path));
+            return Resolve(_trackedTextureAfs, path, TxCAfUntracked);
         }
 
-        private T Track<T>(T texture) where T : CTexture
+        private static TValue Resolve<TKey, TValue>(IDictionary<TKey, TValue> dictionary, TKey key, Func<TKey, TValue> func)
         {
-            if (texture != null)
+            if (!dictionary.TryGetValue(key, out var value))
             {
-                _trackedTextures.Add(texture);
+                value = func(key);
+
+                dictionary.Add(key, value);
             }
 
-            return texture;
+            return value;
+        }
+
+        internal CTexture TxCGenre(string fileNameWithoutExtension)
+        {
+            return TxC($"{GAME}{GENRE}{fileNameWithoutExtension}.png");
         }
 
         internal CTexture TxCUntracked(string path)
@@ -90,11 +99,6 @@ namespace TJAPlayer3
         private CTextureAf TxCAfUntracked(string path)
         {
             return TJAPlayer3.tテクスチャの生成Af(CSkin.Path(BASE + path));
-        }
-
-        internal CTexture TxCGenreUntracked(string fileNameWithoutExtension)
-        {
-            return TJAPlayer3.tテクスチャの生成(CSkin.Path($"{BASE}{GAME}{GENRE}{fileNameWithoutExtension}.png"));
         }
 
         public void Load()
@@ -385,11 +389,17 @@ namespace TJAPlayer3
 
         public void Dispose()
         {
-            foreach (var trackedTexture in _trackedTextures)
+            void Dispose<TKey, TValue>(Dictionary<TKey, TValue> dictionary) where TValue : IDisposable
             {
-                trackedTexture.Dispose();
+                foreach (var kvp in dictionary)
+                {
+                    kvp.Value?.Dispose();
+                }
+                dictionary.Clear();
             }
-            _trackedTextures.Clear();
+
+            Dispose(_trackedTextures);
+            Dispose(_trackedTextureAfs);
         }
 
         #region 共通
