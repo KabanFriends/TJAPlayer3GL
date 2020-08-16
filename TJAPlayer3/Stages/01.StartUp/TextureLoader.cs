@@ -45,12 +45,12 @@ namespace TJAPlayer3
 
         private readonly List<CTexture> _trackedTextures = new List<CTexture>();
 
-        private CTexture[] TxC(int count, string format, int offset = 0)
+        private CTexture[] TxC(int count, string format, int start = 0)
         {
-            return TxC(Enumerable.Range(offset, count).ToList(), format);
+            return TxC(format, Enumerable.Range(start, count).Select(o => o.ToString()).ToArray());
         }
 
-        private CTexture[] TxC<T>(IEnumerable<T> parts, string format)
+        private CTexture[] TxC(string format, params string[] parts)
         {
             return parts.Select(o => TxC(string.Format(format, o))).ToArray();
         }
@@ -197,8 +197,7 @@ namespace TJAPlayer3
             TJAPlayer3.Skin.Game_Chara_Ptn_10combo_Max = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path($@"{BASE}{GAME}{CHARA}10combo_Max\"));
             if (TJAPlayer3.Skin.Game_Chara_Ptn_10combo_Max != 0)
             {
-                Chara_10Combo_Maxed = TxC(TJAPlayer3.Skin.Game_Chara_Ptn_10combo_Max,
-                    $@"{GAME}{CHARA}10combo_Max\{{0}}.png");
+                Chara_10Combo_Maxed = TxC(TJAPlayer3.Skin.Game_Chara_Ptn_10combo_Max, $@"{GAME}{CHARA}10combo_Max\{{0}}.png");
             }
 
             TJAPlayer3.Skin.Game_Chara_Ptn_GoGoStart = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path($@"{BASE}{GAME}{CHARA}GoGoStart\"));
@@ -209,8 +208,7 @@ namespace TJAPlayer3
             TJAPlayer3.Skin.Game_Chara_Ptn_GoGoStart_Max = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path($@"{BASE}{GAME}{CHARA}GoGoStart_Max\"));
             if (TJAPlayer3.Skin.Game_Chara_Ptn_GoGoStart_Max != 0)
             {
-                Chara_GoGoStart_Maxed = TxC(TJAPlayer3.Skin.Game_Chara_Ptn_GoGoStart_Max,
-                    $@"{GAME}{CHARA}GoGoStart_Max\{{0}}.png");
+                Chara_GoGoStart_Maxed = TxC(TJAPlayer3.Skin.Game_Chara_Ptn_GoGoStart_Max, $@"{GAME}{CHARA}GoGoStart_Max\{{0}}.png");
             }
             TJAPlayer3.Skin.Game_Chara_Ptn_ClearIn = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path($@"{BASE}{GAME}{CHARA}ClearIn\"));
             if (TJAPlayer3.Skin.Game_Chara_Ptn_ClearIn != 0)
@@ -225,20 +223,17 @@ namespace TJAPlayer3
             TJAPlayer3.Skin.Game_Chara_Ptn_Balloon_Breaking = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path($@"{BASE}{GAME}{CHARA}Balloon_Breaking\"));
             if (TJAPlayer3.Skin.Game_Chara_Ptn_Balloon_Breaking != 0)
             {
-                Chara_Balloon_Breaking = TxC(TJAPlayer3.Skin.Game_Chara_Ptn_Balloon_Breaking,
-                    $@"{GAME}{CHARA}Balloon_Breaking\{{0}}.png");
+                Chara_Balloon_Breaking = TxC(TJAPlayer3.Skin.Game_Chara_Ptn_Balloon_Breaking, $@"{GAME}{CHARA}Balloon_Breaking\{{0}}.png");
             }
             TJAPlayer3.Skin.Game_Chara_Ptn_Balloon_Broke = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path($@"{BASE}{GAME}{CHARA}Balloon_Broke\"));
             if (TJAPlayer3.Skin.Game_Chara_Ptn_Balloon_Broke != 0)
             {
-                Chara_Balloon_Broke = TxC(TJAPlayer3.Skin.Game_Chara_Ptn_Balloon_Broke,
-                    $@"{GAME}{CHARA}Balloon_Broke\{{0}}.png");
+                Chara_Balloon_Broke = TxC(TJAPlayer3.Skin.Game_Chara_Ptn_Balloon_Broke, $@"{GAME}{CHARA}Balloon_Broke\{{0}}.png");
             }
             TJAPlayer3.Skin.Game_Chara_Ptn_Balloon_Miss = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path($@"{BASE}{GAME}{CHARA}Balloon_Miss\"));
             if (TJAPlayer3.Skin.Game_Chara_Ptn_Balloon_Miss != 0)
             {
-                Chara_Balloon_Miss = TxC(TJAPlayer3.Skin.Game_Chara_Ptn_Balloon_Miss,
-                    $@"{GAME}{CHARA}Balloon_Miss\{{0}}.png");
+                Chara_Balloon_Miss = TxC(TJAPlayer3.Skin.Game_Chara_Ptn_Balloon_Miss, $@"{GAME}{CHARA}Balloon_Miss\{{0}}.png");
             }
             #endregion
             #region 踊り子
@@ -290,11 +285,11 @@ namespace TJAPlayer3
             Taiko_LevelUp = TxC($"{GAME}{TAIKO}LevelUp.png");
             Taiko_LevelDown = TxC($"{GAME}{TAIKO}LevelDown.png");
 
-            Course_Symbol = TxC(Course_Symbols, $"{GAME}{COURSESYMBOL}{{0}}.png");
+            Course_Symbol = TxC($"{GAME}{COURSESYMBOL}{{0}}.png", Course_Symbols);
 
-            Taiko_Score = TxC(new[] {"", "_1P", "_2P"}, $"{GAME}{TAIKO}Score{{0}}.png");
+            Taiko_Score = TxC($"{GAME}{TAIKO}Score{{0}}.png", "", "_1P", "_2P");
 
-            Taiko_Combo = TxC(new[] {"", "_Big"}, $"{GAME}{TAIKO}Combo{{0}}.png");
+            Taiko_Combo = TxC($"{GAME}{TAIKO}Combo{{0}}.png", "", "_Big");
             Taiko_Combo_Effect = TxC($"{GAME}{TAIKO}Combo_Effect.png");
             Taiko_Combo_Text = TxC($"{GAME}{TAIKO}Combo_Text.png");
             #endregion
@@ -358,8 +353,8 @@ namespace TJAPlayer3
             #endregion
             #region レーン
             var lanes = new[] { "Normal", "Expert", "Master" };
-            Lane_Base = TxC(lanes, $"{GAME}{LANE}Base_{{0}}.png");
-            Lane_Text = TxC(lanes, $"{GAME}{LANE}Text_{{0}}.png");
+            Lane_Base = TxC($"{GAME}{LANE}Base_{{0}}.png", lanes);
+            Lane_Text = TxC($"{GAME}{LANE}Text_{{0}}.png", lanes);
 
             Lane_Red = TxC($"{GAME}{LANE}Red.png");
             Lane_Blue = TxC($"{GAME}{LANE}Blue.png");
@@ -392,8 +387,7 @@ namespace TJAPlayer3
             #region DanC
             DanC_Background = TxC($"{GAME}{DANC}Background.png");
 
-            var type = new string[] { "Normal", "Reach", "Clear", "Flush" };
-            DanC_Gauge = TxC(type, $"{GAME}{DANC}Gauge_{{0}}.png");
+            DanC_Gauge = TxC($"{GAME}{DANC}Gauge_{{0}}.png", "Normal", "Reach", "Clear", "Flush");
 
             DanC_Base = TxC($"{GAME}{DANC}Base.png");
             DanC_Failed = TxC($"{GAME}{DANC}Failed.png");
