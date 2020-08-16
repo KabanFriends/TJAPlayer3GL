@@ -298,7 +298,7 @@ namespace TJAPlayer3
             Taiko_LevelUp = TxC($"{GAME}{TAIKO}LevelUp.png");
             Taiko_LevelDown = TxC($"{GAME}{TAIKO}LevelDown.png");
 
-            Course_Symbol = TxC($"{GAME}{COURSESYMBOL}{{0}}.png", Course_Symbols);
+            Course_Symbol = TxC($"{GAME}{COURSESYMBOL}{{0}}.png", "Easy", "Normal", "Hard", "Oni", "Edit", "Tower", "Dan", "Shin");
 
             Taiko_Score = TxC($"{GAME}{TAIKO}Score{{0}}.png", "", "_1P", "_2P");
 
@@ -567,7 +567,6 @@ namespace TJAPlayer3
             Taiko_Combo_Effect,
             Taiko_Combo_Text;
 
-        private static readonly string[] Course_Symbols = { "Easy", "Normal", "Hard", "Oni", "Edit", "Tower", "Dan", "Shin" };
         public CTexture[] Course_Symbol;
         public CTexture[] Taiko_PlayerNumber;
         public CTexture[] Taiko_NamePlate; // ネームプレート
