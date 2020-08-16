@@ -45,6 +45,13 @@ namespace TJAPlayer3
 
         private readonly List<CTexture> _trackedTextures = new List<CTexture>();
 
+        private (int skinGameCharaPtnNormal, CTexture[] charaNormal) TxCFolder(string folder)
+        {
+            var count = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path(BASE + folder));
+            var texture = count == 0 ? null : TxC(count, folder + "{0}.png");
+            return (count, texture);
+        }
+
         private CTexture[] TxC(int count, string format, int start = 0)
         {
             return TxC(format, Enumerable.Range(start, count).Select(o => o.ToString()).ToArray());
@@ -166,89 +173,26 @@ namespace TJAPlayer3
             #endregion
             #region キャラクター
 
-            var s = $@"{GAME}{CHARA}Normal\";
-            var skinGameCharaPtnNormal = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path(BASE + s));
-            var charaNormal = skinGameCharaPtnNormal != 0 ? TxC(skinGameCharaPtnNormal, s + "{0}.png") : null;
-            Chara_Normal = charaNormal;
-            TJAPlayer3.Skin.Game_Chara_Ptn_Normal = skinGameCharaPtnNormal;
+            (TJAPlayer3.Skin.Game_Chara_Ptn_Normal, Chara_Normal) = TxCFolder($@"{GAME}{CHARA}Normal\");
+            (TJAPlayer3.Skin.Game_Chara_Ptn_Clear, Chara_Normal_Cleared) = TxCFolder($@"{GAME}{CHARA}Clear\");
+            (_, Chara_Normal_Maxed) = TxCFolder($@"{GAME}{CHARA}Clear_Max\");
 
-            var s1 = $@"{GAME}{CHARA}Clear\";
-            var skinGameCharaPtnClear = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path(BASE + s1));
-            var charaNormalCleared = skinGameCharaPtnClear != 0 ? TxC(skinGameCharaPtnClear, s1 + "{0}.png") : null;
-            Chara_Normal_Cleared = charaNormalCleared;
-            TJAPlayer3.Skin.Game_Chara_Ptn_Clear = skinGameCharaPtnClear;
+            (TJAPlayer3.Skin.Game_Chara_Ptn_GoGo, Chara_GoGoTime) = TxCFolder($@"{GAME}{CHARA}GoGo\");
+            (_, Chara_GoGoTime_Maxed) = TxCFolder($@"{GAME}{CHARA}GoGo_Max\");
 
-            var s2 = $@"{GAME}{CHARA}Clear_Max\";
-            var skinGameCharaPtnClearMax = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path(BASE + s2));
-            var charaNormalMaxed = skinGameCharaPtnClearMax != 0 ? TxC(skinGameCharaPtnClearMax, s2 + "{0}.png") : null;
-            Chara_Normal_Maxed = charaNormalMaxed;
-            // no assignment
+            (TJAPlayer3.Skin.Game_Chara_Ptn_10combo, Chara_10Combo) = TxCFolder($@"{GAME}{CHARA}10combo\");
+            (TJAPlayer3.Skin.Game_Chara_Ptn_10combo_Max, Chara_10Combo_Maxed) = TxCFolder($@"{GAME}{CHARA}10combo_Max\");
 
-            var s3 = $@"{GAME}{CHARA}GoGo\";
-            var skinGameCharaPtnGoGo = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path(BASE + s3));
-            var charaGoGoTime = skinGameCharaPtnGoGo != 0 ? TxC(skinGameCharaPtnGoGo, s3 + "{0}.png") : null;
-            Chara_GoGoTime = charaGoGoTime;
-            TJAPlayer3.Skin.Game_Chara_Ptn_GoGo = skinGameCharaPtnGoGo;
+            (TJAPlayer3.Skin.Game_Chara_Ptn_GoGoStart, Chara_GoGoStart) = TxCFolder($@"{GAME}{CHARA}GoGoStart\");
+            (TJAPlayer3.Skin.Game_Chara_Ptn_GoGoStart_Max, Chara_GoGoStart_Maxed) = TxCFolder($@"{GAME}{CHARA}GoGoStart_Max\");
 
-            var s4 = $@"{GAME}{CHARA}GoGo_Max\";
-            var skinGameCharaPtnGoGoMax = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path(BASE + s4));
-            var charaGoGoTimeMaxed = skinGameCharaPtnGoGoMax != 0 ? TxC(skinGameCharaPtnGoGoMax, s4 + "{0}.png") : null;
-            Chara_GoGoTime_Maxed = charaGoGoTimeMaxed;
-            // no assignment
+            (TJAPlayer3.Skin.Game_Chara_Ptn_ClearIn, Chara_Become_Cleared) = TxCFolder($@"{GAME}{CHARA}ClearIn\");
 
-            var s5 = $@"{GAME}{CHARA}10combo\";
-            var skinGameCharaPtn10Combo = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path(BASE + s5));
-            var chara10Combo = skinGameCharaPtn10Combo != 0 ? TxC(skinGameCharaPtn10Combo, s5 + "{0}.png") : null;
-            Chara_10Combo = chara10Combo;
-            TJAPlayer3.Skin.Game_Chara_Ptn_10combo = skinGameCharaPtn10Combo;
+            (TJAPlayer3.Skin.Game_Chara_Ptn_SoulIn, Chara_Become_Maxed) = TxCFolder($@"{GAME}{CHARA}SoulIn\");
 
-            var s6 = $@"{GAME}{CHARA}10combo_Max\";
-            var skinGameCharaPtn10ComboMax = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path(BASE + s6));
-            var chara10ComboMaxed = skinGameCharaPtn10ComboMax != 0 ? TxC(skinGameCharaPtn10ComboMax, s6 + "{0}.png") : null;
-            Chara_10Combo_Maxed = chara10ComboMaxed;
-            TJAPlayer3.Skin.Game_Chara_Ptn_10combo_Max = skinGameCharaPtn10ComboMax;
-
-            var s7 = $@"{GAME}{CHARA}GoGoStart\";
-            var skinGameCharaPtnGoGoStart = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path(BASE + s7));
-            var charaGoGoStart = skinGameCharaPtnGoGoStart != 0 ? TxC(skinGameCharaPtnGoGoStart, s7 + "{0}.png") : null;
-            Chara_GoGoStart = charaGoGoStart;
-            TJAPlayer3.Skin.Game_Chara_Ptn_GoGoStart = skinGameCharaPtnGoGoStart;
-
-            var s8 = $@"{GAME}{CHARA}GoGoStart_Max\";
-            var skinGameCharaPtnGoGoStartMax = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path(BASE + s8));
-            var charaGoGoStartMaxed = skinGameCharaPtnGoGoStartMax != 0 ? TxC(skinGameCharaPtnGoGoStartMax, s8 + "{0}.png") : null;
-            Chara_GoGoStart_Maxed = charaGoGoStartMaxed;
-            TJAPlayer3.Skin.Game_Chara_Ptn_GoGoStart_Max = skinGameCharaPtnGoGoStartMax;
-
-            var s9 = $@"{GAME}{CHARA}ClearIn\";
-            var skinGameCharaPtnClearIn = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path(BASE + s9));
-            var charaBecomeCleared = skinGameCharaPtnClearIn != 0 ? TxC(skinGameCharaPtnClearIn, s9 + "{0}.png") : null;
-            Chara_Become_Cleared = charaBecomeCleared;
-            TJAPlayer3.Skin.Game_Chara_Ptn_ClearIn = skinGameCharaPtnClearIn;
-
-            var s10 = $@"{GAME}{CHARA}SoulIn\";
-            var skinGameCharaPtnSoulIn = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path(BASE + s10));
-            var charaBecomeMaxed = skinGameCharaPtnSoulIn != 0 ? TxC(skinGameCharaPtnSoulIn, s10 + "{0}.png") : null;
-            Chara_Become_Maxed = charaBecomeMaxed;
-            TJAPlayer3.Skin.Game_Chara_Ptn_SoulIn = skinGameCharaPtnSoulIn;
-
-            var s11 = $@"{GAME}{CHARA}Balloon_Breaking\";
-            var skinGameCharaPtnBalloonBreaking = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path(BASE + s11));
-            var charaBalloonBreaking = skinGameCharaPtnBalloonBreaking != 0 ? TxC(skinGameCharaPtnBalloonBreaking, s11 + "{0}.png") : null;
-            Chara_Balloon_Breaking = charaBalloonBreaking;
-            TJAPlayer3.Skin.Game_Chara_Ptn_Balloon_Breaking = skinGameCharaPtnBalloonBreaking;
-
-            var s12 = $@"{GAME}{CHARA}Balloon_Broke\";
-            var skinGameCharaPtnBalloonBroke = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path(BASE + s12));
-            var charaBalloonBroke = skinGameCharaPtnBalloonBroke != 0 ? TxC(skinGameCharaPtnBalloonBroke, s12 + "{0}.png") : null;
-            Chara_Balloon_Broke = charaBalloonBroke;
-            TJAPlayer3.Skin.Game_Chara_Ptn_Balloon_Broke = skinGameCharaPtnBalloonBroke;
-
-            var s13 = $@"{GAME}{CHARA}Balloon_Miss\";
-            var skinGameCharaPtnBalloonMiss = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path(BASE + s13));
-            var charaBalloonMiss = skinGameCharaPtnBalloonMiss != 0 ? TxC(skinGameCharaPtnBalloonMiss, s13 + "{0}.png") : null;
-            Chara_Balloon_Miss = charaBalloonMiss;
-            TJAPlayer3.Skin.Game_Chara_Ptn_Balloon_Miss = skinGameCharaPtnBalloonMiss;
+            (TJAPlayer3.Skin.Game_Chara_Ptn_Balloon_Breaking, Chara_Balloon_Breaking) = TxCFolder($@"{GAME}{CHARA}Balloon_Breaking\");
+            (TJAPlayer3.Skin.Game_Chara_Ptn_Balloon_Broke, Chara_Balloon_Broke) = TxCFolder($@"{GAME}{CHARA}Balloon_Broke\");
+            (TJAPlayer3.Skin.Game_Chara_Ptn_Balloon_Miss, Chara_Balloon_Miss) = TxCFolder($@"{GAME}{CHARA}Balloon_Miss\");
 
             #endregion
             #region 踊り子
@@ -271,11 +215,7 @@ namespace TJAPlayer3
             #endregion
             #region モブ
 
-            var s14 = $"{GAME}{MOB}";
-            var skinGameMobPtn = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path(BASE + s14));
-            var mob = skinGameMobPtn != 0 ? TxC(skinGameMobPtn, s14 + "{0}.png") : null;
-            Mob = mob;
-            TJAPlayer3.Skin.Game_Mob_Ptn = skinGameMobPtn;
+            (TJAPlayer3.Skin.Game_Mob_Ptn, Mob) = TxCFolder($"{GAME}{MOB}");
 
             #endregion
             #region フッター
@@ -326,11 +266,7 @@ namespace TJAPlayer3
             Gauge_Line = TxC(2, $"{GAME}{GAUGE}{{0}}P_Line.png", 1);
             Gauge_Line_Hard = TxC(2, $"{GAME}{GAUGE}{{0}}P_Line_Hard.png", 1);
 
-            var s15 = $@"{GAME}{GAUGE}Rainbow\";
-            var skinGameGaugeRainbowPtn = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path(BASE + s15));
-            var gaugeRainbow = skinGameGaugeRainbowPtn != 0 ? TxC(skinGameGaugeRainbowPtn, s15 + "{0}.png") : null;
-            Gauge_Rainbow = gaugeRainbow;
-            TJAPlayer3.Skin.Game_Gauge_Rainbow_Ptn = skinGameGaugeRainbowPtn;
+            (TJAPlayer3.Skin.Game_Gauge_Rainbow_Ptn, Gauge_Rainbow) = TxCFolder($@"{GAME}{GAUGE}Rainbow\");
 
             Gauge_Soul = TxC($"{GAME}{GAUGE}Soul.png");
             Gauge_Soul_Fire = TxC($"{GAME}{GAUGE}Fire.png");
@@ -369,11 +305,7 @@ namespace TJAPlayer3
             Effects_Hit_Great = TxC(15, $@"{GAME}{EFFECTS}Hit\Great\{{0}}.png");
             Effects_Hit_Great_Big = TxC(15, $@"{GAME}{EFFECTS}Hit\Great_Big\{{0}}.png");
 
-            var s16 = $@"{GAME}{EFFECTS}Roll\";
-            var skinGameEffectRollPtn = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path(BASE + s16));
-            var effectsRoll = skinGameEffectRollPtn != 0 ? TxC(skinGameEffectRollPtn, s16 + "{0}.png") : null;
-            Effects_Roll = effectsRoll;
-            TJAPlayer3.Skin.Game_Effect_Roll_Ptn = skinGameEffectRollPtn;
+            (TJAPlayer3.Skin.Game_Effect_Roll_Ptn, Effects_Roll) = TxCFolder($@"{GAME}{EFFECTS}Roll\");
 
             #endregion
             #region レーン
