@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using FDK;
 
 namespace TJAPlayer3
@@ -46,26 +47,12 @@ namespace TJAPlayer3
 
         private CTexture[] TxC(int count, string format, int offset = 0)
         {
-            var array = new CTexture[count];
-
-            for (int i = 0; i < array.Length; i++)
-            {
-                array[i] = TxC(string.Format(format, i + offset));
-            }
-
-            return array;
+            return TxC(Enumerable.Range(offset, count).ToList(), format);
         }
 
-        private CTexture[] TxC(string[] parts, string format)
+        private CTexture[] TxC<T>(IEnumerable<T> parts, string format)
         {
-            var array = new CTexture[parts.Length];
-
-            for (int i = 0; i < array.Length; i++)
-            {
-                array[i] = TxC(string.Format(format, parts[i]));
-            }
-
-            return array;
+            return parts.Select(o => TxC(string.Format(format, o))).ToArray();
         }
 
         private CTexture TxC(string path)
