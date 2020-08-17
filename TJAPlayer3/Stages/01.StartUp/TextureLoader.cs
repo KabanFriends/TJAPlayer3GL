@@ -44,8 +44,8 @@ namespace TJAPlayer3
         const string ROLL = @"Roll\";
         const string SPLASH = @"Splash\";
 
-        private readonly Dictionary<string, CTexture> _trackedTextures = new Dictionary<string, CTexture>();
-        private readonly Dictionary<string, CTextureAf> _trackedTextureAfs = new Dictionary<string, CTextureAf>();
+        private readonly List<CTexture> _trackedTextures = new List<CTexture>();
+        private readonly Dictionary<string, CTexture> _genreTexturesByFileNameWithoutExtension = new Dictionary<string, CTexture>();
 
         private (int skinGameCharaPtnNormal, CTexture[] charaNormal) TxCFolder(string folder)
         {
@@ -66,29 +66,36 @@ namespace TJAPlayer3
 
         private CTexture TxC(string path)
         {
-            return Resolve(_trackedTextures, path, TxCUntracked);
+            return Track(TxCUntracked(path));
         }
 
         private CTextureAf TxCAf(string path)
         {
-            return Resolve(_trackedTextureAfs, path, TxCAfUntracked);
+            return Track(TxCAfUntracked(path));
         }
 
-        private static TValue Resolve<TKey, TValue>(IDictionary<TKey, TValue> dictionary, TKey key, Func<TKey, TValue> func)
+        private T Track<T>(T texture) where T : CTexture
         {
-            if (!dictionary.TryGetValue(key, out var value))
+            if (texture != null)
             {
-                value = func(key);
-
-                dictionary.Add(key, value);
+                _trackedTextures.Add(texture);
             }
 
-            return value;
+            return texture;
         }
 
         internal CTexture TxCGenre(string fileNameWithoutExtension)
         {
-            return TxC($"{GAME}{GENRE}{fileNameWithoutExtension}.png");
+            if (_genreTexturesByFileNameWithoutExtension.TryGetValue(fileNameWithoutExtension, out var texture))
+            {
+                return texture;
+            }
+
+            texture = TxC($"{GAME}{GENRE}{fileNameWithoutExtension}.png");
+
+            _genreTexturesByFileNameWithoutExtension.Add(fileNameWithoutExtension, texture);
+
+            return texture;
         }
 
         internal CTexture TxCUntracked(string path)
@@ -389,17 +396,13 @@ namespace TJAPlayer3
 
         public void Dispose()
         {
-            void Dispose<TKey, TValue>(Dictionary<TKey, TValue> dictionary) where TValue : IDisposable
-            {
-                foreach (var kvp in dictionary)
-                {
-                    kvp.Value?.Dispose();
-                }
-                dictionary.Clear();
-            }
+            _genreTexturesByFileNameWithoutExtension.Clear();
 
-            Dispose(_trackedTextures);
-            Dispose(_trackedTextureAfs);
+            foreach (var texture in _trackedTextures)
+            {
+                texture.Dispose();
+            }
+            _trackedTextures.Clear();
         }
 
         #region 共通
