@@ -288,8 +288,8 @@ namespace TJAPlayer3
                 TJAPlayer3.Tx.SongSelect_Header?.t2D描画( TJAPlayer3.app.Device, 0, 0 );
 
 				this.actInformation.On進行描画();
-				if( TJAPlayer3.Tx.SongSelect_Footer != null )
-                    TJAPlayer3.Tx.SongSelect_Footer.t2D描画( TJAPlayer3.app.Device, 0, 720 - TJAPlayer3.Tx.SongSelect_Footer.sz画像サイズ.Height );
+
+                TJAPlayer3.Tx.SongSelect_Footer?.t2D描画( TJAPlayer3.app.Device, 0, 720 - TJAPlayer3.Tx.SongSelect_Footer.sz画像サイズ.Height );
 
                 #region ネームプレート
                 for (int i = 0; i < Math.Min(TJAPlayer3.ConfigIni.nPlayerCount, TJAPlayer3.Tx.NamePlate.Length); i++)
