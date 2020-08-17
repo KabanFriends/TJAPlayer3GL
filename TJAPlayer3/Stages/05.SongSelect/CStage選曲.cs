@@ -299,7 +299,7 @@ namespace TJAPlayer3
                     TJAPlayer3.Tx.SongSelect_Footer.t2D描画( TJAPlayer3.app.Device, 0, 720 - TJAPlayer3.Tx.SongSelect_Footer.sz画像サイズ.Height );
 
                 #region ネームプレート
-                for (int i = 0; i < TJAPlayer3.ConfigIni.nPlayerCount; i++)
+                for (int i = 0; i < Math.Min(TJAPlayer3.ConfigIni.nPlayerCount, TJAPlayer3.Tx.NamePlate.Length); i++)
                 {
                     TJAPlayer3.Tx.NamePlate[i]?.t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.SongSelect_NamePlate_X[i], TJAPlayer3.Skin.SongSelect_NamePlate_Y[i]);
                 }
