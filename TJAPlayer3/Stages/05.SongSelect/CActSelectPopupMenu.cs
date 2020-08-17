@@ -313,11 +313,10 @@ namespace TJAPlayer3
 					#endregion
 				}
 				#region [ ポップアップメニュー 背景描画 ]
-				if ( TJAPlayer3.Tx.Menu_Title != null )
-				{
-                    TJAPlayer3.Tx.Menu_Title.t2D描画( TJAPlayer3.app.Device, 160, 40 );
-				}
-				#endregion
+
+                TJAPlayer3.Tx.Menu_Title?.t2D描画(TJAPlayer3.app.Device, 160, 40);
+
+                #endregion
 				#region [ ソートメニュータイトル描画 ]
 				int x = 240, y = 44;
 				stqMenuTitle.txName.t2D描画( TJAPlayer3.app.Device, x, y );
