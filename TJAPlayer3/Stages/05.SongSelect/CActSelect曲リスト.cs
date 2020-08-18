@@ -1226,7 +1226,7 @@ namespace TJAPlayer3
 							int y = this.ptバーの基本座標[ i ].Y;
                             this.tジャンル別選択されていない曲バーの描画( this.ptバーの座標[ nパネル番号 ].X, TJAPlayer3.Skin.SongSelect_Overall_Y, this.stバー情報[ nパネル番号 ].strジャンル );
                             if( this.stバー情報[ nパネル番号 ].b分岐[ TJAPlayer3.stage選曲.n現在選択中の曲の難易度 ] == true && i != 5 )
-                                TJAPlayer3.Tx.SongSelect_Branch.t2D描画( TJAPlayer3.app.Device, this.ptバーの座標[ nパネル番号 ].X + 66, TJAPlayer3.Skin.SongSelect_Overall_Y-5);
+                                TJAPlayer3.Tx.SongSelect_Branch?.t2D描画( TJAPlayer3.app.Device, this.ptバーの座標[ nパネル番号 ].X + 66, TJAPlayer3.Skin.SongSelect_Overall_Y-5);
                             if( this.stバー情報[ nパネル番号 ].ar難易度 != null )
                             {
                                 int nX補正 = 0;
@@ -1278,7 +1278,7 @@ namespace TJAPlayer3
                         else if (n見た目の行番号 != 5)
                             this.tジャンル別選択されていない曲バーの描画(xAnime, TJAPlayer3.Skin.SongSelect_Overall_Y, this.stバー情報[nパネル番号].strジャンル);
                         if (this.stバー情報[nパネル番号].b分岐[TJAPlayer3.stage選曲.n現在選択中の曲の難易度] == true && n見た目の行番号 != 5)
-                            TJAPlayer3.Tx.SongSelect_Branch.t2D描画(TJAPlayer3.app.Device, xAnime + 66, TJAPlayer3.Skin.SongSelect_Overall_Y - 5);
+                            TJAPlayer3.Tx.SongSelect_Branch?.t2D描画(TJAPlayer3.app.Device, xAnime + 66, TJAPlayer3.Skin.SongSelect_Overall_Y - 5);
                         //-----------------
                         #endregion
 
