@@ -164,7 +164,7 @@ namespace TJAPlayer3
                         //CDTXMania.Tx.SongSelect_ScoreWindow[CDTXMania.stage選曲.n現在選択中の曲の難易度].n透明度 = ct登場アニメ用.n現在の値 - 1745;
                         TJAPlayer3.Tx.SongSelect_ScoreWindow[TJAPlayer3.stage選曲.n現在選択中の曲の難易度].t2D描画(TJAPlayer3.app.Device, x, y);
                         this.t小文字表示(x + 56, y + 160, string.Format("{0,7:######0}", TJAPlayer3.stage選曲.r現在選択中のスコア.譜面情報.nハイスコア[TJAPlayer3.stage選曲.n現在選択中の曲の難易度].ToString()));
-                        TJAPlayer3.Tx.SongSelect_ScoreWindow_Text.t2D描画(TJAPlayer3.app.Device, x + 236, y + 166, new Rectangle(0, 36, 32, 30));
+                        TJAPlayer3.Tx.SongSelect_ScoreWindow_Text?.t2D描画(TJAPlayer3.app.Device, x + 236, y + 166, new Rectangle(0, 36, 32, 30));
                     }
                 }
 			}
@@ -203,10 +203,7 @@ namespace TJAPlayer3
                     if (this.st小文字位置[i].ch == ch)
                     {
                         Rectangle rectangle = new Rectangle( this.st小文字位置[i].pt.X, this.st小文字位置[i].pt.Y, 26, 36 );
-                        if (TJAPlayer3.Tx.SongSelect_ScoreWindow_Text != null)
-                        {
-                            TJAPlayer3.Tx.SongSelect_ScoreWindow_Text.t2D描画(TJAPlayer3.app.Device, x, y, rectangle);
-                        }
+                        TJAPlayer3.Tx.SongSelect_ScoreWindow_Text?.t2D描画(TJAPlayer3.app.Device, x, y, rectangle);
                         break;
                     }
                 }

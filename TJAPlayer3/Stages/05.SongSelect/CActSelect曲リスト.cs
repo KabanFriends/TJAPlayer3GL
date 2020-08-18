@@ -1051,8 +1051,8 @@ namespace TJAPlayer3
 			{
                 if( this.n現在のスクロールカウンタ == 0 )
                 {
-                    if( TJAPlayer3.Tx.SongSelect_Bar_Center != null )
-                        TJAPlayer3.Tx.SongSelect_Bar_Center.t2D描画( TJAPlayer3.app.Device, TJAPlayer3.Skin.SongSelect_Bar_Center_X, TJAPlayer3.Skin.SongSelect_Overall_Y);
+                    TJAPlayer3.Tx.SongSelect_Bar_Center?.t2D描画( TJAPlayer3.app.Device, TJAPlayer3.Skin.SongSelect_Bar_Center_X, TJAPlayer3.Skin.SongSelect_Overall_Y);
+
                     switch (r現在選択中の曲.eノード種別)
                     {
                         case C曲リストノード.Eノード種別.SCORE:
@@ -1156,13 +1156,11 @@ namespace TJAPlayer3
                             break;
 
                         case C曲リストノード.Eノード種別.BACKBOX:
-                            if (TJAPlayer3.Tx.SongSelect_Frame_BackBox != null)
-                                TJAPlayer3.Tx.SongSelect_Frame_BackBox.t2D描画(TJAPlayer3.app.Device, 450, TJAPlayer3.Skin.SongSelect_Overall_Y);
+                            TJAPlayer3.Tx.SongSelect_Frame_BackBox?.t2D描画(TJAPlayer3.app.Device, 450, TJAPlayer3.Skin.SongSelect_Overall_Y);
                             break;
 
                         case C曲リストノード.Eノード種別.RANDOM:
-                            if (TJAPlayer3.Tx.SongSelect_Frame_Random != null)
-                                TJAPlayer3.Tx.SongSelect_Frame_Random.t2D描画(TJAPlayer3.app.Device, 450, TJAPlayer3.Skin.SongSelect_Overall_Y);
+                            TJAPlayer3.Tx.SongSelect_Frame_Random?.t2D描画(TJAPlayer3.app.Device, 450, TJAPlayer3.Skin.SongSelect_Overall_Y);
                             break;
                             //case C曲リストノード.Eノード種別.DANI:
                             //    if (CDTXMania.Tx.SongSelect_Frame_Dani != null)
@@ -1310,8 +1308,8 @@ namespace TJAPlayer3
 
                 if( this.n現在のスクロールカウンタ == 0 )
                 {
-                    if( TJAPlayer3.Tx.SongSelect_Bar_Center != null )
-                        TJAPlayer3.Tx.SongSelect_Bar_Center.t2D描画( TJAPlayer3.app.Device, TJAPlayer3.Skin.SongSelect_Bar_Center_X, TJAPlayer3.Skin.SongSelect_Overall_Y);
+                    TJAPlayer3.Tx.SongSelect_Bar_Center?.t2D描画( TJAPlayer3.app.Device, TJAPlayer3.Skin.SongSelect_Bar_Center_X, TJAPlayer3.Skin.SongSelect_Overall_Y);
+
                     switch (r現在選択中の曲.eノード種別)
                     {
                         case C曲リストノード.Eノード種別.SCORE:
@@ -1429,13 +1427,11 @@ namespace TJAPlayer3
                             break;
 
                         case C曲リストノード.Eノード種別.BACKBOX:
-                            if (TJAPlayer3.Tx.SongSelect_Frame_BackBox != null)
-                                TJAPlayer3.Tx.SongSelect_Frame_BackBox.t2D描画(TJAPlayer3.app.Device, 450, TJAPlayer3.Skin.SongSelect_Overall_Y);
+                            TJAPlayer3.Tx.SongSelect_Frame_BackBox?.t2D描画(TJAPlayer3.app.Device, 450, TJAPlayer3.Skin.SongSelect_Overall_Y);
                             break;
 
                         case C曲リストノード.Eノード種別.RANDOM:
-                            if (TJAPlayer3.Tx.SongSelect_Frame_Random != null)
-                                TJAPlayer3.Tx.SongSelect_Frame_Random.t2D描画(TJAPlayer3.app.Device, 450, TJAPlayer3.Skin.SongSelect_Overall_Y);
+                            TJAPlayer3.Tx.SongSelect_Frame_Random?.t2D描画(TJAPlayer3.app.Device, 450, TJAPlayer3.Skin.SongSelect_Overall_Y);
                             break;
                             //case C曲リストノード.Eノード種別.DANI:
                             //    if (CDTXMania.Tx.SongSelect_Frame_Dani != null)
@@ -1556,8 +1552,7 @@ namespace TJAPlayer3
 
             if( this.e曲のバー種別を返す( this.r現在選択中の曲 ) == Eバー種別.Score && CStrジャンルtoNum.ForGenreTextIndex( this.r現在選択中の曲.strジャンル ) != 8 )
             {
-                if( TJAPlayer3.Tx.SongSelect_GenreText != null )
-                    TJAPlayer3.Tx.SongSelect_GenreText.t2D描画( TJAPlayer3.app.Device, 496, TJAPlayer3.Skin.SongSelect_Overall_Y-64, new Rectangle( 0, 60 * CStrジャンルtoNum.ForGenreTextIndex( this.r現在選択中の曲.strジャンル ), 288, 60 ) );
+                TJAPlayer3.Tx.SongSelect_GenreText?.t2D描画( TJAPlayer3.app.Device, 496, TJAPlayer3.Skin.SongSelect_Overall_Y-64, new Rectangle( 0, 60 * CStrジャンルtoNum.ForGenreTextIndex( this.r現在選択中の曲.strジャンル ), 288, 60 ) );
             }
 
 
