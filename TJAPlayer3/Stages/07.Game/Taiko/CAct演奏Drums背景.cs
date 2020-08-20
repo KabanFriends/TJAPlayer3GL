@@ -119,10 +119,7 @@ namespace TJAPlayer3
             if( !TJAPlayer3.stage演奏ドラム画面.bDoublePlay )
             {
                 {
-                    if( TJAPlayer3.Tx.Background_Down != null )
-                    {
-                        TJAPlayer3.Tx.Background_Down.t2D描画( TJAPlayer3.app.Device, 0, 360 );
-                    }
+                    TJAPlayer3.Tx.Background_Down?.t2D描画(TJAPlayer3.app.Device, 0, 360);
                 }
                 if(TJAPlayer3.stage演奏ドラム画面.bIsAlreadyCleared[0] && TJAPlayer3.ConfigIni.eGaugeMode != EGaugeMode.Hard && TJAPlayer3.ConfigIni.eGaugeMode != EGaugeMode.ExHard)
                 {

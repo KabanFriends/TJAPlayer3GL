@@ -233,7 +233,7 @@ namespace TJAPlayer3
             Mob_Footer = TxC($"{GAME}{FOOTER}0.png");
             #endregion
             #region 背景
-            Background = TxC($@"{GAME}{Background}0\Background.png");
+            Background = TxC($@"{GAME}{BACKGROUND}0\Background.png");
             Background_Up = TxC(2, $@"{GAME}{BACKGROUND}0\{{0}}P_Up.png", 1);
             Background_Up_Clear = TxC(2, $@"{GAME}{BACKGROUND}0\{{0}}P_Up_Clear.png", 1);
             Background_Down = TxC($@"{GAME}{BACKGROUND}0\Down.png");
