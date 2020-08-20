@@ -1306,13 +1306,13 @@ namespace TJAPlayer3
                                     {
                                         if( nPlayer == 0 )
                                         {
-                                            TJAPlayer3.Tx.Notes_Arm.t2D上下反転描画( device, x + 25, ( y + 74 ) + nHand );
-                                            TJAPlayer3.Tx.Notes_Arm.t2D上下反転描画( device, x + 60, ( y + 104 ) - nHand );
+                                            TJAPlayer3.Tx.Notes_Arm?.t2D上下反転描画( device, x + 25, ( y + 74 ) + nHand );
+                                            TJAPlayer3.Tx.Notes_Arm?.t2D上下反転描画( device, x + 60, ( y + 104 ) - nHand );
                                         }
                                         else if( nPlayer == 1 )
                                         {
-                                            TJAPlayer3.Tx.Notes_Arm.t2D描画( device, x + 25, ( y - 44 ) + nHand );
-                                            TJAPlayer3.Tx.Notes_Arm.t2D描画( device, x + 60, ( y - 14 ) - nHand );
+                                            TJAPlayer3.Tx.Notes_Arm?.t2D描画( device, x + 25, ( y - 44 ) + nHand );
+                                            TJAPlayer3.Tx.Notes_Arm?.t2D描画( device, x + 60, ( y - 14 ) - nHand );
                                         }
 
                                         TJAPlayer3.Tx.Notes.t2D描画( device, x, y, new Rectangle( 1690, num9, 130, 130 ) );
@@ -1326,13 +1326,13 @@ namespace TJAPlayer3
                                     {
                                         if( nPlayer == 0 )
                                         {
-                                            TJAPlayer3.Tx.Notes_Arm.t2D上下反転描画( device, x + 25, ( y + 74 ) + nHand );
-                                            TJAPlayer3.Tx.Notes_Arm.t2D上下反転描画( device, x + 60, ( y + 104 ) - nHand );
+                                            TJAPlayer3.Tx.Notes_Arm?.t2D上下反転描画( device, x + 25, ( y + 74 ) + nHand );
+                                            TJAPlayer3.Tx.Notes_Arm?.t2D上下反転描画( device, x + 60, ( y + 104 ) - nHand );
                                         }
                                         else if( nPlayer == 1 )
                                         {
-                                            TJAPlayer3.Tx.Notes_Arm.t2D描画( device, x + 25, ( y - 44 ) + nHand );
-                                            TJAPlayer3.Tx.Notes_Arm.t2D描画( device, x + 60, ( y - 14 ) - nHand );
+                                            TJAPlayer3.Tx.Notes_Arm?.t2D描画( device, x + 25, ( y - 44 ) + nHand );
+                                            TJAPlayer3.Tx.Notes_Arm?.t2D描画( device, x + 60, ( y - 14 ) - nHand );
                                         }
 
                                         TJAPlayer3.Tx.Notes.t2D描画( device, x, y, new Rectangle( 1820, num9, 130, 130 ) );
