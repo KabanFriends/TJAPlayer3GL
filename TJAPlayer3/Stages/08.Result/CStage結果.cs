@@ -302,11 +302,9 @@ namespace TJAPlayer3
 
 				// 描画
 
-				if(TJAPlayer3.Tx.Result_Background != null )
-				{
-                    TJAPlayer3.Tx.Result_Background.t2D描画( TJAPlayer3.app.Device, 0, 0 );
-				}
-				if( this.ct登場用.b進行中 && ( TJAPlayer3.Tx.Result_Header != null ) )
+                TJAPlayer3.Tx.Result_Background?.t2D描画(TJAPlayer3.app.Device, 0, 0);
+
+                if( this.ct登場用.b進行中 && ( TJAPlayer3.Tx.Result_Header != null ) )
 				{
 					double num2 = ( (double) this.ct登場用.n現在の値 ) / 100.0;
 					double num3 = Math.Sin( Math.PI / 2 * num2 );
