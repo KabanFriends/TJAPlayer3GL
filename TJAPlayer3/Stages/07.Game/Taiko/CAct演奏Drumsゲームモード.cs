@@ -465,8 +465,7 @@ namespace TJAPlayer3
                 //CDTXMania.act文字コンソール.tPrint( 100, 16 * 7, C文字コンソール.Eフォント種別.白, this.st叩ききりまショー.ct加算審査中.n現在の値.ToString() );
 
                 #region[ 残り時間描画 ]
-                if (TJAPlayer3.Tx.GameMode_Timer_Frame != null)
-                    TJAPlayer3.Tx.GameMode_Timer_Frame.t2D描画( TJAPlayer3.app.Device, 230, 84 );
+                TJAPlayer3.Tx.GameMode_Timer_Frame?.t2D描画( TJAPlayer3.app.Device, 230, 84 );
                 this.st叩ききりまショー.ct針アニメ.t進行Loop();
 
                 int nCenterX = 230;
@@ -488,8 +487,11 @@ namespace TJAPlayer3
 
                 TJAPlayer3.Tx.GameMode_Timer_Tick.t3D描画( TJAPlayer3.app.Device, mat );
 
-                string str表示する残り時間 = ( this.st叩ききりまショー.ct残り時間.n現在の値 < 1000 ) ? "25" : ( ( 26000 - this.st叩ききりまショー.ct残り時間.n現在の値 ) / 1000 ).ToString();
-                this.t小文字表示( 230 + (str表示する残り時間.Length * TJAPlayer3.Skin.Game_Taiko_Combo_Size[0] / 4 ), 84 + TJAPlayer3.Tx.GameMode_Timer_Frame.szテクスチャサイズ.Height / 2 , string.Format("{0,2:#0}", str表示する残り時間 ));
+                if (TJAPlayer3.Tx.GameMode_Timer_Frame != null)
+                {
+                    string str表示する残り時間 = ( this.st叩ききりまショー.ct残り時間.n現在の値 < 1000 ) ? "25" : ( ( 26000 - this.st叩ききりまショー.ct残り時間.n現在の値 ) / 1000 ).ToString();
+                    this.t小文字表示( 230 + (str表示する残り時間.Length * TJAPlayer3.Skin.Game_Taiko_Combo_Size[0] / 4 ), 84 + TJAPlayer3.Tx.GameMode_Timer_Frame.szテクスチャサイズ.Height / 2 , string.Format("{0,2:#0}", str表示する残り時間 ));
+                }
 
                 if( !this.st叩ききりまショー.ct加算審査中.b停止中 )
                 {
