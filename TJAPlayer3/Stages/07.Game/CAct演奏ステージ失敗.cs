@@ -231,10 +231,8 @@ namespace TJAPlayer3
                         {
                             rectangle.Width = 80;
                         }
-						if(TJAPlayer3.Tx.Balloon_Number_Roll != null )
-						{
-                            TJAPlayer3.Tx.Balloon_Number_Roll.t2D描画( TJAPlayer3.app.Device, x - ( 62 * str.Length / 2 ), y, rectangle );
-						}
+
+                        TJAPlayer3.Tx.Balloon_Number_Roll?.t2D描画( TJAPlayer3.app.Device, x - ( 62 * str.Length / 2 ), y, rectangle );
 						break;
 					}
 				}
