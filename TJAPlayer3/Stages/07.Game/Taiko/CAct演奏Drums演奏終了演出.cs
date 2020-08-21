@@ -210,7 +210,7 @@ namespace TJAPlayer3
                                         TJAPlayer3.Tx.End_Clear_Text.t2D描画(TJAPlayer3.app.Device, 890, y[i] + 2, new Rectangle(360, 0, 90, 90));
                                     }
                                 }
-                                if (this.ct進行メイン.n現在の値 >= 50 && this.ct進行メイン.n現在の値 < 90)
+                                if (this.ct進行メイン.n現在の値 >= 50 && this.ct進行メイン.n現在の値 < 90 && TJAPlayer3.Tx.End_Clear_Text_Effect != null)
                                 {
                                     if (this.ct進行メイン.n現在の値 < 70)
                                     {
