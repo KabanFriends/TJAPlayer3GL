@@ -485,7 +485,7 @@ namespace TJAPlayer3
                     mat *= SlimDX.Matrix.Translation( 280 - 640, -( 134 - 360 ), 0 );
                 }
 
-                TJAPlayer3.Tx.GameMode_Timer_Tick.t3D描画( TJAPlayer3.app.Device, mat );
+                TJAPlayer3.Tx.GameMode_Timer_Tick?.t3D描画( TJAPlayer3.app.Device, mat );
 
                 if (TJAPlayer3.Tx.GameMode_Timer_Frame != null)
                 {
