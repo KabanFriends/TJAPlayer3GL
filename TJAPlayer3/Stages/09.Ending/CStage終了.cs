@@ -101,21 +101,10 @@ namespace TJAPlayer3
 
 				this.ct時間稼ぎ.t進行();
 
-				if( TJAPlayer3.Tx.Exit_Background != null )
-				{
-                    //if( this.ds背景 != null )
-                    //{
-                    //    if( this.ds背景.b上下反転 )
-                    //        this.tx背景.t2D上下反転描画( CDTXMania.app.Device, 0, 0 );
-                    //    else
-                    //        this.tx背景.t2D描画( CDTXMania.app.Device, 0, 0 );
-                    //}
-                    //else
-                    TJAPlayer3.Tx.Exit_Background.t2D描画( TJAPlayer3.app.Device, 0, 0 );
-				}
+                TJAPlayer3.Tx.Exit_Background?.t2D描画(TJAPlayer3.app.Device, 0, 0);
 
 
-           //     if( this.ct時間稼ぎ.n現在の値 < 2000 )
+                //     if( this.ct時間稼ぎ.n現在の値 < 2000 )
            //     {
            //         if( this.tx文字 != null )
            //         {
