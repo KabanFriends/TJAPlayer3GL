@@ -144,7 +144,7 @@ namespace TJAPlayer3
 
                 if (this.ctキャラクターアクション_10コンボ.b進行中db)
                 {
-                    if (TJAPlayer3.Tx.Chara_10Combo?[0] != null)
+                    if (TJAPlayer3.Tx.Chara_10Combo.Length > (int)this.ctキャラクターアクション_10コンボ.db現在の値)
                     {
                         TJAPlayer3.Tx.Chara_10Combo[(int)this.ctキャラクターアクション_10コンボ.db現在の値]?.t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Chara_X[0], TJAPlayer3.Skin.Game_Chara_Y[0] );
                     }
@@ -159,7 +159,7 @@ namespace TJAPlayer3
 
                 if (this.ctキャラクターアクション_10コンボMAX.b進行中db)
                 {
-                    if (TJAPlayer3.Tx.Chara_10Combo_Maxed?[0] != null)
+                    if (TJAPlayer3.Tx.Chara_10Combo_Maxed.Length > (int)this.ctキャラクターアクション_10コンボMAX.db現在の値)
                     {
                         TJAPlayer3.Tx.Chara_10Combo_Maxed[(int)this.ctキャラクターアクション_10コンボMAX.db現在の値]?.t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Chara_X[0], TJAPlayer3.Skin.Game_Chara_Y[0]);
                     }
@@ -174,7 +174,7 @@ namespace TJAPlayer3
 
                 if (this.ctキャラクターアクション_ゴーゴースタート.b進行中db)
                 {
-                    if (TJAPlayer3.Tx.Chara_GoGoStart?[0] != null)
+                    if (TJAPlayer3.Tx.Chara_GoGoStart.Length > (int)this.ctキャラクターアクション_ゴーゴースタート.db現在の値)
                     {
                         TJAPlayer3.Tx.Chara_GoGoStart[(int)this.ctキャラクターアクション_ゴーゴースタート.db現在の値]?.t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Chara_X[0], TJAPlayer3.Skin.Game_Chara_Y[0]);
                     }
@@ -189,7 +189,7 @@ namespace TJAPlayer3
 
                 if (this.ctキャラクターアクション_ゴーゴースタートMAX.b進行中db)
                 {
-                    if (TJAPlayer3.Tx.Chara_GoGoStart_Maxed?[0] != null)
+                    if (TJAPlayer3.Tx.Chara_GoGoStart_Maxed.Length > (int)this.ctキャラクターアクション_ゴーゴースタートMAX.db現在の値)
                     {
                         TJAPlayer3.Tx.Chara_GoGoStart_Maxed[(int)this.ctキャラクターアクション_ゴーゴースタートMAX.db現在の値]?.t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Chara_X[0], TJAPlayer3.Skin.Game_Chara_Y[0]);
                     }
@@ -204,7 +204,7 @@ namespace TJAPlayer3
 
                 if (this.ctキャラクターアクション_ノルマ.b進行中db)
                 {
-                    if (TJAPlayer3.Tx.Chara_Become_Cleared?[0] != null)
+                    if (TJAPlayer3.Tx.Chara_Become_Cleared.Length > (int)this.ctキャラクターアクション_ノルマ.db現在の値)
                     {
                         TJAPlayer3.Tx.Chara_Become_Cleared[(int)this.ctキャラクターアクション_ノルマ.db現在の値]?.t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Chara_X[0], TJAPlayer3.Skin.Game_Chara_Y[0]);
                     }
@@ -218,7 +218,7 @@ namespace TJAPlayer3
 
                 if (this.ctキャラクターアクション_魂MAX.b進行中db)
                 {
-                    if (TJAPlayer3.Tx.Chara_Become_Maxed?[0] != null)
+                    if (TJAPlayer3.Tx.Chara_Become_Maxed.Length > (int)this.ctキャラクターアクション_魂MAX.db現在の値)
                     {
                         TJAPlayer3.Tx.Chara_Become_Maxed[(int)this.ctキャラクターアクション_魂MAX.db現在の値]?.t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Chara_X[0], TJAPlayer3.Skin.Game_Chara_Y[0]);
                     }
