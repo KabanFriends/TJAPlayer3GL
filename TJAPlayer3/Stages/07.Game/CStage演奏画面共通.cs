@@ -2609,11 +2609,6 @@ namespace TJAPlayer3
 
 			var n現在時刻ms = CSound管理.rc演奏用タイマ.n現在時刻ms;
 
-			if( this.r指定時刻に一番近い未ヒットChip( (long)n現在時刻ms, 0x50, 0, 1000000, nPlayer ) == null )
-            {
-                this.actChara.b演奏中 = false;
-            }
-
 			var db現在の譜面スクロール速度 = this.act譜面スクロール速度.db現在の譜面スクロール速度;
 
 			//double speed = 264.0;	// BPM150の時の1小節の長さ[dot]
@@ -2908,7 +2903,6 @@ namespace TJAPlayer3
 						{
                             if ( !pChip.bHit && ( pChip.nバーからの距離dot.Taiko < 0 ) )
 						    {
-                                this.actChara.b演奏中 = true;
                                 if( this.actPlayInfo.NowMeasure[nPlayer] == 0 )
                                 {
                                     for (int i = 0; i < 2; i++)
