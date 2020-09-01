@@ -398,22 +398,21 @@ namespace TJAPlayer3
                                 if (TJAPlayer3.Tx.Gauge[1] != null)
                                 {
                                     TJAPlayer3.Tx.Gauge[1].t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Gauge_X[1], TJAPlayer3.Skin.Game_Gauge_Y[1], new Rectangle(0, 0, nRectX2P, 44));
-                                    if (TJAPlayer3.Tx.Gauge[1] != null)
+
+                                    if (TJAPlayer3.ConfigIni.eGaugeMode == EGaugeMode.Normal && this.db現在のゲージ値[1] >= 100.0)
                                     {
-                                        if (TJAPlayer3.ConfigIni.eGaugeMode == EGaugeMode.Normal && this.db現在のゲージ値[1] >= 100.0)
+                                        this.ct虹アニメ.t進行Loop();
+                                        this.ct虹透明度.t進行Loop();
+                                        if (TJAPlayer3.Tx.Gauge_Rainbow[this.ct虹アニメ.n現在の値] != null)
                                         {
-                                            this.ct虹アニメ.t進行Loop();
-                                            this.ct虹透明度.t進行Loop();
-                                            if (TJAPlayer3.Tx.Gauge_Rainbow[this.ct虹アニメ.n現在の値] != null)
-                                            {
-                                                TJAPlayer3.Tx.Gauge_Rainbow[ct虹アニメ.n現在の値].Opacity = 255;
-                                                TJAPlayer3.Tx.Gauge_Rainbow[ct虹アニメ.n現在の値].t2D上下反転描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Gauge_X[1], TJAPlayer3.Skin.Game_Gauge_Y[1]);
-                                                TJAPlayer3.Tx.Gauge_Rainbow[虹ベース].Opacity = (ct虹透明度.n現在の値 * 255 / ct虹透明度.n終了値) / 1;
-                                                TJAPlayer3.Tx.Gauge_Rainbow[虹ベース].t2D上下反転描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Gauge_X[1], TJAPlayer3.Skin.Game_Gauge_Y[1]);
-                                            }
+                                            TJAPlayer3.Tx.Gauge_Rainbow[ct虹アニメ.n現在の値].Opacity = 255;
+                                            TJAPlayer3.Tx.Gauge_Rainbow[ct虹アニメ.n現在の値].t2D上下反転描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Gauge_X[1], TJAPlayer3.Skin.Game_Gauge_Y[1]);
+                                            TJAPlayer3.Tx.Gauge_Rainbow[虹ベース].Opacity = (ct虹透明度.n現在の値 * 255 / ct虹透明度.n終了値) / 1;
+                                            TJAPlayer3.Tx.Gauge_Rainbow[虹ベース].t2D上下反転描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Gauge_X[1], TJAPlayer3.Skin.Game_Gauge_Y[1]);
                                         }
-                                        TJAPlayer3.Tx.Gauge_Line[1].t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Gauge_X[1], TJAPlayer3.Skin.Game_Gauge_Y[1]);
                                     }
+                                    TJAPlayer3.Tx.Gauge_Line[1].t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Gauge_X[1], TJAPlayer3.Skin.Game_Gauge_Y[1]);
+
                                     #region[ 「クリア」文字 ]
                                     //1038 - 492 = 546
                                     //554 - 532 = 12
