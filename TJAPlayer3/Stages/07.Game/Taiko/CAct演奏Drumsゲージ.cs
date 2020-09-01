@@ -351,12 +351,10 @@ namespace TJAPlayer3
                     default:
                         #region その他
                             #region ゲージベース
-                            if (TJAPlayer3.Tx.Gauge_Base[0] != null)
-                                TJAPlayer3.Tx.Gauge_Base[0].t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Gauge_X[0], TJAPlayer3.Skin.Game_Gauge_Y[0], new Rectangle(0, 0, 700, 44));
+                            TJAPlayer3.Tx.Gauge_Base[0]?.t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Gauge_X[0], TJAPlayer3.Skin.Game_Gauge_Y[0], new Rectangle(0, 0, 700, 44));
                             if (TJAPlayer3.stage演奏ドラム画面.bDoublePlay)
                             {
-                                if (TJAPlayer3.Tx.Gauge_Base[1] != null)
-                                    TJAPlayer3.Tx.Gauge_Base[1].t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Gauge_X[1], TJAPlayer3.Skin.Game_Gauge_Y[1], new Rectangle(0, 0, 700, 44));
+                                TJAPlayer3.Tx.Gauge_Base[1]?.t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Gauge_X[1], TJAPlayer3.Skin.Game_Gauge_Y[1], new Rectangle(0, 0, 700, 44));
                             }
                             #endregion
                             #region ゲージ1P
