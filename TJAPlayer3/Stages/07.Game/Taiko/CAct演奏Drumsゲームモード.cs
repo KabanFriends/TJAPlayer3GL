@@ -852,20 +852,22 @@ namespace TJAPlayer3
 				{
                     if (this.st小文字位置[i].ch == ch)
                     {
-                        Rectangle rectangle = new Rectangle(TJAPlayer3.Skin.Game_Taiko_Combo_Size[0] * i, 0, TJAPlayer3.Skin.Game_Taiko_Combo_Size[0], TJAPlayer3.Skin.Game_Taiko_Combo_Size[1]);
-						if(TJAPlayer3.Tx.Taiko_Combo[0]  != null )
-						{
+                        var taikoComboTexture = TJAPlayer3.Tx.Taiko_Combo[0];
+                        if(taikoComboTexture != null)
+                        {
+                            Rectangle rectangle = new Rectangle(TJAPlayer3.Skin.Game_Taiko_Combo_Size[0] * i, 0, TJAPlayer3.Skin.Game_Taiko_Combo_Size[0], TJAPlayer3.Skin.Game_Taiko_Combo_Size[1]);
+
                             if( this.st叩ききりまショー.bタイマー使用中 )
-                                TJAPlayer3.Tx.Taiko_Combo[0].Opacity = 255;
+                                taikoComboTexture.Opacity = 255;
                             else if( this.st叩ききりまショー.b最初のチップが叩かれた && !this.st叩ききりまショー.bタイマー使用中 )
-                                TJAPlayer3.Tx.Taiko_Combo[0].Opacity = 128;
+                                taikoComboTexture.Opacity = 128;
                             if (this.st叩ききりまショー.b加算アニメ中)
-                                TJAPlayer3.Tx.Taiko_Combo[0].Opacity = 0;
-                            TJAPlayer3.Tx.Taiko_Combo[0].vc拡大縮小倍率.Y = 1f;
-                            TJAPlayer3.Tx.Taiko_Combo[0].vc拡大縮小倍率.X = 1f;
-                            TJAPlayer3.Tx.Taiko_Combo[0].t2D中心基準描画( TJAPlayer3.app.Device, x, y, rectangle );
-						}
-						break;
+                                taikoComboTexture.Opacity = 0;
+                            taikoComboTexture.vc拡大縮小倍率.Y = 1f;
+                            taikoComboTexture.vc拡大縮小倍率.X = 1f;
+                            taikoComboTexture.t2D中心基準描画( TJAPlayer3.app.Device, x, y, rectangle );
+                        }
+                        break;
 					}
 				}
 				x += TJAPlayer3.Skin.Game_Taiko_Combo_Padding[0] * 2;
