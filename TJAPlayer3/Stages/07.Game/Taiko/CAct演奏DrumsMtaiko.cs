@@ -187,17 +187,21 @@ namespace TJAPlayer3
 
             for( int i = 0; i < TJAPlayer3.ConfigIni.nPlayerCount; i++ )
             {
-                TJAPlayer3.Tx.Course_Symbol[TJAPlayer3.stage選曲.n確定された曲の難易度]?.t2D描画(TJAPlayer3.app.Device,
-                    TJAPlayer3.Skin.Game_CourseSymbol_X[i],
-                    TJAPlayer3.Skin.Game_CourseSymbol_Y[i]
-                    );
 
-                if (TJAPlayer3.ConfigIni.ShinuchiMode)
+                if (TJAPlayer3.Tx.Course_Symbol.Length > TJAPlayer3.stage選曲.n確定された曲の難易度)
                 {
-                    TJAPlayer3.Tx.Course_Symbol[(int)Difficulty.Total]?.t2D描画(TJAPlayer3.app.Device,
+                    TJAPlayer3.Tx.Course_Symbol[TJAPlayer3.stage選曲.n確定された曲の難易度]?.t2D描画(TJAPlayer3.app.Device,
                         TJAPlayer3.Skin.Game_CourseSymbol_X[i],
                         TJAPlayer3.Skin.Game_CourseSymbol_Y[i]
-                        );
+                    );
+                }
+
+                if (TJAPlayer3.ConfigIni.ShinuchiMode && TJAPlayer3.Tx.Course_Symbol.Length > (int)Difficulty.Total)
+                {
+                    TJAPlayer3.Tx.Course_Symbol[(int) Difficulty.Total]?.t2D描画(TJAPlayer3.app.Device,
+                        TJAPlayer3.Skin.Game_CourseSymbol_X[i],
+                        TJAPlayer3.Skin.Game_CourseSymbol_Y[i]
+                    );
                 }
             }
 
