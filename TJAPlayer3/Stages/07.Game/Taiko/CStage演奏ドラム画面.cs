@@ -1306,13 +1306,13 @@ namespace TJAPlayer3
                                     {
                                         if( nPlayer == 0 )
                                         {
-                                            TJAPlayer3.Tx.Notes_Arm.t2D上下反転描画( device, x + 25, ( y + 74 ) + nHand );
-                                            TJAPlayer3.Tx.Notes_Arm.t2D上下反転描画( device, x + 60, ( y + 104 ) - nHand );
+                                            TJAPlayer3.Tx.Notes_Arm?.t2D上下反転描画( device, x + 25, ( y + 74 ) + nHand );
+                                            TJAPlayer3.Tx.Notes_Arm?.t2D上下反転描画( device, x + 60, ( y + 104 ) - nHand );
                                         }
                                         else if( nPlayer == 1 )
                                         {
-                                            TJAPlayer3.Tx.Notes_Arm.t2D描画( device, x + 25, ( y - 44 ) + nHand );
-                                            TJAPlayer3.Tx.Notes_Arm.t2D描画( device, x + 60, ( y - 14 ) - nHand );
+                                            TJAPlayer3.Tx.Notes_Arm?.t2D描画( device, x + 25, ( y - 44 ) + nHand );
+                                            TJAPlayer3.Tx.Notes_Arm?.t2D描画( device, x + 60, ( y - 14 ) - nHand );
                                         }
 
                                         TJAPlayer3.Tx.Notes.t2D描画( device, x, y, new Rectangle( 1690, num9, 130, 130 ) );
@@ -1326,13 +1326,13 @@ namespace TJAPlayer3
                                     {
                                         if( nPlayer == 0 )
                                         {
-                                            TJAPlayer3.Tx.Notes_Arm.t2D上下反転描画( device, x + 25, ( y + 74 ) + nHand );
-                                            TJAPlayer3.Tx.Notes_Arm.t2D上下反転描画( device, x + 60, ( y + 104 ) - nHand );
+                                            TJAPlayer3.Tx.Notes_Arm?.t2D上下反転描画( device, x + 25, ( y + 74 ) + nHand );
+                                            TJAPlayer3.Tx.Notes_Arm?.t2D上下反転描画( device, x + 60, ( y + 104 ) - nHand );
                                         }
                                         else if( nPlayer == 1 )
                                         {
-                                            TJAPlayer3.Tx.Notes_Arm.t2D描画( device, x + 25, ( y - 44 ) + nHand );
-                                            TJAPlayer3.Tx.Notes_Arm.t2D描画( device, x + 60, ( y - 14 ) - nHand );
+                                            TJAPlayer3.Tx.Notes_Arm?.t2D描画( device, x + 25, ( y - 44 ) + nHand );
+                                            TJAPlayer3.Tx.Notes_Arm?.t2D描画( device, x + 60, ( y - 14 ) - nHand );
                                         }
 
                                         TJAPlayer3.Tx.Notes.t2D描画( device, x, y, new Rectangle( 1820, num9, 130, 130 ) );
@@ -1699,7 +1699,7 @@ namespace TJAPlayer3
 
                     if( pChip.bBranch )
                     {
-                        TJAPlayer3.Tx.Bar_Branch.t3D描画( TJAPlayer3.app.Device, mat, new Rectangle( 0, 0, TJAPlayer3.Skin.Game_Bar_Width, TJAPlayer3.Skin.Game_Bar_Height ) );
+                        TJAPlayer3.Tx.Bar_Branch?.t3D描画( TJAPlayer3.app.Device, mat, new Rectangle( 0, 0, TJAPlayer3.Skin.Game_Bar_Width, TJAPlayer3.Skin.Game_Bar_Height ) );
                     }
                     else
                     {
@@ -1868,8 +1868,7 @@ namespace TJAPlayer3
             {
                 //ボードの横幅は333px
                 //数字フォントの小さいほうはリザルトのものと同じ。
-                if( TJAPlayer3.Tx.Judge_Meter != null )
-                    TJAPlayer3.Tx.Judge_Meter.t2D描画( TJAPlayer3.app.Device, 0, 360 );
+                TJAPlayer3.Tx.Judge_Meter?.t2D描画( TJAPlayer3.app.Device, 0, 360 );
 
                 this.t小文字表示( 102, 494, string.Format( "{0,4:###0}", this.nヒット数_Auto含まない.Drums.Perfect.ToString() ), false );
                 this.t小文字表示( 102, 532, string.Format( "{0,4:###0}", this.nヒット数_Auto含まない.Drums.Great.ToString() ), false );
@@ -1910,12 +1909,9 @@ namespace TJAPlayer3
 
 					if( this.st小文字位置[ i ].ch == ch )
 					{
-						Rectangle rectangle = new Rectangle( this.st小文字位置[ i ].pt.X, this.st小文字位置[ i ].pt.Y, 32, 38 );
-						if( TJAPlayer3.Tx.Result_Number != null )
-						{
-                            TJAPlayer3.Tx.Result_Number.t2D描画( TJAPlayer3.app.Device, x, y, rectangle );
-						}
-						break;
+                        var rectangle = new Rectangle( this.st小文字位置[ i ].pt.X, this.st小文字位置[ i ].pt.Y, 32, 38 );
+                        TJAPlayer3.Tx.Result_Number?.t2D描画(TJAPlayer3.app.Device, x, y, rectangle);
+                        break;
 					}
 				}
 				x += 22;
@@ -1935,12 +1931,9 @@ namespace TJAPlayer3
 
 					if( this.st小文字位置[ i ].ch == ch )
 					{
-						Rectangle rectangle = new Rectangle( this.st小文字位置[ i ].pt.X, 38, 32, 42 );
-						if(TJAPlayer3.Tx.Result_Number != null )
-						{
-                            TJAPlayer3.Tx.Result_Number.t2D描画( TJAPlayer3.app.Device, x, y, rectangle );
-						}
-						break;
+                        var rectangle = new Rectangle( this.st小文字位置[ i ].pt.X, 38, 32, 42 );
+                        TJAPlayer3.Tx.Result_Number?.t2D描画(TJAPlayer3.app.Device, x, y, rectangle);
+                        break;
 					}
 				}
 				x += 28;

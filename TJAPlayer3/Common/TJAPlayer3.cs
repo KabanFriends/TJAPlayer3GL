@@ -1992,7 +1992,8 @@ for (int i = 0; i < 3; i++) {
                 //---------------------
                 #endregion
                 #region TextureLoaderの処理
-                Tx.DisposeTexture();
+                Tx.Dispose();
+                Tx = null;
                 #endregion
                 #region [ スキンの終了処理 ]
                 //---------------------
@@ -2273,8 +2274,9 @@ for (int i = 0; i < 3; i++) {
             TJAPlayer3.Skin = new CSkin(TJAPlayer3.ConfigIni.strSystemSkinSubfolderFullName, false);
 
 
-            TJAPlayer3.Tx.DisposeTexture();
-            TJAPlayer3.Tx.LoadTexture();
+            TJAPlayer3.Tx.Dispose();
+            TJAPlayer3.Tx = new TextureLoader();
+            TJAPlayer3.Tx.Load();
 
             TJAPlayer3.act文字コンソール.On活性化();
         }

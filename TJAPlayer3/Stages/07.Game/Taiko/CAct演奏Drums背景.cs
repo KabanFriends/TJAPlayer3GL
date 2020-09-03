@@ -83,33 +83,36 @@ namespace TJAPlayer3
             #region 1P-2P-上背景
             for (int i = 0; i < 2; i++)
             {
-                if (this.ct上背景スクロール用タイマー[i] != null)
+                var backgroundUpTexture = TJAPlayer3.Tx.Background_Up[i];
+                if (backgroundUpTexture != null && this.ct上背景スクロール用タイマー[i] != null)
                 {
-                    double TexSize = 1280 / TJAPlayer3.Tx.Background_Up[i].szテクスチャサイズ.Width;
+                    double TexSize = 1280 / backgroundUpTexture.szテクスチャサイズ.Width;
                     // 1280をテクスチャサイズで割ったものを切り上げて、プラス+1足す。
                     int ForLoop = (int)Math.Ceiling(TexSize) + 1;
                     //int nループ幅 = 328;
-                    TJAPlayer3.Tx.Background_Up[i].t2D描画(TJAPlayer3.app.Device, 0 - this.ct上背景スクロール用タイマー[i].n現在の値, TJAPlayer3.Skin.Background_Scroll_Y[i]);
+                    backgroundUpTexture.t2D描画(TJAPlayer3.app.Device, 0 - this.ct上背景スクロール用タイマー[i].n現在の値, TJAPlayer3.Skin.Background_Scroll_Y[i]);
                     for (int l = 1; l < ForLoop + 1; l++)
                     {
-                        TJAPlayer3.Tx.Background_Up[i].t2D描画(TJAPlayer3.app.Device, +(l * TJAPlayer3.Tx.Background_Up[i].szテクスチャサイズ.Width) - this.ct上背景スクロール用タイマー[i].n現在の値, TJAPlayer3.Skin.Background_Scroll_Y[i]);
+                        backgroundUpTexture.t2D描画(TJAPlayer3.app.Device, +(l * backgroundUpTexture.szテクスチャサイズ.Width) - this.ct上背景スクロール用タイマー[i].n現在の値, TJAPlayer3.Skin.Background_Scroll_Y[i]);
                     }
                 }
-                if (this.ct上背景スクロール用タイマー[i] != null)
+
+                var backgroundUpClearTexture = TJAPlayer3.Tx.Background_Up_Clear[i];
+                if (backgroundUpClearTexture != null && this.ct上背景スクロール用タイマー[i] != null)
                 {
                     if (TJAPlayer3.stage演奏ドラム画面.bIsAlreadyCleared[i] && TJAPlayer3.ConfigIni.eGaugeMode != EGaugeMode.Hard && TJAPlayer3.ConfigIni.eGaugeMode != EGaugeMode.ExHard)
-                        TJAPlayer3.Tx.Background_Up_Clear[i].Opacity = ((this.ct上背景クリアインタイマー[i].n現在の値 * 0xff) / 100);
+                        backgroundUpClearTexture.Opacity = ((this.ct上背景クリアインタイマー[i].n現在の値 * 0xff) / 100);
                     else
-                        TJAPlayer3.Tx.Background_Up_Clear[i].Opacity = 0;
+                        backgroundUpClearTexture.Opacity = 0;
 
-                    double TexSize = 1280 / TJAPlayer3.Tx.Background_Up_Clear[i].szテクスチャサイズ.Width;
+                    double TexSize = 1280 / backgroundUpClearTexture.szテクスチャサイズ.Width;
                     // 1280をテクスチャサイズで割ったものを切り上げて、プラス+1足す。
                     int ForLoop = (int)Math.Ceiling(TexSize) + 1;
 
-                    TJAPlayer3.Tx.Background_Up_Clear[i].t2D描画(TJAPlayer3.app.Device, 0 - this.ct上背景スクロール用タイマー[i].n現在の値, TJAPlayer3.Skin.Background_Scroll_Y[i]);
+                    backgroundUpClearTexture.t2D描画(TJAPlayer3.app.Device, 0 - this.ct上背景スクロール用タイマー[i].n現在の値, TJAPlayer3.Skin.Background_Scroll_Y[i]);
                     for (int l = 1; l < ForLoop + 1; l++)
                     {
-                        TJAPlayer3.Tx.Background_Up_Clear[i].t2D描画(TJAPlayer3.app.Device, (l * TJAPlayer3.Tx.Background_Up_Clear[i].szテクスチャサイズ.Width) - this.ct上背景スクロール用タイマー[i].n現在の値, TJAPlayer3.Skin.Background_Scroll_Y[i]);
+                        backgroundUpClearTexture.t2D描画(TJAPlayer3.app.Device, (l * backgroundUpClearTexture.szテクスチャサイズ.Width) - this.ct上背景スクロール用タイマー[i].n現在の値, TJAPlayer3.Skin.Background_Scroll_Y[i]);
                     }
                 }
 
@@ -119,10 +122,7 @@ namespace TJAPlayer3
             if( !TJAPlayer3.stage演奏ドラム画面.bDoublePlay )
             {
                 {
-                    if( TJAPlayer3.Tx.Background_Down != null )
-                    {
-                        TJAPlayer3.Tx.Background_Down.t2D描画( TJAPlayer3.app.Device, 0, 360 );
-                    }
+                    TJAPlayer3.Tx.Background_Down?.t2D描画(TJAPlayer3.app.Device, 0, 360);
                 }
                 if(TJAPlayer3.stage演奏ドラム画面.bIsAlreadyCleared[0] && TJAPlayer3.ConfigIni.eGaugeMode != EGaugeMode.Hard && TJAPlayer3.ConfigIni.eGaugeMode != EGaugeMode.ExHard)
                 {

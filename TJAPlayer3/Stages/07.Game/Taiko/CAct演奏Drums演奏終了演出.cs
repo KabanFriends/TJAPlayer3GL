@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Runtime.InteropServices;
-using System.Drawing;
+﻿using System.Drawing;
 using FDK;
 
 namespace TJAPlayer3
@@ -210,7 +206,7 @@ namespace TJAPlayer3
                                         TJAPlayer3.Tx.End_Clear_Text.t2D描画(TJAPlayer3.app.Device, 890, y[i] + 2, new Rectangle(360, 0, 90, 90));
                                     }
                                 }
-                                if (this.ct進行メイン.n現在の値 >= 50 && this.ct進行メイン.n現在の値 < 90)
+                                if (this.ct進行メイン.n現在の値 >= 50 && this.ct進行メイン.n現在の値 < 90 && TJAPlayer3.Tx.End_Clear_Text_Effect != null)
                                 {
                                     if (this.ct進行メイン.n現在の値 < 70)
                                     {
@@ -245,12 +241,17 @@ namespace TJAPlayer3
                                 }
                                 else if (this.ct進行メイン.n現在の値 <= 46)
                                 {
+                                    //2016.07.16 kairera0467 またも原始的...
+                                    float[] fRet = { 1.0f, 0.99f, 0.98f, 0.97f, 0.96f, 0.95f, 0.96f, 0.97f, 0.98f, 0.99f, 1.0f };
+
                                     if (TJAPlayer3.Tx.End_Clear_L[0] != null)
                                     {
-                                        //2016.07.16 kairera0467 またも原始的...
-                                        float[] fRet = new float[] { 1.0f, 0.99f, 0.98f, 0.97f, 0.96f, 0.95f, 0.96f, 0.97f, 0.98f, 0.99f, 1.0f };
                                         TJAPlayer3.Tx.End_Clear_L[0].t2D描画(TJAPlayer3.app.Device, 466, y[i] - 30);
                                         TJAPlayer3.Tx.End_Clear_L[0].vc拡大縮小倍率 = new SlimDX.Vector3(fRet[this.ct進行メイン.n現在の値 - 36], 1.0f, 1.0f);
+                                    }
+
+                                    if (TJAPlayer3.Tx.End_Clear_R[0] != null)
+                                    {
                                         TJAPlayer3.Tx.End_Clear_R[0].t2D描画(TJAPlayer3.app.Device, 1136 - 180 * fRet[this.ct進行メイン.n現在の値 - 36], y[i] - 30);
                                         TJAPlayer3.Tx.End_Clear_R[0].vc拡大縮小倍率 = new SlimDX.Vector3(fRet[this.ct進行メイン.n現在の値 - 36], 1.0f, 1.0f);
                                     }

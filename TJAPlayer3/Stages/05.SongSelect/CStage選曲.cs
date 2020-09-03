@@ -209,7 +209,7 @@ namespace TJAPlayer3
                 //this.tx難易度別背景[3] = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\5_background_Master.png" ) );
                 //this.tx難易度別背景[4] = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\5_background_Edit.png" ) );
                 //this.tx下部テキスト = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\5_footer text.png" ) );
-                this.ct背景スクロール用タイマー = new CCounter(0, TJAPlayer3.Tx.SongSelect_Background.szテクスチャサイズ.Width, 30, TJAPlayer3.Timer);
+                this.ct背景スクロール用タイマー = new CCounter(0, TJAPlayer3.Tx.SongSelect_Background?.szテクスチャサイズ.Width ?? 1280, 30, TJAPlayer3.Timer);
 				base.OnManagedリソースの作成();
 			}
 		}
@@ -284,22 +284,15 @@ namespace TJAPlayer3
 			//	this.bIsEnumeratingSongs = !this.actPreimageパネル.bIsPlayingPremovie;				// #27060 2011.3.2 yyagi: #PREMOVIE再生中は曲検索を中断する
 
 				this.act曲リスト.On進行描画();
-				int y = 0;
-				if( this.ct登場時アニメ用共通.b進行中 )
-				{
-					double db登場割合 = ( (double) this.ct登場時アニメ用共通.n現在の値 ) / 100.0;	// 100が最終値
-					double dbY表示割合 = Math.Sin( Math.PI / 2 * db登場割合 );
-					y = ( (int) (TJAPlayer3.Tx.SongSelect_Header.sz画像サイズ.Height * dbY表示割合 ) ) - TJAPlayer3.Tx.SongSelect_Header.sz画像サイズ.Height;
-				}
-				if( TJAPlayer3.Tx.SongSelect_Header != null )
-                    TJAPlayer3.Tx.SongSelect_Header.t2D描画( TJAPlayer3.app.Device, 0, 0 );
+
+                TJAPlayer3.Tx.SongSelect_Header?.t2D描画( TJAPlayer3.app.Device, 0, 0 );
 
 				this.actInformation.On進行描画();
-				if( TJAPlayer3.Tx.SongSelect_Footer != null )
-                    TJAPlayer3.Tx.SongSelect_Footer.t2D描画( TJAPlayer3.app.Device, 0, 720 - TJAPlayer3.Tx.SongSelect_Footer.sz画像サイズ.Height );
+
+                TJAPlayer3.Tx.SongSelect_Footer?.t2D描画( TJAPlayer3.app.Device, 0, 720 - TJAPlayer3.Tx.SongSelect_Footer.sz画像サイズ.Height );
 
                 #region ネームプレート
-                for (int i = 0; i < TJAPlayer3.ConfigIni.nPlayerCount; i++)
+                for (int i = 0; i < Math.Min(TJAPlayer3.ConfigIni.nPlayerCount, TJAPlayer3.Tx.NamePlate.Length); i++)
                 {
                     TJAPlayer3.Tx.NamePlate[i]?.t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.SongSelect_NamePlate_X[i], TJAPlayer3.Skin.SongSelect_NamePlate_Y[i]);
                 }
@@ -349,7 +342,7 @@ namespace TJAPlayer3
 				this.actShowCurrentPosition.On進行描画();								// #27648 2011.3.28 yyagi
 
                 //CDTXMania.act文字コンソール.tPrint( 0, 0, C文字コンソール.Eフォント種別.白, this.n現在選択中の曲の難易度.ToString() );
-                TJAPlayer3.Tx.SongSelect_Difficulty.t2D描画( TJAPlayer3.app.Device, 980, 30, new Rectangle( 0, 70 * this.n現在選択中の曲の難易度, 260, 70 ) );
+                TJAPlayer3.Tx.SongSelect_Difficulty?.t2D描画( TJAPlayer3.app.Device, 980, 30, new Rectangle( 0, 70 * this.n現在選択中の曲の難易度, 260, 70 ) );
 
 				if( !this.bBGM再生済み && ( base.eフェーズID == CStage.Eフェーズ.共通_通常状態 ) )
 				{

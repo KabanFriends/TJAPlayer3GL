@@ -299,7 +299,6 @@ namespace TJAPlayer3
                                 TJAPlayer3.Tx.Lane_Text[2].Opacity = 255;
 
                                 TJAPlayer3.Tx.Lane_Text[0].Opacity = this.stBranch[i].ct分岐アニメ進行.n現在の値 > 100 ? 0 : (255 - ((this.stBranch[i].ct分岐アニメ進行.n現在の値 * 0xff) / 60));
-                                //CDTXMania.Tx.Lane_Text[1].n透明度 = this.ct分岐アニメ進行.n現在の値 > 100 ? 255 : ( ( ( this.ct分岐アニメ進行.n現在の値 * 0xff ) / 60 ) );
                                 if (this.stBranch[i].ct分岐アニメ進行.n現在の値 < 60)
                                 {
                                     this.stBranch[i].nY = this.stBranch[i].ct分岐アニメ進行.n現在の値 / 2;
@@ -328,13 +327,6 @@ namespace TJAPlayer3
                                     TJAPlayer3.Tx.Lane_Text[0].Opacity = this.stBranch[i].ct分岐アニメ進行.n現在の値 > 100 ? 0 : (255 - ((this.stBranch[i].ct分岐アニメ進行.n現在の値 * 0xff) / 100));
                                     TJAPlayer3.Tx.Lane_Text[1].t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Lane_Background_X[i], (TJAPlayer3.Skin.Game_Lane_Background_Y[i] - 20) + this.stBranch[i].nY);
                                 }
-                                //if( this.stBranch[ i ].ct分岐アニメ進行.n現在の値 >= 5 && this.stBranch[ i ].ct分岐アニメ進行.n現在の値 < 60 )
-                                //{
-                                //    this.stBranch[ i ].nY = this.stBranch[ i ].ct分岐アニメ進行.n現在の値 / 2;
-                                //    this.tx普通譜面[ 1 ].t2D描画(CDTXMania.app.Device, 333, CDTXMania.Skin.Game_Lane_Field_Y[ i ] + this.stBranch[ i ].nY);
-                                //    this.tx普通譜面[ 1 ].n透明度 = this.stBranch[ i ].ct分岐アニメ進行.n現在の値 > 100 ? 0 : ( 255 - ( ( this.stBranch[ i ].ct分岐アニメ進行.n現在の値 * 0xff) / 100));
-                                //    this.tx玄人譜面[ 1 ].t2D描画(CDTXMania.app.Device, 333, ( CDTXMania.Skin.Game_Lane_Field_Y[ i ] - 10 ) + this.stBranch[ i ].nY);
-                                //}
                                 else if (this.stBranch[i].ct分岐アニメ進行.n現在の値 >= 60 && this.stBranch[i].ct分岐アニメ進行.n現在の値 < 150)
                                 {
                                     this.stBranch[i].nY = 21;
@@ -621,75 +613,13 @@ namespace TJAPlayer3
                 if (TJAPlayer3.Tx.Lane_Background_GoGo != null) TJAPlayer3.Tx.Lane_Background_GoGo.Opacity = 255;
             }
 
-            //CDTXMania.act文字コンソール.tPrint(0, 0, C文字コンソール.Eフォント種別.白, this.nBranchレイヤー透明度.ToString());
-            //CDTXMania.act文字コンソール.tPrint(0, 16, C文字コンソール.Eフォント種別.白, this.ct分岐アニメ進行.n現在の値.ToString());
-            //CDTXMania.act文字コンソール.tPrint(0, 32, C文字コンソール.Eフォント種別.白, this.ct分岐アニメ進行.n終了値.ToString());
-
-            //CDTXMania.act文字コンソール.tPrint(0, 32, C文字コンソール.Eフォント種別.白, this.ctゴーゴースプラッシュ.n現在の値.ToString());
-
-            /*#region[ ゴーゴースプラッシュ ]
-            for (int i = 0; i < CDTXMania.ConfigIni.nPlayerCount; i++)
-            {
-                if (CDTXMania.stage演奏ドラム画面.bIsGOGOTIME[i])
-                {
-
-                    if (this.txゴーゴースプラッシュ != null)
-                    {
-                        this.txゴーゴースプラッシュ[(int)this.ctゴーゴースプラッシュ.db現在の値].t2D描画(CDTXMania.app.Device, 0, 260);
-                        this.ctゴーゴースプラッシュ.n現在の値++;
-                        if(this.ctゴーゴースプラッシュ.b終了値に達した)
-                        {
-                            this.ctゴーゴースプラッシュ.t停止();
-                            this.ctゴーゴースプラッシュ.n現在の値 = 0;
-                        }
-                    }
-                    
-         
-                    this.ctゴーゴースプラッシュ.t進行Loop();
-                if (this.txゴーゴースプラッシュ != null)
-                {
-                    if (this.ctゴーゴースプラッシュ.b終了値に達してない)
-                    {
-                        this.txゴーゴースプラッシュ[(int)this.ctゴーゴースプラッシュ.db現在の値].t2D描画(CDTXMania.app.Device, 0, 260);
-                    }
-
-                }
-                }
-            }
-            #endregion */
-            /*
-            for (int i = 0; i < CDTXMania.ConfigIni.nPlayerCount; i++)
-            {
-                #region[ ゴーゴースプラッシュ ]
-                if (this.txゴーゴースプラッシュ != null && CDTXMania.stage演奏ドラム画面.bIsGOGOTIME[i])
-                {
-                    if (!this.ctゴーゴースプラッシュ.b停止中)
-                    {
-                        this.ctゴーゴースプラッシュ.t進行();
-                    }
-                    if (this.ctゴーゴースプラッシュ.n現在の値 < 28)
-                    {
-                        for (int v = 0; v < 6; v++)
-                        {
-                            this.txゴーゴースプラッシュ[this.ctゴーゴースプラッシュ.n現在の値].t2D描画(CDTXMania.app.Device, 0 + (v * 213), 260);
-                        }
-
-                    }
-                    else
-                    {
-                        this.txゴーゴースプラッシュ[this.ctゴーゴースプラッシュ.n現在の値].n透明度 = 100;
-                    }
-
-                }
-                #endregion
-            } */
             return base.On進行描画();
         }
 
         public void ゴーゴー炎()
         {
             //判定枠
-            if (TJAPlayer3.Tx.Notes != null)
+            if (TJAPlayer3.Tx.Judge_Frame != null)
             {
                 int nJudgeX = TJAPlayer3.Skin.Game_Lane_Field_X[0] - (130 / 2); //元の値は349なんだけど...
                 int nJudgeY = TJAPlayer3.Skin.Game_Lane_Field_Y[0]; //元の値は349なんだけど...
@@ -720,9 +650,6 @@ namespace TJAPlayer3
                         mat *= Matrix.Scaling(f倍率, f倍率, 1.0f);
                         mat *= Matrix.Translation(TJAPlayer3.Skin.Game_Lane_Field_X[i] - SampleFramework.GameWindowSize.Width / 2.0f, -(TJAPlayer3.Skin.Game_Lane_Field_Y[i] + (130 / 2) - SampleFramework.GameWindowSize.Height / 2.0f), 0f);
 
-                        //this.txゴーゴー炎.b加算合成 = true;
-
-                        //this.ctゴーゴー.n現在の値 = 6;
                         if (this.ctゴーゴー.b終了値に達した)
                         {
                             TJAPlayer3.Tx.Effects_Fire.t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Lane_Field_X[i] - 180, TJAPlayer3.Skin.Game_Lane_Field_Y[i] + (130 / 2) - (TJAPlayer3.Tx.Effects_Fire.szテクスチャサイズ.Height / 2), new Rectangle(360 * (this.ctゴーゴー炎.n現在の値), 0, 360, 370));
@@ -744,9 +671,7 @@ namespace TJAPlayer3
                     {
                         this.st状態[i].ct進行.t停止();
                     }
-                    //if( this.txアタックエフェクトLower != null )
                     {
-                        //this.txアタックエフェクトLower.b加算合成 = true;
                         int n = this.st状態[i].nIsBig == 1 ? 520 : 0;
 
                         switch (st状態[i].judge)
@@ -754,7 +679,6 @@ namespace TJAPlayer3
                             case E判定.Perfect:
                             case E判定.Great:
                             case E判定.Auto:
-                                //this.txアタックエフェクトLower.t2D描画( CDTXMania.app.Device, 285, 127, new Rectangle( this.st状態[ i ].ct進行.n現在の値 * 260, n, 260, 260 ) );
                                 if (this.st状態[i].nIsBig == 1 && TJAPlayer3.Tx.Effects_Hit_Great_Big[this.st状態[i].ct進行.n現在の値] != null)
                                     TJAPlayer3.Tx.Effects_Hit_Great_Big[this.st状態[i].ct進行.n現在の値].t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Lane_Field_X[0] - TJAPlayer3.Tx.Effects_Hit_Great_Big[0].szテクスチャサイズ.Width / 2, TJAPlayer3.Skin.Game_Lane_Field_Y[i] + (130 / 2) - TJAPlayer3.Tx.Effects_Hit_Great_Big[0].szテクスチャサイズ.Width / 2);
                                 else if (TJAPlayer3.Tx.Effects_Hit_Great[this.st状態[i].ct進行.n現在の値] != null)
@@ -762,7 +686,6 @@ namespace TJAPlayer3
                                 break;
 
                             case E判定.Good:
-                                //this.txアタックエフェクトLower.t2D描画( CDTXMania.app.Device, 285, 127, new Rectangle( this.st状態[ i ].ct進行.n現在の値 * 260, n + 260, 260, 260 ) );
                                 if (this.st状態[i].nIsBig == 1 && TJAPlayer3.Tx.Effects_Hit_Good_Big[this.st状態[i].ct進行.n現在の値] != null)
                                     TJAPlayer3.Tx.Effects_Hit_Good_Big[this.st状態[i].ct進行.n現在の値].t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Lane_Field_X[0] - TJAPlayer3.Tx.Effects_Hit_Good_Big[0].szテクスチャサイズ.Width / 2, TJAPlayer3.Skin.Game_Lane_Field_Y[i] + (130 / 2) - TJAPlayer3.Tx.Effects_Hit_Good_Big[0].szテクスチャサイズ.Width / 2);
                                 else if (TJAPlayer3.Tx.Effects_Hit_Good[this.st状態[i].ct進行.n現在の値] != null)
@@ -784,7 +707,6 @@ namespace TJAPlayer3
         {
             //2017.08.15 kairera0467 排他なので番地をそのまま各レーンの状態として扱う
 
-            //for( int n = 0; n < 1; n++ )
             {
                 this.st状態[nPlayer].ct進行 = new CCounter(0, 14, 20, TJAPlayer3.Timer);
                 this.st状態[nPlayer].judge = judge;
@@ -836,24 +758,6 @@ namespace TJAPlayer3
             TJAPlayer3.stage演奏ドラム画面.actLane.t分岐レイヤー_コース変化(n現在, n次回, nPlayer);
         }
 
-        //public void t判定枠移動(double db移動時間, int n移動px, int n移動方向)
-        //{
-        //    this.n移動開始時刻 = (int)CSound管理.rc演奏用タイマ.n現在時刻ms;
-        //    this.n移動開始X = TJAPlayer3.Skin.Game_Lane_Field_X[0];
-        //    this.n総移動時間 = (int)(db移動時間 * 1000);
-        //    this.n移動方向 = n移動方向;
-        //    this.n移動距離px = n移動px;
-        //}
-
-        //public void t判定枠移動2(double db移動時間, int n移動px, int n移動方向)
-        //{
-        //    this.n移動開始時刻2 = (int)CSound管理.rc演奏用タイマ.n現在時刻ms;
-        //    this.n移動開始X2 = TJAPlayer3.Skin.Game_Lane_Field_X[1];
-        //    this.n総移動時間2 = (int)(db移動時間 * 1000);
-        //    this.n移動方向2 = n移動方向;
-        //    this.n移動距離px2 = n移動px;
-        //}
-
         public void t判定枠移動XY(double db移動時間, int n移動px, int n移動Ypx, int n移動方向)
         {
             this.n移動開始時刻 = (int)CSound管理.rc演奏用タイマ.n現在時刻ms;
@@ -876,30 +780,8 @@ namespace TJAPlayer3
             this.n移動距離Ypx2 = n移動Ypx;
         }
         #region[ private ]
-        //-----------------
-        //private CTexture txLane;
-        //private CTexture txLaneB;
-        //private CTexture tx枠線;
-        //private CTexture tx判定枠;
-        //private CTexture txゴーゴー;
-        //private CTexture txゴーゴー炎;
-        //private CTexture[] txArゴーゴー炎;
-        //private CTexture[] txArアタックエフェクトLower_A;
-        //private CTexture[] txArアタックエフェクトLower_B;
-        //private CTexture[] txArアタックエフェクトLower_C;
-        //private CTexture[] txArアタックエフェクトLower_D;
-
-        //private CTexture[] txLaneFlush = new CTexture[3];
-
-        //private CTexture[] tx普通譜面 = new CTexture[2];
-        //private CTexture[] tx玄人譜面 = new CTexture[2];
-        //private CTexture[] tx達人譜面 = new CTexture[2];
-
-        //private CTextureAf txアタックエフェクトLower;
 
         protected STSTATUS[] st状態 = new STSTATUS[4];
-
-        //private CTexture[] txゴーゴースプラッシュ;
 
         [StructLayout(LayoutKind.Sequential)]
         protected struct STSTATUS

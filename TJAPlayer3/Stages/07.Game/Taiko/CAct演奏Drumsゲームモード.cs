@@ -465,8 +465,7 @@ namespace TJAPlayer3
                 //CDTXMania.act文字コンソール.tPrint( 100, 16 * 7, C文字コンソール.Eフォント種別.白, this.st叩ききりまショー.ct加算審査中.n現在の値.ToString() );
 
                 #region[ 残り時間描画 ]
-                if (TJAPlayer3.Tx.GameMode_Timer_Frame != null)
-                    TJAPlayer3.Tx.GameMode_Timer_Frame.t2D描画( TJAPlayer3.app.Device, 230, 84 );
+                TJAPlayer3.Tx.GameMode_Timer_Frame?.t2D描画( TJAPlayer3.app.Device, 230, 84 );
                 this.st叩ききりまショー.ct針アニメ.t進行Loop();
 
                 int nCenterX = 230;
@@ -486,10 +485,13 @@ namespace TJAPlayer3
                     mat *= SlimDX.Matrix.Translation( 280 - 640, -( 134 - 360 ), 0 );
                 }
 
-                TJAPlayer3.Tx.GameMode_Timer_Tick.t3D描画( TJAPlayer3.app.Device, mat );
+                TJAPlayer3.Tx.GameMode_Timer_Tick?.t3D描画( TJAPlayer3.app.Device, mat );
 
-                string str表示する残り時間 = ( this.st叩ききりまショー.ct残り時間.n現在の値 < 1000 ) ? "25" : ( ( 26000 - this.st叩ききりまショー.ct残り時間.n現在の値 ) / 1000 ).ToString();
-                this.t小文字表示( 230 + (str表示する残り時間.Length * TJAPlayer3.Skin.Game_Taiko_Combo_Size[0] / 4 ), 84 + TJAPlayer3.Tx.GameMode_Timer_Frame.szテクスチャサイズ.Height / 2 , string.Format("{0,2:#0}", str表示する残り時間 ));
+                if (TJAPlayer3.Tx.GameMode_Timer_Frame != null)
+                {
+                    string str表示する残り時間 = ( this.st叩ききりまショー.ct残り時間.n現在の値 < 1000 ) ? "25" : ( ( 26000 - this.st叩ききりまショー.ct残り時間.n現在の値 ) / 1000 ).ToString();
+                    this.t小文字表示( 230 + (str表示する残り時間.Length * TJAPlayer3.Skin.Game_Taiko_Combo_Size[0] / 4 ), 84 + TJAPlayer3.Tx.GameMode_Timer_Frame.szテクスチャサイズ.Height / 2 , string.Format("{0,2:#0}", str表示する残り時間 ));
+                }
 
                 if( !this.st叩ききりまショー.ct加算審査中.b停止中 )
                 {
@@ -850,20 +852,22 @@ namespace TJAPlayer3
 				{
                     if (this.st小文字位置[i].ch == ch)
                     {
-                        Rectangle rectangle = new Rectangle(TJAPlayer3.Skin.Game_Taiko_Combo_Size[0] * i, 0, TJAPlayer3.Skin.Game_Taiko_Combo_Size[0], TJAPlayer3.Skin.Game_Taiko_Combo_Size[1]);
-						if(TJAPlayer3.Tx.Taiko_Combo[0]  != null )
-						{
+                        var taikoComboTexture = TJAPlayer3.Tx.Taiko_Combo[0];
+                        if(taikoComboTexture != null)
+                        {
+                            Rectangle rectangle = new Rectangle(TJAPlayer3.Skin.Game_Taiko_Combo_Size[0] * i, 0, TJAPlayer3.Skin.Game_Taiko_Combo_Size[0], TJAPlayer3.Skin.Game_Taiko_Combo_Size[1]);
+
                             if( this.st叩ききりまショー.bタイマー使用中 )
-                                TJAPlayer3.Tx.Taiko_Combo[0].Opacity = 255;
+                                taikoComboTexture.Opacity = 255;
                             else if( this.st叩ききりまショー.b最初のチップが叩かれた && !this.st叩ききりまショー.bタイマー使用中 )
-                                TJAPlayer3.Tx.Taiko_Combo[0].Opacity = 128;
+                                taikoComboTexture.Opacity = 128;
                             if (this.st叩ききりまショー.b加算アニメ中)
-                                TJAPlayer3.Tx.Taiko_Combo[0].Opacity = 0;
-                            TJAPlayer3.Tx.Taiko_Combo[0].vc拡大縮小倍率.Y = 1f;
-                            TJAPlayer3.Tx.Taiko_Combo[0].vc拡大縮小倍率.X = 1f;
-                            TJAPlayer3.Tx.Taiko_Combo[0].t2D中心基準描画( TJAPlayer3.app.Device, x, y, rectangle );
-						}
-						break;
+                                taikoComboTexture.Opacity = 0;
+                            taikoComboTexture.vc拡大縮小倍率.Y = 1f;
+                            taikoComboTexture.vc拡大縮小倍率.X = 1f;
+                            taikoComboTexture.t2D中心基準描画( TJAPlayer3.app.Device, x, y, rectangle );
+                        }
+                        break;
 					}
 				}
 				x += TJAPlayer3.Skin.Game_Taiko_Combo_Padding[0] * 2;

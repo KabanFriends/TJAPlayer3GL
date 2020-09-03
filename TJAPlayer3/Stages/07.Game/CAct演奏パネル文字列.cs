@@ -89,9 +89,8 @@ namespace TJAPlayer3
 					}
 				}
 
-			    this.txGENRE?.Dispose();
                 var genreTextureFileName = CStrジャンルtoStr.ForTextureFileName( genreName );
-			    this.txGENRE = genreTextureFileName == null ? null : TJAPlayer3.Tx.TxCGen(genreTextureFileName);
+			    this.txGENRE = genreTextureFileName == null ? null : TJAPlayer3.Tx.TxCGenre(genreTextureFileName);
 
 			    this.ct進行用 = new CCounter( 0, 2000, 2, TJAPlayer3.Timer );
 			}
@@ -144,7 +143,7 @@ namespace TJAPlayer3
             {
                 TJAPlayer3.t安全にDisposeする(ref txPanel);
                 TJAPlayer3.t安全にDisposeする(ref txMusicName);
-                TJAPlayer3.t安全にDisposeする(ref txGENRE);
+                txGENRE = null;
                 TJAPlayer3.t安全にDisposeする(ref txPanel);
                 TJAPlayer3.t安全にDisposeする(ref tx歌詞テクスチャ);
                 TJAPlayer3.t安全にDisposeする(ref pfMusicName);
@@ -177,11 +176,11 @@ namespace TJAPlayer3
                 {
                     this.ct進行用.n現在の値 = 300;
                 }
-                if( this.txGENRE != null )
-                    this.txGENRE.t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Genre_XY[0], TJAPlayer3.Skin.Game_Genre_XY[1] );
 
                 if( TJAPlayer3.Skin.b現在のステージ数を表示しない )
                 {
+                    txGENRE?.t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Genre_XY[0], TJAPlayer3.Skin.Game_Genre_XY[1]);
+
                     if( this.txMusicName != null )
                     {
                         float fRate = 660.0f / this.txMusicName.szテクスチャサイズ.Width;
@@ -218,14 +217,14 @@ namespace TJAPlayer3
                         opacity = ct進行用.n現在の値 - 1745;
                     }
 
-                    if (txMusicName != null)
-                    {
-                        txMusicName.Opacity = opacity;
-                    }
-
                     if (txGENRE != null)
                     {
                         txGENRE.Opacity = opacity;
+                    }
+
+                    if (txMusicName != null)
+                    {
+                        txMusicName.Opacity = opacity;
                     }
 
                     if (tx難易度とステージ数 != null)
@@ -234,6 +233,8 @@ namespace TJAPlayer3
                     }
 
                     #endregion
+
+                    txGENRE?.t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Genre_XY[0], TJAPlayer3.Skin.Game_Genre_XY[1]);
 
                     txMusicName?.t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_MusicName_XY[0], TJAPlayer3.Skin.Game_MusicName_XY[1], TJAPlayer3.Skin.GameMusicNameHorizontalReferencePoint);
 

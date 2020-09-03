@@ -180,8 +180,7 @@ namespace TJAPlayer3
 
                 // 描画
 
-                if (TJAPlayer3.Tx.Title_Background != null )
-                    TJAPlayer3.Tx.Title_Background.t2D描画( TJAPlayer3.app.Device, 0, 0 );
+                TJAPlayer3.Tx.Title_Background?.t2D描画( TJAPlayer3.app.Device, 0, 0 );
 
                 #region[ バージョン表示 ]
                 const string repositoryUrl = "https://github.com/twopointzero/TJAPlayer3";

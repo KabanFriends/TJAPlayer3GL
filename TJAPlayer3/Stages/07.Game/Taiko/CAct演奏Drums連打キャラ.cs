@@ -1,9 +1,5 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Drawing;
 using System.Runtime.InteropServices;
-using SlimDX;
 using FDK;
 
 namespace TJAPlayer3
@@ -145,70 +141,64 @@ namespace TJAPlayer3
 				base.OnManagedリソースの解放();
 			}
 		}
-		public override int On進行描画()
-		{
-			if( !base.b活性化してない )
-			{
-                //for( int i = 0; i < 64; i++ )
-                //{
-                //    if( this.st連打キャラ[i].b使用中 )
-                //    {
-                //        this.st連打キャラ[i].n前回のValue = this.st連打キャラ[i].ct進行.n現在の値;
-                //        this.st連打キャラ[i].ct進行.t進行();
-                //        if (this.st連打キャラ[i].ct進行.b終了値に達した)
-                //        {
-                //            this.st連打キャラ[i].ct進行.t停止();
-                //            this.st連打キャラ[i].b使用中 = false;
-                //        }
-                //        for (int n = this.st連打キャラ[i].n前回のValue; n < this.st連打キャラ[i].ct進行.n現在の値; n++)
-                //        {
-                //            this.st連打キャラ[i].fX += this.st連打キャラ[i].fX加速度;
-                //            this.st連打キャラ[i].fY -= this.st連打キャラ[i].fY加速度;
-                //        }
 
-                //        if(CDTXMania.Tx.Effects_Roll[ this.st連打キャラ[ i ].nColor ] != null )
-                //        {
-                //            CDTXMania.Tx.Effects_Roll[ this.st連打キャラ[ i ].nColor ].t2D描画( CDTXMania.app.Device, (int)this.st連打キャラ[i].fX, (int)this.st連打キャラ[i].fY, new Rectangle( this.st連打キャラ[i].nColor * 0, 0, 128, 128 ) );
-                //        }
-                //    }
+        public override int On進行描画()
+        {
+            if (base.b活性化してない)
+            {
+                return 0;
+            }
 
-                //}
-                for (int i = 0; i < 128; i++)
+            for (int i = 0; i < 128; i++)
+            {
+                var rollChara = RollCharas[i];
+
+                if (!rollChara.IsUsing)
                 {
-                    if(RollCharas[i].IsUsing)
-                    {
-                        RollCharas[i].OldValue = RollCharas[i].Counter.n現在の値;
-                        RollCharas[i].Counter.t進行();
-                        if(RollCharas[i].Counter.b終了値に達した)
-                        {
-                            RollCharas[i].Counter.t停止();
-                            RollCharas[i].IsUsing = false;
-                        }
-                        for (int l = RollCharas[i].OldValue; l < RollCharas[i].Counter.n現在の値; l++)
-                        {
-                            RollCharas[i].X += RollCharas[i].XAdd;
-                            RollCharas[i].Y += RollCharas[i].YAdd;
-                        }
-                        TJAPlayer3.Tx.Effects_Roll[RollCharas[i].Type]?.t2D描画(TJAPlayer3.app.Device, RollCharas[i].X, RollCharas[i].Y);
-                        // 画面外にいたら描画をやめさせる
-                        if(RollCharas[i].X < 0 - TJAPlayer3.Tx.Effects_Roll[RollCharas[i].Type].szテクスチャサイズ.Width || RollCharas[i].X > 1280)
-                        {
-                            RollCharas[i].Counter.t停止();
-                            RollCharas[i].IsUsing = false;
-                        }
-                        if (RollCharas[i].Y < 0 - TJAPlayer3.Tx.Effects_Roll[RollCharas[i].Type].szテクスチャサイズ.Height || RollCharas[i].Y > 720)
-                        {
-                            RollCharas[i].Counter.t停止();
-                            RollCharas[i].IsUsing = false;
-                        }
-                    }
+                    continue;
                 }
-			}
-			return 0;
-		}
-		
 
-		// その他
+                rollChara.OldValue = rollChara.Counter.n現在の値;
+                rollChara.Counter.t進行();
+                if (rollChara.Counter.b終了値に達した)
+                {
+                    rollChara.Counter.t停止();
+                    rollChara.IsUsing = false;
+                }
+
+                for (int l = rollChara.OldValue; l < rollChara.Counter.n現在の値; l++)
+                {
+                    rollChara.X += rollChara.XAdd;
+                    rollChara.Y += rollChara.YAdd;
+                }
+
+                var txRollCharaEffect = TJAPlayer3.Tx.Effects_Roll[rollChara.Type];
+
+                if (txRollCharaEffect == null)
+                {
+                    continue;
+                }
+
+                txRollCharaEffect.t2D描画(TJAPlayer3.app.Device, rollChara.X, rollChara.Y);
+                // 画面外にいたら描画をやめさせる
+                if (rollChara.X < 0 - txRollCharaEffect.szテクスチャサイズ.Width || rollChara.X > 1280)
+                {
+                    rollChara.Counter.t停止();
+                    rollChara.IsUsing = false;
+                }
+
+                if (rollChara.Y < 0 - txRollCharaEffect.szテクスチャサイズ.Height || rollChara.Y > 720)
+                {
+                    rollChara.Counter.t停止();
+                    rollChara.IsUsing = false;
+                }
+            }
+
+            return 0;
+        }
+
+
+        // その他
 
 		#region [ private ]
 		//-----------------

@@ -180,8 +180,7 @@ namespace TJAPlayer3
 
 			#region [ 背景 ]
 			//---------------------
-			if(TJAPlayer3.Tx.Config_Background != null )
-                TJAPlayer3.Tx.Config_Background.t2D描画( TJAPlayer3.app.Device, 0, 0 );
+            TJAPlayer3.Tx.Config_Background?.t2D描画( TJAPlayer3.app.Device, 0, 0 );
 			//---------------------
 			#endregion
 			#region [ メニューカーソル ]

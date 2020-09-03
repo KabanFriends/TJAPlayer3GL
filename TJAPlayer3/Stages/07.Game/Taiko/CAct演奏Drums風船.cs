@@ -133,8 +133,7 @@ namespace TJAPlayer3
                     }
                 }
                 //1P:31 2P:329
-                if (TJAPlayer3.Tx.Balloon_Balloon != null)
-                    TJAPlayer3.Tx.Balloon_Balloon.t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Balloon_Balloon_Frame_X[player], TJAPlayer3.Skin.Game_Balloon_Balloon_Frame_Y[player]);
+                TJAPlayer3.Tx.Balloon_Balloon?.t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Balloon_Balloon_Frame_X[player], TJAPlayer3.Skin.Game_Balloon_Balloon_Frame_Y[player]);
                 this.t文字表示(TJAPlayer3.Skin.Game_Balloon_Balloon_Number_X[player], TJAPlayer3.Skin.Game_Balloon_Balloon_Number_Y[player], n連打数.ToString(), n連打数, player);
                 //CDTXMania.act文字コンソール.tPrint( 0, 0, C文字コンソール.Eフォント種別.白, n連打数.ToString() );
             }

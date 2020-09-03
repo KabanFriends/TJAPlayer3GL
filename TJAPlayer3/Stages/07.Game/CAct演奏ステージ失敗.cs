@@ -142,8 +142,7 @@ namespace TJAPlayer3
                 }
                 if (this.ct進行.n現在の値 > 1500)
                 {
-                    if (TJAPlayer3.Tx.Failed_Game != null)
-                        TJAPlayer3.Tx.Failed_Game.t2D描画(TJAPlayer3.app.Device, 0, 0);
+                    TJAPlayer3.Tx.Failed_Game?.t2D描画(TJAPlayer3.app.Device, 0, 0);
 
                     int num = (TJAPlayer3.DTX.listChip.Count > 0) ? TJAPlayer3.DTX.listChip[TJAPlayer3.DTX.listChip.Count - 1].n発声時刻ms : 0;
                     this.t文字表示(640, 520, (((this.dbFailedTime) / 1000.0) / (((double)num) / 1000.0) * 100).ToString("##0") + "%");
@@ -167,18 +166,13 @@ namespace TJAPlayer3
                 }
                 else
                 {
-                    if (TJAPlayer3.Tx.Failed_Stage != null)
-                    {
-                        TJAPlayer3.Tx.Failed_Stage.t2D描画(TJAPlayer3.app.Device, 0, 0);
-                    }
+                    TJAPlayer3.Tx.Failed_Stage?.t2D描画(TJAPlayer3.app.Device, 0, 0);
+
                     if (this.ct進行.n現在の値 <= 250)
                     {
                         int num2 = TJAPlayer3.Random.Next(5) - 2;
                         int y = TJAPlayer3.Random.Next(5) - 2;
-                        if (TJAPlayer3.Tx.Failed_Stage != null)
-                        {
-                            TJAPlayer3.Tx.Failed_Stage.t2D描画(TJAPlayer3.app.Device, num2, y);
-                        }
+                        TJAPlayer3.Tx.Failed_Stage?.t2D描画(TJAPlayer3.app.Device, num2, y);
                     }
                     if (!this.b効果音再生済み)
                     {
@@ -231,10 +225,8 @@ namespace TJAPlayer3
                         {
                             rectangle.Width = 80;
                         }
-						if(TJAPlayer3.Tx.Balloon_Number_Roll != null )
-						{
-                            TJAPlayer3.Tx.Balloon_Number_Roll.t2D描画( TJAPlayer3.app.Device, x - ( 62 * str.Length / 2 ), y, rectangle );
-						}
+
+                        TJAPlayer3.Tx.Balloon_Number_Roll?.t2D描画( TJAPlayer3.app.Device, x - ( 62 * str.Length / 2 ), y, rectangle );
 						break;
 					}
 				}

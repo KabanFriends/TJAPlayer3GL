@@ -420,9 +420,7 @@ namespace TJAPlayer3
 
                         if(TJAPlayer3.ConfigIni.FastRender)
                         {
-                            var fastRender = new FastRender();
-                            fastRender.Render();
-                            fastRender = null;
+                            FastRender.Render();
                         }
 
 
