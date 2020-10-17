@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Sentry;
+using Sentry.Protocol;
 
 namespace TJAPlayer3.ErrorReporting
 {
@@ -47,15 +48,23 @@ namespace TJAPlayer3.ErrorReporting
                         ReportError(args.Exception);
                     };
 
+                    SentrySdk.CaptureMessage("Startup");
+
                     action();
                 }
                 catch (Exception e)
                 {
                     ReportError(e);
 
-                    SentrySdk.FlushAsync(TimeSpan.FromSeconds(5));
+                    var task = SentrySdk.FlushAsync(TimeSpan.FromSeconds(5));
 
                     NotifyUserOfError(e);
+
+                    task.Wait();
+                }
+                finally
+                {
+                    SentrySdk.CaptureMessage("Shutdown");
                 }
             }
         }
@@ -105,19 +114,25 @@ namespace TJAPlayer3.ErrorReporting
             {
                 SentrySdk.WithScope(scope =>
                 {
-                    void SetSkinNameTag(string kind, Func<string> func, string scopeTagKindPart)
+                    void SetSkinNameTag(string skinName, string scopeTagKindPart)
                     {
-                        var skinName = GetCurrentSkinNameOrFallback(kind, func);
                         if (skinName != null)
                         {
                             scope.SetTag($"skin.{scopeTagKindPart}.name", ToSha256InBase64(skinName));
                         }
                     }
 
-                    SetSkinNameTag("box.def", CSkin.GetCurrentBoxDefSkinName, "boxdef");
-                    SetSkinNameTag("system", CSkin.GetCurrentSystemSkinName, "system");
+                    var boxDefSkinNameOrFallback = GetCurrentSkinNameOrFallback("box.def", CSkin.GetCurrentBoxDefSkinName);
+                    var systemSkinNameOrFallback = GetCurrentSkinNameOrFallback("system", CSkin.GetCurrentSystemSkinName);
 
-                    SentrySdk.CaptureException(e);
+                    SetSkinNameTag(boxDefSkinNameOrFallback, "boxdef");
+                    SetSkinNameTag(systemSkinNameOrFallback, "system");
+
+                    var level = ShouldCaptureAtErrorLevel(e, boxDefSkinNameOrFallback, systemSkinNameOrFallback)
+                        ? SentryLevel.Error
+                        : SentryLevel.Warning;
+
+                    SentrySdk.CaptureEvent(new SentryEvent(e) {Level = level});
                 });
             }
             catch (TimeoutException)
@@ -143,6 +158,28 @@ namespace TJAPlayer3.ErrorReporting
 
                 return GetCurrentSkinNameOrFallbackFallbackForExceptionEncountered;
             }
+        }
+
+        private static bool ShouldCaptureAtErrorLevel(Exception e, string boxDefSkinNameOrFallback, string systemSkinNameOrFallback)
+        {
+            // The goal is to reduce noise from custom skin users as they are prone to frequently encountering specific exception types.
+
+            // If the error is of any other type then report it.
+            if (!(e is SlimDX.Direct3D9.Direct3D9Exception || e is AccessViolationException || e is OutOfMemoryException))
+            {
+                return true;
+            }
+
+            // Otherwise only report that error type if the user is running SimpleStyle,
+            // if an error occurred when trying to determine their skin,
+            // or if the system skin name is as-yet unknown.
+
+            bool IsSimpleStyleOrFallbackForExceptionEncountered(string value) =>
+                value == "SimpleStyle" || value == GetCurrentSkinNameOrFallbackFallbackForExceptionEncountered;
+
+            return IsSimpleStyleOrFallbackForExceptionEncountered(boxDefSkinNameOrFallback) ||
+                   IsSimpleStyleOrFallbackForExceptionEncountered(systemSkinNameOrFallback) ||
+                   string.IsNullOrWhiteSpace(systemSkinNameOrFallback);
         }
 
         private static void NotifyUserOfError(Exception exception)
