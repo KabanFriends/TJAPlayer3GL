@@ -21,22 +21,51 @@ namespace TJAPlayer3.ErrorReporting
 
         public static void WithErrorReporting(Action action)
         {
-            var appInformationalVersion = TJAPlayer3.AppInformationalVersion;
-
             using (SentrySdk.Init(o =>
             {
-                o.Dsn = new Dsn("https://d13a7e78ae024f678e110c64bbf7e7f2@sentry.io/3365560");
-                o.Environment = GetEnvironment(appInformationalVersion);
-                o.ServerName = ToSha256InBase64(Environment.MachineName);
+                try
+                {
+                    o.Dsn = new Dsn("https://d13a7e78ae024f678e110c64bbf7e7f2@sentry.io/3365560");
+                }
+                catch
+                {
+                    // ignored
+                }
+
+                try
+                {
+                    o.Environment = GetEnvironment(TJAPlayer3.AppInformationalVersion);
+                }
+                catch
+                {
+                    // ignored
+                }
+
+                try
+                {
+                    o.ServerName = ToSha256InBase64(Environment.MachineName);
+                }
+                catch
+                {
+                    // ignored
+                }
+
                 o.ShutdownTimeout = TimeSpan.FromSeconds(5);
             }))
             {
                 try
                 {
-                    SentrySdk.ConfigureScope(scope =>
+                    try
                     {
-                        scope.User.Username = ToSha256InBase64(Environment.UserName);
-                    });
+                        SentrySdk.ConfigureScope(scope =>
+                        {
+                            scope.User.Username = ToSha256InBase64(Environment.UserName);
+                        });
+                    }
+                    catch
+                    {
+                        // ignored
+                    }
 
                     Application.ThreadException += (sender, args) =>
                     {
@@ -48,7 +77,14 @@ namespace TJAPlayer3.ErrorReporting
                         ReportError(args.Exception);
                     };
 
-                    SentrySdk.CaptureMessage("Startup");
+                    try
+                    {
+                        SentrySdk.CaptureMessage("Startup");
+                    }
+                    catch
+                    {
+                        // ignored
+                    }
 
                     action();
                 }
@@ -58,7 +94,14 @@ namespace TJAPlayer3.ErrorReporting
 
                     var task = SentrySdk.FlushAsync(TimeSpan.FromSeconds(5));
 
-                    NotifyUserOfError(e);
+                    try
+                    {
+                        NotifyUserOfError(e);
+                    }
+                    catch
+                    {
+                        // ignored
+                    }
 
                     task.Wait();
                 }
