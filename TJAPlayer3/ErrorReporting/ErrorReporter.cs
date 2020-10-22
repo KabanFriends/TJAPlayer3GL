@@ -50,7 +50,14 @@ namespace TJAPlayer3.ErrorReporting
                     // ignored
                 }
 
-                o.ShutdownTimeout = TimeSpan.FromSeconds(5);
+                try
+                {
+                    o.ShutdownTimeout = TimeSpan.FromSeconds(5);
+                }
+                catch
+                {
+                    // ignored
+                }
             }))
             {
                 try
