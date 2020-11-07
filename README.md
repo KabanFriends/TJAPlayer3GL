@@ -8,26 +8,11 @@
 
 ## Project Status
 
-2020-05-30
+2020-11-07
 
-With the current global pandemic affecting so many,
-and with each person needing to respond to it in their own unique way,
-the ability to consistently work on just about anything has gone out the window.
-Priorities, interests, available time, and even ability (especially to focus,)
-have all changed unpredictably for all of us.
-
-For twopointzero, family and work receive the vast majority of time and energy.
-What little time remains for hobbies must necessarily be focused on only one,
-and that hobby is unfortunately not TJAPlayer3 development.
-
-As such, TJAPlayer3 is, and will be, only receiving small, infrequent updates.
-Most often these are fixes for automatically-reported crashes.
-Issue reports, pull requests, etc. are of course still welcome
-and will be addressed using available time.
-
-The above notwithstanding, we all have a strong future ahead of us, TJAPlayer3 included.
-Things may go slowly for a while, but TJAPlayer3 still appears to be the only
-taiko simulator with a sustainable long-term approach, and I intend to deliver.
+TJAPlayer3 continues to receive small, infrequent updates.
+Most often these are fixes for automatically-reported crashes
+but at times also include small upgrades and clean-ups.
 
 <!-- omit in toc -->
 ## Table of Contents
