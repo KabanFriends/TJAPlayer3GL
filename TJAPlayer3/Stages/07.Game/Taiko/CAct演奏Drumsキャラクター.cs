@@ -230,7 +230,9 @@ namespace TJAPlayer3
                     }
                 }
             }
-            if (this.b風船連打中 != true && CharaAction_Balloon_Delay.b終了値に達した)
+            if (this.b風船連打中 != true && CharaAction_Balloon_Delay.b終了値に達した &&
+                TJAPlayer3.Skin.Game_PuchiChara_X.Length > 0 &&
+                TJAPlayer3.Skin.Game_PuchiChara_Y.Length > 0)
             {
                 TJAPlayer3.stage演奏ドラム画面.PuchiChara.On進行描画(TJAPlayer3.Skin.Game_PuchiChara_X[0], TJAPlayer3.Skin.Game_PuchiChara_Y[0], TJAPlayer3.stage演奏ドラム画面.bIsAlreadyMaxed[0]);
             }
@@ -259,7 +261,13 @@ namespace TJAPlayer3
                         TJAPlayer3.Tx.Chara_Balloon_Broke[CharaAction_Balloon_Broke.n現在の値].Opacity = nowOpacity;
                         TJAPlayer3.Tx.Chara_Balloon_Broke[CharaAction_Balloon_Broke.n現在の値].t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Chara_Balloon_X[0], TJAPlayer3.Skin.Game_Chara_Balloon_Y[0]);
                     }
-                    TJAPlayer3.stage演奏ドラム画面.PuchiChara.On進行描画(TJAPlayer3.Skin.Game_PuchiChara_BalloonX[0], TJAPlayer3.Skin.Game_PuchiChara_BalloonY[0], false, nowOpacity, true);
+
+                    if (TJAPlayer3.Skin.Game_PuchiChara_BalloonX.Length > 0 &&
+                        TJAPlayer3.Skin.Game_PuchiChara_BalloonY.Length > 0)
+                    {
+                        TJAPlayer3.stage演奏ドラム画面.PuchiChara.On進行描画(TJAPlayer3.Skin.Game_PuchiChara_BalloonX[0], TJAPlayer3.Skin.Game_PuchiChara_BalloonY[0], false, nowOpacity, true);
+                    }
+
                     if (CharaAction_Balloon_Broke.b終了値に達した)
                     {
                         CharaAction_Balloon_Broke.t停止();
@@ -278,7 +286,13 @@ namespace TJAPlayer3
                         TJAPlayer3.Tx.Chara_Balloon_Miss[CharaAction_Balloon_Miss.n現在の値].Opacity = nowOpacity;
                         TJAPlayer3.Tx.Chara_Balloon_Miss[CharaAction_Balloon_Miss.n現在の値].t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Chara_Balloon_X[0], TJAPlayer3.Skin.Game_Chara_Balloon_Y[0]);
                     }
-                    TJAPlayer3.stage演奏ドラム画面.PuchiChara.On進行描画(TJAPlayer3.Skin.Game_PuchiChara_BalloonX[0], TJAPlayer3.Skin.Game_PuchiChara_BalloonY[0], false, nowOpacity, true);
+
+                    if (TJAPlayer3.Skin.Game_PuchiChara_BalloonX.Length > 0 &&
+                        TJAPlayer3.Skin.Game_PuchiChara_BalloonY.Length > 0)
+                    {
+                        TJAPlayer3.stage演奏ドラム画面.PuchiChara.On進行描画(TJAPlayer3.Skin.Game_PuchiChara_BalloonX[0], TJAPlayer3.Skin.Game_PuchiChara_BalloonY[0], false, nowOpacity, true);
+                    }
+
                     if (CharaAction_Balloon_Miss.b終了値に達した)
                     {
                         CharaAction_Balloon_Miss.t停止();
@@ -289,7 +303,12 @@ namespace TJAPlayer3
                 else if (CharaAction_Balloon_Breaking?.b進行中 == true && TJAPlayer3.Skin.Game_Chara_Ptn_Balloon_Breaking != 0)
                 {
                     TJAPlayer3.Tx.Chara_Balloon_Breaking[CharaAction_Balloon_Breaking.n現在の値]?.t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.Game_Chara_Balloon_X[0], TJAPlayer3.Skin.Game_Chara_Balloon_Y[0]);
-                    TJAPlayer3.stage演奏ドラム画面.PuchiChara.On進行描画(TJAPlayer3.Skin.Game_PuchiChara_BalloonX[0], TJAPlayer3.Skin.Game_PuchiChara_BalloonY[0], false, 255, true);
+
+                    if (TJAPlayer3.Skin.Game_PuchiChara_BalloonX.Length > 0 &&
+                        TJAPlayer3.Skin.Game_PuchiChara_BalloonY.Length > 0)
+                    {
+                        TJAPlayer3.stage演奏ドラム画面.PuchiChara.On進行描画(TJAPlayer3.Skin.Game_PuchiChara_BalloonX[0], TJAPlayer3.Skin.Game_PuchiChara_BalloonY[0], false, 255, true);
+                    }
                 }
             }
         }
