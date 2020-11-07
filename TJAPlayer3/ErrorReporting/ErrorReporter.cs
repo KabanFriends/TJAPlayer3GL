@@ -84,15 +84,6 @@ namespace TJAPlayer3.ErrorReporting
                         ReportError(args.Exception);
                     };
 
-                    try
-                    {
-                        SentrySdk.CaptureMessage("Startup");
-                    }
-                    catch
-                    {
-                        // ignored
-                    }
-
                     action();
                 }
                 catch (Exception e)
@@ -111,10 +102,6 @@ namespace TJAPlayer3.ErrorReporting
                     }
 
                     task.Wait();
-                }
-                finally
-                {
-                    SentrySdk.CaptureMessage("Shutdown");
                 }
             }
         }
