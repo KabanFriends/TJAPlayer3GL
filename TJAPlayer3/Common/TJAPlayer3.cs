@@ -555,8 +555,6 @@ namespace TJAPlayer3
 			{
 				this.n進行描画の戻り値 = ( r現在のステージ != null ) ? r現在のステージ.On進行描画() : 0;
 
-				CScoreIni scoreIni = null;
-
 				if ( Control.IsKeyLocked( Keys.CapsLock ) )				// #30925 2013.3.11 yyagi; capslock=ON時は、EnumSongsしないようにして、起動負荷とASIOの音切れの関係を確認する
 				{														// → songs.db等の書き込み時だと音切れするっぽい
 					actEnumSongs.On非活性化();
@@ -989,7 +987,7 @@ for (int i = 0; i < 3; i++) {
 							case (int) E演奏画面の戻り値.演奏中断:
 								#region [ 演奏キャンセル ]
 								//-----------------------------
-								scoreIni = this.tScoreIniへBGMAdjustとHistoryとPlayCountを更新( "Play canceled" );
+								tScoreIniへBGMAdjustとHistoryとPlayCountを更新( "Play canceled" );
 
 								//int lastd = 0;
 								//int f = 0;
@@ -1035,7 +1033,7 @@ for (int i = 0; i < 3; i++) {
 							case (int) E演奏画面の戻り値.ステージ失敗:
 								#region [ 演奏失敗(StageFailed) ]
 								//-----------------------------
-								scoreIni = this.tScoreIniへBGMAdjustとHistoryとPlayCountを更新( "Stage failed" );
+								tScoreIniへBGMAdjustとHistoryとPlayCountを更新( "Stage failed" );
 
 								DTX.t全チップの再生停止();
 								DTX.On非活性化();
@@ -1099,7 +1097,7 @@ for (int i = 0; i < 3; i++) {
                                         break;
                                 }
 
-                                scoreIni = this.tScoreIniへBGMAdjustとHistoryとPlayCountを更新(str);
+                                tScoreIniへBGMAdjustとHistoryとPlayCountを更新(str);
 
                                 r現在のステージ.On非活性化();
                                 Trace.TraceInformation("----------------------");
@@ -1159,7 +1157,7 @@ for (int i = 0; i < 3; i++) {
 										break;
 								}
 
-								scoreIni = this.tScoreIniへBGMAdjustとHistoryとPlayCountを更新( str );
+								tScoreIniへBGMAdjustとHistoryとPlayCountを更新( str );
 
 								r現在のステージ.On非活性化();
 								Trace.TraceInformation( "----------------------" );
@@ -2206,16 +2204,15 @@ for (int i = 0; i < 3; i++) {
 				this.b終了処理完了済み = true;
 			}
 		}
-		private CScoreIni tScoreIniへBGMAdjustとHistoryとPlayCountを更新(string str新ヒストリ行)
+
+		private static void tScoreIniへBGMAdjustとHistoryとPlayCountを更新(string str新ヒストリ行)
 		{
-			bool bIsUpdatedDrums, bIsUpdatedGuitar, bIsUpdatedBass;
-			string strFilename = DTX.strファイル名の絶対パス + ".score.ini";
+            string strFilename = DTX.strファイル名の絶対パス + ".score.ini";
 			CScoreIni ini = new CScoreIni( strFilename );
 			if( !File.Exists( strFilename ) )
 			{
 				ini.stファイル.Title = DTX.TITLE;
 				ini.stファイル.Name = DTX.strファイル名;
-				ini.stファイル.Hash = CScoreIni.tファイルのMD5を求めて返す( DTX.strファイル名の絶対パス );
 				for( int i = 0; i < 6; i++ )
 				{
 					ini.stセクション[ i ].nPerfectになる範囲ms = nPerfect範囲ms;
@@ -2225,7 +2222,7 @@ for (int i = 0; i < 3; i++) {
 				}
 			}
 			ini.stファイル.BGMAdjust = DTX.nBGMAdjust;
-			CScoreIni.t更新条件を取得する( out bIsUpdatedDrums, out bIsUpdatedGuitar, out bIsUpdatedBass );
+			CScoreIni.t更新条件を取得する( out var bIsUpdatedDrums, out var bIsUpdatedGuitar, out var bIsUpdatedBass );
 			if( bIsUpdatedDrums || bIsUpdatedGuitar || bIsUpdatedBass )
 			{
 				if( bIsUpdatedDrums )
@@ -2253,9 +2250,8 @@ for (int i = 0; i < 3; i++) {
 			{
 				ini.t書き出し( strFilename );
 			}
-
-			return ini;
 		}
+
 		private void tガベージコレクションを実行する()
 		{
 			GC.Collect(GC.MaxGeneration);
