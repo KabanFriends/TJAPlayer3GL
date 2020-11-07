@@ -89,42 +89,27 @@
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="Sentry, Version=2.1.1.0, Culture=neutral, PublicKeyToken=fba2ec45388e2af0, processorArchitecture=MSIL">
-      <HintPath>..\packages\Sentry.2.1.1\lib\net461\Sentry.dll</HintPath>
+    <Reference Include="Sentry, Version=2.1.6.0, Culture=neutral, PublicKeyToken=fba2ec45388e2af0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Sentry.2.1.6\lib\net461\Sentry.dll</HintPath>
     </Reference>
-    <Reference Include="Sentry.PlatformAbstractions, Version=1.1.0.0, Culture=neutral, PublicKeyToken=fba2ec45388e2af0, processorArchitecture=MSIL">
-      <HintPath>..\packages\Sentry.PlatformAbstractions.1.1.0\lib\net471\Sentry.PlatformAbstractions.dll</HintPath>
+    <Reference Include="Sentry.PlatformAbstractions, Version=1.1.1.0, Culture=neutral, PublicKeyToken=fba2ec45388e2af0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Sentry.PlatformAbstractions.1.1.1\lib\net471\Sentry.PlatformAbstractions.dll</HintPath>
     </Reference>
-    <Reference Include="Sentry.Protocol, Version=2.1.1.0, Culture=neutral, PublicKeyToken=fba2ec45388e2af0, processorArchitecture=MSIL">
-      <HintPath>..\packages\Sentry.Protocol.2.1.1\lib\net46\Sentry.Protocol.dll</HintPath>
+    <Reference Include="Sentry.Protocol, Version=2.1.6.0, Culture=neutral, PublicKeyToken=fba2ec45388e2af0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Sentry.Protocol.2.1.6\lib\net46\Sentry.Protocol.dll</HintPath>
     </Reference>
     <Reference Include="SlimDX, Version=4.0.13.43, Culture=neutral, PublicKeyToken=b1b0c32fd1ffe4f9, processorArchitecture=x86">
       <HintPath>..\packages\SlimDX.4.0.13.44\lib\NET40\SlimDX.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Collections.Immutable, Version=1.2.5.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Collections.Immutable.1.7.0\lib\netstandard2.0\System.Collections.Immutable.dll</HintPath>
-    </Reference>
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Memory.4.5.4\lib\net461\System.Memory.dll</HintPath>
-    </Reference>
     <Reference Include="System.Net" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Numerics" />
-    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.7.1\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
-    </Reference>
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
@@ -356,15 +341,14 @@ move /y "$(TargetDir)FDK.pdb" "$(SolutionDir)Test\dll\"
 move /y "$(TargetDir)Newtonsoft.Json.*" "$(SolutionDir)Test\dll\"
 move /y "$(TargetDir)Sentry.*" "$(SolutionDir)Test\dll\"
 move /y "$(TargetDir)SlimDX.dll" "$(SolutionDir)Test\dll\"
-move /y "$(TargetDir)System.*" "$(SolutionDir)Test\dll\"
 </PostBuildEvent>
   </PropertyGroup>
   <Import Project="packages\SharpDX.2.6.3\build\SharpDX.targets" Condition="Exists('packages\SharpDX.2.6.3\build\SharpDX.targets')" />
-  <Import Project="..\packages\LargeAddressAware.1.0.4\build\LargeAddressAware.targets" Condition="Exists('..\packages\LargeAddressAware.1.0.4\build\LargeAddressAware.targets')" />
+  <Import Project="..\packages\LargeAddressAware.1.0.5\build\LargeAddressAware.targets" Condition="Exists('..\packages\LargeAddressAware.1.0.5\build\LargeAddressAware.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\LargeAddressAware.1.0.4\build\LargeAddressAware.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\LargeAddressAware.1.0.4\build\LargeAddressAware.targets'))" />
+    <Error Condition="!Exists('..\packages\LargeAddressAware.1.0.5\build\LargeAddressAware.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\LargeAddressAware.1.0.5\build\LargeAddressAware.targets'))" />
   </Target>
 </Project>
