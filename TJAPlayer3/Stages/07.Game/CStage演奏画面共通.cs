@@ -1960,7 +1960,7 @@ namespace TJAPlayer3
             #endregion
 
             #region 過去のノーツが見つかったらそれを返却、そうでなければ未来のノーツを返却
-            if ((pastJudge == E判定.Miss || pastJudge == E判定.Poor) && (pastJudge != E判定.Miss && pastJudge != E判定.Poor))
+            if ((pastJudge == E判定.Miss || pastJudge == E判定.Poor) && (futureJudge != E判定.Miss && futureJudge != E判定.Poor))
             {
                 // 過去の判定が不可で、未来の判定が可以上なら未来を返却。
                 nearestChip = futureChip;
@@ -2109,7 +2109,7 @@ namespace TJAPlayer3
             #endregion
 
             #region 過去のノーツが見つかったらそれを返却、そうでなければ未来のノーツを返却
-            if ((pastJudge == E判定.Miss || pastJudge == E判定.Poor) && (pastJudge != E判定.Miss && pastJudge != E判定.Poor))
+            if ((pastJudge == E判定.Miss || pastJudge == E判定.Poor) && (futureJudge != E判定.Miss && futureJudge != E判定.Poor))
             {
                 // 過去の判定が不可で、未来の判定が可以上なら未来を返却。
                 nearestChip = futureChip;
