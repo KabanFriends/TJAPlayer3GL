@@ -4,7 +4,6 @@ using System.Text;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
-using SlimDX;
 using System.Drawing.Text;
 using FDK;
 
@@ -128,7 +127,7 @@ namespace TJAPlayer3
 		{
 			if( !base.b活性化してない )
 			{
-				this.tx背景 = TJAPlayer3.tテクスチャの生成( this.strSTAGEFILE, false );
+				this.tx背景 = TJAPlayer3.tテクスチャの生成( this.strSTAGEFILE);
                 //this.txSongnamePlate = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\6_SongnamePlate.png" ) );
                 this.ct待機 = new CCounter( 0, 600, 5, TJAPlayer3.Timer );
                 this.ct曲名表示 = new CCounter( 1, 30, 30, TJAPlayer3.Timer );
@@ -155,7 +154,7 @@ namespace TJAPlayer3
 					    using (var bmpSongTitle = this.pfTITLE.DrawPrivateFont( タイトル, TJAPlayer3.Skin.SongLoading_Title_ForeColor, TJAPlayer3.Skin.SongLoading_Title_BackColor ))
 
 					    {
-					        this.txタイトル = new CTexture( TJAPlayer3.app.Device, bmpSongTitle, TJAPlayer3.TextureFormat, false );
+					        this.txタイトル = new CTexture( TJAPlayer3.app.Device, bmpSongTitle);
 					        txタイトル.vc拡大縮小倍率.X = TJAPlayer3.GetSongNameXScaling(ref txタイトル, 710);
 					    }
 
@@ -163,7 +162,7 @@ namespace TJAPlayer3
 
 
 					    {
-					        this.txサブタイトル = new CTexture( TJAPlayer3.app.Device, bmpSongSubTitle, TJAPlayer3.TextureFormat, false );
+					        this.txサブタイトル = new CTexture( TJAPlayer3.app.Device, bmpSongSubTitle);
 					    }
                     }
 					else
@@ -188,10 +187,10 @@ namespace TJAPlayer3
 		{
 			if( !base.b活性化してない )
 			{
-				TJAPlayer3.tテクスチャの解放( ref this.tx背景 );
-				TJAPlayer3.tテクスチャの解放( ref this.txタイトル );
-				//CDTXMania.tテクスチャの解放( ref this.txSongnamePlate );
-                TJAPlayer3.tテクスチャの解放( ref this.txサブタイトル );
+				TJAPlayer3.t安全にDisposeする( ref this.tx背景 );
+				TJAPlayer3.t安全にDisposeする( ref this.txタイトル );
+				//CDTXMania.t安全にDisposeする( ref this.txSongnamePlate );
+                TJAPlayer3.t安全にDisposeする( ref this.txサブタイトル );
 				base.OnManagedリソースの解放();
 			}
 		}
@@ -388,7 +387,7 @@ namespace TJAPlayer3
                                     {
                                         using (var bmpSongTitle = pfTitle.DrawPrivateFont(TJAPlayer3.DTX.List_DanSongs[i].Title, titleForeColor, titleBackColor))
                                         {
-                                            TJAPlayer3.DTX.List_DanSongs[i].TitleTex = TJAPlayer3.tテクスチャの生成(bmpSongTitle, false);
+                                            TJAPlayer3.DTX.List_DanSongs[i].TitleTex = TJAPlayer3.tテクスチャの生成(bmpSongTitle);
                                             TJAPlayer3.DTX.List_DanSongs[i].TitleTex.vc拡大縮小倍率.X = TJAPlayer3.GetSongNameXScaling(ref TJAPlayer3.DTX.List_DanSongs[i].TitleTex, 710);
                                         }
                                     }
@@ -397,7 +396,7 @@ namespace TJAPlayer3
                                     {
                                         using (var bmpSongSubTitle = pfSubTitle.DrawPrivateFont(TJAPlayer3.DTX.List_DanSongs[i].SubTitle, subtitleForeColor, subtitleBackColor))
                                         {
-                                            TJAPlayer3.DTX.List_DanSongs[i].SubTitleTex = TJAPlayer3.tテクスチャの生成(bmpSongSubTitle, false);
+                                            TJAPlayer3.DTX.List_DanSongs[i].SubTitleTex = TJAPlayer3.tテクスチャの生成(bmpSongSubTitle);
                                             TJAPlayer3.DTX.List_DanSongs[i].SubTitleTex.vc拡大縮小倍率.X = TJAPlayer3.GetSongNameXScaling(ref TJAPlayer3.DTX.List_DanSongs[i].SubTitleTex, 710);
                                         }
                                     }
@@ -444,10 +443,6 @@ namespace TJAPlayer3
 
 				case CStage.Eフェーズ.NOWLOADING_WAVファイルを読み込む:
 					{
-						if ( nWAVcount == 1 && TJAPlayer3.DTX.listWAV.Count > 0 )			// #28934 2012.7.7 yyagi (added checking Count)
-						{
-							ShowProgressByFilename( TJAPlayer3.DTX.listWAV[ nWAVcount ].strファイル名 );
-						}
 						int looptime = (TJAPlayer3.ConfigIni.b垂直帰線待ちを行う)? 3 : 1;	// VSyncWait=ON時は1frame(1/60s)あたり3つ読むようにする
 						for ( int i = 0; i < looptime && nWAVcount <= TJAPlayer3.DTX.listWAV.Count; i++ )
 						{
@@ -456,10 +451,6 @@ namespace TJAPlayer3
 								TJAPlayer3.DTX.tWAVの読み込み( TJAPlayer3.DTX.listWAV[ nWAVcount ] );
 							}
 							nWAVcount++;
-						}
-						if ( nWAVcount <= TJAPlayer3.DTX.listWAV.Count )
-						{
-							ShowProgressByFilename( TJAPlayer3.DTX.listWAV[ nWAVcount ].strファイル名 );
 						}
 						if ( nWAVcount > TJAPlayer3.DTX.listWAV.Count )
 						{
@@ -564,28 +555,11 @@ namespace TJAPlayer3
 		protected bool tキー入力()
 		{
 			IInputDevice keyboard = TJAPlayer3.Input管理.Keyboard;
-			if 	( keyboard.bキーが押された( (int) SlimDX.DirectInput.Key.Escape ) )		// escape (exit)
+			if 	( keyboard.bキーが押された( (int) SlimDXKeys.Key.Escape ) )		// escape (exit)
 			{
 				return true;
 			}
 			return false;
-		}
-
-
-		private void ShowProgressByFilename(string strファイル名 )
-		{
-			if ( graphicsFilename != null && ftFilename != null )
-			{
-				graphicsFilename.Clear( Color.Transparent );
-				graphicsFilename.DrawString( strファイル名, ftFilename, Brushes.White, new RectangleF( 0, 0, 640, 24 ) );
-				if ( txFilename != null )
-				{
-					txFilename.Dispose();
-				}
-				txFilename = new CTexture( TJAPlayer3.app.Device, bitmapFilename, TJAPlayer3.TextureFormat );
-				txFilename.vc拡大縮小倍率 = new Vector3( 0.5f, 0.5f, 1f );
-				txFilename.t2D描画( TJAPlayer3.app.Device, 0, 720 - 16 );
-			}
 		}
 
 		// その他

@@ -26,8 +26,6 @@ namespace FDK
 		private static extern uint mp3GetTotalPCMSize( int nHandle );
 		[DllImport( "SoundDecoder.dll" )]
 		private static extern int mp3Open( string fileName );
-		[DllImport( "SoundDecoder.dll" )]
-		private static extern int mp3Seek( int nHandle, uint dwPosition );
 		//-----------------
 		#endregion
 
@@ -43,10 +41,6 @@ namespace FDK
 		public override uint GetTotalPCMSize( int nHandle )
 		{
 			return mp3GetTotalPCMSize( nHandle );
-		}
-		public override int Seek( int nHandle, uint dwPosition )
-		{
-			return mp3Seek( nHandle, dwPosition );
 		}
 		public override int Decode( int nHandle, IntPtr pDest, uint szDestSize, int bLoop )
 		{

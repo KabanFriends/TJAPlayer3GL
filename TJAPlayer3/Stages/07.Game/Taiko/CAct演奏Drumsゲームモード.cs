@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Runtime.InteropServices;
 using FDK;
+using OpenTK;
 
 namespace TJAPlayer3
 {
@@ -382,11 +383,11 @@ namespace TJAPlayer3
 
         public override void OnManagedリソースの解放()
         {
-            //CDTXMania.tテクスチャの解放( ref this.tx残り時間数字 );
-            //CDTXMania.tテクスチャの解放( ref this.tx加算時間数字 );
-            //CDTXMania.tテクスチャの解放( ref this.txタイマー枠 );
-            //CDTXMania.tテクスチャの解放( ref this.txタイマー針 );
-            //CDTXMania.tテクスチャの解放( ref this.tx背景黒 );
+            //CDTXMania.t安全にDisposeする( ref this.tx残り時間数字 );
+            //CDTXMania.t安全にDisposeする( ref this.tx加算時間数字 );
+            //CDTXMania.t安全にDisposeする( ref this.txタイマー枠 );
+            //CDTXMania.t安全にDisposeする( ref this.txタイマー針 );
+            //CDTXMania.t安全にDisposeする( ref this.tx背景黒 );
             base.OnManagedリソースの解放();
         }
 
@@ -445,9 +446,9 @@ namespace TJAPlayer3
                     else
                         TJAPlayer3.Tx.Tile_Black.Opacity = 0;
 
-                    for (int i = 0; i <= (SampleFramework.GameWindowSize.Width / 64); i++)
+                    for (int i = 0; i <= (GameWindowSize.Width / 64); i++)
                     {
-                        for (int j = 0; j <= (SampleFramework.GameWindowSize.Height / 64); j++)
+                        for (int j = 0; j <= (GameWindowSize.Height / 64); j++)
                         {
                             TJAPlayer3.Tx.Tile_Black.t2D描画(TJAPlayer3.app.Device, i * 64, j * 64);
                         }
@@ -477,15 +478,15 @@ namespace TJAPlayer3
                     if( this.st叩ききりまショー.b加算アニメ中 == true )
                         fRotate = C変換.DegreeToRadian( 360.0f * ( this.st叩ききりまショー.ct針アニメ.n現在の値 / (float)this.st叩ききりまショー.n延長アニメ速度 ) );
 
-                    SlimDX.Matrix mat = SlimDX.Matrix.Identity;
-                    if( this.st叩ききりまショー.b最初のチップが叩かれた )
+                    Matrix4 mat = Matrix4.Identity;
+                    if (this.st叩ききりまショー.b最初のチップが叩かれた)
                     {
-                        mat *= SlimDX.Matrix.RotationZ( fRotate );
-                        mat *= SlimDX.Matrix.Translation( 280 - 640, -( 134 - 360 ), 0 );
+                        mat *= Matrix4.CreateRotationZ(fRotate);
+                        mat *= Matrix4.CreateTranslation(280 - 640, -(134 - 360), 0);
                     }
                     else
                     {
-                        mat *= SlimDX.Matrix.Translation( 280 - 640, -( 134 - 360 ), 0 );
+                        mat *= Matrix4.CreateTranslation(280 - 640, -(134 - 360), 0);
                     }
 
                     TJAPlayer3.Tx.GameMode_Timer_Tick.t3D描画( TJAPlayer3.app.Device, mat );

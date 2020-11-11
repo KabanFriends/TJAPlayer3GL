@@ -41,12 +41,12 @@ namespace TJAPlayer3
 
         public override void On非活性化()
         {
-            TJAPlayer3.t安全にDisposeする( ref this.ct上背景FIFOタイマー );
+            this.ct上背景FIFOタイマー = null;
             for (int i = 0; i < 2; i++)
             {
                 ct上背景スクロール用タイマー[i] = null;
             }
-            TJAPlayer3.t安全にDisposeする( ref this.ct下背景スクロール用タイマー1 );
+            this.ct下背景スクロール用タイマー1 = null;
             base.On非活性化();
         }
 
@@ -77,11 +77,11 @@ namespace TJAPlayer3
 
         public override void OnManagedリソースの解放()
         {
-            //CDTXMania.tテクスチャの解放( ref this.tx上背景メイン );
-            //CDTXMania.tテクスチャの解放( ref this.tx上背景クリアメイン );
-            //CDTXMania.tテクスチャの解放( ref this.tx下背景メイン );
-            //CDTXMania.tテクスチャの解放( ref this.tx下背景クリアメイン );
-            //CDTXMania.tテクスチャの解放( ref this.tx下背景クリアサブ1 );
+            //CDTXMania.t安全にDisposeする( ref this.tx上背景メイン );
+            //CDTXMania.t安全にDisposeする( ref this.tx上背景クリアメイン );
+            //CDTXMania.t安全にDisposeする( ref this.tx下背景メイン );
+            //CDTXMania.t安全にDisposeする( ref this.tx下背景クリアメイン );
+            //CDTXMania.t安全にDisposeする( ref this.tx下背景クリアサブ1 );
             //Trace.TraceInformation("CActDrums背景 リソースの開放");
             base.OnManagedリソースの解放();
         }

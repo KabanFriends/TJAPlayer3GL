@@ -53,34 +53,51 @@ namespace FDK
 				return num;
 
 			return n取得失敗時のデフォルト値;
-        }
+		}
 
-	    public static double db値を文字列から取得して範囲内に丸めて返す( string str数値文字列, double db最小値, double db最大値, double db取得失敗時のデフォルト値 )
-	    {
-	        double num;
-	        if( ( double.TryParse( str数値文字列, out num ) && ( num >= db最小値 ) ) && ( num <= db最大値 ) )
-	            return num;
+		public static double db値を文字列から取得して範囲内に丸めて返す( string str数値文字列, double db最小値, double db最大値, double db取得失敗時のデフォルト値 )
+		{
+			double num;
+			if( ( double.TryParse( str数値文字列, out num ) && ( num >= db最小値 ) ) && ( num <= db最大値 ) )
+				return num;
 
-	        return db取得失敗時のデフォルト値;
-	    }
+			return db取得失敗時のデフォルト値;
+		}
 
-        // #23568 2010.11.04 ikanick add
-        public static int n値を文字列から取得して範囲内にちゃんと丸めて返す(string str数値文字列, int n最小値, int n最大値, int n取得失敗時のデフォルト値)
-        {
-            // 1 と違って範囲外の場合ちゃんと丸めて返します。
-            int num;
-            if (int.TryParse(str数値文字列, out num)) {
-                if ((num >= n最小値) && (num <= n最大値))
-                    return num;
-			    if ( num < n最小値 )
-				    return n最小値;
-			    if ( num > n最大値 )
-				    return n最大値;
-            }
+		// #23568 2010.11.04 ikanick add
+		public static int n値を文字列から取得して範囲内にちゃんと丸めて返す(string str数値文字列, int n最小値, int n最大値, int n取得失敗時のデフォルト値)
+		{
+			// 1 と違って範囲外の場合ちゃんと丸めて返します。
+			int num;
+			if (int.TryParse(str数値文字列, out num)) {
+				if ((num >= n最小値) && (num <= n最大値))
+					return num;
+				if ( num < n最小値 )
+					return n最小値;
+				if ( num > n最大値 )
+					return n最大値;
+			}
 
-            return n取得失敗時のデフォルト値;
-        }
-        // --------------------ここまで-------------------------/
+			return n取得失敗時のデフォルト値;
+		}
+
+		public static double db値を文字列から取得して範囲内にちゃんと丸めて返す(string str数値文字列, double n最小値, double n最大値, double n取得失敗時のデフォルト値)
+		{
+			// 1 と違って範囲外の場合ちゃんと丸めて返します。
+			double num;
+			if (double.TryParse(str数値文字列, out num))
+			{
+				if ((num >= n最小値) && (num <= n最大値))
+					return num;
+				if (num < n最小値)
+					return n最小値;
+				if (num > n最大値)
+					return n最大値;
+			}
+
+			return n取得失敗時のデフォルト値;
+		}
+		// --------------------ここまで-------------------------/
 		public static int n値を文字列から取得して返す( string str数値文字列, int n取得失敗時のデフォルト値 )
 		{
 			int num;
@@ -186,58 +203,38 @@ namespace FDK
 			return ( ch2.ToString() + ch1.ToString() );
 		}
 
-        public static int[] ar配列形式のstringをint配列に変換して返す( string str )
-        {
-            //0,1,2 ...の形式で書かれたstringをint配列に変換する。
-            //一応実装はしたものの、例外処理などはまだ完成していない。
-            //str = "0,1,2";
-            if( String.IsNullOrEmpty( str ) )
-                return null;
+		public static int[] ar配列形式のstringをint配列に変換して返す( string str )
+		{
+			//0,1,2 ...の形式で書かれたstringをint配列に変換する。
+			//一応実装はしたものの、例外処理などはまだ完成していない。
+			//str = "0,1,2";
+			if( String.IsNullOrEmpty( str ) )
+				return null;
 
-            string[] strArray = str.Split( ',' );
-            List<int> listIntArray;
-            listIntArray = new List<int>();
+			string[] strArray = str.Split( ',' );
+			List<int> listIntArray;
+			listIntArray = new List<int>();
 
-            for( int n = 0; n < strArray.Length; n++ )
-            {
-                int n追加する数値 = Convert.ToInt32( strArray[ n ] );
-                listIntArray.Add( n追加する数値 );
-            }
-            int[] nArray = new int[] { 1 };
-            nArray = listIntArray.ToArray();
+			for( int n = 0; n < strArray.Length; n++ )
+			{
+				int n追加する数値 = Convert.ToInt32( strArray[ n ] );
+				listIntArray.Add( n追加する数値 );
+			}
+			int[] nArray = new int[] { 1 };
+			nArray = listIntArray.ToArray();
 
-            return nArray;
-        }
+			return nArray;
+		}
 
-
-        /// <summary>
-        /// 百分率数値を255段階数値に変換するメソッド。透明度用。
-        /// </summary>
-        /// <param name="num"></param>
-        /// <returns></returns>
-        public static int nParsentTo255( double num )
-        {
-            return (int)(255.0 * num);
-        }
-
-        /// <summary>
-        /// 255段階数値を百分率に変換するメソッド。
-        /// </summary>
-        /// <param name="num"></param>
-        /// <returns></returns>
-        public static int n255ToParsent( int num )
-        {
-            return (int)(100.0 / num);
-        }
-
-        public static SlimDX.Color4 n255ToColor4( int nR, int nG, int nB )
-        {
-            float fR = n255ToParsent( nR );
-            float fG = n255ToParsent( nG );
-            float fB = n255ToParsent( nB );
-
-            return new SlimDX.Color4( fR, fG, fB );
-        }
+		/// <summary>
+		/// 百分率数値を255段階数値に変換するメソッド。透明度用。
+		/// </summary>
+		/// <param name="num"></param>
+		/// <returns></returns>
+		public static int nParsentTo255(double num)
+		{
+			return (int)(255.0 * num);
+		}
 
 		#region [ private ]
 		//-----------------

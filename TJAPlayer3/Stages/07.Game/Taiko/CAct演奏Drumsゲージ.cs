@@ -4,7 +4,7 @@ using System.Text;
 using System.Runtime.InteropServices;
 using System.Drawing;
 using System.Diagnostics;
-using SlimDX;
+
 using FDK;
 
 namespace TJAPlayer3
@@ -162,27 +162,27 @@ namespace TJAPlayer3
 		{
 			if( !base.b活性化してない )
 			{
-				//CDTXMania.tテクスチャの解放( ref this.txゲージ );
-				//CDTXMania.tテクスチャの解放( ref this.txゲージ背景 );
+				//CDTXMania.t安全にDisposeする( ref this.txゲージ );
+				//CDTXMania.t安全にDisposeする( ref this.txゲージ背景 );
     //            if (CDTXMania.stage演奏ドラム画面.bDoublePlay)
-    //                CDTXMania.tテクスチャの解放( ref this.txゲージ2P );
+    //                CDTXMania.t安全にDisposeする( ref this.txゲージ2P );
     //            if (CDTXMania.stage演奏ドラム画面.bDoublePlay)
-    //                CDTXMania.tテクスチャの解放( ref this.txゲージ背景2P );
-    //            CDTXMania.tテクスチャの解放( ref this.txゲージ線 );
+    //                CDTXMania.t安全にDisposeする( ref this.txゲージ背景2P );
+    //            CDTXMania.t安全にDisposeする( ref this.txゲージ線 );
     //            if (CDTXMania.stage演奏ドラム画面.bDoublePlay)
-    //                CDTXMania.tテクスチャの解放( ref this.txゲージ線2P );
-    //            CDTXMania.tテクスチャの解放( ref this.tx魂 );
-    //            CDTXMania.tテクスチャの解放( ref this.tx炎 );
-    //            CDTXMania.tテクスチャの解放( ref this.tx魂花火 );
+    //                CDTXMania.t安全にDisposeする( ref this.txゲージ線2P );
+    //            CDTXMania.t安全にDisposeする( ref this.tx魂 );
+    //            CDTXMania.t安全にDisposeする( ref this.tx炎 );
+    //            CDTXMania.t安全にDisposeする( ref this.tx魂花火 );
 
 
     //            for( int i = 0; i < 12; i++ )
     //            {
-    //                CDTXMania.tテクスチャの解放( ref this.txゲージ虹[ i ] );
+    //                CDTXMania.t安全にDisposeする( ref this.txゲージ虹[ i ] );
     //            }
                 this.ct虹アニメ = null;
 
-                //CDTXMania.tテクスチャの解放(ref this.tx音符);
+                //CDTXMania.t安全にDisposeする(ref this.tx音符);
                 base.OnManagedリソースの解放();
 			}
 		}

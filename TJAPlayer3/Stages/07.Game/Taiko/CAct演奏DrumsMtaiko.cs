@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using FDK;
+using OpenTK;
 
 namespace TJAPlayer3
 {
@@ -85,31 +87,31 @@ namespace TJAPlayer3
 
         public override void OnManagedリソースの解放()
         {
-      //      CDTXMania.tテクスチャの解放( ref this.txMtaiko枠 );
-      //      CDTXMania.tテクスチャの解放( ref this.txMtaiko下敷き[ 0 ] );
+      //      CDTXMania.t安全にDisposeする( ref this.txMtaiko枠 );
+      //      CDTXMania.t安全にDisposeする( ref this.txMtaiko下敷き[ 0 ] );
       //      if (CDTXMania.stage演奏ドラム画面.bDoublePlay)
-      //          CDTXMania.tテクスチャの解放( ref this.txMtaiko下敷き[ 1 ] );
+      //          CDTXMania.t安全にDisposeする( ref this.txMtaiko下敷き[ 1 ] );
             
-		    //CDTXMania.tテクスチャの解放( ref this.tx太鼓_土台 );
-      //      CDTXMania.tテクスチャの解放( ref this.txオプションパネル_HS );
-      //      CDTXMania.tテクスチャの解放( ref this.txオプションパネル_RANMIR );
-      //      CDTXMania.tテクスチャの解放( ref this.txオプションパネル_特殊 );
+		    //CDTXMania.t安全にDisposeする( ref this.tx太鼓_土台 );
+      //      CDTXMania.t安全にDisposeする( ref this.txオプションパネル_HS );
+      //      CDTXMania.t安全にDisposeする( ref this.txオプションパネル_RANMIR );
+      //      CDTXMania.t安全にDisposeする( ref this.txオプションパネル_特殊 );
 
-      //      CDTXMania.tテクスチャの解放( ref this.tx太鼓_面L );
-      //      CDTXMania.tテクスチャの解放( ref this.tx太鼓_面R );
-		    //CDTXMania.tテクスチャの解放( ref this.tx太鼓_ふちL );
-      //      CDTXMania.tテクスチャの解放( ref this.tx太鼓_ふちR );
+      //      CDTXMania.t安全にDisposeする( ref this.tx太鼓_面L );
+      //      CDTXMania.t安全にDisposeする( ref this.tx太鼓_面R );
+		    //CDTXMania.t安全にDisposeする( ref this.tx太鼓_ふちL );
+      //      CDTXMania.t安全にDisposeする( ref this.tx太鼓_ふちR );
 
-		    //CDTXMania.tテクスチャの解放( ref this.txレベルアップ );
-      //      CDTXMania.tテクスチャの解放( ref this.txレベルダウン );
+		    //CDTXMania.t安全にDisposeする( ref this.txレベルアップ );
+      //      CDTXMania.t安全にDisposeする( ref this.txレベルダウン );
 
-      //      CDTXMania.tテクスチャの解放( ref this.txネームプレート );
+      //      CDTXMania.t安全にDisposeする( ref this.txネームプレート );
       //      if (CDTXMania.stage演奏ドラム画面.bDoublePlay)
-      //          CDTXMania.tテクスチャの解放( ref this.txネームプレート2P );
+      //          CDTXMania.t安全にDisposeする( ref this.txネームプレート2P );
 
       //      for( int i = 0; i < 6; i++ )
       //      {
-      //          CDTXMania.tテクスチャの解放( ref this.txコースシンボル[ i ] );
+      //          CDTXMania.t安全にDisposeする( ref this.txコースシンボル[ i ] );
       //      }
 
             this.ctレベルアップダウン = null;
@@ -245,10 +247,10 @@ namespace TJAPlayer3
                         fScale = 1.0f;
                     }
 
-                    SlimDX.Matrix mat = SlimDX.Matrix.Identity;
-                    mat *= SlimDX.Matrix.Scaling( fScale, fScale, 1.0f );
-                    mat *= SlimDX.Matrix.Translation( -329, fY[ i ], 0 );
-                    if( this.After[ i ] - this.Before[ i ] >= 0 )
+                    Matrix4 mat = Matrix4.Identity;
+                    mat *= Matrix4.CreateScale(fScale, fScale, 1.0f);
+                    mat *= Matrix4.CreateTranslation(-329, fY[i], 0);
+                    if ( this.After[ i ] - this.Before[ i ] >= 0 )
                     {
                         //レベルアップ
                         TJAPlayer3.Tx.Taiko_LevelUp.Opacity = nAlpha;

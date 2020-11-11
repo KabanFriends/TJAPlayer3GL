@@ -4,8 +4,8 @@ using System.Text;
 using System.Diagnostics;
 using System.IO;
 using System.Drawing;
-using SlimDX;
-using SlimDX.Direct3D9;
+
+
 using FDK;
 
 namespace TJAPlayer3
@@ -97,7 +97,7 @@ namespace TJAPlayer3
 			{
 				return false;
 			}
-			TJAPlayer3.tテクスチャの解放( ref this.txリザルト画像 );
+			TJAPlayer3.t安全にDisposeする( ref this.txリザルト画像 );
 			this.r表示するリザルト画像 = null;
 			string path = TJAPlayer3.DTX.strフォルダ名 + TJAPlayer3.DTX.PREIMAGE;
 			if( !File.Exists( path ) )

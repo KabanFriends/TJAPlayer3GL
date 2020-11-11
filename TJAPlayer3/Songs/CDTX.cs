@@ -1813,7 +1813,7 @@ namespace TJAPlayer3
                     CSound sound = wc.rSound[index];
                     if (sound != null)
                     {
-                        sound.db周波数倍率 = 1.0;
+                        //sound.db周波数倍率 = 1.0;
                         sound.db再生速度 = ((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0;
                         // 再生速度によって、WASAPI/ASIOで使う使用mixerが決まるため、付随情報の設定(音量/PAN)は、再生速度の設定後に行う
 

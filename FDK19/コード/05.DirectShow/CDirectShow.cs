@@ -6,9 +6,6 @@ using System.IO;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Threading;
-using SlimDX;
-using SlimDX.Direct3D9;
-using SlimDX.Multimedia;
 using DirectShowLib;
 
 namespace FDK
@@ -332,21 +329,19 @@ namespace FDK
 				{
 					IBaseFilter videoRenderer;
 					IPin videoInputPin;
-                    IBaseFilter audioRenderer;
-                    IPin audioInputPin;
-#if MemoryRenderer
-                    CDirectShow.tビデオレンダラとその入力ピンを探して返す( this.graphBuilder, out videoRenderer, out videoInputPin );
-#else
-                    CDirectShow.SearchMMRenderers( this.graphBuilder, out videoRenderer, out videoInputPin, out audioRenderer, out audioInputPin );
-#endif
-					if( videoRenderer == null && audioRenderer != null )
+					IBaseFilter audioRenderer;
+					IPin audioInputPin;
+					CDirectShow.SearchMMRenderers( this.graphBuilder, out videoRenderer, out videoInputPin, out audioRenderer, out audioInputPin );
+					if ( videoRenderer == null && audioRenderer != null )
+					{
 						this.b音声のみ = true;
+					}
 					else
 					{
-						C共通.tCOMオブジェクトを解放する( ref videoInputPin );
-						C共通.tCOMオブジェクトを解放する( ref videoRenderer );
-                        C共通.tCOMオブジェクトを解放する( ref audioInputPin );
-                        C共通.tCOMオブジェクトを解放する( ref audioRenderer );
+						C共通.tCOMオブジェクトを解放する(ref videoInputPin);
+						C共通.tCOMオブジェクトを解放する(ref videoRenderer);
+						C共通.tCOMオブジェクトを解放する(ref audioInputPin);
+						C共通.tCOMオブジェクトを解放する(ref audioRenderer);
 					}
 				}
 
@@ -374,9 +369,7 @@ namespace FDK
 
 				if( bオーディオレンダラなし )
 				{
-					WaveFormat dummy1;
-					byte[] dummy2;
-					CDirectShow.tオーディオレンダラをNullレンダラに変えてフォーマットを取得する( this.graphBuilder, out dummy1, out dummy2 );
+					CDirectShow.tオーディオレンダラをNullレンダラに変えてフォーマットを取得する( this.graphBuilder, out WaveFormatEx _, out byte[] _ );
 				}
 
 
@@ -479,7 +472,7 @@ namespace FDK
 			return this.eグラフの状態;
 		}
 		public unsafe void t現時点における最新のスナップイメージをTextureに転写する( CTexture texture )
-		{
+		{/*
 			int hr;
 
 			#region [ 再生してないなら何もせず帰還。（一時停止中はOK。）]
@@ -502,7 +495,7 @@ namespace FDK
 				{
 					#region [ (A) ピッチが合うので、テクスチャに直接転送する。]
 					//-----------------
-					hr = this.memoryRenderer.GetCurrentBuffer( dr.Data.DataPointer, this.nデータサイズbyte );
+					hr = this.memoryRenderer.GetCurrentBuffer( dr.DataPointer, this.nデータサイズbyte );
 					DsError.ThrowExceptionForHR( hr );
 					//-----------------
 					#endregion
@@ -528,25 +521,11 @@ namespace FDK
 					//-----------------
 					bool bARGB32 = true;
 
-					switch( texture.Format )
-					{
-						case Format.A8R8G8B8:
-							bARGB32 = true;
-							break;
-
-						case Format.X8R8G8B8:
-							bARGB32 = false;
-							break;
-
-						default:
-							return;		// 未対応のフォーマットは無視。
-					}
-
 					// スレッドプールを使って並列転送する準備。
 
 					this.ptrSnap = (byte*) this.ip.ToPointer();
 					var ptr = stackalloc UInt32*[ CDirectShow.n並列度 ];	// stackalloc（GC対象外、メソッド終了時に自動開放）は、スタック変数相手にしか使えない。
-					ptr[ 0 ] = (UInt32*) dr.Data.DataPointer.ToPointer();	//		↓
+					ptr[ 0 ] = (UInt32*) dr.DataPointer.ToPointer();	//		↓
 					for( int i = 1; i < CDirectShow.n並列度; i++ )			// スタック変数で確保、初期化して…
 						ptr[ i ] = ptr[ i - 1 ] + this.n幅px;				//		↓
 					this.ptrTexture = ptr;									// スタック変数をクラスメンバに渡す（これならOK）。
@@ -598,7 +577,7 @@ namespace FDK
 			finally
 			{
 				texture.texture.UnlockRectangle( 0 );
-			}
+			}*/
 		}
 
 		private IntPtr ip = IntPtr.Zero;
@@ -688,7 +667,7 @@ namespace FDK
 
 			Debug.Flush();
 		}
-		public static void tオーディオレンダラをNullレンダラに変えてフォーマットを取得する( IGraphBuilder graphBuilder, out WaveFormat wfx, out byte[] wfx拡張データ )
+		public static void tオーディオレンダラをNullレンダラに変えてフォーマットを取得する( IGraphBuilder graphBuilder, out WaveFormatEx wfx, out byte[] wfx拡張データ )
 		{
 			int hr = 0;
 
@@ -757,18 +736,11 @@ namespace FDK
 				DsError.ThrowExceptionForHR( hr );
 				try
 				{
-					wfx = new WaveFormat();
-
 					#region [ type.formatPtr から wfx に、拡張領域を除くデータをコピーする。]
 					//-----------------
-					var wfxTemp = new WaveFormatEx();	// SlimDX.Multimedia.WaveFormat は Marshal.PtrToStructure() で使えないので、それが使える DirectShowLib.WaveFormatEx を介して取得する。（面倒…）
+					var wfxTemp = new WaveFormatEx();	// SharpDX.Multimedia.WaveFormat は Marshal.PtrToStructure() で使えないので、それが使える DirectShowLib.WaveFormatEx を介して取得する。（面倒…）
 					Marshal.PtrToStructure( type.formatPtr, (object) wfxTemp );
-					wfx.AverageBytesPerSecond = wfxTemp.nAvgBytesPerSec;
-					wfx.BitsPerSample = wfxTemp.wBitsPerSample;
-					wfx.BlockAlignment = wfxTemp.nBlockAlign;
-					wfx.Channels = wfxTemp.nChannels;
-					wfx.FormatTag = (WaveFormatTag) ( (ushort) wfxTemp.wFormatTag );	// DirectShowLib.WaveFormatEx.wFormatTag は short だが、SlimDX.Mulrimedia.WaveFormat.FormatTag は ushort である。（面倒…）
-					wfx.SamplesPerSecond = wfxTemp.nSamplesPerSec;
+					wfx = wfxTemp;
 					//-----------------
 					#endregion
 					#region [ 拡張領域が存在するならそれを wfx拡張データ に格納する。 ]
@@ -945,13 +917,59 @@ namespace FDK
 				C共通.tCOMオブジェクトを解放する(ref grabberOutputConnectedPin);
 			}
 		}
-		private static void SearchMMRenderers( IFilterGraph graph, out IBaseFilter videoRenderer, out IPin inputVPin, out IBaseFilter audioRenderer, out IPin inputAPin )
+
+		private static IPin t最初の入力ピンを探して返す( IBaseFilter baseFilter )
+		{
+			int hr = 0;
+
+			IPin firstInputPin = null;
+
+			IEnumPins ePins;
+			hr = baseFilter.EnumPins( out ePins );
+			DsError.ThrowExceptionForHR( hr );
+			try
+			{
+				var pins = new IPin[ 1 ];
+				while( ePins.Next( 1, pins, IntPtr.Zero ) == CWin32.S_OK )
+				{
+					PinInfo pinfo = new PinInfo() { filter = null };
+					try
+					{
+						hr = pins[ 0 ].QueryPinInfo( out pinfo );
+						DsError.ThrowExceptionForHR( hr );
+
+						if( pinfo.dir == PinDirection.Input )
+						{
+							firstInputPin = pins[ 0 ];
+							break;
+						}
+					}
+					finally
+					{
+						if( pinfo.filter != null )
+							C共通.tCOMオブジェクトを解放する( ref pinfo.filter );
+						DsUtils.FreePinInfo( pinfo );
+
+						if( firstInputPin == null )
+							C共通.tCOMオブジェクトを解放する( ref pins[ 0 ] );
+					}
+				}
+			}
+			finally
+			{
+				C共通.tCOMオブジェクトを解放する( ref ePins );
+			}
+
+			return firstInputPin;
+		}
+		private static void SearchMMRenderers( IFilterGraph graph, out IBaseFilter videoRenderer, out IPin inputVPin, out IBaseFilter audioRenderer, out IPin inputAPin)
 		{
 			int hr = 0;
 			string strVRフィルタ名 = null;
 			string strVRピンID = null;
 			string strARフィルタ名 = null;
 			string strARピンID = null;
+
 
 			// ビデオレンダラと入力ピンを探し、そのフィルタ名とピンIDを控える。
 
@@ -1015,7 +1033,7 @@ namespace FDK
 							{
 								try
 								{
-									if( !string.IsNullOrEmpty( strVRフィルタ名 ) )
+									if( !string.IsNullOrEmpty(strVRフィルタ名) )
 										continue;
 
 									var mediaType = new AMMediaType();
@@ -1049,7 +1067,7 @@ namespace FDK
 											//-----------------
 											#endregion
 										}
-										else if( mediaType.majorType.Equals( MediaType.Audio ) )
+										else if (mediaType.majorType.Equals(MediaType.Audio))
 										{
 											FilterInfo filterInfo;
 											hr = filters[0].QueryFilterInfo(out filterInfo);
@@ -1098,262 +1116,22 @@ namespace FDK
 			audioRenderer = null;
 			inputAPin = null;
 
-			if( !string.IsNullOrEmpty( strVRフィルタ名 ) )
+			if ( !string.IsNullOrEmpty(strVRフィルタ名) )
 			{
-				hr = graph.FindFilterByName( strVRフィルタ名, out videoRenderer );
+				hr = graph.FindFilterByName(strVRフィルタ名, out videoRenderer );
 				DsError.ThrowExceptionForHR( hr );
 
 				hr = videoRenderer.FindPin( strVRピンID, out inputVPin );
 				DsError.ThrowExceptionForHR( hr );
 			}
 
-			if( !string.IsNullOrEmpty( strARフィルタ名 ) )
+			if (!string.IsNullOrEmpty(strARフィルタ名))
 			{
 				hr = graph.FindFilterByName(strARフィルタ名, out audioRenderer);
 				DsError.ThrowExceptionForHR(hr);
 
 				hr = audioRenderer.FindPin(strARピンID, out inputAPin);
 				DsError.ThrowExceptionForHR(hr);
-			}
-		}
-
-		public static void tビデオレンダラをグラフから除去する( IGraphBuilder graphBuilder )
-		{
-			int hr = 0;
-
-			IBaseFilter videoRenderer = null;
-			IPin renderInputPin = null;
-			IPin connectedOutputPin = null;
-
-			try
-			{
-				// videoRenderer を探す。
-				
-				CDirectShow.tビデオレンダラとその入力ピンを探して返す( graphBuilder, out videoRenderer, out renderInputPin );
-				if( videoRenderer == null || renderInputPin == null )
-					return;		// なかった
-
-				#region [ renderInputPin へ接続している前段の出力ピン connectedOutputPin を探す。 ]
-				//-----------------
-				renderInputPin.ConnectedTo( out connectedOutputPin );
-				//-----------------
-				#endregion
-
-				if( connectedOutputPin == null )
-					return;		// なかった
-
-
-				// 前段の出力ピンとビデオレンダラの入力ピンを切断する。双方向から切断しないとグラフから切り離されないので注意。
-
-				renderInputPin.Disconnect();
-				connectedOutputPin.Disconnect();
-
-
-				// ビデオレンダラをグラフから除去。
-
-				graphBuilder.RemoveFilter( videoRenderer );
-			}
-			finally
-			{
-				C共通.tCOMオブジェクトを解放する( ref connectedOutputPin );
-				C共通.tCOMオブジェクトを解放する( ref renderInputPin );
-				C共通.tCOMオブジェクトを解放する( ref videoRenderer );
-			}
-		}
-
-		private static IPin t最初の入力ピンを探して返す( IBaseFilter baseFilter )
-		{
-			int hr = 0;
-
-			IPin firstInputPin = null;
-
-			IEnumPins ePins;
-			hr = baseFilter.EnumPins( out ePins );
-			DsError.ThrowExceptionForHR( hr );
-			try
-			{
-				var pins = new IPin[ 1 ];
-				while( ePins.Next( 1, pins, IntPtr.Zero ) == CWin32.S_OK )
-				{
-					PinInfo pinfo = new PinInfo() { filter = null };
-					try
-					{
-						hr = pins[ 0 ].QueryPinInfo( out pinfo );
-						DsError.ThrowExceptionForHR( hr );
-
-						if( pinfo.dir == PinDirection.Input )
-						{
-							firstInputPin = pins[ 0 ];
-							break;
-						}
-					}
-					finally
-					{
-						if( pinfo.filter != null )
-							C共通.tCOMオブジェクトを解放する( ref pinfo.filter );
-						DsUtils.FreePinInfo( pinfo );
-
-						if( firstInputPin == null )
-							C共通.tCOMオブジェクトを解放する( ref pins[ 0 ] );
-					}
-				}
-			}
-			finally
-			{
-				C共通.tCOMオブジェクトを解放する( ref ePins );
-			}
-
-			return firstInputPin;
-		}
-		private static void tビデオレンダラとその入力ピンを探して返す( IFilterGraph graph, out IBaseFilter videoRenderer, out IPin inputPin )
-		{
-			int hr = 0;
-			string strフィルタ名 = null;
-			string strピンID = null;
-
-
-			// ビデオレンダラと入力ピンを探し、そのフィルタ名とピンIDを控える。
-
-			IEnumFilters eFilters;
-			hr = graph.EnumFilters( out eFilters );
-			DsError.ThrowExceptionForHR( hr );
-			try
-			{
-				var filters = new IBaseFilter[ 1 ];
-				while( eFilters.Next( 1, filters, IntPtr.Zero ) == CWin32.S_OK )
-				{
-					try
-					{
-						#region [ 出力ピンがない（レンダラである）ことを確認する。]
-						//-----------------
-						IEnumPins ePins;
-						bool b出力ピンがある = false;
-
-						hr = filters[ 0 ].EnumPins( out ePins );
-						DsError.ThrowExceptionForHR( hr );
-						try
-						{
-							var pins = new IPin[ 1 ];
-							while( ePins.Next( 1, pins, IntPtr.Zero ) == CWin32.S_OK )
-							{
-								try
-								{
-									if( b出力ピンがある )
-										continue;
-
-									PinDirection dir;
-									hr = pins[ 0 ].QueryDirection( out dir );
-									DsError.ThrowExceptionForHR( hr );
-									if( dir == PinDirection.Output )
-										b出力ピンがある = true;
-								}
-								finally
-								{
-									C共通.tCOMオブジェクトを解放する( ref pins[ 0 ] );
-								}
-							}
-						}
-						finally
-						{
-							C共通.tCOMオブジェクトを解放する( ref ePins );
-						}
-
-						if( b出力ピンがある )
-							continue;	// 次のフィルタへ
-
-						//-----------------
-						#endregion
-						#region [ 接続中の入力ピンが MEDIATYPE_Video に対応していたら、フィルタ名とピンIDを取得する。]
-						//-----------------
-						hr = filters[ 0 ].EnumPins( out ePins );
-						DsError.ThrowExceptionForHR( hr );
-						try
-						{
-							var pins = new IPin[ 1 ];
-							while( ePins.Next( 1, pins, IntPtr.Zero ) == CWin32.S_OK )
-							{
-								try
-								{
-									if( !string.IsNullOrEmpty( strフィルタ名 ) )
-										continue;
-
-									var mediaType = new AMMediaType();
-
-									#region [ 現在接続中の MediaType を取得。つながってなければ次のピンへ。]
-									//-----------------
-									hr = pins[ 0 ].ConnectionMediaType( mediaType );
-									if( hr == CWin32.VFW_E_NOT_CONNECTED )
-										continue;	// つながってない
-									DsError.ThrowExceptionForHR( hr );
-									//-----------------
-									#endregion
-
-									try
-									{
-										if( mediaType.majorType.Equals( MediaType.Video ) )
-										{
-											#region [ フィルタ名取得！]
-											//-----------------
-											FilterInfo filterInfo;
-											hr = filters[ 0 ].QueryFilterInfo( out filterInfo );
-											DsError.ThrowExceptionForHR( hr );
-											strフィルタ名 = filterInfo.achName;
-											C共通.tCOMオブジェクトを解放する( ref filterInfo.pGraph );
-											//-----------------
-											#endregion
-											#region [ ピンID取得！]
-											//-----------------
-											hr = pins[ 0 ].QueryId( out strピンID );
-											DsError.ThrowExceptionForHR( hr );
-											//-----------------
-											#endregion
-
-											continue;	// 次のピンへ。
-										}
-									}
-									finally
-									{
-										DsUtils.FreeAMMediaType( mediaType );
-									}
-								}
-								finally
-								{
-									C共通.tCOMオブジェクトを解放する( ref pins[ 0 ] );
-								}
-							}
-						}
-						finally
-						{
-							C共通.tCOMオブジェクトを解放する( ref ePins );
-						}
-
-						//-----------------
-						#endregion
-					}
-					finally
-					{
-						C共通.tCOMオブジェクトを解放する( ref filters[ 0 ] );
-					}
-				}
-			}
-			finally
-			{
-				C共通.tCOMオブジェクトを解放する( ref eFilters );
-			}
-
-
-			// 改めてフィルタ名とピンIDからこれらのインターフェースを取得し、戻り値として返す。
-
-			videoRenderer = null;
-			inputPin = null;
-
-			if( !string.IsNullOrEmpty( strフィルタ名 ) )
-			{
-				hr = graph.FindFilterByName( strフィルタ名, out videoRenderer );
-				DsError.ThrowExceptionForHR( hr );
-
-				hr = videoRenderer.FindPin( strピンID, out inputPin );
-				DsError.ThrowExceptionForHR( hr );
 			}
 		}
 		private static IBaseFilter tオーディオレンダラを探して返す( IFilterGraph graph )
@@ -1468,13 +1246,13 @@ namespace FDK
 
 			C共通.t完全なガベージコレクションを実施する();
 		}
-        ~CDirectShow()
+		~CDirectShow()
 		{
 			// ファイナライザが呼ばれたということは、Dispose() されなかったということ。
 			// この場合、Managed リソースは先にファイナライズされている可能性があるので、Unmamaed リソースのみを解放する。
 			
 			this.Dispose( false );
-        }
+		}
 		//-----------------
 		#endregion
 

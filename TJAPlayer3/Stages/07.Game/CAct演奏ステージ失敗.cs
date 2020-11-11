@@ -112,10 +112,10 @@ namespace TJAPlayer3
 		{
 			if( !base.b活性化してない )
 			{
-				//CDTXMania.tテクスチャの解放( ref this.txStageFailed );
-				//CDTXMania.tテクスチャの解放( ref this.txGameFailed );
-    //            CDTXMania.tテクスチャの解放( ref this.txBlack );
-    //            CDTXMania.tテクスチャの解放( ref this.tx数字 );
+				//CDTXMania.t安全にDisposeする( ref this.txStageFailed );
+				//CDTXMania.t安全にDisposeする( ref this.txGameFailed );
+    //            CDTXMania.t安全にDisposeする( ref this.txBlack );
+    //            CDTXMania.t安全にDisposeする( ref this.tx数字 );
 				base.OnManagedリソースの解放();
 			}
 		}
@@ -135,9 +135,9 @@ namespace TJAPlayer3
             {
                 if (TJAPlayer3.Tx.Tile_Black != null)
                 {
-                    for (int i = 0; i <= (SampleFramework.GameWindowSize.Width / 64); i++)
+                    for (int i = 0; i <= (GameWindowSize.Width / 64); i++)
                     {
-                        for (int j = 0; j <= (SampleFramework.GameWindowSize.Height / 64); j++)
+                        for (int j = 0; j <= (GameWindowSize.Height / 64); j++)
                         {
                             TJAPlayer3.Tx.Tile_Black.t2D描画(TJAPlayer3.app.Device, i * 64, j * 64);
                         }

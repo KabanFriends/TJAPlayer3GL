@@ -8,10 +8,9 @@ using System.Drawing;
 using System.Threading;
 using System.Globalization;
 using System.Runtime.Serialization.Formatters.Binary;
-using SlimDX;
-using SlimDX.Direct3D9;
+using OpenTK;
+using OpenTK.Graphics;
 using FDK;
-using SampleFramework;
 
 namespace TJAPlayer3
 {
@@ -93,7 +92,7 @@ namespace TJAPlayer3
 					"     曲データの一覧を\n       取得しています。\n   しばらくお待ちください。",
 					" Now enumerating songs.\n         Please wait..."
 				};
-				int ci = ( CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "ja" ) ? 0 : 1;
+				int ci = (CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "ja") ? 0 : 1;
 				if ( ( strMessage != null ) && ( strMessage.Length > 0 ) )
 				{
 					Bitmap image = new Bitmap( 1, 1 );
@@ -107,7 +106,7 @@ namespace TJAPlayer3
 					graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
 					graphics.DrawString( strMessage[ ci ], ftMessage, Brushes.White, (float) 0f, (float) 0f );
 					graphics.Dispose();
-					this.txMessage = new CTexture( TJAPlayer3.app.Device, image, TJAPlayer3.TextureFormat );
+					this.txMessage = new CTexture(TJAPlayer3.app.Device, image);
 					this.txMessage.vc拡大縮小倍率 = new Vector3( 0.5f, 0.5f, 1f );
 					image.Dispose();
 					TJAPlayer3.t安全にDisposeする( ref ftMessage );

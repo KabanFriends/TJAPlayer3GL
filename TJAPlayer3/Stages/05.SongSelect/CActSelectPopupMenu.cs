@@ -67,7 +67,7 @@ namespace TJAPlayer3
 			stqMenuTitle.cItem.str項目名 = title;
 		    using (var bitmap = prvFont.DrawPrivateFont( title, Color.White, Color.Black ))
 		    {
-		        stqMenuTitle.txName = TJAPlayer3.tテクスチャの生成( bitmap, false );
+		        stqMenuTitle.txName = TJAPlayer3.tテクスチャの生成( bitmap);
 		        stqMenuTitle.rectName = prvFont.RectStrings;
 		    }
 			lciMenuItems = new stQuickMenuItem[ menulist.Count ];
@@ -77,7 +77,7 @@ namespace TJAPlayer3
 				stqm.cItem = menulist[ i ];
 			    using (var bitmap = prvFont.DrawPrivateFont( menulist[ i ].str項目名, Color.White, Color.Black ))
 			    {
-			        stqm.txName = TJAPlayer3.tテクスチャの生成( bitmap, false );
+			        stqm.txName = TJAPlayer3.tテクスチャの生成( bitmap);
 			        stqm.rectName = prvFont.RectStrings;
 			    }
 				lciMenuItems[ i ] = stqm;
@@ -213,8 +213,8 @@ namespace TJAPlayer3
 				this.font.On非活性化();
 				this.font = null;
 
-				//CDTXMania.tテクスチャの解放( ref this.txCursor );
-				//CDTXMania.tテクスチャの解放( ref this.txPopupMenuBackground );
+				//CDTXMania.t安全にDisposeする( ref this.txCursor );
+				//CDTXMania.t安全にDisposeする( ref this.txPopupMenuBackground );
 				for ( int i = 0; i < 4; i++ )
 				{
 					this.ctキー反復用[ i ] = null;
@@ -234,8 +234,8 @@ namespace TJAPlayer3
 		{
 			if ( !base.b活性化してない )
 			{
-				//CDTXMania.tテクスチャの解放( ref this.txPopupMenuBackground );
-				//CDTXMania.tテクスチャの解放( ref this.txCursor );
+				//CDTXMania.t安全にDisposeする( ref this.txPopupMenuBackground );
+				//CDTXMania.t安全にDisposeする( ref this.txCursor );
                 TJAPlayer3.t安全にDisposeする( ref this.prvFont );
 			}
 			base.OnManagedリソースの解放();
@@ -253,8 +253,8 @@ namespace TJAPlayer3
 				if ( this.bキー入力待ち )
 				{
 					#region [ Shift-F1: CONFIG画面 ]
-					if ( ( TJAPlayer3.Input管理.Keyboard.bキーが押されている( (int) SlimDX.DirectInput.Key.RightShift ) || TJAPlayer3.Input管理.Keyboard.bキーが押されている( (int) SlimDX.DirectInput.Key.LeftShift ) ) &&
-						TJAPlayer3.Input管理.Keyboard.bキーが押された( (int) SlimDX.DirectInput.Key.F1 ) )
+					if ( ( TJAPlayer3.Input管理.Keyboard.bキーが押されている( (int) SlimDXKeys.Key.RightShift ) || TJAPlayer3.Input管理.Keyboard.bキーが押されている( (int) SlimDXKeys.Key.LeftShift ) ) &&
+						TJAPlayer3.Input管理.Keyboard.bキーが押された( (int) SlimDXKeys.Key.F1 ) )
 					{	// [SHIFT] + [F1] CONFIG
 						TJAPlayer3.Skin.sound取消音.t再生する();
 						tCancel();
@@ -262,7 +262,7 @@ namespace TJAPlayer3
 					}
 					#endregion
 					#region [ キー入力: キャンセル ]
-					else if ( ( TJAPlayer3.Input管理.Keyboard.bキーが押された( (int) SlimDX.DirectInput.Key.Escape )
+					else if ( ( TJAPlayer3.Input管理.Keyboard.bキーが押された( (int) SlimDXKeys.Key.Escape )
 						|| TJAPlayer3.Pad.b押された( E楽器パート.DRUMS, Eパッド.FT )
 						|| TJAPlayer3.Pad.b押されたGB( Eパッド.Cancel ) )
                         && this.bEsc有効 )
@@ -290,7 +290,7 @@ namespace TJAPlayer3
 						TJAPlayer3.Pad.b押された( E楽器パート.DRUMS, Eパッド.Decide )	// #24756 2011.4.1 yyagi: Add condition "Drum-Decide" to enable CY in Sort Menu.
 						|| TJAPlayer3.Pad.b押された( E楽器パート.DRUMS, Eパッド.RD )
 						|| TJAPlayer3.Pad.b押された( E楽器パート.DRUMS, Eパッド.LC )
-						|| ( TJAPlayer3.ConfigIni.bEnterがキー割り当てのどこにも使用されていない && TJAPlayer3.Input管理.Keyboard.bキーが押された( (int) SlimDX.DirectInput.Key.Return ) ) )
+						|| ( TJAPlayer3.ConfigIni.bEnterがキー割り当てのどこにも使用されていない && TJAPlayer3.Input管理.Keyboard.bキーが押された( (int) SlimDXKeys.Key.Return ) ) )
 					{
 						eInst = E楽器パート.DRUMS;
 						eAction = ESortAction.Decide;
@@ -301,7 +301,7 @@ namespace TJAPlayer3
 					}
 					#endregion
 					#region [ キー入力: 前に移動 ]
-					this.ctキー反復用.Up.tキー反復( TJAPlayer3.Input管理.Keyboard.bキーが押されている( (int) SlimDX.DirectInput.Key.UpArrow ), new CCounter.DGキー処理( this.t前に移動 ) );
+					this.ctキー反復用.Up.tキー反復( TJAPlayer3.Input管理.Keyboard.bキーが押されている( (int) SlimDXKeys.Key.UpArrow ), new CCounter.DGキー処理( this.t前に移動 ) );
 					this.ctキー反復用.R.tキー反復( TJAPlayer3.Pad.b押されているGB( Eパッド.R ), new CCounter.DGキー処理( this.t前に移動 ) );
 					if ( TJAPlayer3.Pad.b押された( E楽器パート.DRUMS, Eパッド.SD ) )
 					{
@@ -309,7 +309,7 @@ namespace TJAPlayer3
 					}
 					#endregion
 					#region [ キー入力: 次に移動 ]
-					this.ctキー反復用.Down.tキー反復( TJAPlayer3.Input管理.Keyboard.bキーが押されている( (int) SlimDX.DirectInput.Key.DownArrow ), new CCounter.DGキー処理( this.t次に移動 ) );
+					this.ctキー反復用.Down.tキー反復( TJAPlayer3.Input管理.Keyboard.bキーが押されている( (int) SlimDXKeys.Key.DownArrow ), new CCounter.DGキー処理( this.t次に移動 ) );
 					this.ctキー反復用.B.tキー反復( TJAPlayer3.Pad.b押されているGB( Eパッド.B ), new CCounter.DGキー処理( this.t次に移動 ) );
 					if ( TJAPlayer3.Pad.b押された( E楽器パート.DRUMS, Eパッド.LT ) )
 					{
@@ -383,7 +383,7 @@ namespace TJAPlayer3
                             prvFont.DrawPrivateFont(s, Color.White, Color.Black, Color.Yellow, Color.OrangeRed) :
                             prvFont.DrawPrivateFont(s, Color.White, Color.Black))
                         {
-                            using (var ctStr = TJAPlayer3.tテクスチャの生成(bmpStr, false))
+                            using (var ctStr = TJAPlayer3.tテクスチャの生成(bmpStr))
                             {
                                 ctStr.t2D描画(TJAPlayer3.app.Device, 330, 77 + i * 32);
                             }

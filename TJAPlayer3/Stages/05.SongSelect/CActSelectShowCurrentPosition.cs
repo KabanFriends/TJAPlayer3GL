@@ -4,7 +4,7 @@ using System.Text;
 using System.Drawing;
 using System.Diagnostics;
 using System.IO;
-using SlimDX;
+
 using FDK;
 
 namespace TJAPlayer3
@@ -39,11 +39,11 @@ namespace TJAPlayer3
 				string pathScrollPosition = CSkin.Path( @"Graphics\5_scrollbar.png" );
 				if ( File.Exists( pathScrollBar ) )
 				{
-					this.txScrollBar = TJAPlayer3.tテクスチャの生成( pathScrollBar, false );
+					this.txScrollBar = TJAPlayer3.tテクスチャの生成( pathScrollBar);
 				}
 				if ( File.Exists( pathScrollPosition ) )
 				{
-					this.txScrollPosition = TJAPlayer3.tテクスチャの生成( pathScrollPosition, false );
+					this.txScrollPosition = TJAPlayer3.tテクスチャの生成( pathScrollPosition);
 				}
 				base.OnManagedリソースの作成();
 			}

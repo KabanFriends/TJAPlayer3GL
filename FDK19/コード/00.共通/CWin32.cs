@@ -342,22 +342,22 @@ namespace FDK
 		[return: MarshalAs( UnmanagedType.Bool )]
 		[DllImport( "user32.dll", CharSet = CharSet.Auto )]
 		public static extern bool IsZoomed( IntPtr hWnd );
-		[DllImport( "winmm.dll" )]
-		public static extern uint midiInClose( uint hMidiIn );
-		[DllImport( "winmm.dll" )]
-		public static extern uint midiInGetDevCaps( uint uDeviceID, ref MIDIINCAPS lpMidiInCaps, uint cbMidiInCaps );
-		[DllImport( "winmm.dll" )]
-		public static extern uint midiInGetID( uint hMidiIn, ref uint puDeviceID );
-		[DllImport( "winmm.dll" )]
+		[DllImport("winmm.dll")]
+		public static extern uint midiInClose(IntPtr hMidiIn);
+		[DllImport("winmm.dll")]
+		public static extern uint midiInGetDevCaps(uint uDeviceID, ref MIDIINCAPS lpMidiInCaps, uint cbMidiInCaps);
+		[DllImport("winmm.dll")]
+		public static extern uint midiInGetID(IntPtr hMidiIn, ref IntPtr puDeviceID);
+		[DllImport("winmm.dll")]
 		public static extern uint midiInGetNumDevs();
-		[DllImport( "winmm.dll" )]
-		public static extern uint midiInOpen( ref uint phMidiIn, uint uDeviceID, MidiInProc dwCallback, int dwInstance, int fdwOpen );
-		[DllImport( "winmm.dll" )]
-		public static extern uint midiInReset( uint hMidiIn );
-		[DllImport( "winmm.dll" )]
-		public static extern uint midiInStart( uint hMidiIn );
-		[DllImport( "winmm.dll" )]
-		public static extern uint midiInStop( uint hMidiIn );
+		[DllImport("winmm.dll")]
+		public static extern uint midiInOpen(ref IntPtr phMidiIn, uint uDeviceID, MidiInProc dwCallback, IntPtr dwInstance, int fdwOpen);
+		[DllImport("winmm.dll")]
+		public static extern uint midiInReset(IntPtr hMidiIn);
+		[DllImport("winmm.dll")]
+		public static extern uint midiInStart(IntPtr hMidiIn);
+		[DllImport("winmm.dll")]
+		public static extern uint midiInStop(IntPtr hMidiIn);
 		[DllImport( "user32.dll", CharSet = CharSet.Auto )]
 		public static extern IntPtr MonitorFromWindow( IntPtr hwnd, uint dwFlags );
 		[return: MarshalAs( UnmanagedType.Bool )]
@@ -432,7 +432,7 @@ namespace FDK
 			public int dwFlags;
 		}
 
-		[StructLayout( LayoutKind.Sequential )]
+		[StructLayout(LayoutKind.Sequential)]
 		public struct WAVEFORMATEX
 		{
 			public ushort wFormatTag;
@@ -442,6 +442,24 @@ namespace FDK
 			public ushort nBlockAlign;
 			public ushort wBitsPerSample;
 			public ushort cbSize;
+
+			public WAVEFORMATEX(
+				ushort _wFormatTag,
+				ushort _nChannels,
+				uint _nSamplesPerSec,
+				uint _nAvgBytesPerSec,
+				ushort _nBlockAlign,
+				ushort _wBitsPerSample,
+				ushort _cbSize) : this()
+			{
+				wFormatTag = _wFormatTag;
+				nChannels = _nChannels;
+				nSamplesPerSec = _nSamplesPerSec;
+				nAvgBytesPerSec = _nAvgBytesPerSec;
+				nBlockAlign = _nBlockAlign;
+				wBitsPerSample = _wBitsPerSample;
+				cbSize = _cbSize;
+			}
 		}
 
 		[StructLayout( LayoutKind.Sequential )]
@@ -656,6 +674,6 @@ namespace FDK
 
 		// Win32 メッセージ処理デリゲート
 
-		public delegate void MidiInProc( uint hMidiIn, uint wMsg, int dwInstance, int dwParam1, int dwParam2 );
+		public delegate void MidiInProc(IntPtr hMidiIn, uint wMsg, IntPtr dwInstance, IntPtr dwParam1, IntPtr dwParam2);
 	}
 }

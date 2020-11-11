@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Runtime.InteropServices;
@@ -7,10 +8,12 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Diagnostics;
 using System.Threading;
-using SlimDX;
-using SlimDX.Direct3D9;
+using OpenTK;
+using OpenTK.Graphics;
 using FDK;
-using TJAPlayer3;
+using Rectangle = System.Drawing.Rectangle;
+using Point = System.Drawing.Point;
+using Color = System.Drawing.Color;
 
 namespace TJAPlayer3
 {
@@ -341,24 +344,24 @@ namespace TJAPlayer3
 		{
 			if( !base.b活性化してない )
 			{
-				////CDTXMania.tテクスチャの解放( ref this.tx背景 );
-				//CDTXMania.tテクスチャの解放( ref this.txヒットバー );
-				//CDTXMania.tテクスチャの解放( ref this.txヒットバーGB );
-				//CDTXMania.tテクスチャの解放( ref this.txチップ );
-    //            //CDTXMania.tテクスチャの解放( ref this.tx太鼓ノーツ );
-    //            CDTXMania.tテクスチャの解放( ref this.txHand );
-    //            CDTXMania.tテクスチャの解放( ref this.txSenotes );
-    //            CDTXMania.tテクスチャの解放( ref this.tx小節線 );
-    //            CDTXMania.tテクスチャの解放( ref this.tx小節線_branch );
-				//CDTXMania.tテクスチャの解放( ref this.txレーンフレームGB );
-				////CDTXMania.tテクスチャの解放( ref this.txWailing枠 );
+				////CDTXMania.t安全にDisposeする( ref this.tx背景 );
+				//CDTXMania.t安全にDisposeする( ref this.txヒットバー );
+				//CDTXMania.t安全にDisposeする( ref this.txヒットバーGB );
+				//CDTXMania.t安全にDisposeする( ref this.txチップ );
+    //            //CDTXMania.t安全にDisposeする( ref this.tx太鼓ノーツ );
+    //            CDTXMania.t安全にDisposeする( ref this.txHand );
+    //            CDTXMania.t安全にDisposeする( ref this.txSenotes );
+    //            CDTXMania.t安全にDisposeする( ref this.tx小節線 );
+    //            CDTXMania.t安全にDisposeする( ref this.tx小節線_branch );
+				//CDTXMania.t安全にDisposeする( ref this.txレーンフレームGB );
+				////CDTXMania.t安全にDisposeする( ref this.txWailing枠 );
 
-    //            CDTXMania.tテクスチャの解放( ref this.tx判定数表示パネル );
-    //            CDTXMania.tテクスチャの解放( ref this.tx判定数小文字 );
-    //            CDTXMania.tテクスチャの解放( ref this.txNamePlate );
+    //            CDTXMania.t安全にDisposeする( ref this.tx判定数表示パネル );
+    //            CDTXMania.t安全にDisposeする( ref this.tx判定数小文字 );
+    //            CDTXMania.t安全にDisposeする( ref this.txNamePlate );
     //            if (CDTXMania.stage演奏ドラム画面.bDoublePlay)
-    //                CDTXMania.tテクスチャの解放( ref this.txNamePlate2P );
-    //            CDTXMania.tテクスチャの解放( ref this.txPlayerNumber);
+    //                CDTXMania.t安全にDisposeする( ref this.txNamePlate2P );
+    //            CDTXMania.t安全にDisposeする( ref this.txPlayerNumber);
 
                 if( this.soundRed != null )
                     this.soundRed.t解放する();
@@ -580,7 +583,7 @@ namespace TJAPlayer3
 
 				// キー入力
 
-				if( TJAPlayer3.act現在入力を占有中のプラグイン == null )
+				//if( TJAPlayer3.act現在入力を占有中のプラグイン == null )
 					this.tキー入力();
 
 
@@ -1855,8 +1858,8 @@ namespace TJAPlayer3
 						}
 
 						float f減少するカラー = 1.0f - ((0.95f / 100) * pChip.RollEffectLevel);
-						var effectedColor = new Color4(1.0f, f減少するカラー, f減少するカラー);
-						var normalColor = new Color4(1.0f, 1.0f, 1.0f);
+						var effectedColor = new Color4(1.0f, f減少するカラー, f減少するカラー, 1f);
+						var normalColor = new Color4(1.0f, 1.0f, 1.0f, 1.0f);
 						float f末端ノーツのテクスチャ位置調整 = 65f;
 
 						if (pChip.nチャンネル番号 == 0x15) //連打(小)
@@ -2051,11 +2054,11 @@ namespace TJAPlayer3
 			{
                 if( x >= 0 )
                 {
-                    Matrix mat = Matrix.Identity;
-                    mat *= Matrix.RotationZ(C変換.DegreeToRadian(-(90.0f * (float)pChip.dbSCROLL_Y)));
-                    mat *= Matrix.Translation((float)(x - 640.0f) - 1.5f, -(y - 360.0f + 65.0f), 0f);
+					Matrix4 mat = Matrix4.Identity;
+					mat *= Matrix4.CreateRotationZ(C変換.DegreeToRadian(-(90.0f * (float)pChip.dbSCROLL_Y)));
+					mat *= Matrix4.CreateTranslation((float)(x - 640.0f) - 1.5f, -(y - 360.0f + 65.0f), 0f);
 
-                    if( pChip.bBranch )
+					if ( pChip.bBranch )
                     {
                         //this.tx小節線_branch.t2D描画( CDTXMania.app.Device, x - 3, y, new Rectangle( 0, 0, 3, 130 ) );
                         TJAPlayer3.Tx.Bar_Branch.t3D描画( TJAPlayer3.app.Device, mat, new Rectangle( 0, 0, 3, 130 ) );
@@ -2149,7 +2152,7 @@ namespace TJAPlayer3
 			#endregion
 
 			string strNull = "Found";
-			if (TJAPlayer3.Input管理.Keyboard.bキーが押された((int)SlimDX.DirectInput.Key.F1))
+			if (TJAPlayer3.Input管理.Keyboard.bキーが押された((int)SlimDXKeys.Key.F1))
 			{
 				if (!this.actPauseMenu.bIsActivePopupMenu)
 				{
@@ -2165,7 +2168,7 @@ namespace TJAPlayer3
 				}
 
 			}
-			//if( CDTXMania.Input管理.Keyboard.bキーが押された( (int)SlimDX.DirectInput.Key.F8 ) )
+			//if( CDTXMania.Input管理.Keyboard.bキーが押された( (int)SlimDXKeys.Key.F8 ) )
 			//{
 			//this.actChipFireD.Start紙吹雪();
 			//this.actDancer.t入退場( 0, 0, 0.4 );

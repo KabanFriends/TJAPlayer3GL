@@ -8,7 +8,7 @@ using System.Drawing.Imaging;
 using System.Diagnostics;
 using System.Drawing.Text;
 
-using SlimDX;
+
 using FDK;
 
 namespace TJAPlayer3
@@ -194,18 +194,18 @@ namespace TJAPlayer3
 			if( this.b活性化してない )
 				return;
 
-            TJAPlayer3.tテクスチャの解放( ref this.tx背景 );
-            TJAPlayer3.tテクスチャの解放( ref this.txヘッダー );
-            TJAPlayer3.tテクスチャの解放( ref this.txフッター );
+            TJAPlayer3.t安全にDisposeする( ref this.tx背景 );
+            TJAPlayer3.t安全にDisposeする( ref this.txヘッダー );
+            TJAPlayer3.t安全にDisposeする( ref this.txフッター );
 
-            TJAPlayer3.tテクスチャの解放( ref this.tx説明背景 );
-            TJAPlayer3.tテクスチャの解放( ref this.tx説明1 );
+            TJAPlayer3.t安全にDisposeする( ref this.tx説明背景 );
+            TJAPlayer3.t安全にDisposeする( ref this.tx説明1 );
 
             TJAPlayer3.t安全にDisposeする( ref this.soundSelectAnnounce );
 
             for( int i = 0; i < (int)Difficulty.Total; i++ )
             {
-                TJAPlayer3.tテクスチャの解放( ref this.tx踏み台[ i ] );
+                TJAPlayer3.t安全にDisposeする( ref this.tx踏み台[ i ] );
             }
 
 			base.OnManagedリソースの解放();
@@ -275,16 +275,16 @@ namespace TJAPlayer3
 				//-----------------
 
                 //キー操作
-                if( TJAPlayer3.Input管理.Keyboard.bキーが押された( (int) SlimDX.DirectInput.Key.RightArrow ) )
+                if( TJAPlayer3.Input管理.Keyboard.bキーが押された( (int) SlimDXKeys.Key.RightArrow ) )
                 {
                     this.t次に移動();
                 }
-                else if( TJAPlayer3.Input管理.Keyboard.bキーが押された( (int) SlimDX.DirectInput.Key.LeftArrow ) )
+                else if( TJAPlayer3.Input管理.Keyboard.bキーが押された( (int) SlimDXKeys.Key.LeftArrow ) )
                 {
                     this.t前に移動();
                 }
                 else if ( ( TJAPlayer3.Pad.b押されたDGB( Eパッド.Decide ) ||
-						( ( TJAPlayer3.ConfigIni.bEnterがキー割り当てのどこにも使用されていない && TJAPlayer3.Input管理.Keyboard.bキーが押された( (int) SlimDX.DirectInput.Key.Return ) ) ) ) )
+						( ( TJAPlayer3.ConfigIni.bEnterがキー割り当てのどこにも使用されていない && TJAPlayer3.Input管理.Keyboard.bキーが押された( (int) SlimDXKeys.Key.Return ) ) ) ) )
                 {
                     TJAPlayer3.stage選曲.actPresound.tサウンド停止();
                     switch( TJAPlayer3.stage選曲.r現在選択中の曲.eノード種別 )
@@ -303,7 +303,7 @@ namespace TJAPlayer3
                             break;
                     }
                 }
-                else if( TJAPlayer3.Input管理.Keyboard.bキーが押された( (int) SlimDX.DirectInput.Key.F7 ) )
+                else if( TJAPlayer3.Input管理.Keyboard.bキーが押された( (int) SlimDXKeys.Key.F7 ) )
                 {
                     this.bIsDifficltSelect = false;
                 }

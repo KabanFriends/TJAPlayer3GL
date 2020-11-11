@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
 using System.Runtime.InteropServices;
-using SlimDX;
+
 using FDK;
 
 namespace TJAPlayer3

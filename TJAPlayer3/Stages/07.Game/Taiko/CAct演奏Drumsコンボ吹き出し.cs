@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
 using System.Runtime.InteropServices;
-using SlimDX;
+
 using FDK;
 
 namespace TJAPlayer3
@@ -64,10 +64,10 @@ namespace TJAPlayer3
 		{
 			if( !base.b活性化してない )
 			{
-                //CDTXMania.tテクスチャの解放( ref this.tx吹き出し本体[ 0 ] );
+                //CDTXMania.t安全にDisposeする( ref this.tx吹き出し本体[ 0 ] );
                 //if (CDTXMania.stage演奏ドラム画面.bDoublePlay)
-                //    CDTXMania.tテクスチャの解放( ref this.tx吹き出し本体[ 1 ] );
-                //CDTXMania.tテクスチャの解放( ref this.tx数字 );
+                //    CDTXMania.t安全にDisposeする( ref this.tx吹き出し本体[ 1 ] );
+                //CDTXMania.t安全にDisposeする( ref this.tx数字 );
 				base.OnManagedリソースの解放();
 			}
 		}

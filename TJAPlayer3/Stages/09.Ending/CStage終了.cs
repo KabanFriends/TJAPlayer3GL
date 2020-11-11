@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Diagnostics;
 using DirectShowLib;
-using SlimDX;
+
 using FDK;
 
 namespace TJAPlayer3
@@ -68,11 +68,11 @@ namespace TJAPlayer3
 		{
 			if( !base.b活性化してない )
 			{
-				//CDTXMania.tテクスチャの解放( ref this.tx背景 );
-    //            CDTXMania.tテクスチャの解放( ref this.tx文字 );
-    //            CDTXMania.tテクスチャの解放( ref this.tx文字2 );
-    //            CDTXMania.tテクスチャの解放( ref this.tx文字3 );
-    //            CDTXMania.tテクスチャの解放( ref this.tx白 );
+				//CDTXMania.t安全にDisposeする( ref this.tx背景 );
+    //            CDTXMania.t安全にDisposeする( ref this.tx文字 );
+    //            CDTXMania.t安全にDisposeする( ref this.tx文字2 );
+    //            CDTXMania.t安全にDisposeする( ref this.tx文字3 );
+    //            CDTXMania.t安全にDisposeする( ref this.tx白 );
     //            CDTXMania.t安全にDisposeする( ref this.ds背景 );
 				base.OnManagedリソースの解放();
 			}
@@ -146,9 +146,9 @@ namespace TJAPlayer3
            //         if( this.tx白 != null )
 			        //{
 				       // this.tx白.n透明度 = ( 2255 + 300 ) - ( this.ct時間稼ぎ.n現在の値 );
-				       // for( int i = 0; i <= ( SampleFramework.GameWindowSize.Width / 64 ); i++ )
+				       // for( int i = 0; i <= ( GameWindowSize.Width / 64 ); i++ )
 				       // {
-					      //  for( int j = 0; j <= ( SampleFramework.GameWindowSize.Height / 64 ); j++ )
+					      //  for( int j = 0; j <= ( GameWindowSize.Height / 64 ); j++ )
 					      //  {
            //                     this.tx白.t2D描画( CDTXMania.app.Device, i * 64, j * 64 );
 					      //  }

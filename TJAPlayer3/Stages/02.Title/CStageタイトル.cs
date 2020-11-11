@@ -4,7 +4,6 @@ using System.Text;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
 using System.Drawing;
-using SlimDX.DirectInput;
 using FDK;
 using System.Reflection;
 
@@ -81,8 +80,8 @@ namespace TJAPlayer3
 		{
 			//if( !base.b活性化してない )
 			//{
-			//	CDTXMania.tテクスチャの解放( ref this.tx背景 );
-			//	CDTXMania.tテクスチャの解放( ref this.txメニュー );
+			//	CDTXMania.t安全にDisposeする( ref this.tx背景 );
+			//	CDTXMania.t安全にDisposeする( ref this.txメニュー );
 			//	base.OnManagedリソースの解放();
 			//}
 		}
@@ -145,23 +144,22 @@ namespace TJAPlayer3
 
 				// キー入力
 
-				if( base.eフェーズID == CStage.Eフェーズ.共通_通常状態		// 通常状態、かつ
-					&& TJAPlayer3.act現在入力を占有中のプラグイン == null )	// プラグインの入力占有がない
+				if( base.eフェーズID == CStage.Eフェーズ.共通_通常状態)	// プラグインの入力占有がない
 				{
-					if( TJAPlayer3.Input管理.Keyboard.bキーが押された( (int) Key.Escape ) )
+					if( TJAPlayer3.Input管理.Keyboard.bキーが押された( (int) SlimDXKeys.Key.Escape ) )
 						return (int) E戻り値.EXIT;
 
-					this.ctキー反復用.Up.tキー反復( TJAPlayer3.Input管理.Keyboard.bキーが押されている( (int)SlimDX.DirectInput.Key.UpArrow ), new CCounter.DGキー処理( this.tカーソルを上へ移動する ) );
+					this.ctキー反復用.Up.tキー反復( TJAPlayer3.Input管理.Keyboard.bキーが押されている( (int)SlimDXKeys.Key.UpArrow ), new CCounter.DGキー処理( this.tカーソルを上へ移動する ) );
 					this.ctキー反復用.R.tキー反復( TJAPlayer3.Pad.b押されているGB( Eパッド.HH ), new CCounter.DGキー処理( this.tカーソルを上へ移動する ) );
 					if( TJAPlayer3.Pad.b押された( E楽器パート.DRUMS, Eパッド.SD ) )
 						this.tカーソルを上へ移動する();
 
-					this.ctキー反復用.Down.tキー反復( TJAPlayer3.Input管理.Keyboard.bキーが押されている( (int)SlimDX.DirectInput.Key.DownArrow ), new CCounter.DGキー処理( this.tカーソルを下へ移動する ) );
+					this.ctキー反復用.Down.tキー反復( TJAPlayer3.Input管理.Keyboard.bキーが押されている( (int)SlimDXKeys.Key.DownArrow ), new CCounter.DGキー処理( this.tカーソルを下へ移動する ) );
 					this.ctキー反復用.B.tキー反復( TJAPlayer3.Pad.b押されているGB( Eパッド.BD ), new CCounter.DGキー処理( this.tカーソルを下へ移動する ) );
 					if( TJAPlayer3.Pad.b押された( E楽器パート.DRUMS, Eパッド.LT ) )
 						this.tカーソルを下へ移動する();
 
-					if( ( TJAPlayer3.Pad.b押されたDGB( Eパッド.CY ) || TJAPlayer3.Pad.b押された( E楽器パート.DRUMS, Eパッド.RD ) ) || ( TJAPlayer3.Pad.b押された( E楽器パート.DRUMS, Eパッド.LC ) || ( TJAPlayer3.ConfigIni.bEnterがキー割り当てのどこにも使用されていない && TJAPlayer3.Input管理.Keyboard.bキーが押された( (int)SlimDX.DirectInput.Key.Return ) ) ) )
+					if( ( TJAPlayer3.Pad.b押されたDGB( Eパッド.CY ) || TJAPlayer3.Pad.b押された( E楽器パート.DRUMS, Eパッド.RD ) ) || ( TJAPlayer3.Pad.b押された( E楽器パート.DRUMS, Eパッド.LC ) || ( TJAPlayer3.ConfigIni.bEnterがキー割り当てのどこにも使用されていない && TJAPlayer3.Input管理.Keyboard.bキーが押された( (int)SlimDXKeys.Key.Return ) ) ) )
 					{
 						if ( ( this.n現在のカーソル行 == (int) E戻り値.GAMESTART - 1 ) && TJAPlayer3.Skin.soundゲーム開始音.b読み込み成功 )
 						{
@@ -236,24 +234,24 @@ namespace TJAPlayer3
                     TJAPlayer3.Tx.Title_Menu.t2D描画( TJAPlayer3.app.Device, MENU_X, MENU_Y + MENU_H, new Rectangle( 0, MENU_H * 2, MENU_W, MENU_H * 2 ) );
 				}
 
-                // URLの座標が押されたらブラウザで開いてやる 兼 マウスクリックのテスト
-                // クライアント領域内のカーソル座標を取得する。
-                // point.X、point.Yは負の値になることもある。
-                var point = TJAPlayer3.app.Window.PointToClient(System.Windows.Forms.Cursor.Position);
-                // クライアント領域の横幅を取得して、1280で割る。もちろんdouble型。
-                var scaling = 1.000 * TJAPlayer3.app.Window.ClientSize.Width / 1280;
-                if(TJAPlayer3.Input管理.Mouse.bキーが押された((int) MouseObject.Button1))
-                {
-                    if (point.X >= 180 * scaling && point.X <= 490 * scaling && point.Y >= 0 && point.Y <= 20 * scaling)
-                        System.Diagnostics.Process.Start(strCreator);
-                }
+				// URLの座標が押されたらブラウザで開いてやる 兼 マウスクリックのテスト
+				// クライアント領域内のカーソル座標を取得する。
+				// point.X、point.Yは負の値になることもある。
+				var point = TJAPlayer3.app.PointToClient(System.Windows.Forms.Cursor.Position);
+				// クライアント領域の横幅を取得して、1280で割る。もちろんdouble型。
+				var scaling = 1.000 * TJAPlayer3.app.ClientSize.Width / 1280;
+				if (TJAPlayer3.Input管理.Mouse.bキーが押された((int)OpenTK.Input.MouseButton.Left))
+				{
+					if (point.X >= 180 * scaling && point.X <= 490 * scaling && point.Y >= 0 && point.Y <= 20 * scaling)
+						System.Diagnostics.Process.Start(strCreator);
+				}
 
-                //CDTXMania.act文字コンソール.tPrint(0, 80, C文字コンソール.Eフォント種別.白, point.X.ToString());
-                //CDTXMania.act文字コンソール.tPrint(0, 100, C文字コンソール.Eフォント種別.白, point.Y.ToString());
-                //CDTXMania.act文字コンソール.tPrint(0, 120, C文字コンソール.Eフォント種別.白, scaling.ToString());
+				//CDTXMania.act文字コンソール.tPrint(0, 80, C文字コンソール.Eフォント種別.白, point.X.ToString());
+				//CDTXMania.act文字コンソール.tPrint(0, 100, C文字コンソール.Eフォント種別.白, point.Y.ToString());
+				//CDTXMania.act文字コンソール.tPrint(0, 120, C文字コンソール.Eフォント種別.白, scaling.ToString());
 
 
-                CStage.Eフェーズ eフェーズid = base.eフェーズID;
+				CStage.Eフェーズ eフェーズid = base.eフェーズID;
 				switch( eフェーズid )
 				{
 					case CStage.Eフェーズ.共通_フェードイン:

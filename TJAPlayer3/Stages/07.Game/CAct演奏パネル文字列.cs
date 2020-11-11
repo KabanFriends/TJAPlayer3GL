@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
 using System.Diagnostics;
-using SlimDX;
 using FDK;
 
 namespace TJAPlayer3
@@ -32,14 +31,14 @@ namespace TJAPlayer3
 		{
 			if( base.b活性化してる )
 			{
-				TJAPlayer3.tテクスチャの解放( ref this.txPanel );
+				TJAPlayer3.t安全にDisposeする( ref this.txPanel );
 				if( (songName != null ) && (songName.Length > 0 ) )
 				{
 					try
 					{
 					    using (var bmpSongTitle = pfMusicName.DrawPrivateFont(songName, TJAPlayer3.Skin.Game_MusicName_ForeColor, TJAPlayer3.Skin.Game_MusicName_BackColor))
 					    {
-					        this.txMusicName = TJAPlayer3.tテクスチャの生成( bmpSongTitle, false );
+					        this.txMusicName = TJAPlayer3.tテクスチャの生成( bmpSongTitle);
 					    }
                         if (txMusicName != null)
                         {
@@ -80,7 +79,7 @@ namespace TJAPlayer3
 
 					    using (bmpDiff)
 					    {
-					        this.tx難易度とステージ数 = TJAPlayer3.tテクスチャの生成( bmpDiff, false );
+					        this.tx難易度とステージ数 = TJAPlayer3.tテクスチャの生成( bmpDiff);
 					    }
 					}
 					catch( CTextureCreateFailedException e )
@@ -128,7 +127,7 @@ namespace TJAPlayer3
                     {
                         using (var bmpDummy = new Bitmap( 1, 1 ))
                         {
-                            this.txGENRE = TJAPlayer3.tテクスチャの生成( bmpDummy, true );
+                            this.txGENRE = TJAPlayer3.tテクスチャの生成( bmpDummy);
                         }
                     }
                 }
@@ -145,7 +144,7 @@ namespace TJAPlayer3
         {
             using (var bmpleric = this.pf歌詞フォント.DrawPrivateFont( str歌詞, TJAPlayer3.Skin.Game_Lyric_ForeColor, TJAPlayer3.Skin.Game_Lyric_BackColor ))
             {
-                this.tx歌詞テクスチャ = TJAPlayer3.tテクスチャの生成( bmpleric, false );
+                this.tx歌詞テクスチャ = TJAPlayer3.tテクスチャの生成( bmpleric);
             }
         }
 
@@ -224,11 +223,11 @@ namespace TJAPlayer3
 		{
 			if( !base.b活性化してない )
 			{
-				TJAPlayer3.tテクスチャの解放( ref this.txPanel );
-				TJAPlayer3.tテクスチャの解放( ref this.txMusicName );
-                TJAPlayer3.tテクスチャの解放( ref this.txGENRE );
-                TJAPlayer3.tテクスチャの解放(ref this.txPanel);
-                TJAPlayer3.tテクスチャの解放(ref this.tx歌詞テクスチャ);
+				TJAPlayer3.t安全にDisposeする( ref this.txPanel );
+				TJAPlayer3.t安全にDisposeする( ref this.txMusicName );
+                TJAPlayer3.t安全にDisposeする( ref this.txGENRE );
+                TJAPlayer3.t安全にDisposeする(ref this.txPanel);
+                TJAPlayer3.t安全にDisposeする(ref this.tx歌詞テクスチャ);
                 TJAPlayer3.t安全にDisposeする(ref this.pfMusicName);
                 TJAPlayer3.t安全にDisposeする(ref this.pf歌詞フォント);
                 base.OnManagedリソースの解放();

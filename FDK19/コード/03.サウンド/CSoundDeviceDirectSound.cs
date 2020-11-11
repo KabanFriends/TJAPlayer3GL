@@ -4,8 +4,8 @@ using System.Text;
 using System.Diagnostics;
 using System.IO;
 using System.Threading;
-using SlimDX;
-using SlimDX.DirectSound;
+using OpenTK.Audio.OpenAL;
+using OpenTK;
 
 namespace FDK
 {
@@ -29,8 +29,6 @@ namespace FDK
 			protected set;
 		}
 
-		public static readonly BufferFlags DefaultFlags = BufferFlags.Defer | BufferFlags.GetCurrentPosition2 | BufferFlags.GlobalFocus | BufferFlags.ControlVolume | BufferFlags.ControlPan | BufferFlags.ControlFrequency;
-
 		// CSoundTimer 用に公開しているプロパティ
 
 		public long n経過時間ms
@@ -39,7 +37,8 @@ namespace FDK
 			{
 				if ( ctimer != null )
 				{
-					int n現在位置 = this.sd経過時間計測用サウンドバッファ.DirectSoundBuffer.CurrentPlayPosition;
+					AL.GetSource(this.sd経過時間計測用サウンドバッファ.SourceOpen[0], ALGetSourcei.ByteOffset, out int n現在位置);
+					AL.GetSource(this.sd経過時間計測用サウンドバッファ.SourceOpen[0], ALSourcef.SecOffset, out float ms);
 					long n現在のシステム時刻ms = this.tmシステムタイマ.nシステム時刻ms;
 
 
@@ -59,7 +58,8 @@ namespace FDK
 
 					// 経過時間を算出。
 
-					long n経過時間ms = (long) ( ( this.nループ回数 * n単位繰り上げ間隔ms ) + ( n現在位置 * 1000.0 / ( 44100.0 * 2 * 2 ) ) );
+					//long n経過時間ms = (long) ( ( this.nループ回数 * n単位繰り上げ間隔ms ) + ( n現在位置 * 1000.0 / ( 44100.0 * 2 * 2 ) ) );
+					long n経過時間ms = (long)ms * 1000;
 
 
 					// 今回の値を次回に向けて保存。
@@ -96,41 +96,44 @@ namespace FDK
 		{
 			get
 			{
-				return (int) 100;
+				AL.GetListener(ALListenerf.Gain, out float Volume);
+				return (int)(Volume * 100f);
 			}
 			set
 			{
-				// 特に何もしない
+				AL.Listener(ALListenerf.Gain, (float)(value / 100f));
 			}
 		}
 
 
 		// メソッド
 
-		public CSoundDeviceDirectSound( IntPtr hWnd, long n遅延時間ms, bool bUseOSTimer )
+		public unsafe CSoundDeviceDirectSound( IntPtr hWnd, long n遅延時間ms, bool bUseOSTimer ) //ぬるぽ使うのであんせーふ
 		{
 			Trace.TraceInformation( "DirectSound の初期化を開始します。" );
 
 			this.e出力デバイス = ESoundDeviceType.Unknown;
 			this.n実バッファサイズms = this.n実出力遅延ms = n遅延時間ms;
 			this.tmシステムタイマ = new CTimer( CTimer.E種別.MultiMedia );
+			
+			#region[ OpenAL サウンドデバイスの作成]
+
+			//Initialize
+			this.device = Alc.OpenDevice(null);
+			this.context = Alc.CreateContext(this.device, (int*)null);
+			Alc.MakeContextCurrent(this.context);
+
+			//Versionの確認
+			var version = AL.Get(ALGetString.Version);
+			var vendor = AL.Get(ALGetString.Vendor);
+			var renderer = AL.Get(ALGetString.Renderer);
+			Console.WriteLine("OpenAL Version=" + version);
+			Console.WriteLine("OpenAL Vendor=" + vendor);
+			Console.WriteLine("OpenAL Renderer=" + renderer);
+			#endregion
 
 			#region [ DirectSound デバイスを作成する。]
 			//-----------------
-			this.DirectSound = new DirectSound();	// 失敗したら例外をそのまま発出。
-
-			// デバイスの協調レベルを設定する。
-
-			bool priority = true;
-			try
-			{
-				this.DirectSound.SetCooperativeLevel( hWnd, CooperativeLevel.Priority );
-			}
-			catch( DirectSoundException )
-			{
-				this.DirectSound.SetCooperativeLevel( hWnd, CooperativeLevel.Normal );	// これでも失敗したら例外をそのまま発出。
-				priority = false;
-			}
 
 			// デバイス作成完了。
 
@@ -175,7 +178,8 @@ namespace FDK
 
 				this.nループ回数 = 0;
 				this.n前回の位置 = 0;
-				this.sd経過時間計測用サウンドバッファ.DirectSoundBuffer.Play( 0, PlayFlags.Looping );
+				AL.Source(this.sd経過時間計測用サウンドバッファ.SourceOpen[0], ALSourceb.Looping, true);
+				AL.SourcePlay(this.sd経過時間計測用サウンドバッファ.SourceOpen[0]);
 				this.n前に経過時間を測定したシステム時刻ms = this.tmシステムタイマ.nシステム時刻ms;
 				//-----------------
 				#endregion
@@ -184,35 +188,31 @@ namespace FDK
 			{
 				ctimer = new CTimer( CTimer.E種別.MultiMedia );
 			}
-			Trace.TraceInformation( "DirectSound を初期化しました。({0})({1})", ( priority ) ? "Priority" : "Normal", bUseOSTimer? "OStimer" : "FDKtimer" );
+			Trace.TraceInformation( "DirectSound を初期化しました。({0})", bUseOSTimer? "OStimer" : "FDKtimer" );
 		}
 
 		public CSound tサウンドを作成する( string strファイル名, ESoundGroup soundGroup )
 		{
 			var sound = new CSound(soundGroup);
-			sound.tDirectSoundサウンドを作成する( strファイル名, this.DirectSound );
+			sound.tDirectSoundサウンドを作成する( strファイル名 );
 			return sound;
 		}
 
 		private CSound tサウンドを作成する( byte[] byArrWAVファイルイメージ, ESoundGroup soundGroup )
 		{
 			var sound = new CSound(soundGroup);
-			sound.tDirectSoundサウンドを作成する( byArrWAVファイルイメージ, this.DirectSound );
+			sound.tDirectSoundサウンドを作成する( byArrWAVファイルイメージ );
 			return sound;
 		}
 
 		// 既存のインスタンス（生成直後 or Dispose済み）に対してサウンドを生成する。
 		public void tサウンドを作成する( string strファイル名, CSound sound )
 		{
-			sound.tDirectSoundサウンドを作成する( strファイル名, this.DirectSound );
+			sound.tDirectSoundサウンドを作成する( strファイル名 );
 		}
 		public void tサウンドを作成する( byte[] byArrWAVファイルイメージ, CSound sound )
 		{
-			sound.tDirectSoundサウンドを作成する( byArrWAVファイルイメージ, this.DirectSound );
-		}
-		public void tサウンドを作成する( byte[] byArrWAVファイルイメージ, BufferFlags flags, CSound sound )
-		{
-			sound.tDirectSoundサウンドを作成する( byArrWAVファイルイメージ, this.DirectSound, flags );
+			sound.tDirectSoundサウンドを作成する( byArrWAVファイルイメージ );
 		}
 
 		#region [ Dispose-Finallizeパターン実装 ]
@@ -224,6 +224,7 @@ namespace FDK
 		}
 		protected void Dispose( bool bManagedDispose )
 		{
+
 			this.e出力デバイス = ESoundDeviceType.Unknown;		// まず出力停止する(Dispose中にクラス内にアクセスされることを防ぐ)
 			if ( bManagedDispose )
 			{
@@ -247,13 +248,16 @@ namespace FDK
 				//-----------------
 				#endregion
 
-				C共通.tDisposeする( ref this.DirectSound );
 				C共通.tDisposeする( this.tmシステムタイマ );
 			}
 			if ( ctimer != null )
 			{
 				C共通.tDisposeする( ref this.ctimer );
 			}
+			//使わなくなったデータをクリーンアップ
+			Alc.MakeContextCurrent(ContextHandle.Zero);
+			Alc.DestroyContext(this.context);
+			Alc.CloseDevice(this.device);
 		}
 		~CSoundDeviceDirectSound()
 		{
@@ -262,10 +266,8 @@ namespace FDK
 		//-----------------
 		#endregion
 
-		protected DirectSound DirectSound = null;
 		protected CSound sd経過時間計測用サウンドバッファ = null;
 		protected Thread th経過時間測定用スレッド = null;
-//		protected AutoResetEvent autoResetEvent = new AutoResetEvent( false );
 		protected const uint n単位繰り上げ間隔sec = 1;	// [秒]
 		protected const uint n単位繰り上げ間隔ms = n単位繰り上げ間隔sec * 1000;	// [ミリ秒]
 		protected int nループ回数 = 0;
@@ -274,5 +276,9 @@ namespace FDK
 		private int n前回の位置 = 0;
 
 		private CTimer ctimer = null;
+
+		//OpenTK
+		IntPtr device;
+		ContextHandle context;
 	}
 }

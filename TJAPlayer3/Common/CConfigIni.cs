@@ -791,7 +791,7 @@ namespace TJAPlayer3
 					{
 						for( int k = 0; k < 0x10; k++ )
 						{
-							if( ( this.KeyAssign[ i ][ j ][ k ].入力デバイス == E入力デバイス.キーボード ) && ( this.KeyAssign[ i ][ j ][ k ].コード == (int) SlimDX.DirectInput.Key.Return ) )
+							if( ( this.KeyAssign[ i ][ j ][ k ].入力デバイス == E入力デバイス.キーボード ) && ( this.KeyAssign[ i ][ j ][ k ].コード == (int)SlimDXKeys.Key.Return))
 							{
 								return false;
 							}
@@ -1252,9 +1252,9 @@ namespace TJAPlayer3
 			this.b全画面モード = false;
 			this.b垂直帰線待ちを行う = true;
 			this.n初期ウィンドウ開始位置X = 0; // #30675 2013.02.04 ikanick add
-			this.n初期ウィンドウ開始位置Y = 0;  
-			this.nウインドウwidth = SampleFramework.GameWindowSize.Width;			// #23510 2010.10.31 yyagi add
-			this.nウインドウheight = SampleFramework.GameWindowSize.Height;			// 
+			this.n初期ウィンドウ開始位置Y = 0;
+			this.nウインドウwidth = GameWindowSize.Width;            // #23510 2010.10.31 yyagi add
+			this.nウインドウheight = GameWindowSize.Height;          // 
 			this.nフレーム毎スリープms = -1;			// #xxxxx 2011.11.27 yyagi add
 			this.n非フォーカス時スリープms = 1;			// #23568 2010.11.04 ikanick add
 			this._bGuitar有効 = true;
@@ -1372,7 +1372,7 @@ namespace TJAPlayer3
 			this.strSystemSkinSubfolderFullName = "";	// #28195 2012.5.2 yyagi 使用中のSkinサブフォルダ名
 			this.bTight = false;                        // #29500 2012.9.11 kairera0467 TIGHTモード
 			#region [ WASAPI/ASIO ]
-			this.nSoundDeviceType = FDK.COS.bIsVistaOrLater ?
+			this.nSoundDeviceType = FDK.COS.bIsVistaOrLater() ?
 				(int) ESoundDeviceTypeForConfig.WASAPI : (int) ESoundDeviceTypeForConfig.ACM;	// #24820 2012.12.23 yyagi 初期値はACM | #31927 2013.8.25 yyagi OSにより初期値変更
 			this.nWASAPIBufferSizeMs = 50;				// #24820 2013.1.15 yyagi 初期値は50(0で自動設定)
 			this.nASIODevice = 0;						// #24820 2013.1.17 yyagi
@@ -2188,7 +2188,7 @@ namespace TJAPlayer3
 												this.nウインドウwidth = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 1, 65535, this.nウインドウwidth );
 												if( this.nウインドウwidth <= 0 )
 												{
-													this.nウインドウwidth = SampleFramework.GameWindowSize.Width;
+													this.nウインドウwidth = GameWindowSize.Width;
 												}
 											}
 											else if( str3.Equals( "WindowHeight" ) )		// #23510 2010.10.31 yyagi add
@@ -2196,7 +2196,7 @@ namespace TJAPlayer3
 												this.nウインドウheight = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 1, 65535, this.nウインドウheight );
 												if( this.nウインドウheight <= 0 )
 												{
-													this.nウインドウheight = SampleFramework.GameWindowSize.Height;
+													this.nウインドウheight = GameWindowSize.Height;
 												}
 											}
 											else if ( str3.Equals( "DoubleClickFullScreen" ) )	// #26752 2011.11.27 yyagi

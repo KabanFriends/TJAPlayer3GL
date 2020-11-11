@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Text;
 using System.Drawing;
 using System.Threading;
-using SlimDX;
 using FDK;
 
 namespace TJAPlayer3
@@ -1231,7 +1230,7 @@ namespace TJAPlayer3
 				{
 					TJAPlayer3.t安全にDisposeする( ref txSkinSample1 );
 				}
-				txSkinSample1 = TJAPlayer3.tテクスチャの生成( bmDest, false );
+				txSkinSample1 = TJAPlayer3.tテクスチャの生成( bmDest );
 				g.Dispose();
 				bmDest.Dispose();
 				bmSrc.Dispose();
@@ -1617,10 +1616,10 @@ namespace TJAPlayer3
 			if( this.b活性化してない )
 				return;
 
-			TJAPlayer3.tテクスチャの解放( ref this.txSkinSample1 );
-			//CDTXMania.tテクスチャの解放( ref this.tx通常項目行パネル );
-			//CDTXMania.tテクスチャの解放( ref this.txその他項目行パネル );
-			//CDTXMania.tテクスチャの解放( ref this.tx三角矢印 );
+			TJAPlayer3.t安全にDisposeする( ref this.txSkinSample1 );
+			//CDTXMania.t安全にDisposeする( ref this.tx通常項目行パネル );
+			//CDTXMania.t安全にDisposeする( ref this.txその他項目行パネル );
+			//CDTXMania.t安全にDisposeする( ref this.tx三角矢印 );
 		
 			base.OnManagedリソースの解放();
 		}
@@ -1819,7 +1818,7 @@ namespace TJAPlayer3
 					{
 					    listMenu[ nItem ].txMenuItemRight = TJAPlayer3.tテクスチャの生成( bmpItem );
 					    // ctItem.t2D描画( CDTXMania.app.Device, ( x + 0x12 ) * Scale.X, ( y + 12 ) * Scale.Y - 20 );
-					    // CDTXMania.tテクスチャの解放( ref ctItem );
+					    // CDTXMania.t安全にDisposeする( ref ctItem );
 					}
 				}
 				//CDTXMania.stageコンフィグ.actFont.t文字列描画( x + 0x12, y + 12, this.list項目リスト[ nItem ].str項目名 );
@@ -1914,7 +1913,7 @@ namespace TJAPlayer3
 				{
 				    using (var bmpStr = prvFont.DrawPrivateFont(strParam, Color.Black, Color.White, Color.Yellow, Color.OrangeRed))
 				    {
-				        using (var txStr = TJAPlayer3.tテクスチャの生成( bmpStr, false ))
+				        using (var txStr = TJAPlayer3.tテクスチャの生成( bmpStr ))
 				        {
 				            txStr.t2D描画( TJAPlayer3.app.Device, x + 400 + TJAPlayer3.Skin.Config_ItemText_Correction_X, y + 12 + TJAPlayer3.Skin.Config_ItemText_Correction_Y );
 				        }
@@ -1932,7 +1931,7 @@ namespace TJAPlayer3
 
 						using (var bmpStr = prvFont.DrawPrivateFont( strParam, Color.White, Color.Black ))
 						{
-						    stm.txParam = TJAPlayer3.tテクスチャの生成( bmpStr, false );
+						    stm.txParam = TJAPlayer3.tテクスチャの生成( bmpStr );
 						}
 
 						listMenu[ nItem ] = stm;

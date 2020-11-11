@@ -17,11 +17,11 @@ namespace FDK
 		{
 			get;
 		}
-        public double dbシステム時刻ms
-        {
-            get;
-            set;
-        }
+		public double dbシステム時刻ms
+		{
+			get;
+			set;
+		}
 		public abstract void Dispose();
 
 		#region [ DTXMania用に、語尾にmsのつかない宣言を追加 ]
@@ -39,8 +39,8 @@ namespace FDK
 			get { return n前回リセットした時のシステム時刻ms; }
 		}
 
-        //double
-        public double dbシステム時刻
+		//double
+		public double dbシステム時刻
 		{
 			get { return dbシステム時刻ms; }
 		}
@@ -89,7 +89,7 @@ namespace FDK
 		}
 
 
-        public double db現在時刻ms
+		public double db現在時刻ms
 		{
 			get
 			{
@@ -122,13 +122,13 @@ namespace FDK
 			protected set;
 		}
 
-        public bool b停止していない
-        {
-            get
-            {
-                return ( this.n停止数 == 0 );
-            }
-        }
+		public bool b停止していない
+		{
+			get
+			{
+				return ( this.n停止数 == 0 );
+			}
+		}
 
 		public void tリセット()
 		{
@@ -140,17 +140,17 @@ namespace FDK
 		public void t一時停止()
 		{
 			if( this.n停止数 == 0 )
-            {
+			{
 				this.n一時停止システム時刻ms = this.n更新システム時刻ms;
-                this.db一時停止システム時刻ms = this.db更新システム時刻ms;
-            }
+				this.db一時停止システム時刻ms = this.db更新システム時刻ms;
+			}
 
 			this.n停止数++;
 		}
 		public void t更新()
 		{
 			this.n更新システム時刻ms = this.nシステム時刻ms;
-            this.db更新システム時刻ms = this.dbシステム時刻ms;
+			this.db更新システム時刻ms = this.dbシステム時刻ms;
 		}
 		public void t再開()
 		{
@@ -161,7 +161,7 @@ namespace FDK
 				{
 					this.t更新();
 					this.n前回リセットした時のシステム時刻ms += this.n更新システム時刻ms - this.n一時停止システム時刻ms;
-                    this.db前回リセットした時のシステム時刻ms += this.db更新システム時刻ms - this.db一時停止システム時刻ms;
+					this.db前回リセットした時のシステム時刻ms += this.db更新システム時刻ms - this.db一時停止システム時刻ms;
 				}
 			}
 		}
@@ -170,8 +170,8 @@ namespace FDK
 		//-----------------
 		protected long n一時停止システム時刻ms = 0;
 		protected long n更新システム時刻ms = 0;
-        protected double db一時停止システム時刻ms = 0;
-        protected double db更新システム時刻ms = 0;
+		protected double db一時停止システム時刻ms = 0;
+		protected double db更新システム時刻ms = 0;
 		protected int n停止数 = 0;
 		//-----------------
 		#endregion

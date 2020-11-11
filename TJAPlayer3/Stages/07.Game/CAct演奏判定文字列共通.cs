@@ -151,7 +151,7 @@ namespace TJAPlayer3
 		{
 			if( !base.b活性化してない )
 			{
-				//CDTXMania.tテクスチャの解放( ref this.tx判定文字列 );
+				//CDTXMania.t安全にDisposeする( ref this.tx判定文字列 );
 				base.OnManagedリソースの解放();
 			}
 		}

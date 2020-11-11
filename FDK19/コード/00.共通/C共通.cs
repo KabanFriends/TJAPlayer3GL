@@ -169,12 +169,12 @@ namespace FDK
 			return (float) RadianToDegree( (double) angle );
 		}
 
-        public static bool bToggleBoolian( ref bool bFlag )
-        {
-            if( bFlag == true ) bFlag = false;
-            else if( bFlag == false ) bFlag = true;
+		public static bool bToggleBoolian( ref bool bFlag )
+		{
+			if( bFlag == true ) bFlag = false;
+			else if( bFlag == false ) bFlag = true;
 
-            return true;
-        }
+			return true;
+		}
 	}	
 }

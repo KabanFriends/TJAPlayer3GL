@@ -10,9 +10,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>FDK</RootNamespace>
     <AssemblyName>FDK</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <SignAssembly>true</SignAssembly>
+    <SignAssembly>false</SignAssembly>
     <AssemblyOriginatorKeyFile>
     </AssemblyOriginatorKeyFile>
     <ApplicationIcon>
@@ -37,6 +37,7 @@
     <DebugType>full</DebugType>
     <LangVersion>7.3</LangVersion>
     <DebugSymbols>true</DebugSymbols>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -51,6 +52,7 @@
     <LangVersion>7.3</LangVersion>
     <DebugType>pdbonly</DebugType>
     <DebugSymbols>true</DebugSymbols>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Bass.Net">
@@ -62,12 +64,16 @@
       <HintPath>..\Test\dll\DirectShowLib-2005.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="SlimDX, Version=2.0.13.43, Culture=neutral, PublicKeyToken=b1b0c32fd1ffe4f9, processorArchitecture=x86">
-      <HintPath>..\packages\SlimDX.4.0.13.44\lib\NET20\SlimDX.dll</HintPath>
+    <Reference Include="OpenTK, Version=3.2.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
+      <HintPath>..\packages\OpenTK.3.2\lib\net20\OpenTK.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenTK.GLControl, Version=3.1.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
+      <HintPath>..\packages\OpenTK.GLControl.3.1.0\lib\net20\OpenTK.GLControl.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Management" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="WindowsBase" />
@@ -75,37 +81,12 @@
   <ItemGroup>
     <Compile Include="コード\00.共通\COS.cs" />
     <Compile Include="コード\00.共通\CPowerManagement.cs" />
-    <Compile Include="コード\00.共通\CSendMessage.cs" />
     <Compile Include="コード\00.共通\CTimerBase.cs" />
-    <Compile Include="コード\00.共通\C一定間隔処理.cs" />
     <Compile Include="コード\00.共通\C共通.cs" />
     <Compile Include="コード\00.共通\ExtensionMethods\DoubleExtensions.cs" />
     <Compile Include="コード\00.共通\ExtensionMethods\Int32Extensions.cs" />
-    <Compile Include="コード\01.フレームワーク\Core\GameWindowSize.cs" />
-    <Compile Include="コード\01.フレームワーク\Core\Game.cs" />
-    <Compile Include="コード\01.フレームワーク\Core\GameClock.cs" />
-    <Compile Include="コード\01.フレームワーク\Core\GameTime.cs" />
-    <Compile Include="コード\01.フレームワーク\Core\GameWindow.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="コード\01.フレームワーク\DeviceSettings\ConversionMethods.cs" />
-    <Compile Include="コード\01.フレームワーク\DeviceSettings\DeviceSettings.cs" />
-    <Compile Include="コード\01.フレームワーク\DeviceSettings\Direct3D9Settings.cs" />
-    <Compile Include="コード\01.フレームワーク\Enumeration\Enumeration9.cs" />
-    <Compile Include="コード\01.フレームワーク\Properties\Resources.Designer.cs" />
-    <Compile Include="コード\01.フレームワーク\Rendering\DeviceCreationException.cs" />
-    <Compile Include="コード\01.フレームワーク\Rendering\DeviceCache.cs" />
-    <Compile Include="コード\01.フレームワーク\Rendering\Direct3D9Manager.cs" />
-    <Compile Include="コード\01.フレームワーク\Rendering\Enums.cs" />
-    <Compile Include="コード\01.フレームワーク\Rendering\GraphicsDeviceManager.cs" />
-    <Compile Include="コード\01.フレームワーク\Rendering\NoCompatibleDevicesException.cs" />
-    <Compile Include="コード\01.フレームワーク\Rendering\VertexElementAttribute.cs" />
-    <Compile Include="コード\01.フレームワーク\Utilities\Camera.cs" />
-    <Compile Include="コード\01.フレームワーク\Utilities\TransformedColoredTexturedVertex.cs" />
-    <Compile Include="コード\01.フレームワーク\Utilities\TransformedColoredVertex.cs" />
-    <Compile Include="コード\01.フレームワーク\Win32\NativeMethods.cs" />
-    <Compile Include="コード\01.フレームワーク\Win32\NativeStructures.cs" />
-    <Compile Include="コード\01.フレームワーク\Win32\WindowConstants.cs" />
+    <Compile Include="コード\01.フレームワーク\GameWindowSize.cs" />
+    <Compile Include="コード\01.フレームワーク\Game.cs" />
     <Compile Include="コード\02.入力\CInputJoystick.cs" />
     <Compile Include="コード\02.入力\CInputKeyboard.cs" />
     <Compile Include="コード\02.入力\CInputMIDI.cs" />
@@ -114,6 +95,7 @@
     <Compile Include="コード\02.入力\DeviceConstantConverter.cs" />
     <Compile Include="コード\02.入力\E入力デバイス種別.cs" />
     <Compile Include="コード\02.入力\IInputDevice.cs" />
+    <Compile Include="コード\02.入力\SlimDXKeys.cs" />
     <Compile Include="コード\02.入力\STInputEvent.cs" />
     <Compile Include="コード\03.サウンド\Cmp3.cs" />
     <Compile Include="コード\03.サウンド\Cogg.cs" />
@@ -122,33 +104,29 @@
     <Compile Include="コード\03.サウンド\CSoundDeviceDirectSound.cs" />
     <Compile Include="コード\03.サウンド\CSoundDeviceWASAPI.cs" />
     <Compile Include="コード\03.サウンド\CSoundTimer.cs" />
-    <Compile Include="コード\03.サウンド\Cxa.cs" />
     <Compile Include="コード\03.サウンド\ESoundDeviceType.cs" />
     <Compile Include="コード\03.サウンド\ESoundGroup.cs" />
+    <Compile Include="コード\03.サウンド\Format Encoding\FourCC.cs" />
+    <Compile Include="コード\03.サウンド\Format Encoding\WaveFormat.cs" />
     <Compile Include="コード\03.サウンド\LoudnessMetadata.cs" />
     <Compile Include="コード\03.サウンド\LoudnessMetadataScanner.cs" />
     <Compile Include="コード\03.サウンド\Lufs.cs" />
+    <Compile Include="コード\03.サウンド\Format Encoding\RiffChunk.cs" />
+    <Compile Include="コード\03.サウンド\Format Encoding\RiffPerser.cs" />
     <Compile Include="コード\03.サウンド\SongGainController.cs" />
     <Compile Include="コード\03.サウンド\SoundDecoder.cs" />
     <Compile Include="コード\03.サウンド\ISoundDevice.cs" />
     <Compile Include="コード\03.サウンド\SoundGroupLevelController.cs" />
+    <Compile Include="コード\03.サウンド\Format Encoding\SoundStream.cs" />
+    <Compile Include="コード\03.サウンド\Format Encoding\WaveFormatEncoding.cs" />
     <Compile Include="コード\04.グラフィック\BitmapUtil.cs" />
-    <Compile Include="コード\04.グラフィック\CAero.cs" />
     <Compile Include="コード\04.グラフィック\CAvi.cs" />
-    <Compile Include="コード\04.グラフィック\CTaskBar.cs" />
-    <Compile Include="コード\04.グラフィック\CTextureAutofold.cs" />
-    <Compile Include="コード\04.グラフィック\頂点フォーマット%28Vertex%29\ColoredVertex.cs" />
     <Compile Include="コード\04.グラフィック\CTexture.cs" />
     <Compile Include="コード\04.グラフィック\CTextureCreateFailedException.cs" />
-    <Compile Include="コード\04.グラフィック\頂点フォーマット%28Vertex%29\PositionColoredTexturedVertex.cs" />
-    <Compile Include="コード\04.グラフィック\頂点フォーマット%28Vertex%29\TexturedVertex.cs" />
-    <Compile Include="コード\04.グラフィック\頂点フォーマット%28Vertex%29\TransformedColoredTexturedVertex.cs" />
-    <Compile Include="コード\04.グラフィック\頂点フォーマット%28Vertex%29\TransformedColoredVertex.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="コード\00.共通\CActivity.cs" />
     <Compile Include="コード\00.共通\CCounter.cs" />
     <Compile Include="コード\00.共通\CFPS.cs" />
-    <Compile Include="コード\00.共通\CIniFile.cs" />
     <Compile Include="コード\00.共通\CTimer.cs" />
     <Compile Include="コード\00.共通\CTraceLogListener.cs" />
     <Compile Include="コード\00.共通\CWin32.cs" />
@@ -156,17 +134,10 @@
     <Compile Include="コード\05.DirectShow\CDirectShow.cs" />
     <Compile Include="コード\05.DirectShow\CDStoWAVFileImage.cs" />
     <Compile Include="コード\05.DirectShow\MemoryRenderer.cs" />
-    <Compile Include="コード\06.Tempo\CBeatDetect.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="コード\01.フレームワーク\Properties\Resources.resx">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="コード\01.フレームワーク\Resources\sdx_icon_black.ico" />
-  </ItemGroup>
-  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="OpenTK.dll.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

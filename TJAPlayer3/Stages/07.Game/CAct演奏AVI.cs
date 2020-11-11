@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
-using SlimDX;
-using SlimDX.Direct3D9;
+using OpenTK;
+using OpenTK.Graphics;
 using FDK;
 using DirectShowLib;
 
@@ -60,7 +60,7 @@ namespace TJAPlayer3
                     }
                     if (this.tx描画用 == null)
                     {
-                        this.tx描画用 = new CTexture(TJAPlayer3.app.Device, (int)this.framewidth, (int)this.frameheight, TJAPlayer3.app.GraphicsDeviceManager.CurrentSettings.BackBufferFormat, Pool.Managed);
+                        this.tx描画用 = new CTexture(TJAPlayer3.app.Device, (int)this.framewidth, (int)this.frameheight);
                     }
 
                     #region[ リサイズ処理 ]
@@ -396,6 +396,7 @@ namespace TJAPlayer3
                 }
 				else if ( ( this.tx描画用 != null ) && ( this.n総移動時間ms != -1 ) )
 				{
+                    /*
 					if ( this.bフレームを作成した && ( this.pBmp != IntPtr.Zero ) )
 					{
 						DataRectangle rectangle3 = this.tx描画用.texture.LockRectangle( 0, LockFlags.None );
@@ -417,7 +418,7 @@ namespace TJAPlayer3
 						}
 						this.tx描画用.texture.UnlockRectangle( 0 );
 						this.bフレームを作成した = false;
-					}
+					}*/
                     double dbAVI比率 = this.rAVI.avi.nフレーム幅 / this.rAVI.avi.nフレーム高さ;
 
                     //とりあえず16:9以外は再生しない。
@@ -527,8 +528,8 @@ namespace TJAPlayer3
                 TJAPlayer3.t安全にDisposeする( ref this.tx描画用 );
                 TJAPlayer3.t安全にDisposeする( ref this.tx窓描画用 );
 
-				this.tx描画用 = new CTexture( TJAPlayer3.app.Device, 1280, 720, TJAPlayer3.app.GraphicsDeviceManager.CurrentSettings.BackBufferFormat, Pool.Managed );
-				this.tx窓描画用 = new CTexture( TJAPlayer3.app.Device, 1280, 720, TJAPlayer3.app.GraphicsDeviceManager.CurrentSettings.BackBufferFormat, Pool.Managed );
+                this.tx描画用 = new CTexture(TJAPlayer3.app.Device, 1280, 720);
+                this.tx窓描画用 = new CTexture(TJAPlayer3.app.Device, 1280, 720);
             }
             
         }
@@ -551,8 +552,8 @@ namespace TJAPlayer3
 #if TEST_Direct3D9Ex
 				this.tx描画用 = new CTexture( CDTXMania.app.Device, 320, 355, CDTXMania.app.GraphicsDeviceManager.CurrentSettings.BackBufferFormat, Pool.Default, Usage.Dynamic );
 #else
-				this.tx描画用 = new CTexture( TJAPlayer3.app.Device, 1280, 720, TJAPlayer3.app.GraphicsDeviceManager.CurrentSettings.BackBufferFormat, Pool.Managed );
-				this.tx窓描画用 = new CTexture( TJAPlayer3.app.Device, 1280, 720, TJAPlayer3.app.GraphicsDeviceManager.CurrentSettings.BackBufferFormat, Pool.Managed );
+				this.tx描画用 = new CTexture( TJAPlayer3.app.Device, 1280, 720);
+				this.tx窓描画用 = new CTexture( TJAPlayer3.app.Device, 1280, 720);
 #endif
 				base.OnManagedリソースの作成();
 			}
