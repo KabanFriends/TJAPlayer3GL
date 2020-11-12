@@ -452,11 +452,11 @@ namespace TJAPlayer3
 		{
 			base.OnUpdateFrame(e);
 		}
-		private Stopwatch rsw = new Stopwatch();
+		//private Stopwatch rsw = new Stopwatch();
 		protected override void OnRenderFrame(FrameEventArgs e)
 		{
-			rsw.Reset();
-			rsw.Start();
+			//rsw.Reset();
+			//rsw.Start();
 			base.OnRenderFrame(e);
 
 			Sound管理?.t再生中の処理をする();
@@ -1169,9 +1169,12 @@ namespace TJAPlayer3
 				}
 			}
 			#endregion
+			
+			GL.Flush();
+
 			base.SwapBuffers();
-			rsw.Stop();
-			Trace.WriteLine("Render Time=" + rsw.ElapsedMilliseconds + "ms");
+			//rsw.Stop();
+			//Trace.WriteLine("Render Time=" + rsw.ElapsedMilliseconds + "ms");
 		}
 
 		// その他
