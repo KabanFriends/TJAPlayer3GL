@@ -16,6 +16,6 @@ jobs:
       timeout-minutes: 5
     - uses: actions/upload-artifact@v1.0.0
       with:
-        name: KabanFriends-TJAPlayer3-develop
+        name:TJAPlayer3GL
         path: Test
       
