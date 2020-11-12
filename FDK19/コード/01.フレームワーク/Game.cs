@@ -4,7 +4,7 @@ using System.Threading;
 using System.Windows.Forms;
 using OpenTK;
 using OpenTK.Graphics;
-using OpenTK.Graphics.OpenGL;
+using FFmpeg.AutoGen; 
 
 namespace FDK
 {
@@ -16,7 +16,7 @@ namespace FDK
 		public Game()
 			: base(GameWindowSize.Width, GameWindowSize.Height, GraphicsMode.Default, "TJAPlayer3GL")
 		{
-			VSync = VSyncMode.On;
+            VSync = VSyncMode.On;
 		}
 
 		protected override void OnLoad(EventArgs e)

@@ -6,7 +6,6 @@ using System.Diagnostics;
 using System.Windows.Forms;
 using System.IO;
 using TJAPlayer3.ErrorReporting;
-using TJAPlayer3.Updates;
 
 namespace TJAPlayer3
 {
@@ -22,14 +21,19 @@ namespace TJAPlayer3
 
 		[DllImport( "kernel32", CharSet = CharSet.Unicode, SetLastError = true )]
 		internal static extern IntPtr LoadLibrary( string lpFileName );
+
+		[DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+		static extern bool SetDllDirectory(string lpPathName);
 		#endregion
 		//-----------------------------
 		#endregion
 
-        [STAThread]
+		[STAThread]
         private static void Main()
         {
-            ErrorReporter.WithErrorReporting(MainImpl);
+			SetDllDirectory("ffmpeg");
+
+			ErrorReporter.WithErrorReporting(MainImpl);
         }
 
         private static void MainImpl()

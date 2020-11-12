@@ -157,7 +157,7 @@ namespace TJAPlayer3
 			//	"データが使用されている曲で効果が\n" +
 			//	"あります。" +
 			//	"\n" +
-			//	"※ DirectSound使用時のみ有効です。",
+			//	"※ OpenAL使用時のみ有効です。",
 			//    "Automatic wave playing position\n" +
 			//	" adjustment feature. If you turn it ON,\n" +
 			//	" it decrease the lag which comes from\n" +
@@ -165,7 +165,7 @@ namespace TJAPlayer3
 			//	"Usually, you should turn it ON." +
 			//	"\n"+
 			//	"Note: This setting is effetive\n" +
-			//	" only when DirectSound is used.");
+			//	" only when OpenAL is used.");
 			//this.list項目リスト.Add( this.iSystemAdjustWaves );
 			this.iSystemVSyncWait = new CItemToggle( "VSyncWait", TJAPlayer3.ConfigIni.b垂直帰線待ちを行う,
 				"垂直帰線同期：\n画面の描画をディスプレイの垂直帰\n線中に行なう場合には ON を指定し\nます。ON にすると、ガタつきのない\n滑らかな画面描画が実現されます。",
@@ -304,7 +304,7 @@ namespace TJAPlayer3
 			// #24820 2013.1.3 yyagi
 			this.iSystemSoundType = new CItemList("SoundType", CItemList.Eパネル種別.通常, TJAPlayer3.ConfigIni.nSoundDeviceType,
 				"サウンドの出力方式:\n" +
-				"WASAPI, ASIO, DSound(DirectSound)\n" +
+				"WASAPI, ASIO, OpenAL\n" +
 				"の中からサウンド出力方式を選択\n" +
 				"します。\n" +
 				"WASAPIはVista以降でのみ使用可能\n" +
@@ -318,7 +318,7 @@ namespace TJAPlayer3
 				"　終了時に有効になります。",
 				"Sound output type:\n" +
 				"You can choose WASAPI, ASIO or\n" +
-				"DShow(DirectShow).\n" +
+				"OpenAL.\n" +
 				"WASAPI can use only after Vista.\n" +
 				"ASIO can use on the\n" +
 				"\"ASIO-supported\" sound device.\n" +
@@ -327,7 +327,7 @@ namespace TJAPlayer3
 				"\n" +
 				"Note: Exit CONFIGURATION to make\n" +
 				"     the setting take effect.",
-				new string[] { "DSound", "ASIO", "WASAPI" });
+				new string[] { "OpenAL", "ASIO", "WASAPI" });
 			this.list項目リスト.Add(this.iSystemSoundType);
 
 			// #24820 2013.1.15 yyagi
@@ -1515,7 +1515,7 @@ namespace TJAPlayer3
             }
 			#endregion
 
-			// #24820 2013.1.22 yyagi CONFIGでWASAPI/ASIO/DirectSound関連の設定を変更した場合、サウンドデバイスを再構築する。
+			// #24820 2013.1.22 yyagi CONFIGでWASAPI/ASIO/OpenAL関連の設定を変更した場合、サウンドデバイスを再構築する。
 			// #33689 2014.6.17 yyagi CONFIGでSoundTimerTypeの設定を変更した場合も、サウンドデバイスを再構築する。
 			#region [ サウンドデバイス変更 ]
 			if ( this.iSystemSoundType_initial != this.iSystemSoundType.n現在選択されている項目番号 ||
@@ -1528,7 +1528,7 @@ namespace TJAPlayer3
 				switch ( this.iSystemSoundType.n現在選択されている項目番号 )
 				{
 					case 0:
-						soundDeviceType = ESoundDeviceType.DirectSound;
+						soundDeviceType = ESoundDeviceType.OpenAL;
 						break;
 					case 1:
 						soundDeviceType = ESoundDeviceType.ASIO;

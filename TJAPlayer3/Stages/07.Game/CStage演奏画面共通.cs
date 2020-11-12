@@ -231,7 +231,7 @@ namespace TJAPlayer3
 			TJAPlayer3.Skin.tRemoveMixerAll();  // 効果音のストリームをミキサーから解除しておく
 
 			queueMixerSound = new Queue<stmixer>(64);
-			bIsDirectSound = (TJAPlayer3.Sound管理.GetCurrentSoundDeviceType() == "DirectSound");
+			bIsOpenAL = (TJAPlayer3.Sound管理.GetCurrentSoundDeviceType() == "OpenAL");
 			bUseOSTimer = TJAPlayer3.ConfigIni.bUseOSTimer;
 			this.bPAUSE = false;
 
@@ -482,7 +482,7 @@ namespace TJAPlayer3
 
 		protected volatile Queue<stmixer> queueMixerSound;      // #24820 2013.1.21 yyagi まずは単純にAdd/Removeを1個のキューでまとめて管理するやり方で設計する
 		protected DateTime dtLastQueueOperation;                //
-		protected bool bIsDirectSound;                          //
+		protected bool bIsOpenAL;                          //
 		protected double db再生速度;
 		//		protected STDGBVALUE<int> nJudgeLinePosY_delta;			// #31602 2013.6.23 yyagi 表示遅延対策として、判定ラインの表示位置をずらす機能を追加する
 		protected STDGBVALUE<bool> bReverse;

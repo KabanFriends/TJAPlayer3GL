@@ -205,8 +205,7 @@ namespace FDK
 		public const uint WM_POWERBROADCAST = 0x218;
 		public const uint WM_SIZE = 5;
 		public const uint WM_SYSCOMMAND = 0x112;
-		public const uint WM_SYS
-			= 260;
+		public const uint WM_SYSKEYDOWN = 260;
 		public const uint WM_APP = 0x00008000;
 		public const uint WM_QUIT = 0x12;
 		public const uint WPF_RESTORETOMAXIMIZED = 2;
@@ -442,7 +441,6 @@ namespace FDK
 			public uint nAvgBytesPerSec;
 			public ushort nBlockAlign;
 			public ushort wBitsPerSample;
-			public ushort cbSize;
 
 			public WAVEFORMATEX(
 				ushort _wFormatTag,
@@ -450,8 +448,8 @@ namespace FDK
 				uint _nSamplesPerSec,
 				uint _nAvgBytesPerSec,
 				ushort _nBlockAlign,
-				ushort _wBitsPerSample,
-				ushort _cbSize) : this()
+				ushort _wBitsPerSample)
+				: this()
 			{
 				wFormatTag = _wFormatTag;
 				nChannels = _nChannels;
@@ -459,10 +457,8 @@ namespace FDK
 				nAvgBytesPerSec = _nAvgBytesPerSec;
 				nBlockAlign = _nBlockAlign;
 				wBitsPerSample = _wBitsPerSample;
-				cbSize = _cbSize;
 			}
 		}
-
 		[StructLayout(LayoutKind.Sequential)]
 		public struct WindowMessage
 		{

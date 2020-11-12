@@ -599,7 +599,6 @@ namespace TJAPlayer3
 		public enum ESoundDeviceTypeForConfig
 		{
 			ACM = 0,
-			// DirectSound,
 			ASIO,
 			WASAPI,
 			Unknown=99
@@ -1554,12 +1553,12 @@ namespace TJAPlayer3
             #endregion
             
             #region [ WASAPI/ASIO関連 ]
-            sw.WriteLine( "; サウンド出力方式(0=ACM(って今はまだDirectSoundですが), 1=ASIO, 2=WASAPI)" );
+            sw.WriteLine( "; サウンド出力方式(0=OpenAL, 1=ASIO, 2=WASAPI)" );
 			sw.WriteLine( "; WASAPIはVista以降のOSで使用可能。推奨方式はWASAPI。" );
-			sw.WriteLine( "; なお、WASAPIが使用不可ならASIOを、ASIOが使用不可ならACMを使用します。" );
-			sw.WriteLine( "; Sound device type(0=ACM, 1=ASIO, 2=WASAPI)" );
+			sw.WriteLine( "; なお、WASAPIが使用不可ならASIOを、ASIOが使用不可ならOpenALを使用します。" );
+			sw.WriteLine( "; Sound device type(0=OpenAL, 1=ASIO, 2=WASAPI)" );
 			sw.WriteLine( "; WASAPI can use on Vista or later OSs." );
-			sw.WriteLine( "; If WASAPI is not available, DTXMania try to use ASIO. If ASIO can't be used, ACM is used." );
+			sw.WriteLine( "; If WASAPI is not available, DTXMania try to use ASIO. If ASIO can't be used, OpenAL is used." );
 			sw.WriteLine( "SoundDeviceType={0}", (int) this.nSoundDeviceType );
 			sw.WriteLine();
 
