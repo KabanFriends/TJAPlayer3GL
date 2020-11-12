@@ -16,6 +16,6 @@ jobs:
       timeout-minutes: 5
     - uses: actions/upload-artifact@v1.0.0
       with:
-        name:TJAPlayer3GL
+        name: TJAPlayer3GL
         path: Test
       
