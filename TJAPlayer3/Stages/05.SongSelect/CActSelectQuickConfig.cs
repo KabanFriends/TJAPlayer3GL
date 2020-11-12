@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Drawing;
-using System.IO;
-
 using FDK;
 
 namespace TJAPlayer3
@@ -63,7 +58,7 @@ namespace TJAPlayer3
 				"(ScrollSpeed=x0.5 means half speed)" ) );
 			#endregion
 			#region [ 共通 Dark/Risky/PlaySpeed ]
-			l.Add( new CItemInteger( "演奏速度", 5, 400, TJAPlayer3.ConfigIni.n演奏速度,
+			l.Add(new CItemInteger("演奏速度", 5, 400, TJAPlayer3.ConfigIni.n演奏速度,
 				"曲の演奏速度を、速くしたり遅くした\n" +
 				"りすることができます。\n" +
 				"（※一部のサウンドカードでは正しく\n" +
@@ -91,7 +86,10 @@ namespace TJAPlayer3
                 " \n" +
                 " ",
                 new string[] { "OFF", "完走!", "完走!激辛" }) );
-
+            l.Add( new CItemList("ゲージモード", CItemBase.Eパネル種別.通常, (int)TJAPlayer3.ConfigIni.eGaugeMode,
+                "",
+                "",
+                new string[] {"Normal", "Groove","Hard", "Ex Hard" }) );
             l.Add(new CItemList(nameof(TJAPlayer3.ConfigIni.ShinuchiMode), CItemBase.Eパネル種別.通常, TJAPlayer3.ConfigIni.ShinuchiMode ? 1 : 0, "", "", new string[] { "OFF", "ON" }));
 
 			#endregion
@@ -146,6 +144,17 @@ namespace TJAPlayer3
                     }
 					TJAPlayer3.ConfigIni.eGameMode = game;
 					break;
+                case (int) EOrder.GaugeMode:
+                    EGaugeMode gauge = EGaugeMode.Normal;
+                    switch((int)GetIndex((int)EOrder.GaugeMode))
+                    {
+                        case 0: gauge = EGaugeMode.Normal; break;
+                        case 1: gauge = EGaugeMode.Groove; break;
+                        case 2: gauge = EGaugeMode.Hard; break;
+                        case 3: gauge = EGaugeMode.ExHard; break;
+                    }
+                    TJAPlayer3.ConfigIni.eGaugeMode = gauge;
+                    break;
                 case (int)EOrder.ShinuchiMode:
                     TJAPlayer3.ConfigIni.ShinuchiMode = !TJAPlayer3.ConfigIni.ShinuchiMode;
                     break;
@@ -172,23 +181,9 @@ namespace TJAPlayer3
 		}
 
 		/// <summary>
-		/// 1つの値を、全targetに適用する。RiskyやDarkなど、全tatgetで共通の設定となるもので使う。
-		/// </summary>
-		/// <param name="order">設定項目リストの順番</param>
-		/// <param name="index">設定値(index)</param>
-		private void SetValueToAllTarget( int order, int index )
-		{
-			for ( int i = 0; i < 3; i++ )
-			{
-				lci[ nCurrentConfigSet ][ i ][ order ].SetIndex( index );
-			}
-		}
-		
-
-		/// <summary>
 		/// ConfigIni.bAutoPlayに簡易CONFIGの状態を反映する
 		/// </summary>
-		private void SetAutoParameters()
+		private static void SetAutoParameters()
 		{
 			for ( int target = 0; target < 3; target++ )
 			{
@@ -231,8 +226,8 @@ namespace TJAPlayer3
 		{
 			if ( !base.b活性化してない )
 			{
-				//CDTXMania.t安全にDisposeする( ref this.txパネル本体 );
-				TJAPlayer3.t安全にDisposeする( ref this.tx文字列パネル );
+				//CDTXMania.tテクスチャの解放( ref this.txパネル本体 );
+				TJAPlayer3.t安全にDisposeする(ref this.tx文字列パネル);
 				base.OnManagedリソースの解放();
 			}
 		}
@@ -249,6 +244,7 @@ namespace TJAPlayer3
 			Random,
             Stealth,
             GameMode,
+            GaugeMode,
             ShinuchiMode,
 			More,
 			Return, END,

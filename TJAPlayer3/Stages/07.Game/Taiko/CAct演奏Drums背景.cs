@@ -14,18 +14,6 @@ namespace TJAPlayer3
             base.b活性化してない = true;
         }
 
-        public void tFadeIn(int player)
-        {
-            this.ct上背景クリアインタイマー[player] = new CCounter( 0, 100, 2, TJAPlayer3.Timer );
-            this.eFadeMode = EFIFOモード.フェードイン;
-        }
-
-        //public void tFadeOut(int player)
-        //{
-        //    this.ct上背景フェードタイマー[player] = new CCounter( 0, 100, 6, CDTXMania.Timer );
-        //    this.eFadeMode = EFIFOモード.フェードアウト;
-        //}
-
         public void ClearIn(int player)
         {
             this.ct上背景クリアインタイマー[player] = new CCounter(0, 100, 2, TJAPlayer3.Timer);
@@ -34,19 +22,17 @@ namespace TJAPlayer3
             this.ct上背景FIFOタイマー.n現在の値 = 0;
         }
 
-        public override void On活性化()
-        {
-            base.On活性化();
-        }
-
         public override void On非活性化()
         {
-            this.ct上背景FIFOタイマー = null;
+            ct上背景FIFOタイマー = null;
+
             for (int i = 0; i < 2; i++)
             {
                 ct上背景スクロール用タイマー[i] = null;
             }
-            this.ct下背景スクロール用タイマー1 = null;
+
+            ct下背景スクロール用タイマー1 = null;
+
             base.On非活性化();
         }
 
@@ -75,17 +61,6 @@ namespace TJAPlayer3
             base.OnManagedリソースの作成();
         }
 
-        public override void OnManagedリソースの解放()
-        {
-            //CDTXMania.t安全にDisposeする( ref this.tx上背景メイン );
-            //CDTXMania.t安全にDisposeする( ref this.tx上背景クリアメイン );
-            //CDTXMania.t安全にDisposeする( ref this.tx下背景メイン );
-            //CDTXMania.t安全にDisposeする( ref this.tx下背景クリアメイン );
-            //CDTXMania.t安全にDisposeする( ref this.tx下背景クリアサブ1 );
-            //Trace.TraceInformation("CActDrums背景 リソースの開放");
-            base.OnManagedリソースの解放();
-        }
-
         public override int On進行描画()
         {
             this.ct上背景FIFOタイマー.t進行();
@@ -108,33 +83,36 @@ namespace TJAPlayer3
             #region 1P-2P-上背景
             for (int i = 0; i < 2; i++)
             {
-                if (this.ct上背景スクロール用タイマー[i] != null)
+                var backgroundUpTexture = TJAPlayer3.Tx.Background_Up[i];
+                if (backgroundUpTexture != null && this.ct上背景スクロール用タイマー[i] != null)
                 {
-                    double TexSize = 1280 / TJAPlayer3.Tx.Background_Up[i].szテクスチャサイズ.Width;
+                    double TexSize = 1280 / backgroundUpTexture.szテクスチャサイズ.Width;
                     // 1280をテクスチャサイズで割ったものを切り上げて、プラス+1足す。
                     int ForLoop = (int)Math.Ceiling(TexSize) + 1;
                     //int nループ幅 = 328;
-                    TJAPlayer3.Tx.Background_Up[i].t2D描画(TJAPlayer3.app.Device, 0 - this.ct上背景スクロール用タイマー[i].n現在の値, TJAPlayer3.Skin.Background_Scroll_Y[i]);
+                    backgroundUpTexture.t2D描画(TJAPlayer3.app.Device, 0 - this.ct上背景スクロール用タイマー[i].n現在の値, TJAPlayer3.Skin.Background_Scroll_Y[i]);
                     for (int l = 1; l < ForLoop + 1; l++)
                     {
-                        TJAPlayer3.Tx.Background_Up[i].t2D描画(TJAPlayer3.app.Device, +(l * TJAPlayer3.Tx.Background_Up[i].szテクスチャサイズ.Width) - this.ct上背景スクロール用タイマー[i].n現在の値, TJAPlayer3.Skin.Background_Scroll_Y[i]);
+                        backgroundUpTexture.t2D描画(TJAPlayer3.app.Device, +(l * backgroundUpTexture.szテクスチャサイズ.Width) - this.ct上背景スクロール用タイマー[i].n現在の値, TJAPlayer3.Skin.Background_Scroll_Y[i]);
                     }
                 }
-                if (this.ct上背景スクロール用タイマー[i] != null)
-                {
-                    if (TJAPlayer3.stage演奏ドラム画面.bIsAlreadyCleared[i])
-                        TJAPlayer3.Tx.Background_Up_Clear[i].Opacity = ((this.ct上背景クリアインタイマー[i].n現在の値 * 0xff) / 100);
-                    else
-                        TJAPlayer3.Tx.Background_Up_Clear[i].Opacity = 0;
 
-                    double TexSize = 1280 / TJAPlayer3.Tx.Background_Up_Clear[i].szテクスチャサイズ.Width;
+                var backgroundUpClearTexture = TJAPlayer3.Tx.Background_Up_Clear[i];
+                if (backgroundUpClearTexture != null && this.ct上背景スクロール用タイマー[i] != null)
+                {
+                    if (TJAPlayer3.stage演奏ドラム画面.bIsAlreadyCleared[i] && TJAPlayer3.ConfigIni.eGaugeMode != EGaugeMode.Hard && TJAPlayer3.ConfigIni.eGaugeMode != EGaugeMode.ExHard)
+                        backgroundUpClearTexture.Opacity = ((this.ct上背景クリアインタイマー[i].n現在の値 * 0xff) / 100);
+                    else
+                        backgroundUpClearTexture.Opacity = 0;
+
+                    double TexSize = 1280 / backgroundUpClearTexture.szテクスチャサイズ.Width;
                     // 1280をテクスチャサイズで割ったものを切り上げて、プラス+1足す。
                     int ForLoop = (int)Math.Ceiling(TexSize) + 1;
 
-                    TJAPlayer3.Tx.Background_Up_Clear[i].t2D描画(TJAPlayer3.app.Device, 0 - this.ct上背景スクロール用タイマー[i].n現在の値, TJAPlayer3.Skin.Background_Scroll_Y[i]);
+                    backgroundUpClearTexture.t2D描画(TJAPlayer3.app.Device, 0 - this.ct上背景スクロール用タイマー[i].n現在の値, TJAPlayer3.Skin.Background_Scroll_Y[i]);
                     for (int l = 1; l < ForLoop + 1; l++)
                     {
-                        TJAPlayer3.Tx.Background_Up_Clear[i].t2D描画(TJAPlayer3.app.Device, (l * TJAPlayer3.Tx.Background_Up_Clear[i].szテクスチャサイズ.Width) - this.ct上背景スクロール用タイマー[i].n現在の値, TJAPlayer3.Skin.Background_Scroll_Y[i]);
+                        backgroundUpClearTexture.t2D描画(TJAPlayer3.app.Device, (l * backgroundUpClearTexture.szテクスチャサイズ.Width) - this.ct上背景スクロール用タイマー[i].n現在の値, TJAPlayer3.Skin.Background_Scroll_Y[i]);
                     }
                 }
 
@@ -144,12 +122,9 @@ namespace TJAPlayer3
             if( !TJAPlayer3.stage演奏ドラム画面.bDoublePlay )
             {
                 {
-                    if( TJAPlayer3.Tx.Background_Down != null )
-                    {
-                        TJAPlayer3.Tx.Background_Down.t2D描画( TJAPlayer3.app.Device, 0, 360 );
-                    }
+                    TJAPlayer3.Tx.Background_Down?.t2D描画(TJAPlayer3.app.Device, 0, 360);
                 }
-                if(TJAPlayer3.stage演奏ドラム画面.bIsAlreadyCleared[0])
+                if(TJAPlayer3.stage演奏ドラム画面.bIsAlreadyCleared[0] && TJAPlayer3.ConfigIni.eGaugeMode != EGaugeMode.Hard && TJAPlayer3.ConfigIni.eGaugeMode != EGaugeMode.ExHard)
                 {
                     if( TJAPlayer3.Tx.Background_Down_Clear != null && TJAPlayer3.Tx.Background_Down_Scroll != null )
                     {
@@ -189,7 +164,6 @@ namespace TJAPlayer3
         //private CTexture tx下背景メイン;
         //private CTexture tx下背景クリアメイン;
         //private CTexture tx下背景クリアサブ1;
-        private EFIFOモード eFadeMode;
         //-----------------
         #endregion
     }

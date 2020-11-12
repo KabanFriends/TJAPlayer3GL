@@ -61,7 +61,7 @@ namespace FDK
 
 			if (bWindowがアクティブ中)
 			{
-				
+
 				this.list入力イベント.Clear();
 
 				#region [ 入力 ]
@@ -395,11 +395,12 @@ namespace FDK
 							}
 						}
 					}
-					
+
 					#endregion
 
 					#region[Button]
-					for (int index = 0; index < 128; index++) {
+					for (int index = 0; index < 128; index++)
+					{
 
 						if (ButtonState.IsButtonDown(index))
 						{
@@ -418,7 +419,8 @@ namespace FDK
 								this.bButtonPushDown[8 + index] = true;
 							}
 						}
-						else { 
+						else
+						{
 							if (this.bButtonState[8 + index] == true)
 							{
 								STInputEvent item = new STInputEvent()

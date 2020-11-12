@@ -16,20 +16,20 @@ namespace TJAPlayer3
 		{
 			base.b活性化してない = true;
 		}
-
-        // メソッド
-        public void t再生(int nCombo, int player)
+		
+		// メソッド
+        public void t再生( int nCombo, int player )
         {
-            if (VoiceIndex[player] < ListCombo[player].Count)
+            if(VoiceIndex[player] < ListCombo[player].Count)
             {
-
+                
                 var index = ListCombo[player][VoiceIndex[player]];
                 if (nCombo == index.nCombo)
                 {
-                    index.soundComboVoice.t再生を開始する();
+                    index.soundComboVoice?.t再生を開始する();
                     VoiceIndex[player]++;
                 }
-
+                
             }
         }
 

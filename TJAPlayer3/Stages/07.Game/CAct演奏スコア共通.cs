@@ -286,8 +286,8 @@ namespace TJAPlayer3
 		{
 			if( !base.b活性化してない )
 			{
-				//CDTXMania.t安全にDisposeする( ref this.txScore );
-    //            CDTXMania.t安全にDisposeする(ref this.txScore_1P);
+				//CDTXMania.tテクスチャの解放( ref this.txScore );
+    //            CDTXMania.tテクスチャの解放(ref this.txScore_1P);
 				base.OnManagedリソースの解放();
 			}
 		}

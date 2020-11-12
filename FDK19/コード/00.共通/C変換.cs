@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace FDK
 {
-	public class C変換
+	public static class C変換
 	{
 		// プロパティ
 
@@ -23,29 +22,11 @@ namespace FDK
 		{
 			return ( ( Math.PI * angle ) / 180.0 );
 		}
-		public static double RadianToDegree( double angle )
-		{
-			return ( angle * 180.0 / Math.PI );
-		}
 		public static float DegreeToRadian( float angle )
 		{
 			return (float) DegreeToRadian( (double) angle );
 		}
-		public static float RadianToDegree( float angle )
-		{
-			return (float) RadianToDegree( (double) angle );
-		}
 
-		public static int n値を範囲内に丸めて返す( int n値, int n最小値, int n最大値 )
-		{
-			if( n値 < n最小値 )
-				return n最小値;
-
-			if( n値 > n最大値 )
-				return n最大値;
-
-			return n値;
-		}
 		public static int n値を文字列から取得して範囲内に丸めて返す( string str数値文字列, int n最小値, int n最大値, int n取得失敗時のデフォルト値 )
 		{
 			int num;
@@ -53,51 +34,34 @@ namespace FDK
 				return num;
 
 			return n取得失敗時のデフォルト値;
-		}
+        }
 
-		public static double db値を文字列から取得して範囲内に丸めて返す( string str数値文字列, double db最小値, double db最大値, double db取得失敗時のデフォルト値 )
-		{
-			double num;
-			if( ( double.TryParse( str数値文字列, out num ) && ( num >= db最小値 ) ) && ( num <= db最大値 ) )
-				return num;
+	    public static double db値を文字列から取得して範囲内に丸めて返す( string str数値文字列, double db最小値, double db最大値, double db取得失敗時のデフォルト値 )
+	    {
+	        double num;
+	        if( ( double.TryParse( str数値文字列, out num ) && ( num >= db最小値 ) ) && ( num <= db最大値 ) )
+	            return num;
 
-			return db取得失敗時のデフォルト値;
-		}
+	        return db取得失敗時のデフォルト値;
+	    }
 
-		// #23568 2010.11.04 ikanick add
-		public static int n値を文字列から取得して範囲内にちゃんと丸めて返す(string str数値文字列, int n最小値, int n最大値, int n取得失敗時のデフォルト値)
-		{
-			// 1 と違って範囲外の場合ちゃんと丸めて返します。
-			int num;
-			if (int.TryParse(str数値文字列, out num)) {
-				if ((num >= n最小値) && (num <= n最大値))
-					return num;
-				if ( num < n最小値 )
-					return n最小値;
-				if ( num > n最大値 )
-					return n最大値;
-			}
+        // #23568 2010.11.04 ikanick add
+        public static int n値を文字列から取得して範囲内にちゃんと丸めて返す(string str数値文字列, int n最小値, int n最大値, int n取得失敗時のデフォルト値)
+        {
+            // 1 と違って範囲外の場合ちゃんと丸めて返します。
+            int num;
+            if (int.TryParse(str数値文字列, out num)) {
+                if ((num >= n最小値) && (num <= n最大値))
+                    return num;
+			    if ( num < n最小値 )
+				    return n最小値;
+			    if ( num > n最大値 )
+				    return n最大値;
+            }
 
-			return n取得失敗時のデフォルト値;
-		}
-
-		public static double db値を文字列から取得して範囲内にちゃんと丸めて返す(string str数値文字列, double n最小値, double n最大値, double n取得失敗時のデフォルト値)
-		{
-			// 1 と違って範囲外の場合ちゃんと丸めて返します。
-			double num;
-			if (double.TryParse(str数値文字列, out num))
-			{
-				if ((num >= n最小値) && (num <= n最大値))
-					return num;
-				if (num < n最小値)
-					return n最小値;
-				if (num > n最大値)
-					return n最大値;
-			}
-
-			return n取得失敗時のデフォルト値;
-		}
-		// --------------------ここまで-------------------------/
+            return n取得失敗時のデフォルト値;
+        }
+        // --------------------ここまで-------------------------/
 		public static int n値を文字列から取得して返す( string str数値文字列, int n取得失敗時のデフォルト値 )
 		{
 			int num;
@@ -170,80 +134,38 @@ namespace FDK
 			}
 			return -1;
 		}
-		
-		public static string str小節番号を文字列3桁に変換して返す( int num )
-		{
-			if( ( num < 0 ) || ( num >= 3600 ) )	// 3600 == Z99 + 1
-				return "000";
 
-			int digit4 = num / 100;
-			int digit2 = ( num % 100 ) / 10;
-			int digit1 = ( num % 100 ) % 10;
-			char ch3 = str36進数文字[ digit4 ];
-			char ch2 = str16進数文字[ digit2 ];
-			char ch1 = str16進数文字[ digit1 ];
-			return ( ch3.ToString() + ch2.ToString() + ch1.ToString() );
-		}
-		public static string str数値を16進数2桁に変換して返す( int num )
-		{
-			if( ( num < 0 ) || ( num >= 0x100 ) )
-				return "00";
+        public static int[] ar配列形式のstringをint配列に変換して返す( string str )
+        {
+            //0,1,2 ...の形式で書かれたstringをint配列に変換する。
+            //一応実装はしたものの、例外処理などはまだ完成していない。
+            //str = "0,1,2";
+            if( String.IsNullOrEmpty( str ) )
+                return null;
 
-			char ch2 = str16進数文字[ num / 0x10 ];
-			char ch1 = str16進数文字[ num % 0x10 ];
-			return ( ch2.ToString() + ch1.ToString() );
-		}
-		public static string str数値を36進数2桁に変換して返す( int num )
-		{
-			if( ( num < 0 ) || ( num >= 36 * 36 ) )
-				return "00";
+            string[] strArray = str.Split( ',' );
+            List<int> listIntArray;
+            listIntArray = new List<int>();
 
-			char ch2 = str36進数文字[ num / 36 ];
-			char ch1 = str36進数文字[ num % 36 ];
-			return ( ch2.ToString() + ch1.ToString() );
-		}
+            for( int n = 0; n < strArray.Length; n++ )
+            {
+                int n追加する数値 = Convert.ToInt32( strArray[ n ] );
+                listIntArray.Add( n追加する数値 );
+            }
+            int[] nArray = new int[] { 1 };
+            nArray = listIntArray.ToArray();
 
-		public static int[] ar配列形式のstringをint配列に変換して返す( string str )
-		{
-			//0,1,2 ...の形式で書かれたstringをint配列に変換する。
-			//一応実装はしたものの、例外処理などはまだ完成していない。
-			//str = "0,1,2";
-			if( String.IsNullOrEmpty( str ) )
-				return null;
+            return nArray;
+        }
 
-			string[] strArray = str.Split( ',' );
-			List<int> listIntArray;
-			listIntArray = new List<int>();
-
-			for( int n = 0; n < strArray.Length; n++ )
-			{
-				int n追加する数値 = Convert.ToInt32( strArray[ n ] );
-				listIntArray.Add( n追加する数値 );
-			}
-			int[] nArray = new int[] { 1 };
-			nArray = listIntArray.ToArray();
-
-			return nArray;
-		}
-
-		/// <summary>
-		/// 百分率数値を255段階数値に変換するメソッド。透明度用。
-		/// </summary>
-		/// <param name="num"></param>
-		/// <returns></returns>
-		public static int nParsentTo255(double num)
-		{
-			return (int)(255.0 * num);
-		}
-
-		#region [ private ]
-		//-----------------
-
-		// private コンストラクタでインスタンス生成を禁止する。
-		private C変換()
-		{
-		}
-		//-----------------
-		#endregion
-	} 
+        /// <summary>
+        /// 百分率数値を255段階数値に変換するメソッド。透明度用。
+        /// </summary>
+        /// <param name="num"></param>
+        /// <returns></returns>
+        public static int nParsentTo255( double num )
+        {
+            return (int)(255.0 * num);
+        }
+    }
 }

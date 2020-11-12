@@ -15,8 +15,6 @@
     <ApplicationIcon>Resources\TJAPlayer3.ico</ApplicationIcon>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <SignAssembly>false</SignAssembly>
-    <AssemblyOriginatorKeyFile>
-    </AssemblyOriginatorKeyFile>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -38,6 +36,9 @@
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <LargeAddressAware>true</LargeAddressAware>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>true</DebugSymbols>
@@ -52,7 +53,6 @@
     <Optimize>false</Optimize>
     <LangVersion>7.3</LangVersion>
     <Prefer32Bit>false</Prefer32Bit>
-    <WarningLevel>3</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <OutputPath>..\Test\</OutputPath>
@@ -77,63 +77,83 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="CSharpTest.Net.Collections, Version=14.906.1403.1082, Culture=neutral, PublicKeyToken=06aee00cce822474, processorArchitecture=MSIL">
-      <HintPath>..\packages\CSharpTest.Net.Collections.14.906.1403.1082\lib\net20\CSharpTest.Net.Collections.dll</HintPath>
+      <HintPath>..\packages\CSharpTest.Net.Collections.14.906.1403.1082\lib\net40\CSharpTest.Net.Collections.dll</HintPath>
     </Reference>
     <Reference Include="DirectShowLib-2005, Version=2.1.0.0, Culture=neutral, PublicKeyToken=67e7b740cdfc2d3f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Test\dll\DirectShowLib-2005.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="OpenTK, Version=3.2.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
       <HintPath>..\packages\OpenTK.3.2\lib\net20\OpenTK.dll</HintPath>
     </Reference>
     <Reference Include="OpenTK.GLControl, Version=3.1.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
       <HintPath>..\packages\OpenTK.GLControl.3.1.0\lib\net20\OpenTK.GLControl.dll</HintPath>
     </Reference>
+    <Reference Include="Sentry, Version=2.1.6.0, Culture=neutral, PublicKeyToken=fba2ec45388e2af0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Sentry.2.1.6\lib\net461\Sentry.dll</HintPath>
+    </Reference>
+    <Reference Include="Sentry.PlatformAbstractions, Version=1.1.1.0, Culture=neutral, PublicKeyToken=fba2ec45388e2af0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Sentry.PlatformAbstractions.1.1.1\lib\net471\Sentry.PlatformAbstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Sentry.Protocol, Version=2.1.6.0, Culture=neutral, PublicKeyToken=fba2ec45388e2af0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Sentry.Protocol.2.1.6\lib\net46\Sentry.Protocol.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\FontUtilities.cs" />
+    <Compile Include="Common\PreciseStringMeasurement\CPreciseStringMeasurer.cs" />
     <Compile Include="Animations\Animator.cs" />
-    <Compile Include="Animations\EaseInOut.cs" />
-    <Compile Include="Animations\EaseOut.cs" />
-    <Compile Include="Animations\EaseIn.cs" />
-    <Compile Include="Animations\FadeIn.cs" />
     <Compile Include="Animations\FadeOut.cs" />
     <Compile Include="Animations\IAnimatable.cs" />
-    <Compile Include="Animations\Linear.cs" />
     <Compile Include="Common\Discord.cs" />
+    <Compile Include="Common\PreciseStringMeasurement\DirectBitmap.cs" />
+    <Compile Include="Common\PreciseStringMeasurement\MeasureStringPreciselyCacheKey.cs" />
+    <Compile Include="ErrorReporting\ErrorReporter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Updates\UpdateChecker.cs" />
     <EmbeddedResource Include="Properties\Discord.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Discord.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <Compile Include="Properties\Discord.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Discord.resx</DependentUpon>
     </Compile>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <None Include="app.config" />
     <None Include="OpenTK.dll.config" />
     <None Include="packages.config" />
     <None Include="TJAPlayer3.manifest" />
-    <None Include="DTXManiaGR.exe.x86.manifest" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -146,22 +166,25 @@
     <Compile Include="Items\CItemBase.cs" />
     <Compile Include="Items\CItemInteger.cs" />
     <Compile Include="Items\CItemList.cs" />
-    <Compile Include="Items\CItemThreeState.cs" />
     <Compile Include="Items\CItemToggle.cs" />
     <Compile Include="Songs\CBoxDef.cs" />
-    <Compile Include="Songs\CCourse.cs" />
     <Compile Include="Songs\CDTX.cs" />
     <Compile Include="Songs\CDTXCompanionFileFinder.cs" />
     <Compile Include="Songs\CDTXStyleExtractor.cs" />
     <Compile Include="Songs\CScoreIni.cs" />
+    <Compile Include="Songs\CStrジャンル.cs" />
     <Compile Include="Songs\CStrジャンルtoNum.cs" />
+    <Compile Include="Songs\CStrジャンルtoStr.cs" />
     <Compile Include="Songs\C曲リストノードComparers\ComparerChain.cs" />
     <Compile Include="Songs\C曲リストノードComparers\C曲リストノードComparerAC15.cs" />
     <Compile Include="Songs\C曲リストノードComparers\C曲リストノードComparerAC8_14.cs" />
+    <Compile Include="Songs\C曲リストノードComparers\C曲リストノードComparerPlaylistIndex.cs" />
+    <Compile Include="Songs\C曲リストノードComparers\C曲リストノードComparerRating.cs" />
     <Compile Include="Songs\C曲リストノードComparers\C曲リストノードComparerタイトル.cs" />
     <Compile Include="Songs\C曲リストノードComparers\C曲リストノードComparerノード種別.cs" />
     <Compile Include="Songs\C曲リストノードComparers\C曲リストノードComparer絶対パス.cs" />
     <Compile Include="Songs\Dan-C.cs" />
+    <Compile Include="Songs\EジャンルAC15SortOrder.cs" />
     <Compile Include="Songs\GaugeIncreaseMode.cs" />
     <Compile Include="Stages\01.StartUp\TextureLoader.cs" />
     <Compile Include="Stages\02.Title\CActScanningLoudness.cs" />
@@ -186,20 +209,20 @@
     <Compile Include="Stages\05.SongSelect\CActSelect演奏履歴パネル.cs" />
     <Compile Include="Stages\05.SongSelect\CActSortSongs.cs" />
     <Compile Include="Stages\05.SongSelect\CStage選曲.cs" />
+    <Compile Include="Stages\05.SongSelect\SongRating.cs" />
+    <Compile Include="Stages\05.SongSelect\SongRatingControlHandler.cs" />
+    <Compile Include="Stages\05.SongSelect\SongRatingController.cs" />
     <Compile Include="Stages\06.SongLoading\CStage曲読み込み.cs" />
     <Compile Include="Stages\06.SongLoading\FastRender.cs" />
     <Compile Include="Stages\07.Game\CAct演奏AVI.cs" />
     <Compile Include="Stages\07.Game\CAct演奏Combo共通.cs" />
-    <Compile Include="Stages\07.Game\CAct演奏Danger共通.cs" />
     <Compile Include="Stages\07.Game\CAct演奏Combo音声.cs" />
     <Compile Include="Stages\07.Game\CAct演奏ゲージ共通.cs" />
     <Compile Include="Stages\07.Game\CAct演奏スクロール速度.cs" />
     <Compile Include="Stages\07.Game\CAct演奏スコア共通.cs" />
     <Compile Include="Stages\07.Game\CAct演奏ステージ失敗.cs" />
     <Compile Include="Stages\07.Game\CAct演奏ステータスパネル共通.cs" />
-    <Compile Include="Stages\07.Game\CAct演奏チップファイアGB.cs" />
     <Compile Include="Stages\07.Game\CAct演奏パネル文字列.cs" />
-    <Compile Include="Stages\07.Game\CAct演奏レーンフラッシュGB共通.cs" />
     <Compile Include="Stages\07.Game\CAct演奏判定文字列共通.cs" />
     <Compile Include="Stages\07.Game\CAct演奏演奏情報.cs" />
     <Compile Include="Stages\07.Game\CInvisibleChip.cs" />
@@ -210,12 +233,9 @@
     <Compile Include="Stages\07.Game\Taiko\CAct演奏DrumsRunner.cs" />
     <Compile Include="Stages\07.Game\Taiko\CAct演奏DrumsFooter.cs" />
     <Compile Include="Stages\07.Game\Taiko\CAct演奏DrumsMob.cs" />
-    <Compile Include="Stages\07.Game\Taiko\CAct演奏DrumsDanger.cs" />
     <Compile Include="Stages\07.Game\Taiko\CAct演奏Drumsキャラクター.cs" />
-    <Compile Include="Stages\07.Game\Taiko\CAct演奏Drumsグラフ.cs" />
     <Compile Include="Stages\07.Game\Taiko\CAct演奏Drumsゲージ.cs" />
     <Compile Include="Stages\07.Game\Taiko\CAct演奏Drumsゲームモード.cs" />
-    <Compile Include="Stages\07.Game\Taiko\CAct演奏DrumsコンボDGB.cs" />
     <Compile Include="Stages\07.Game\Taiko\CAct演奏Drumsスコア.cs" />
     <Compile Include="Stages\07.Game\Taiko\CAct演奏Drumsステータスパネル.cs" />
     <Compile Include="Stages\07.Game\Taiko\FireWorks.cs" />
@@ -229,10 +249,8 @@
     <Compile Include="Stages\07.Game\Taiko\Rainbow.cs" />
     <Compile Include="Stages\07.Game\Taiko\CAct演奏DrumsチップファイアD.cs" />
     <Compile Include="Stages\07.Game\CAct演奏PauseMenu.cs" />
-    <Compile Include="Stages\07.Game\Taiko\CAct演奏Drumsパッド.cs" />
     <Compile Include="Stages\07.Game\Taiko\CAct演奏Drumsレーン.cs" />
     <Compile Include="Stages\07.Game\Taiko\TaikoLaneFlash.cs" />
-    <Compile Include="Stages\07.Game\Taiko\CAct演奏DrumsレーンフラッシュGB.cs" />
     <Compile Include="Stages\07.Game\Taiko\CAct演奏Drums判定文字列.cs" />
     <Compile Include="Stages\07.Game\Taiko\CAct演奏Drums風船.cs" />
     <Compile Include="Stages\07.Game\Taiko\CAct演奏Drums連打.cs" />
@@ -254,9 +272,7 @@
     <Compile Include="Stages\CActFIFOStart.cs" />
     <Compile Include="Stages\CActFIFOResult.cs" />
     <Compile Include="Stages\CActFIFOWhite.cs" />
-    <Compile Include="Stages\CActLVLNFont.cs" />
     <Compile Include="Stages\CActオプションパネル.cs" />
-    <Compile Include="Stages\CDTXVmode.cs" />
     <Compile Include="Stages\CStage.cs" />
     <Compile Include="Common\CConfigIni.cs" />
     <Compile Include="Common\TJAPlayer3.cs" />
@@ -265,7 +281,6 @@
     <Compile Include="Common\ConfigIniToSoundGroupLevelControllerBinder.cs" />
     <Compile Include="Common\CPad.cs" />
     <Compile Include="Common\CPrivateFastFont.cs" />
-    <Compile Include="Common\CVeirticalSongNameFont.cs" />
     <Compile Include="Common\CPrivateFont.cs" />
     <Compile Include="Common\CSkin.cs" />
     <Compile Include="Common\C定数.cs" />
@@ -274,7 +289,6 @@
     <Compile Include="Common\Program.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="dtx.ico" />
     <None Include="Resources\TJAPlayer3.ico" />
   </ItemGroup>
   <ItemGroup>
@@ -311,9 +325,7 @@
       <Private>True</Private>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Plugins\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
@@ -323,16 +335,22 @@
   </Target>
   -->
   <PropertyGroup>
-    <PostBuildEvent>
+    <PostBuildEvent>move /y "$(TargetDir)Bass.Net.dll" "$(SolutionDir)Test\dll\"
+move /y "$(TargetDir)CSharpTest.Net.Collections.*" "$(SolutionDir)Test\dll\"
+move /y "$(TargetDir)DirectShowLib-2005.dll" "$(SolutionDir)Test\dll\"
 move /y "$(TargetDir)FDK.dll" "$(SolutionDir)Test\dll\"
 move /y "$(TargetDir)FDK.pdb" "$(SolutionDir)Test\dll\"
-move /y "$(TargetDir)Bass.Net.dll" "$(SolutionDir)Test\dll\"
-move /y "$(TargetDir)DirectShowLib-2005.dll" "$(SolutionDir)Test\dll\"
-move /y "$(TargetDir)OpenTK*" "$(SolutionDir)Test\dll\"
-move /y "$(TargetDir)CSharpTest.Net.Collections.*" "$(SolutionDir)Test\dll\"
-copy /y "$(SolutionDir)Readme.txt" "$(SolutionDir)Test\"
-call "$(DevEnvDir)..\Tools\VsDevCmd.bat"
-"editbin.exe" /LARGEADDRESSAWARE "$(SolutionDir)Test\TJAPlayer3.exe"</PostBuildEvent>
+move /y "$(TargetDir)Newtonsoft.Json.*" "$(SolutionDir)Test\dll\"
+move /y "$(TargetDir)Sentry.*" "$(SolutionDir)Test\dll\"
+move /y "$(TargetDir)SlimDX.dll" "$(SolutionDir)Test\dll\"
+move /y "$(TargetDir)OpenTK.*" "$(SolutionDir)Test\dll\"</PostBuildEvent>
   </PropertyGroup>
   <Import Project="packages\SharpDX.2.6.3\build\SharpDX.targets" Condition="Exists('packages\SharpDX.2.6.3\build\SharpDX.targets')" />
+  <Import Project="..\packages\LargeAddressAware.1.0.5\build\LargeAddressAware.targets" Condition="Exists('..\packages\LargeAddressAware.1.0.5\build\LargeAddressAware.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\LargeAddressAware.1.0.5\build\LargeAddressAware.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\LargeAddressAware.1.0.5\build\LargeAddressAware.targets'))" />
+  </Target>
 </Project>

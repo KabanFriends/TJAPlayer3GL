@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Diagnostics;
 using FDK;
 
 namespace TJAPlayer3
@@ -26,10 +23,6 @@ namespace TJAPlayer3
 
 
 		#region [ コンストラクタ ]
-		public CInvisibleChip()
-		{
-			Initialize( 3000, 2000 );
-		}
 		/// <summary>
 		/// コンストラクタ
 		/// </summary>
@@ -85,76 +78,6 @@ namespace TJAPlayer3
 			ccounter[ (int) eInst ].t開始( 0, nDisplayTimeMs + nFadeoutTimeMs + 1, 1, TJAPlayer3.Timer );
 		}
 
-		/// <summary>
-		/// チップの表示/非表示の状態
-		/// </summary>
-		public enum EChipInvisibleState
-		{
-			SHOW,			// Missなどしてチップを表示中
-			FADEOUT,		// 表示期間終了後、フェードアウト中
-			INVISIBLE		// 完全非表示
-		}
-
-		internal EChipInvisibleState SetInvisibleStatus( ref CDTX.CChip cc )
-		{
-			if ( cc.e楽器パート == E楽器パート.UNKNOWN )
-			{
-				return EChipInvisibleState.SHOW;
-			}
-			int nInst = (int) cc.e楽器パート;
-			EChipInvisibleState retcode = EChipInvisibleState.SHOW;
-
-			ccounter[ nInst ].t進行();
-
-			switch ( eInvisibleMode[ nInst ] )
-			{
-				case EInvisible.OFF:
-					cc.b可視 = true;
-					retcode = EChipInvisibleState.SHOW;
-					break;
-
-				case EInvisible.FULL:
-					cc.b可視 = false;
-					retcode = EChipInvisibleState.INVISIBLE;
-					break;
-
-				case EInvisible.SEMI:
-					if ( !b演奏チップが１つでもバーを通過した[ nInst ] )	// まだ1つもチップがバーを通過していない時は、チップを表示する
-					{
-						cc.b可視 = true;
-						cc.n透明度 = 255;
-						return EChipInvisibleState.SHOW;
-					}
-
-					if ( ccounter[ nInst ].n現在の値 <= 0 || ccounter[ nInst ].n現在の値 > nDisplayTimeMs + nFadeoutTimeMs )
-					// まだ一度もMissっていない or フェードアウトしきった後
-					{
-						cc.b可視 = false;
-						cc.n透明度 = 255;
-						retcode = EChipInvisibleState.INVISIBLE;
-					}
-					else if ( ccounter[ nInst ].n現在の値 < nDisplayTimeMs )								// 表示期間
-					{
-						cc.b可視 = true;
-						cc.n透明度 = 255;
-						retcode = EChipInvisibleState.SHOW;
-					}
-					else if ( ccounter[ nInst ].n現在の値 < nDisplayTimeMs + nFadeoutTimeMs )		// フェードアウト期間
-					{
-						cc.b可視 = true;
-						cc.n透明度 = 255 - (int) ( Convert.ToDouble( ccounter[ nInst ].n現在の値 - nDisplayTimeMs ) / nFadeoutTimeMs * 255.0 );
-						retcode = EChipInvisibleState.FADEOUT;
-					}
-					break;
-				default:
-					cc.b可視 = true;
-					cc.n透明度 = 255;
-					retcode = EChipInvisibleState.SHOW;
-					break;
-			}
-			return retcode;
-		}
-		
 		#region [ Dispose-Finalize パターン実装 ]
 		//-----------------
 		public void Dispose()

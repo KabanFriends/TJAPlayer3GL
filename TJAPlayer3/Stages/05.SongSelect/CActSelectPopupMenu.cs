@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Globalization;
-using System.Text;
 using System.Runtime.InteropServices;
 using System.Drawing;
-using System.IO;
 using FDK;
 
 
@@ -67,7 +63,7 @@ namespace TJAPlayer3
 			stqMenuTitle.cItem.str項目名 = title;
 		    using (var bitmap = prvFont.DrawPrivateFont( title, Color.White, Color.Black ))
 		    {
-		        stqMenuTitle.txName = TJAPlayer3.tテクスチャの生成( bitmap);
+		        stqMenuTitle.txName = TJAPlayer3.tテクスチャの生成( bitmap );
 		        stqMenuTitle.rectName = prvFont.RectStrings;
 		    }
 			lciMenuItems = new stQuickMenuItem[ menulist.Count ];
@@ -77,7 +73,7 @@ namespace TJAPlayer3
 				stqm.cItem = menulist[ i ];
 			    using (var bitmap = prvFont.DrawPrivateFont( menulist[ i ].str項目名, Color.White, Color.Black ))
 			    {
-			        stqm.txName = TJAPlayer3.tテクスチャの生成( bitmap);
+			        stqm.txName = TJAPlayer3.tテクスチャの生成( bitmap );
 			        stqm.rectName = prvFont.RectStrings;
 			    }
 				lciMenuItems[ i ] = stqm;
@@ -104,8 +100,7 @@ namespace TJAPlayer3
 				if ( this.n現在の選択行 != lciMenuItems.Length - 1 )
 				{
 					if ( lciMenuItems[ n現在の選択行 ].cItem.e種別 == CItemBase.E種別.リスト ||
-						 lciMenuItems[ n現在の選択行 ].cItem.e種別 == CItemBase.E種別.ONorOFFトグル ||
-						 lciMenuItems[ n現在の選択行 ].cItem.e種別 == CItemBase.E種別.ONorOFFor不定スリーステート	)
+						 lciMenuItems[ n現在の選択行 ].cItem.e種別 == CItemBase.E種別.ONorOFFトグル )
 					{
 						lciMenuItems[ n現在の選択行 ].cItem.t項目値を次へ移動();
 					}
@@ -213,8 +208,8 @@ namespace TJAPlayer3
 				this.font.On非活性化();
 				this.font = null;
 
-				//CDTXMania.t安全にDisposeする( ref this.txCursor );
-				//CDTXMania.t安全にDisposeする( ref this.txPopupMenuBackground );
+				//CDTXMania.tテクスチャの解放( ref this.txCursor );
+				//CDTXMania.tテクスチャの解放( ref this.txPopupMenuBackground );
 				for ( int i = 0; i < 4; i++ )
 				{
 					this.ctキー反復用[ i ] = null;
@@ -234,8 +229,8 @@ namespace TJAPlayer3
 		{
 			if ( !base.b活性化してない )
 			{
-				//CDTXMania.t安全にDisposeする( ref this.txPopupMenuBackground );
-				//CDTXMania.t安全にDisposeする( ref this.txCursor );
+				//CDTXMania.tテクスチャの解放( ref this.txPopupMenuBackground );
+				//CDTXMania.tテクスチャの解放( ref this.txCursor );
                 TJAPlayer3.t安全にDisposeする( ref this.prvFont );
 			}
 			base.OnManagedリソースの解放();
@@ -318,11 +313,10 @@ namespace TJAPlayer3
 					#endregion
 				}
 				#region [ ポップアップメニュー 背景描画 ]
-				if ( TJAPlayer3.Tx.Menu_Title != null )
-				{
-                    TJAPlayer3.Tx.Menu_Title.t2D描画( TJAPlayer3.app.Device, 160, 40 );
-				}
-				#endregion
+
+                TJAPlayer3.Tx.Menu_Title?.t2D描画(TJAPlayer3.app.Device, 160, 40);
+
+                #endregion
 				#region [ ソートメニュータイトル描画 ]
 				int x = 240, y = 44;
 				stqMenuTitle.txName.t2D描画( TJAPlayer3.app.Device, x, y );

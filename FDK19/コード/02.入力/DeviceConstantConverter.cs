@@ -13,9 +13,9 @@ namespace FDK
 	{
 		// メソッド
 
-		public static Key DIKtoKey( int dik )
+		public static Key DIKtoKey(int dik)
 		{
-			switch( dik )
+			switch (dik)
 			{
 				case 1:
 					return Key.Escape;
@@ -451,9 +451,9 @@ namespace FDK
 			}
 			return Key.Unknown;
 		}
-		public static int KeyToDIK( Key key )
+		public static int KeyToDIK(Key key)
 		{
-			switch( key )
+			switch (key)
 			{
 				case Key.D0:
 					return 11;
@@ -889,9 +889,9 @@ namespace FDK
 			}
 			return 0;
 		}
-		public static Keys KeyToKeyCode(SlimDXKey key )
+		public static Keys KeyToKeyCode(SlimDXKey key)
 		{
-			switch ( key )
+			switch (key)
 			{
 				case Key.D0:
 					return Keys.D0;
@@ -1001,14 +1001,14 @@ namespace FDK
 				case Key.Z:
 					return Keys.Z;
 
-//				case Key.AbntC1:
-//					return Keys.A; //0x73;
-					//147
-//				case Key.AbntC2:
-//					return Keys.A; //0x7e;
+				//				case Key.AbntC1:
+				//					return Keys.A; //0x73;
+				//147
+				//				case Key.AbntC2:
+				//					return Keys.A; //0x7e;
 
-//				case Key.Apostrophe:
-//					return Keys.A;			///
+				//				case Key.Apostrophe:
+				//					return Keys.A;			///
 
 				case Key.Applications:
 					return Keys.Apps;
@@ -1016,8 +1016,8 @@ namespace FDK
 				case Key.AT:
 					return Keys.Oem3;
 
-//				case Key.AX:
-//					return Keys.A;			///
+				//				case Key.AX:
+				//					return Keys.A;			///
 
 				case Key.Backspace:
 					return Keys.Back;
@@ -1025,8 +1025,8 @@ namespace FDK
 				case Key.Backslash:
 					return Keys.Oem5;
 
-//				case Key.Calculator:
-//					return Keys.A;			///
+				//				case Key.Calculator:
+				//					return Keys.A;			///
 
 				case Key.CapsLock:
 					return Keys.CapsLock;
@@ -1050,7 +1050,7 @@ namespace FDK
 					return Keys.End;
 
 				case Key.Equals:
-					return Keys.A;			///
+					return Keys.A;          ///
 
 				case Key.Escape:
 					return Keys.Escape;
@@ -1101,7 +1101,7 @@ namespace FDK
 					return Keys.F15;
 
 				case Key.Grave:
-					return Keys.A;			///
+					return Keys.A;          ///
 
 				case Key.Home:
 					return Keys.Home;
@@ -1148,7 +1148,7 @@ namespace FDK
 				case Key.Mute:
 					return Keys.VolumeMute;
 
-				case Key.MyComputer:			///
+				case Key.MyComputer:            ///
 					return Keys.A;
 
 				case Key.NextTrack:
@@ -1194,10 +1194,10 @@ namespace FDK
 					return Keys.Separator;
 
 				case Key.NumberPadEnter:
-					return Keys.A;				//
+					return Keys.A;              //
 
 				case Key.NumberPadEquals:
-					return Keys.A;				//
+					return Keys.A;              //
 
 				case Key.NumberPadMinus:
 					return Keys.Subtract;
@@ -1212,7 +1212,7 @@ namespace FDK
 					return Keys.Divide;
 
 				case Key.NumberPadStar:
-					return Keys.Multiply;		//
+					return Keys.Multiply;       //
 
 				case Key.Oem102:
 					return Keys.Oem102;
@@ -1233,7 +1233,7 @@ namespace FDK
 					return Keys.MediaPlayPause;
 
 				case Key.Power:
-					return Keys.A;				///
+					return Keys.A;              ///
 
 				case Key.PreviousTrack:
 					return Keys.MediaPreviousTrack;
@@ -1263,7 +1263,7 @@ namespace FDK
 					return Keys.Scroll;
 
 				case Key.Semicolon:
-					return Keys.Oemplus;		///??
+					return Keys.Oemplus;        ///??
 
 				case Key.Slash:
 					return Keys.Oem2;
@@ -1286,8 +1286,8 @@ namespace FDK
 				case Key.Underline:
 					return Keys.Oem102;
 
-//				case Key.Unlabeled:				///
-//					return Keys.A;
+				//				case Key.Unlabeled:				///
+				//					return Keys.A;
 
 				case Key.UpArrow:
 					return Keys.Up;
@@ -1299,7 +1299,7 @@ namespace FDK
 					return Keys.VolumeUp;
 
 				case Key.Wake:
-					return Keys.A;				///
+					return Keys.A;              ///
 
 				case Key.WebBack:
 					return Keys.BrowserBack;

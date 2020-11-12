@@ -29,7 +29,7 @@ namespace TJAPlayer3
 		{
 			if( !base.b活性化してない )
 			{
-				//CDTXMania.t安全にDisposeする( ref this.tx黒タイル64x64 );
+				//CDTXMania.tテクスチャの解放( ref this.tx黒タイル64x64 );
 				base.On非活性化();
 			}
 		}

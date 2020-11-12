@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Text;
 using System.Drawing;
 using System.IO;
-
 using FDK;
 
 namespace TJAPlayer3
@@ -130,7 +129,7 @@ namespace TJAPlayer3
 				string pathパネル本体 = CSkin.Path( @"Graphics\ScreenSelect popup auto settings.png" );
 				if ( File.Exists( pathパネル本体 ) )
 				{
-					this.txパネル本体 = TJAPlayer3.tテクスチャの生成( pathパネル本体);
+					this.txパネル本体 = TJAPlayer3.tテクスチャの生成( pathパネル本体 );
 				}
 
 				base.OnManagedリソースの作成();
@@ -140,8 +139,8 @@ namespace TJAPlayer3
 		{
 			if ( !base.b活性化してない )
 			{
-				TJAPlayer3.t安全にDisposeする( ref this.txパネル本体 );
-				TJAPlayer3.t安全にDisposeする( ref this.tx文字列パネル );
+				TJAPlayer3.t安全にDisposeする(ref this.txパネル本体);
+				TJAPlayer3.t安全にDisposeする(ref this.tx文字列パネル);
 				base.OnManagedリソースの解放();
 			}
 		}

@@ -7,6 +7,7 @@ using System.IO;
 using System.Diagnostics;
 using FDK;
 using FDK.ExtensionMethods;
+using TJAPlayer3.Common;
 
 namespace TJAPlayer3
 {
@@ -747,9 +748,11 @@ namespace TJAPlayer3
         public bool ShowMob;
         public bool ShowPuchiChara; // リザーブ
         //
-
         public EScrollMode eScrollMode = EScrollMode.Normal;
         public bool bスクロールモードを上書き = false;
+
+        public EGaugeMode eGaugeMode = EGaugeMode.Normal;
+        public bool bゲージモードを上書き = false;
 
         public bool bHispeedRandom;
         public Eステルスモード eSTEALTH;
@@ -778,7 +781,7 @@ namespace TJAPlayer3
 		{
 			get
 			{
-				return ( !this.bConfigIniが存在している || !TJAPlayer3.VERSION.Equals( this.strDTXManiaのバージョン ) );
+				return ( !this.bConfigIniが存在している || !TJAPlayer3.AppNumericThreePartVersion.Equals( this.strDTXManiaのバージョン ) );
 			}
 		}
 		public bool bEnterがキー割り当てのどこにも使用されていない
@@ -791,7 +794,7 @@ namespace TJAPlayer3
 					{
 						for( int k = 0; k < 0x10; k++ )
 						{
-							if( ( this.KeyAssign[ i ][ j ][ k ].入力デバイス == E入力デバイス.キーボード ) && ( this.KeyAssign[ i ][ j ][ k ].コード == (int)SlimDXKeys.Key.Return))
+							if( ( this.KeyAssign[ i ][ j ][ k ].入力デバイス == E入力デバイス.キーボード ) && ( this.KeyAssign[ i ][ j ][ k ].コード == (int) SlimDXKeys.Key.Return ) )
 							{
 								return false;
 							}
@@ -858,11 +861,6 @@ namespace TJAPlayer3
 		public STDGBVALUE<EInvisible> eInvisible;	// #32072 2013.9.20 yyagi チップを非表示にする
 		public int nDisplayTimesMs, nFadeoutTimeMs;
 
-		public STDGBVALUE<int> nViewerScrollSpeed;
-		public bool bViewerVSyncWait;
-		public bool bViewerShowDebugStatus;
-		public bool bViewerTimeStretch;
-		public bool bViewerDrums有効, bViewerGuitar有効;
 		//public bool bNoMP3Streaming;				// 2014.4.14 yyagi; mp3のシーク位置がおかしくなる場合は、これをtrueにすることで、wavにデコードしてからオンメモリ再生する
 		public int nMasterVolume;
         public bool ShinuchiMode; // 真打モード
@@ -1252,9 +1250,9 @@ namespace TJAPlayer3
 			this.b全画面モード = false;
 			this.b垂直帰線待ちを行う = true;
 			this.n初期ウィンドウ開始位置X = 0; // #30675 2013.02.04 ikanick add
-			this.n初期ウィンドウ開始位置Y = 0;
-			this.nウインドウwidth = GameWindowSize.Width;            // #23510 2010.10.31 yyagi add
-			this.nウインドウheight = GameWindowSize.Height;          // 
+			this.n初期ウィンドウ開始位置Y = 0;  
+			this.nウインドウwidth = GameWindowSize.Width;			// #23510 2010.10.31 yyagi add
+			this.nウインドウheight = GameWindowSize.Height;			// 
 			this.nフレーム毎スリープms = -1;			// #xxxxx 2011.11.27 yyagi add
 			this.n非フォーカス時スリープms = 1;			// #23568 2010.11.04 ikanick add
 			this._bGuitar有効 = true;
@@ -1276,7 +1274,7 @@ namespace TJAPlayer3
 			this.n表示可能な最小コンボ数.Guitar = 2;
 			this.n表示可能な最小コンボ数.Bass = 2;
 			this.n表示可能な最小コンボ数.Taiko = 3;
-            this.FontName = "MS UI Gothic";
+            this.FontName = FontUtilities.FallbackFontName;
 		    this.ApplyLoudnessMetadata = true;
 
 		    // 2018-08-28 twopointzero:
@@ -1327,7 +1325,6 @@ namespace TJAPlayer3
 				this.n譜面スクロール速度[ i ] = 1;
 				this.nJudgeLinePosOffset[ i ] = 0;
 				this.eInvisible[ i ] = EInvisible.OFF;
-				this.nViewerScrollSpeed[ i ] = 1;
 				this.e判定位置[ i ] = E判定位置.標準;
 				//this.e判定表示優先度[ i ] = E判定表示優先度.Chipより下;
 			}
@@ -1384,14 +1381,6 @@ namespace TJAPlayer3
 			this.nDisplayTimesMs = 3000;				// #32072 2013.10.24 yyagi Semi-Invisibleでの、チップ再表示期間
 			this.nFadeoutTimeMs = 2000;					// #32072 2013.10.24 yyagi Semi-Invisibleでの、チップフェードアウト時間
 
-			bViewerVSyncWait = true;
-			bViewerShowDebugStatus = true;
-			bViewerTimeStretch = false;
-			bViewerDrums有効 = true;
-			bViewerGuitar有効 = true;
-            
-            
-
             this.bBranchGuide = false;
             this.nScoreMode = 2;
             this.nDefaultCourse = 3;
@@ -1429,12 +1418,6 @@ namespace TJAPlayer3
             this.bDirectShowMode = false;
             #endregion
         }
-		public CConfigIni( string iniファイル名 )
-			: this()
-		{
-			this.tファイルから読み込み( iniファイル名 );
-		}
-
 
 		// メソッド
 
@@ -1485,7 +1468,7 @@ namespace TJAPlayer3
 			#region [ Version ]
 			sw.WriteLine( "; リリースバージョン" );
 			sw.WriteLine( "; Release Version." );
-			sw.WriteLine( "Version={0}", TJAPlayer3.VERSION );
+			sw.WriteLine( "Version={0}", TJAPlayer3.AppNumericThreePartVersion );
 			sw.WriteLine();
 			#endregion
 			#region [ TJAPath ]
@@ -1501,8 +1484,6 @@ namespace TJAPlayer3
 			Uri uriRoot = new Uri( System.IO.Path.Combine( TJAPlayer3.strEXEのあるフォルダ, "System" + System.IO.Path.DirectorySeparatorChar ) );
 			if ( strSystemSkinSubfolderFullName != null && strSystemSkinSubfolderFullName.Length == 0 )
 			{
-				// Config.iniが空の状態でDTXManiaをViewerとして起動_終了すると、strSystemSkinSubfolderFullName が空の状態でここに来る。
-				// → 初期値として Default/ を設定する。
 				strSystemSkinSubfolderFullName = System.IO.Path.Combine( TJAPlayer3.strEXEのあるフォルダ, "System" + System.IO.Path.DirectorySeparatorChar + "Default" + System.IO.Path.DirectorySeparatorChar );
 			}
 			Uri uriPath = new Uri( System.IO.Path.Combine( this.strSystemSkinSubfolderFullName, "." + System.IO.Path.DirectorySeparatorChar ) );
@@ -1830,8 +1811,12 @@ namespace TJAPlayer3
             sw.WriteLine( "ScrollMode={0}", (int)this.eScrollMode );
             sw.WriteLine();
             */
-			#region [ SUDDEN ]
-			sw.WriteLine( "; ドラムSUDDENモード(0:OFF, 1:ON)" );
+            sw.WriteLine("; ゲージモード(※β版)");
+            sw.WriteLine("; (0:通常, 1:グルーブゲージ, 2:ハードゲージ)");
+            sw.WriteLine("GaugeMode={0}", (int)this.eGaugeMode);
+            sw.WriteLine();
+            #region [ SUDDEN ]
+            sw.WriteLine( "; ドラムSUDDENモード(0:OFF, 1:ON)" );
 			sw.WriteLine( "DrumsSudden={0}", this.bSudden.Drums ? 1 : 0 );
 			sw.WriteLine();
 			#endregion
@@ -2059,10 +2044,6 @@ namespace TJAPlayer3
 							else if ( str2.Equals( "PlayOption" ) )
 							{
 								unknown = Eセクション種別.PlayOption;
-							}
-							else if ( str2.Equals( "ViewerOption" ) )
-							{
-								unknown = Eセクション種別.ViewerOption;
 							}
 							else if ( str2.Equals( "GUID" ) )
 							{
@@ -2577,6 +2558,10 @@ namespace TJAPlayer3
                                             {
                                                 this.eScrollMode = ( EScrollMode )C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 2, 0 );
                                             }
+                                            else if( str3.Equals( "GaugeMode" ))
+                                            {
+                                                this.eGaugeMode = (EGaugeMode)C変換.n値を文字列から取得して範囲内に丸めて返す(str4, 0, 3, 0);
+                                            }
                                             /*
 											else if( str3.Equals( "DrumsGraph" ) )  // #24074 2011.01.23 addikanick
 											{
@@ -2623,7 +2608,7 @@ namespace TJAPlayer3
 											}
 											else if( str3.Equals( "PlaySpeed" ) )
 											{
-												this.n演奏速度 = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 5, 400, this.n演奏速度 );
+												this.n演奏速度 = C変換.n値を文字列から取得して範囲内に丸めて返す(str4, 5, 400, this.n演奏速度);
 											}
 											//else if ( str3.Equals( "JudgeDispPriorityDrums" ) )
 											//{
@@ -2709,47 +2694,6 @@ namespace TJAPlayer3
                                             {
                                                 ShinuchiMode = C変換.bONorOFF(str4[0]);
                                             }
-											continue;
-										}
-									//-----------------------------
-									#endregion
-
-									#region [ [ViewerOption] ]
-									//-----------------------------
-									case Eセクション種別.ViewerOption:
-										{
-											if ( str3.Equals( "ViewerDrumsScrollSpeed" ) )
-											{
-												this.nViewerScrollSpeed.Drums = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 1999, this.nViewerScrollSpeed.Drums );
-											}
-											else if ( str3.Equals( "ViewerGuitarScrollSpeed" ) )
-											{
-												this.nViewerScrollSpeed.Guitar = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 1999, this.nViewerScrollSpeed.Guitar );
-											}
-											else if ( str3.Equals( "ViewerBassScrollSpeed" ) )
-											{
-												this.nViewerScrollSpeed.Bass = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 1999, this.nViewerScrollSpeed.Bass );
-											}
-											else if ( str3.Equals( "ViewerVSyncWait" ) )
-											{
-												this.bViewerVSyncWait = C変換.bONorOFF( str4[ 0 ] );
-											}
-											else if ( str3.Equals( "ViewerShowDebugStatus" ) )
-											{
-												this.bViewerShowDebugStatus = C変換.bONorOFF( str4[ 0 ] );
-											}
-											else if ( str3.Equals( "ViewerTimeStretch" ) )
-											{
-												this.bViewerTimeStretch = C変換.bONorOFF( str4[ 0 ] );
-											}
-											else if ( str3.Equals( "ViewerGuitar" ) )
-											{
-												this.bViewerGuitar有効 = C変換.bONorOFF( str4[ 0 ] );
-											}
-											else if ( str3.Equals( "ViewerDrums" ) )
-											{
-												this.bViewerDrums有効 = C変換.bONorOFF( str4[ 0 ] );
-											}
 											continue;
 										}
 									//-----------------------------
@@ -2863,7 +2807,6 @@ namespace TJAPlayer3
 			System,
 			Log,
 			PlayOption,
-			ViewerOption,
 			AutoPlay,
 			HitRange,
 			GUID,

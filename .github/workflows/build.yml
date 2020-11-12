@@ -1,0 +1,21 @@
+name: build
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: windows-2019
+
+    steps:
+    - uses: actions/checkout@v1
+    - uses: warrenbuckley/Setup-Nuget@v1
+    - run: nuget restore $Env:GITHUB_WORKSPACE\TJAPlayer3.sln
+    - uses: warrenbuckley/Setup-MSBuild@v1
+    - run: MSBuild.exe $Env:GITHUB_WORKSPACE\TJAPlayer3.sln -p:Configuration=Release
+      timeout-minutes: 5
+    - uses: actions/upload-artifact@v1.0.0
+      with:
+        name: KabanFriends-TJAPlayer3-develop
+        path: Test
+      

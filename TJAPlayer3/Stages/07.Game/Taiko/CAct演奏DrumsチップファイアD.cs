@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using OpenTK;
@@ -19,85 +17,6 @@ namespace TJAPlayer3
 		
 		
 		// メソッド
-
-        /// <summary>
-        /// 大音符の花火エフェクト
-        /// </summary>
-        /// <param name="nLane"></param>
-        public virtual void Start( int nLane, int nPlayer )
-        {
-            nY座標P2 = new int[] { 548, 612, 670, 712, 730, 780, 725, 690, 640 };
-            if( TJAPlayer3.Tx.Effects_Hit_FireWorks != null && TJAPlayer3.Tx.Effects_Hit_FireWorks != null )
-            {
-                for (int i = 0; i < 9; i++)
-                {
-                    for (int j = 0; j < 45; j++)
-                    {
-                        if (!this.st大音符花火[j].b使用中)
-                        {
-                            this.st大音符花火[j].b使用中 = true;
-                            this.st大音符花火[j].ct進行 = new CCounter(0, 40, 18, TJAPlayer3.Timer); // カウンタ
-                            this.st大音符花火[j].fX = this.nX座標[ i ]; //X座標
-                            this.st大音符花火[j].fY = nPlayer == 0 ? this.nY座標[ i ] : this.nY座標P2[ i ];
-
-                            switch(nLane)
-                            {
-                                case 0:
-                                    this.st大音符花火[j].nColor = 0;
-                                    break;
-                                case 1:
-                                    this.st大音符花火[j].nColor = 1;
-                                    break;
-                            }
-
-                            switch( i )
-                            {
-                                case 0:
-                                    this.st大音符花火[ j ].n開始フレーム = 0;
-                                    this.st大音符花火[ j ].n終了フレーム = 16;
-                                    break;
-                                case 1:
-                                    this.st大音符花火[ j ].n開始フレーム = 3;
-                                    this.st大音符花火[ j ].n終了フレーム = 19;
-                                    break;
-                                case 2:
-                                    this.st大音符花火[ j ].n開始フレーム = 6;
-                                    this.st大音符花火[ j ].n終了フレーム = 22;
-                                    break;
-                                case 3:
-                                    this.st大音符花火[ j ].n開始フレーム = 9;
-                                    this.st大音符花火[ j ].n終了フレーム = 25;
-                                    break;
-                                case 4:
-                                    this.st大音符花火[ j ].n開始フレーム = 12;
-                                    this.st大音符花火[ j ].n終了フレーム = 28;
-                                    break;
-                                case 5:
-                                    this.st大音符花火[ j ].n開始フレーム = 15;
-                                    this.st大音符花火[ j ].n終了フレーム = 31;
-                                    break;
-                                case 6:
-                                    this.st大音符花火[ j ].n開始フレーム = 18;
-                                    this.st大音符花火[ j ].n終了フレーム = 34;
-                                    break;
-                                case 7:
-                                    this.st大音符花火[ j ].n開始フレーム = 21;
-                                    this.st大音符花火[ j ].n終了フレーム = 37;
-                                    break;
-                                case 8:
-                                    this.st大音符花火[ j ].n開始フレーム = 24;
-                                    this.st大音符花火[ j ].n終了フレーム = 40;
-                                    break;
-                            }
-
-
-
-                            break;
-                        }
-                    }
-                }
-            }
-        }
 
         public virtual void Start( int nLane, E判定 judge, int player )
 		{
@@ -131,49 +50,6 @@ namespace TJAPlayer3
                     break;
 			    }
             }
-		}
-		public void Start紙吹雪()
-		{
-            return;
-            /*
-            if (this.tx紙吹雪 != null)
-            {
-                for (int i = 0; i < 256; i++)
-                {
-                    for (int j = 0; j < 16; j++)
-                    {
-                        if (!this.st紙吹雪[j].b使用中)
-                        {
-                            this.st紙吹雪[j].b使用中 = true;
-                            int n回転初期値 = CDTXMania.Random.Next(360);
-                            int nX拡散方向 = CDTXMania.Random.Next(10);
-                            int n拡散の大きさ = CDTXMania.Random.Next( 50, 1400 );
-                            int n重力加速 = CDTXMania.Random.Next( 6, 100 );
-                            double num7 = ( n拡散の大きさ / 1000.0 ) + (1 / 100.0); // 拡散の大きさ
-                            //double num7 = 0.9 + ( ( (double) CDTXMania.Random.Next( 40 ) ) / 100.0 );
-                            this.st紙吹雪[ j ].nGraphic = CDTXMania.Random.Next(3);
-                            this.st紙吹雪[ j ].nColor = CDTXMania.Random.Next(3);
-                            this.st紙吹雪[j].ct進行 = new CCounter(0, 500, 5, CDTXMania.Timer); // カウンタ
-                            this.st紙吹雪[j].fX = 1000; //X座標(仮)
-
-                            this.st紙吹雪[j].fY = ((( 470 + (((float)Math.Sin((double)this.st紙吹雪[j].f半径)) * this.st紙吹雪[j].f半径)) )); //Y座標
-                            //this.st紙吹雪[j].f加速度X = (float)(num7 * Math.Cos((Math.PI * 2 * n回転初期値) / 360.0));
-                            //this.st紙吹雪[ j ].f加速度X = (float)( ( num7 * Math.Cos((Math.PI * 2 * n回転初期値) / 360.0)) > 0.005 ? Math.Abs( num7 * Math.Cos((Math.PI * 2 * n回転初期値) / 360.0)) : num7 * Math.Cos((Math.PI * 2 * n回転初期値) / 360.0) );
-                            this.st紙吹雪[ j ].f加速度X = (float)Math.Abs(num7 * Math.Cos((Math.PI * 2 * n回転初期値) / 360.0)) - ( nX拡散方向 / 20.0f );
-                            this.st紙吹雪[j].f加速度Y = (float)-Math.Abs( num7 * (Math.Sin((Math.PI * 2 * n回転初期値) / 360.0))) - 0.05f;
-                            //this.st紙吹雪[j].f加速度Y = (float)( num7 * (Math.Sin((Math.PI * 2 * n回転初期値) / 360.0))) - 0.05f;
-                            this.st紙吹雪[j].f加速度の加速度X = 1.009f + (float)(num7 / 1000);
-                            this.st紙吹雪[j].f加速度の加速度Y = 0.989f + (float)(num7 / 1000);
-                            //this.st紙吹雪[j].f重力加速度 = 0.0100f;
-                            this.st紙吹雪[j].f重力加速度 = n重力加速 / 10000.0f;
-                            this.st紙吹雪[j].f半径 = (float)(0.5 + (((double)CDTXMania.Random.Next(40)) / 100.0));
-
-                            
-                            break;
-                        }
-                    }
-                }
-            }  */
 		}
 
 		// CActivity 実装
@@ -229,11 +105,11 @@ namespace TJAPlayer3
 		{
 			if( !base.b活性化してない )
 			{
-				//CDTXMania.t安全にDisposeする( ref this.txアタックエフェクトUpper );
-				//CDTXMania.t安全にDisposeする( ref this.txアタックエフェクトUpper_big );
-    //            CDTXMania.t安全にDisposeする( ref this.tx大音符花火[ 0 ] );
-    //            CDTXMania.t安全にDisposeする( ref this.tx大音符花火[ 1 ] );
-                //CDTXMania.t安全にDisposeする( ref this.tx紙吹雪 );
+				//CDTXMania.tテクスチャの解放( ref this.txアタックエフェクトUpper );
+				//CDTXMania.tテクスチャの解放( ref this.txアタックエフェクトUpper_big );
+    //            CDTXMania.tテクスチャの解放( ref this.tx大音符花火[ 0 ] );
+    //            CDTXMania.tテクスチャの解放( ref this.tx大音符花火[ 1 ] );
+                //CDTXMania.tテクスチャの解放( ref this.tx紙吹雪 );
 				base.OnManagedリソースの解放();
 			}
 		}
@@ -259,8 +135,8 @@ namespace TJAPlayer3
 					        if( TJAPlayer3.Tx.Effects_Hit_Explosion != null && !TJAPlayer3.IsPerformingCalibration )
 					        {
                                 int n = this.st状態[ i ].nIsBig == 1 ? 520 : 0;
-                                int nX = ( TJAPlayer3.Skin.nScrollFieldX[ this.st状態[ i ].nPlayer ] ) - ( (TJAPlayer3.Tx.Effects_Hit_Explosion.sz画像サイズ.Width / 7 ) / 2 );
-                                int nY = ( TJAPlayer3.Skin.nJudgePointY[ this.st状態[ i ].nPlayer ] ) - ( (TJAPlayer3.Tx.Effects_Hit_Explosion.sz画像サイズ.Height / 4 ) / 2 );
+                                int nX = ( TJAPlayer3.Skin.Game_Lane_Field_X[ this.st状態[ i ].nPlayer ] ) - ( (TJAPlayer3.Tx.Effects_Hit_Explosion.sz画像サイズ.Width / 7 ) / 2 );
+                                int nY = ( TJAPlayer3.Skin.Game_Lane_Field_Y[ this.st状態[ i ].nPlayer ] ) + (130/2) - ( (TJAPlayer3.Tx.Effects_Hit_Explosion.sz画像サイズ.Height / 4 ) / 2 );
 
                                 switch( st状態[ i ].judge )
                                 {
@@ -307,7 +183,7 @@ namespace TJAPlayer3
                                     if( this.st状態_大[ i ].nIsBig == 1 )
                                     {
                                         float fX = 415 - ((TJAPlayer3.Tx.Effects_Hit_Explosion_Big.sz画像サイズ.Width * TJAPlayer3.Tx.Effects_Hit_Explosion_Big.vc拡大縮小倍率.X ) / 2.0f);
-                                        float fY = TJAPlayer3.Skin.nJudgePointY[ this.st状態_大[ i ].nPlayer ] - ((TJAPlayer3.Tx.Effects_Hit_Explosion_Big.sz画像サイズ.Height * TJAPlayer3.Tx.Effects_Hit_Explosion_Big.vc拡大縮小倍率.Y ) / 2.0f);
+                                        float fY = TJAPlayer3.Skin.Game_Lane_Field_Y[ this.st状態_大[ i ].nPlayer ] + (130/2) - ((TJAPlayer3.Tx.Effects_Hit_Explosion_Big.sz画像サイズ.Height * TJAPlayer3.Tx.Effects_Hit_Explosion_Big.vc拡大縮小倍率.Y ) / 2.0f);
                                         //float fY = 257 - ((this.txアタックエフェクトUpper_big.sz画像サイズ.Height * this.txアタックエフェクトUpper_big.vc拡大縮小倍率.Y ) / 2.0f);
 
                                         ////7
@@ -319,7 +195,7 @@ namespace TJAPlayer3
 
                                         Matrix4 mat = Matrix4.Identity;
                                         mat *= Matrix4.CreateScale(f倍率, f倍率, f倍率);
-                                        mat *= Matrix4.CreateTranslation(TJAPlayer3.Skin.nScrollFieldX[0] - GameWindowSize.Width / 2.0f, -(TJAPlayer3.Skin.nJudgePointY[this.st状態[i].nPlayer] - GameWindowSize.Height / 2.0f), 0f);
+                                        mat *= Matrix4.CreateTranslation(TJAPlayer3.Skin.Game_Lane_Field_X[0] - GameWindowSize.Width / 2.0f, -(TJAPlayer3.Skin.Game_Lane_Field_Y[ this.st状態[ i ].nPlayer ] + (130 / 2) - GameWindowSize.Height / 2.0f), 0f );
                                         //mat *= Matrix.Billboard( new Vector3( 15, 15, 15 ), new Vector3(0, 0, 0), new Vector3( 0, 0, 0 ), new Vector3( 0, 0, 0 ) );
                                         //mat *= Matrix.Translation( 0f, 0f, 0f );
 
@@ -342,7 +218,7 @@ namespace TJAPlayer3
 
                 for (int i = 0; i < 45; i++)
                 {
-                    if( TJAPlayer3.Skin.nScrollFieldX[0] != 414 )
+                    if( TJAPlayer3.Skin.Game_Lane_Field_X[0] != 414 )
                         break;
 
                     if (this.st大音符花火[i].b使用中)

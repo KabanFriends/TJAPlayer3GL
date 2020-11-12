@@ -2,8 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
-using System.Runtime.InteropServices;
-
 using FDK;
 
 namespace TJAPlayer3
@@ -149,8 +147,6 @@ namespace TJAPlayer3
 
 		#region [ private ]
 		//-----------------
-
-        [StructLayout(LayoutKind.Sequential)]
         private struct StructRainbow
         {
             public bool IsUsing;

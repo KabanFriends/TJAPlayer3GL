@@ -1,15 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Globalization;
-using System.Runtime.InteropServices;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.Diagnostics;
-using System.Drawing.Text;
-
-
-using FDK;
+﻿using FDK;
 
 namespace TJAPlayer3
 {
@@ -32,7 +21,6 @@ namespace TJAPlayer3
 				return true;
 			}
 		}
-        public bool bIsDifficltSelect;
 
 		// コンストラクタ
 
@@ -90,50 +78,6 @@ namespace TJAPlayer3
                 //    this.n現在の選択行 = this.t指定した方向に近い難易度番号を返す( 1, 5 );
                 //}
 			}
-		}
-		public void t選択画面初期化()
-		{
-			//かんたんから一番近いところにカーソルを移動させる。
-            for( int i = 0; i < (int)Difficulty.Total; i++ )
-            {
-                if( TJAPlayer3.stage選曲.r現在選択中の曲.arスコア[ i ] != null )
-                {
-                    this.n現在の選択行 = i;
-                    break;
-                }
-            }
-
-            int n譜面数 = 0;
-            for( int i = 0; i < (int)Difficulty.Total; i++ )
-			{
-                if( TJAPlayer3.stage選曲.r現在選択中の曲.arスコア[ i ] != null ) n譜面数++;
-            }
-            for( int i = 0; i < (int)Difficulty.Total; i++ )
-			{
-                //描画順と座標を決める。
-                switch( n譜面数 )
-                {
-                    case 1:
-                    case 2:
-                        this.n描画順 = new[] { 0, 1, 2, 3, 4 };
-                        this.n踏み台座標 = new[] { 12, 252, 492, 732, 972 };
-                        break;
-                    case 3:
-                        this.n描画順 = new[] { 0, 2, 1, 3, 4 };
-                        this.n踏み台座標 = new[] { 12, 492, 252, 732, 972 };
-                        break;
-                    case 4:
-                        this.n描画順 = new[] { 0, 2, 1, 3, 4 };
-                        this.n踏み台座標 = new[] { 12, 492, 252, 732, 972 };
-                        break;
-                    case 5:
-                        this.n描画順 = new[] { 0, 3, 1, 4, 2 };
-                        this.n踏み台座標 = new[] { 12, 492, 972, 252, 732 };
-                        break;
-                }
-
-            }
-            this.b初めての進行描画 = true;
 		}
 
 		// CActivity 実装
@@ -194,19 +138,16 @@ namespace TJAPlayer3
 			if( this.b活性化してない )
 				return;
 
-            TJAPlayer3.t安全にDisposeする( ref this.tx背景 );
-            TJAPlayer3.t安全にDisposeする( ref this.txヘッダー );
-            TJAPlayer3.t安全にDisposeする( ref this.txフッター );
+            TJAPlayer3.t安全にDisposeする(ref this.tx背景);
+            TJAPlayer3.t安全にDisposeする(ref this.txヘッダー);
+            TJAPlayer3.t安全にDisposeする(ref this.txフッター);
 
-            TJAPlayer3.t安全にDisposeする( ref this.tx説明背景 );
-            TJAPlayer3.t安全にDisposeする( ref this.tx説明1 );
+            TJAPlayer3.t安全にDisposeする(ref this.tx説明背景);
+            TJAPlayer3.t安全にDisposeする(ref this.tx説明1);
 
             TJAPlayer3.t安全にDisposeする( ref this.soundSelectAnnounce );
 
-            for( int i = 0; i < (int)Difficulty.Total; i++ )
-            {
-                TJAPlayer3.t安全にDisposeする( ref this.tx踏み台[ i ] );
-            }
+            TJAPlayer3.t安全にDisposeする(tx踏み台);
 
 			base.OnManagedリソースの解放();
 		}
@@ -224,7 +165,7 @@ namespace TJAPlayer3
 				this.nスクロールタイマ = (long)(CSound管理.rc演奏用タイマ.n現在時刻 * (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0));
 				TJAPlayer3.stage選曲.t選択曲変更通知();
 
-                this.n矢印スクロール用タイマ値 = (long)(CSound管理.rc演奏用タイマ.n現在時刻 * (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0));
+				this.n矢印スクロール用タイマ値 = (long)(CSound管理.rc演奏用タイマ.n現在時刻 * (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0));
 				this.ct三角矢印アニメ.t開始( 0, 19, 40, TJAPlayer3.Timer );
 				
                 this.soundSelectAnnounce.tサウンドを再生する();
@@ -302,10 +243,6 @@ namespace TJAPlayer3
                             }
                             break;
                     }
-                }
-                else if( TJAPlayer3.Input管理.Keyboard.bキーが押された( (int) SlimDXKeys.Key.F7 ) )
-                {
-                    this.bIsDifficltSelect = false;
                 }
 
 				//-----------------
@@ -402,7 +339,7 @@ namespace TJAPlayer3
 		private int n現在の選択行;
 		private int n目標のスクロールカウンタ;
 
-        private CTexture[] tx踏み台 = new CTexture[(int)Difficulty.Total];
+        private readonly CTexture[] tx踏み台 = new CTexture[(int)Difficulty.Total];
 
         private CTexture tx背景;
         private CTexture txヘッダー;

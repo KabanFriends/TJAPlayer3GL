@@ -12,11 +12,11 @@ namespace FDK
 		{
 			get;
 		}
-		string GUID 
+		string GUID
 		{
-			get; 
+			get;
 		}
-		int ID 
+		int ID
 		{
 			get;
 		}
@@ -28,10 +28,10 @@ namespace FDK
 
 		// メソッドインターフェース
 
-		void tポーリング( bool bWindowがアクティブ中 );
-		bool bキーが押された( int nKey );
-		bool bキーが押されている( int nKey );
-		bool bキーが離された( int nKey );
-		bool bキーが離されている( int nKey );
+		void tポーリング(bool bWindowがアクティブ中);
+		bool bキーが押された(int nKey);
+		bool bキーが押されている(int nKey);
+		bool bキーが離された(int nKey);
+		bool bキーが離されている(int nKey);
 	}
 }

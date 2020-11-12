@@ -6,8 +6,8 @@ using System.Windows.Forms;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Diagnostics;
-using System.Runtime.InteropServices;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using FDK;
 using System.Reflection;
@@ -15,8 +15,6 @@ using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 
-using Rectangle = System.Drawing.Rectangle;
-using Point = System.Drawing.Point;
 using Color = System.Drawing.Color;
 
 namespace TJAPlayer3
@@ -25,7 +23,35 @@ namespace TJAPlayer3
 	{
 		// プロパティ
 		#region [ properties ]
-		public static readonly string VERSION = Assembly.GetExecutingAssembly().GetName().Version.ToString().Substring(0, Assembly.GetExecutingAssembly().GetName().Version.ToString().Length - 2);
+
+		public static readonly string AppDisplayName = Assembly.GetExecutingAssembly().GetName().Name;
+
+		public static readonly string AppDisplayThreePartVersion = GetAppDisplayThreePartVersion();
+		public static readonly string AppNumericThreePartVersion = GetAppNumericThreePartVersion();
+
+		private static string GetAppDisplayThreePartVersion()
+		{
+			return $"v{GetAppNumericThreePartVersion()}";
+		}
+
+		private static string GetAppNumericThreePartVersion()
+		{
+			var version = Assembly.GetExecutingAssembly().GetName().Version;
+
+			return $"{version.Major}.{version.Minor}.{version.Build}";
+		}
+
+		public static readonly string AppInformationalVersion =
+			Assembly
+				.GetExecutingAssembly()
+				.GetCustomAttributes(typeof(AssemblyInformationalVersionAttribute), false)
+				.Cast<AssemblyInformationalVersionAttribute>()
+				.FirstOrDefault()
+				?.InformationalVersion
+			?? $"{GetAppDisplayThreePartVersion()}";
+
+		public static readonly string AppDisplayNameWithThreePartVersion = $"{AppDisplayName} {AppDisplayThreePartVersion}";
+		public static readonly string AppDisplayNameWithInformationalVersion = $"{AppDisplayName} {AppInformationalVersion}";
 
 		public static TJAPlayer3 app
 		{
@@ -37,13 +63,6 @@ namespace TJAPlayer3
 			get;
 			private set;
 		}
-
-		public static bool bコンパクトモード
-		{
-			get;
-			private set;
-		}
-
 		public static CConfigIni ConfigIni
 		{
 			get;
@@ -97,7 +116,6 @@ namespace TJAPlayer3
 			get;
 			private set;
 		}
-
 		public static CInput管理 Input管理
 		{
 			get;
@@ -200,7 +218,6 @@ namespace TJAPlayer3
 			get;
 			private set;
 		}
-
 		public static CSound管理 Sound管理
 		{
 			get;
@@ -276,18 +293,11 @@ namespace TJAPlayer3
 			get;
 			private set;
 		}
-		public static string strコンパクトモードファイル
-		{
-			get;
-			private set;
-		}
-
 		public static CTimer Timer
 		{
 			get;
 			private set;
 		}
-
 		public bool bApplicationActive
 		{
 			get
@@ -315,11 +325,6 @@ namespace TJAPlayer3
 		public IntPtr WindowHandle                  // 2012.10.24 yyagi; to add ASIO support
 		{
 			get { return base.WindowInfo.Handle; }
-		}
-		public static CDTXVmode DTXVmode			// #28821 2014.1.23 yyagi
-		{
-			get;
-			set;
 		}
 
 		#endregion
@@ -394,7 +399,6 @@ namespace TJAPlayer3
 
 		// Game 実装
 
-
 		protected override void OnResize(EventArgs e)
 		{
 			base.OnResize(e);
@@ -437,6 +441,7 @@ namespace TJAPlayer3
 					activity.OnUnmanagedリソースの作成();
 			}
 		}
+
 		protected override void OnUnload(EventArgs e)
 		{
 			if (this.listトップレベルActivities != null)
@@ -448,25 +453,20 @@ namespace TJAPlayer3
 			this.t終了処理();
 			base.OnUnload(e);
 		}
+
 		protected override void OnUpdateFrame(FrameEventArgs e)
 		{
 			base.OnUpdateFrame(e);
 		}
-		//private Stopwatch rsw = new Stopwatch();
+
 		protected override void OnRenderFrame(FrameEventArgs e)
 		{
-			//rsw.Reset();
-			//rsw.Start();
 			base.OnRenderFrame(e);
 
-			Sound管理?.t再生中の処理をする();
 			Timer?.t更新();
 			CSound管理.rc演奏用タイマ?.t更新();
 			Input管理?.tポーリング(this.bApplicationActive);
 			FPS?.tカウンタ更新();
-
-			if (this.Device == null)
-				return;
 
 			if (this.bApplicationActive)    // DTXMania本体起動中の本体/モニタの省電力モード移行を抑止
 				CPowerManagement.tDisableMonitorSuspend();
@@ -493,16 +493,17 @@ namespace TJAPlayer3
 			{
 				this.n進行描画の戻り値 = (r現在のステージ != null) ? r現在のステージ.On進行描画() : 0;
 
-				CScoreIni scoreIni = null;
-
-				if (Control.IsKeyLocked(Keys.CapsLock))             // #30925 2013.3.11 yyagi; capslock=ON時は、EnumSongsしないようにして、起動負荷とASIOの音切れの関係を確認する
-				{                                                       // → songs.db等の書き込み時だと音切れするっぽい
+				if ( Control.IsKeyLocked( Keys.CapsLock ) )				// #30925 2013.3.11 yyagi; capslock=ON時は、EnumSongsしないようにして、起動負荷とASIOの音切れの関係を確認する
+				{														// → songs.db等の書き込み時だと音切れするっぽい
 					actEnumSongs.On非活性化();
 					EnumSongs.SongListEnumCompletelyDone();
 					TJAPlayer3.stage選曲.bIsEnumeratingSongs = false;
 				}
+
 				#region [ 曲検索スレッドの起動/終了 ]					// ここに"Enumerating Songs..."表示を集約
+
 				actEnumSongs.On進行描画();                          // "Enumerating Songs..."アイコンの描画
+
 				switch (r現在のステージ.eステージID)
 				{
 					case CStage.Eステージ.タイトル:
@@ -622,6 +623,21 @@ namespace TJAPlayer3
 								#endregion
 								break;
 
+							#region [ OPTION: 廃止済 ]
+							//							case 2:									// #24525 OPTIONとCONFIGの統合に伴い、OPTIONは廃止
+							//								#region [ *** ]
+							//								//-----------------------------
+							//								r現在のステージ.On非活性化();
+							//								Trace.TraceInformation( "----------------------" );
+							//								Trace.TraceInformation( "■ オプション" );
+							//								stageオプション.On活性化();
+							//								r直前のステージ = r現在のステージ;
+							//								r現在のステージ = stageオプション;
+							//								//-----------------------------
+							//								#endregion
+							//								break;
+							#endregion
+
 							case (int)CStageタイトル.E戻り値.CONFIG:
 								#region [ *** ]
 								//-----------------------------
@@ -670,7 +686,7 @@ namespace TJAPlayer3
 					//									stageタイトル.On活性化();
 					//									r直前のステージ = r現在のステージ;
 					//									r現在のステージ = stageタイトル;
-					//				
+					//						
 					//									this.tガベージコレクションを実行する();
 					//									break;
 					//								//-----------------------------
@@ -824,7 +840,6 @@ namespace TJAPlayer3
 					case CStage.Eステージ.曲読み込み:
 						#region [ *** ]
 						//-----------------------------
-						DTXVmode.Refreshed = false;     // 曲のリロード中に発生した再リロードは、無視する。
 						if (this.n進行描画の戻り値 != 0)
 						{
 							TJAPlayer3.Pad.st検知したデバイス.Clear();  // 入力デバイスフラグクリア(2010.9.11)
@@ -842,13 +857,25 @@ namespace TJAPlayer3
 								stage選曲.On活性化();
 								r直前のステージ = r現在のステージ;
 								r現在のステージ = stage選曲;
+
 								break;
 							}
 							#endregion
 
 							Trace.TraceInformation("----------------------");
 							Trace.TraceInformation("■ 演奏（ドラム画面）");
-
+#if false       // #23625 2011.1.11 Config.iniからダメージ/回復値の定数変更を行う場合はここを有効にする 087リリースに合わせ機能無効化
+for (int i = 0; i < 5; i++)
+{
+	for (int j = 0; j < 2; j++)
+	{
+		stage演奏ドラム画面.fDamageGaugeDelta[i, j] = ConfigIni.fGaugeFactor[i, j];
+	}
+}
+for (int i = 0; i < 3; i++) {
+	stage演奏ドラム画面.fDamageLevelFactor[i] = ConfigIni.fDamageLevelFactor[i];
+}		
+#endif
 							r直前のステージ = r現在のステージ;
 							r現在のステージ = stage演奏ドラム画面;
 
@@ -872,74 +899,6 @@ namespace TJAPlayer3
 						//swlist3.Add( Convert.ToInt32( n3 ) );
 						//swlist4.Add( Convert.ToInt32( n4 ) );
 						//swlist5.Add( Convert.ToInt32( n5 ) );
-
-						#region [ DTXVモード中にDTXCreatorから指示を受けた場合の処理 ]
-						if (DTXVmode.Enabled && DTXVmode.Refreshed)
-						{
-							DTXVmode.Refreshed = false;
-
-							if (DTXVmode.Command == CDTXVmode.ECommand.Stop)
-							{
-								TJAPlayer3.stage演奏ドラム画面.t停止();
-								if (previewSound != null)
-								{
-									this.previewSound.tサウンドを停止する();
-									this.previewSound.Dispose();
-									this.previewSound = null;
-								}
-								//{
-								//    int lastd = 0;
-								//    int f = 0;
-								//    for ( int i = 0; i < swlist1.Count; i++ )
-								//    {
-								//        int d1 = swlist1[ i ];
-								//        int d2 = swlist2[ i ];
-								//        int d3 = swlist3[ i ];
-								//        int d4 = swlist4[ i ];
-								//        int d5 = swlist5[ i ];
-
-								//        int dif = d1 - lastd;
-								//        string s = "";
-								//        if ( 16 <= dif && dif <= 17 )
-								//        {
-								//        }
-								//        else
-								//        {
-								//            s = "★";
-								//        }
-								//        Trace.TraceInformation( "frame {0:D4}: {1:D3} ( {2:D3}, {3:D3} - {7:D3}, {4:D3} ) {5}, n現在時刻={6}", f, dif, d1, d2, d3, s, d4, d5 );
-								//        lastd = d1;
-								//        f++;
-								//    }
-								//    swlist1.Clear();
-								//    swlist2.Clear();
-								//    swlist3.Clear();
-								//    swlist4.Clear();
-								//    swlist5.Clear();
-
-								//}
-							}
-							else if (DTXVmode.Command == CDTXVmode.ECommand.Play)
-							{
-								if (DTXVmode.NeedReload)
-								{
-									TJAPlayer3.stage演奏ドラム画面.t再読込();
-
-									TJAPlayer3.ConfigIni.bTimeStretch = DTXVmode.TimeStretch;
-									CSound管理.bIsTimeStretch = DTXVmode.TimeStretch;
-									if (TJAPlayer3.ConfigIni.b垂直帰線待ちを行う != DTXVmode.VSyncWait)
-									{
-										TJAPlayer3.ConfigIni.b垂直帰線待ちを行う = DTXVmode.VSyncWait;
-										TJAPlayer3.app.b次のタイミングで垂直帰線同期切り替えを行う = true;
-									}
-								}
-								else
-								{
-									TJAPlayer3.stage演奏ドラム画面.t演奏位置の変更(TJAPlayer3.DTXVmode.nStartBar, 0);
-								}
-							}
-						}
-						#endregion
 
 						switch (this.n進行描画の戻り値)
 						{
@@ -966,13 +925,39 @@ namespace TJAPlayer3
 							case (int)E演奏画面の戻り値.演奏中断:
 								#region [ 演奏キャンセル ]
 								//-----------------------------
-								scoreIni = this.tScoreIniへBGMAdjustとHistoryとPlayCountを更新("Play canceled");
 
+								tScoreIniへBGMAdjustとHistoryとPlayCountを更新( "Play canceled" );
+
+								//int lastd = 0;
+								//int f = 0;
+								//for (int i = 0; i < swlist1.Count; i++)
+								//{
+								//    int d1 = swlist1[ i ];
+								//    int d2 = swlist2[ i ];
+								//    int d3 = swlist3[ i ];
+								//    int d4 = swlist4[ i ];
+
+								//    int dif = d1 - lastd;
+								//    string s = "";
+								//    if ( 16 <= dif && dif <= 17 )
+								//    {
+								//    }
+								//    else
+								//    {
+								//        s = "★";
+								//    }
+								//    Trace.TraceInformation( "frame {0:D4}: {1:D3} ( {2:D3}, {3:D3}, {4:D3} ) {5}, n現在時刻={6}", f, dif, d1, d2, d3, s, d4 );
+								//    lastd = d1;
+								//    f++;
+								//}
+								//swlist1.Clear();
+								//swlist2.Clear();
+								//swlist3.Clear();
+								//swlist4.Clear();
 
 								DTX.t全チップの再生停止();
 								DTX.On非活性化();
 								r現在のステージ.On非活性化();
-
 								Trace.TraceInformation("----------------------");
 								Trace.TraceInformation("■ 選曲");
 								stage選曲.On活性化();
@@ -980,7 +965,6 @@ namespace TJAPlayer3
 								r現在のステージ = stage選曲;
 
 								this.tガベージコレクションを実行する();
-
 								break;
 							//-----------------------------
 							#endregion
@@ -988,12 +972,12 @@ namespace TJAPlayer3
 							case (int)E演奏画面の戻り値.ステージ失敗:
 								#region [ 演奏失敗(StageFailed) ]
 								//-----------------------------
-								scoreIni = this.tScoreIniへBGMAdjustとHistoryとPlayCountを更新("Stage failed");
+
+								tScoreIniへBGMAdjustとHistoryとPlayCountを更新( "Stage failed" );
 
 								DTX.t全チップの再生停止();
 								DTX.On非活性化();
 								r現在のステージ.On非活性化();
-
 								Trace.TraceInformation("----------------------");
 								Trace.TraceInformation("■ 選曲");
 								stage選曲.On活性化();
@@ -1002,22 +986,84 @@ namespace TJAPlayer3
 
 								this.tガベージコレクションを実行する();
 								break;
-							//-----------------------------
-							#endregion
 
-							case (int)E演奏画面の戻り値.ステージクリア:
+                            //-----------------------------
+                            #endregion
+
+                            case (int) E演奏画面の戻り値.ステージ失敗_ハード:
+                                #region 演奏失敗(ハードゲージ)
+                                //-----------------------------
+                                CScoreIni.C演奏記録 c演奏記録_Drums;
+                                stage演奏ドラム画面.t演奏結果を格納する(out c演奏記録_Drums);
+
+                                double ps = 0.0, gs = 0.0;
+                                if (!c演奏記録_Drums.b全AUTOである && c演奏記録_Drums.n全チップ数 > 0)
+                                {
+                                    ps = c演奏記録_Drums.db演奏型スキル値;
+                                    gs = c演奏記録_Drums.dbゲーム型スキル値;
+                                }
+                                string str = "Failed";
+                                switch (CScoreIni.t総合ランク値を計算して返す(c演奏記録_Drums, null, null))
+                                {
+                                    case (int)CScoreIni.ERANK.SS:
+                                        str = string.Format("Failed (SS: {0:F2})", ps);
+                                        break;
+
+                                    case (int)CScoreIni.ERANK.S:
+                                        str = string.Format("Failed (S: {0:F2})", ps);
+                                        break;
+
+                                    case (int)CScoreIni.ERANK.A:
+                                        str = string.Format("Failed (A: {0:F2})", ps);
+                                        break;
+
+                                    case (int)CScoreIni.ERANK.B:
+                                        str = string.Format("Failed (B: {0:F2})", ps);
+                                        break;
+
+                                    case (int)CScoreIni.ERANK.C:
+                                        str = string.Format("Failed (C: {0:F2})", ps);
+                                        break;
+
+                                    case (int)CScoreIni.ERANK.D:
+                                        str = string.Format("Failed (D: {0:F2})", ps);
+                                        break;
+
+                                    case (int)CScoreIni.ERANK.E:
+                                        str = string.Format("Failed (E: {0:F2})", ps);
+                                        break;
+
+                                    case (int)CScoreIni.ERANK.UNKNOWN:  // #23534 2010.10.28 yyagi add: 演奏チップが0個のとき
+                                        str = "Failed (GAUGE:HARD)";
+                                        break;
+                                }
+
+                                tScoreIniへBGMAdjustとHistoryとPlayCountを更新(str);
+
+                                r現在のステージ.On非活性化();
+                                Trace.TraceInformation("----------------------");
+                                Trace.TraceInformation("■ 結果");
+                                stage結果.st演奏記録.Drums = c演奏記録_Drums;
+                                stage結果.On活性化();
+                                r直前のステージ = r現在のステージ;
+                                r現在のステージ = stage結果;
+
+                                break;
+                            #endregion
+
+                            case (int) E演奏画面の戻り値.ステージクリア:
 								#region [ 演奏クリア ]
 								//-----------------------------
-								CScoreIni.C演奏記録 c演奏記録_Drums;
 								stage演奏ドラム画面.t演奏結果を格納する(out c演奏記録_Drums);
 
-								double ps = 0.0, gs = 0.0;
+								ps = 0.0;
+								gs = 0.0;
 								if (!c演奏記録_Drums.b全AUTOである && c演奏記録_Drums.n全チップ数 > 0)
 								{
 									ps = c演奏記録_Drums.db演奏型スキル値;
 									gs = c演奏記録_Drums.dbゲーム型スキル値;
 								}
-								string str = "Cleared";
+								str = "Cleared";
 								switch (CScoreIni.t総合ランク値を計算して返す(c演奏記録_Drums, null, null))
 								{
 									case (int)CScoreIni.ERANK.SS:
@@ -1053,7 +1099,7 @@ namespace TJAPlayer3
 										break;
 								}
 
-								scoreIni = this.tScoreIniへBGMAdjustとHistoryとPlayCountを更新(str);
+								tScoreIniへBGMAdjustとHistoryとPlayCountを更新( str );
 
 								r現在のステージ.On非活性化();
 								Trace.TraceInformation("----------------------");
@@ -1081,7 +1127,6 @@ namespace TJAPlayer3
 							DTX.On非活性化();
 							r現在のステージ.On非活性化();
 							this.tガベージコレクションを実行する();
-
 							Trace.TraceInformation("----------------------");
 							Trace.TraceInformation("■ 選曲");
 							stage選曲.On活性化();
@@ -1131,11 +1176,9 @@ namespace TJAPlayer3
 					TJAPlayer3.Tx.Overlay.t2D描画(app.Device, 0, 0);
 				}
 			}
-			if (Sound管理?.GetCurrentSoundDeviceType() != "DirectSound")
-			{
-				Sound管理?.t再生中の処理をする();  // サウンドバッファの更新; 画面描画と同期させることで、スクロールをスムーズにする
-			}
 
+			//EndScene
+			//Flush
 
 			#region [ 全画面_ウインドウ切り替え ]
 			if (this.b次のタイミングで全画面_ウィンドウ切り替えを行う)
@@ -1169,12 +1212,9 @@ namespace TJAPlayer3
 				}
 			}
 			#endregion
-			
-			GL.Flush();
 
+			GL.Flush();
 			base.SwapBuffers();
-			//rsw.Stop();
-			//Trace.WriteLine("Render Time=" + rsw.ElapsedMilliseconds + "ms");
 		}
 
 		// その他
@@ -1203,6 +1243,7 @@ namespace TJAPlayer3
 				return null;
 			}
 		}
+
 		public static CTexture tテクスチャの生成(Bitmap bitmap)
 		{
 			if (app == null)
@@ -1226,89 +1267,19 @@ namespace TJAPlayer3
 			}
 		}
 
-		public static CTexture ColorTexture(string htmlcolor, int width, int height)//2020.05.31 Mr-Ojii 単色塗りつぶしテクスチャの生成。必要かって？Tile_Black・Tile_Whiteがいらなくなるじゃん。あと、メンテモードの画像生成に便利かなって。
-		{
-			if (htmlcolor.Length == 7 && htmlcolor.StartsWith("#"))
-			{
-				Color color = ColorTranslator.FromHtml(htmlcolor);
-				Brush brush = new SolidBrush(color);
-				return ColorTexture(brush, width, height);
-			}
-			else
-				return ColorTexture(Brushes.Black);
-		}
-		public static CTexture ColorTexture(string htmlcolor)
-		{
-			if (htmlcolor.Length == 7 && htmlcolor.StartsWith("#"))
-			{
-				Color color = ColorTranslator.FromHtml(htmlcolor);
-				Brush brush = new SolidBrush(color);
-				return ColorTexture(brush);
-			}
-			else
-				return ColorTexture(Brushes.Black);
-		}
-		public static CTexture ColorTexture(Brush brush)
-		{
-			return ColorTexture(brush, 64, 64);
-		}
-		/// <summary>
-		/// 単色塗りつぶしテクスチャの生成
-		/// </summary>
-		/// <param name="brush">ブラシの色とかの指定</param>
-		/// <param name="width">幅</param>
-		/// <param name="height">高さ</param>
-		/// <returns></returns>
-		public static CTexture ColorTexture(Brush brush, int width, int height)
-		{
-			Bitmap bmp = new Bitmap(width, height);
-			Graphics gra = Graphics.FromImage(bmp);
-			gra.FillRectangle(brush, 0, 0, width, height);
-			gra.Dispose();
-			return TJAPlayer3.tテクスチャの生成(bmp);
-		}
-
-		public static CDirectShow t失敗してもスキップ可能なDirectShowを生成する(string fileName, IntPtr hWnd, bool bオーディオレンダラなし)
-		{
-			CDirectShow ds = null;
-			if (File.Exists(fileName))
-			{
-				try
-				{
-					ds = new CDirectShow(fileName, hWnd, bオーディオレンダラなし);
-				}
-				catch (FileNotFoundException e)
-				{
-					Trace.TraceError(e.ToString());
-					Trace.TraceError("動画ファイルが見つかりませんでした。({0})", fileName);
-					ds = null;      // Dispose はコンストラクタ内で実施済み
-				}
-				catch (Exception e)
-				{
-					Trace.TraceError(e.ToString());
-					Trace.TraceError("DirectShow の生成に失敗しました。[{0}]", fileName);
-					ds = null;      // Dispose はコンストラクタ内で実施済み
-				}
-			}
-			else
-			{
-				Trace.TraceError("動画ファイルが見つかりませんでした。({0})", fileName);
-				return null;
-			}
-
-			return ds;
-		}
-
 		/// <summary>プロパティ、インデクサには ref は使用できないので注意。</summary>
-		public static void t安全にDisposeする<T>(ref T obj) where T : class, IDisposable //2020.06.06 Mr-Ojii twopointzero氏のソースコードをもとに改良
+		public static void t安全にDisposeする<T>(ref T obj) where T : class, IDisposable
 		{
 			if (obj == null)
+			{
 				return;
+			}
 
 			obj.Dispose();
 			obj = null;
 		}
-		public static void t安全にDisposeする<T>(ref T[] array) where T : class, IDisposable //2020.08.01 Mr-Ojii twopointzero氏のソースコードをもとに追加
+
+		public static void t安全にDisposeする<T>(T[] array) where T : class, IDisposable
 		{
 			if (array == null)
 			{
@@ -1329,19 +1300,6 @@ namespace TJAPlayer3
 		{
 			int num = 0;
 			while (File.Exists(ディレクトリ名 + プレフィックス + num + 拡張子))
-			{
-				num++;
-			}
-			return num;
-		}
-
-		/// <summary>
-		/// そのフォルダの連番フォルダの最大値を返す。
-		/// </summary>
-		public static int t連番フォルダの個数を数える(string ディレクトリ名, string プレフィックス = "")
-		{
-			int num = 0;
-			while (Directory.Exists(ディレクトリ名 + プレフィックス + num))
 			{
 				num++;
 			}
@@ -1407,7 +1365,6 @@ namespace TJAPlayer3
 		private OpenTK.Input.MouseButton mb = OpenTK.Input.MouseButton.Left;
 		private Stopwatch sw = new Stopwatch();
 
-		private CSound previewSound;
 		public static long StartupTime
 		{
 			get;
@@ -1453,29 +1410,23 @@ namespace TJAPlayer3
 			Trace.AutoFlush = true;
 			if (ConfigIni.bログ出力)
 			{
-				bool log出力ok = false;
-				int num = 0;
-				while (!log出力ok)
+				try
 				{
-					try
-					{
-						string logname;
-						if (num == 0)
-							logname = "TJAPlayer3-f.log";
-						else
-							logname = "TJAPlayer3-f_" + num.ToString() + ".log";
-						Trace.Listeners.Add(new CTraceLogListener(new StreamWriter(System.IO.Path.Combine(strEXEのあるフォルダ, logname), false, new UTF8Encoding(false))));
-						log出力ok = true;
-					}
-					catch (Exception)
-					{
-						num++;
-					}
+					Trace.Listeners.Add(new CTraceLogListener(new StreamWriter(System.IO.Path.Combine(strEXEのあるフォルダ, "TJAPlayer3.log"), false, Encoding.GetEncoding("Shift_JIS"))));
+				}
+				catch (System.UnauthorizedAccessException)          // #24481 2011.2.20 yyagi
+				{
+					int c = (CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "ja") ? 0 : 1;
+					string[] mes_writeErr = {
+						"DTXManiaLog.txtへの書き込みができませんでした。書き込みできるようにしてから、再度起動してください。",
+						"Failed to write DTXManiaLog.txt. Please set it writable and try again."
+					};
+					MessageBox.Show(mes_writeErr[c], "DTXMania boot error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+					Environment.Exit(1);
 				}
 			}
 			Trace.WriteLine("");
-			Trace.WriteLine("DTXMania powered by YAMAHA Silent Session Drums");
-			Trace.WriteLine(string.Format("Release: {0}", VERSION));
+			Trace.WriteLine(AppDisplayNameWithInformationalVersion);
 			Trace.WriteLine("");
 			Trace.TraceInformation("----------------------");
 			Trace.TraceInformation("■ アプリケーションの初期化");
@@ -1485,29 +1436,10 @@ namespace TJAPlayer3
 			//---------------------
 			#endregion
 
-			#region [ DTXVmodeクラス の初期化 ]
-			//---------------------
-			//Trace.TraceInformation( "DTXVモードの初期化を行います。" );
-			//Trace.Indent();
-			try
-			{
-				DTXVmode = new CDTXVmode();
-				DTXVmode.Enabled = false;
-				//Trace.TraceInformation( "DTXVモードの初期化を完了しました。" );
-			}
-			finally
-			{
-				//Trace.Unindent();
-			}
-			//---------------------
-			#endregion
-
 			#region [ ウィンドウ初期化 ]
 			//---------------------
 			base.X = ConfigIni.n初期ウィンドウ開始位置X;
 			base.Y = ConfigIni.n初期ウィンドウ開始位置Y;
-
-
 
 			base.Title = "";
 
@@ -1521,7 +1453,6 @@ namespace TJAPlayer3
 			//---------------------
 			#endregion
 			#region [ Direct3D9 デバイスの生成 ]
-			//---------------------
 			if (ConfigIni.bウィンドウモード)
 				base.WindowState = WindowState.Normal;
 			else
@@ -1535,8 +1466,6 @@ namespace TJAPlayer3
 
 
 			base.ClientSize = new Size(ConfigIni.nウインドウwidth, ConfigIni.nウインドウheight);   // #23510 2010.10.31 yyagi: to recover window size. width and height are able to get from Config.ini.
-
-			//---------------------
 			#endregion
 
 			DTX = null;
@@ -1551,7 +1480,7 @@ namespace TJAPlayer3
 				TJAPlayer3.ConfigIni.strSystemSkinSubfolderFullName = TJAPlayer3.Skin.GetCurrentSkinSubfolderFullName(true);    // 旧指定のSkinフォルダが消滅していた場合に備える
 				Trace.TraceInformation("スキンの初期化を完了しました。");
 			}
-			catch
+			catch (Exception e)
 			{
 				Trace.TraceInformation("スキンの初期化に失敗しました。");
 				throw;
@@ -1686,9 +1615,6 @@ namespace TJAPlayer3
 						soundDeviceType = ESoundDeviceType.ASIO;
 						break;
 					case 2:
-						soundDeviceType = ESoundDeviceType.ExclusiveWASAPI;
-						break;
-					case 3:
 						soundDeviceType = ESoundDeviceType.SharedWASAPI;
 						break;
 					default:
@@ -1807,8 +1733,9 @@ namespace TJAPlayer3
 			this.listトップレベルActivities.Add(stage終了);
 			//---------------------
 			#endregion
+
 			#region Discordの処理
-			Discord.Initialize("692578108997632051");
+			Discord.Initialize("428233983025741855");
 			StartupTime = Discord.GetUnixTime();
 			Discord.UpdatePresence("", Properties.Discord.Stage_StartUp, StartupTime);
 			#endregion
@@ -1823,7 +1750,6 @@ namespace TJAPlayer3
 			Trace.TraceInformation("■ 起動");
 
 			r現在のステージ = stage起動;
-
 			r現在のステージ.On活性化();
 
 			//---------------------
@@ -1835,19 +1761,9 @@ namespace TJAPlayer3
 			string delay = "";
 			if (Sound管理.GetCurrentSoundDeviceType() != "DirectSound")
 			{
-				delay = "(" + Sound管理.GetSoundDelay() + "ms)";
+				delay = " (" + Sound管理.GetSoundDelay() + "ms)";
 			}
-			AssemblyName asmApp = Assembly.GetExecutingAssembly().GetName();
-			base.Title = asmApp.Name + " Ver." + VERSION + " (" + Sound管理.GetCurrentSoundDeviceType() + delay + ")";
-		}
-
-		public void ChangeWindowTitle(string Name, bool StringInitialize = true, bool Concat = true)
-		{
-			if (StringInitialize)
-				this.ShowWindowTitleWithSoundType();
-			if (Concat)
-				Name = base.Title + Name;
-			base.Title = Name;
+			base.Title = $"{AppDisplayNameWithInformationalVersion} ({Sound管理.GetCurrentSoundDeviceType()}{delay})";
 		}
 
 		private void t終了処理()
@@ -1898,6 +1814,7 @@ namespace TJAPlayer3
 				}
 				//---------------------
 				#endregion
+
 				#region Discordの処理
 				Discord.Shutdown();
 				#endregion
@@ -1923,14 +1840,15 @@ namespace TJAPlayer3
 					}
 				}
 				CAvi.t終了();
-				//---------------------
-				#endregion
-				#region TextureLoaderの処理
-				Tx.DisposeTexture();
-				#endregion
-				#region [ スキンの終了処理 ]
-				//---------------------
-				if (Skin != null)
+                //---------------------
+                #endregion
+                #region TextureLoaderの処理
+                Tx.Dispose();
+                Tx = null;
+                #endregion
+                #region [ スキンの終了処理 ]
+                //---------------------
+                if (Skin != null)
 				{
 					Trace.TraceInformation("スキンの終了処理を行います。");
 					Trace.Indent();
@@ -2091,6 +2009,7 @@ namespace TJAPlayer3
 				#region [ Config.iniの出力 ]
 				//---------------------
 				Trace.TraceInformation("Config.ini を出力します。");
+				//				if ( ConfigIni.bIsSwappedGuitarBass )			// #24063 2011.1.16 yyagi ギターベースがスワップしているときは元に戻す
 				string str = strEXEのあるフォルダ + "Config.ini";
 				Trace.Indent();
 				try
@@ -2133,17 +2052,16 @@ namespace TJAPlayer3
 				this.b終了処理完了済み = true;
 			}
 		}
-		private CScoreIni tScoreIniへBGMAdjustとHistoryとPlayCountを更新(string str新ヒストリ行)
+
+		private static void tScoreIniへBGMAdjustとHistoryとPlayCountを更新(string str新ヒストリ行)
 		{
-			bool bIsUpdatedDrums, bIsUpdatedGuitar, bIsUpdatedBass;
-			string strFilename = DTX.strファイル名の絶対パス + ".score.ini";
-			CScoreIni ini = new CScoreIni(strFilename);
-			if (!File.Exists(strFilename))
+            string strFilename = DTX.strファイル名の絶対パス + ".score.ini";
+			CScoreIni ini = new CScoreIni( strFilename );
+			if( !File.Exists( strFilename ) )
 			{
 				ini.stファイル.Title = DTX.TITLE;
 				ini.stファイル.Name = DTX.strファイル名;
-				ini.stファイル.Hash = CScoreIni.tファイルのMD5を求めて返す(DTX.strファイル名の絶対パス);
-				for (int i = 0; i < 3; i++)
+				for( int i = 0; i < 6; i++ )
 				{
 					ini.stセクション[i].nPerfectになる範囲ms = nPerfect範囲ms;
 					ini.stセクション[i].nGreatになる範囲ms = nGreat範囲ms;
@@ -2152,30 +2070,36 @@ namespace TJAPlayer3
 				}
 			}
 			ini.stファイル.BGMAdjust = DTX.nBGMAdjust;
-			CScoreIni.t更新条件を取得する(out bIsUpdatedDrums, out bIsUpdatedGuitar, out bIsUpdatedBass);
-
-			if (bIsUpdatedDrums)
+			CScoreIni.t更新条件を取得する( out var bIsUpdatedDrums, out var bIsUpdatedGuitar, out var bIsUpdatedBass );
+			if( bIsUpdatedDrums || bIsUpdatedGuitar || bIsUpdatedBass )
 			{
-				ini.stファイル.PlayCountDrums++;
+				if (bIsUpdatedDrums)
+				{
+					ini.stファイル.PlayCountDrums++;
+				}
+				if (bIsUpdatedGuitar)
+				{
+					ini.stファイル.PlayCountGuitar++;
+				}
+				if (bIsUpdatedBass)
+				{
+					ini.stファイル.PlayCountBass++;
+				}
+				ini.tヒストリを追加する(str新ヒストリ行);
+				stage選曲.r現在選択中のスコア.譜面情報.演奏回数.Drums = ini.stファイル.PlayCountDrums;
+				stage選曲.r現在選択中のスコア.譜面情報.演奏回数.Guitar = ini.stファイル.PlayCountGuitar;
+				stage選曲.r現在選択中のスコア.譜面情報.演奏回数.Bass = ini.stファイル.PlayCountBass;
+				for (int j = 0; j < ini.stファイル.History.Length; j++)
+				{
+					stage選曲.r現在選択中のスコア.譜面情報.演奏履歴[j] = ini.stファイル.History[j];
+				}
 			}
-			ini.tヒストリを追加する(str新ヒストリ行);
-
-			stage選曲.r現在選択中のスコア.譜面情報.演奏回数.Drums = ini.stファイル.PlayCountDrums;
-			stage選曲.r現在選択中のスコア.譜面情報.演奏回数.Guitar = ini.stファイル.PlayCountGuitar;
-			stage選曲.r現在選択中のスコア.譜面情報.演奏回数.Bass = ini.stファイル.PlayCountBass;
-			for (int j = 0; j < ini.stファイル.History.Length; j++)
-			{
-				stage選曲.act曲リスト.r現在選択中のスコア.譜面情報.演奏履歴[j] = ini.stファイル.History[j];
-
-			}
-
 			if (ConfigIni.bScoreIniを出力する)
 			{
 				ini.t書き出し(strFilename);
 			}
-
-			return ini;
 		}
+
 		private void tガベージコレクションを実行する()
 		{
 			GC.Collect(GC.MaxGeneration);
@@ -2193,9 +2117,9 @@ namespace TJAPlayer3
 			TJAPlayer3.Skin = null;
 			TJAPlayer3.Skin = new CSkin(TJAPlayer3.ConfigIni.strSystemSkinSubfolderFullName, false);
 
-
-			TJAPlayer3.Tx.DisposeTexture();
-			TJAPlayer3.Tx.LoadTexture();
+            TJAPlayer3.Tx.Dispose();
+            TJAPlayer3.Tx = new TextureLoader();
+            TJAPlayer3.Tx.Load();
 
 			TJAPlayer3.act文字コンソール.On活性化();
 		}

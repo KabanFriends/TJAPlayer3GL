@@ -1,10 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Text;
 using System.Drawing;
 using System.Threading;
 using FDK;
+using TJAPlayer3.Common;
 
 namespace TJAPlayer3
 {
@@ -893,32 +892,6 @@ namespace TJAPlayer3
 		}
 		#endregion
 
-		/// <summary>Sud+Hidの初期値を返す</summary>
-		/// <param name="eInst"></param>
-		/// <returns>
-		/// 0: None
-		/// 1: Sudden
-		/// 2: Hidden
-		/// 3: Sud+Hid
-		/// 4: Semi-Invisible
-		/// 5: Full-Invisible
-		/// </returns>
-		private int getDefaultSudHidValue( E楽器パート eInst )
-		{
-			int defvar;
-			int nInst = (int) eInst;
-			if ( TJAPlayer3.ConfigIni.eInvisible[ nInst ] != EInvisible.OFF )
-			{
-				defvar = (int) TJAPlayer3.ConfigIni.eInvisible[ nInst ] + 3;
-			}
-			else
-			{
-				defvar = ( TJAPlayer3.ConfigIni.bSudden[ nInst ] ? 1 : 0 ) +
-						 ( TJAPlayer3.ConfigIni.bHidden[ nInst ] ? 2 : 0 );
-			}
-			return defvar;
-		}
-
 		/// <summary>
 		/// ESC押下時の右メニュー描画
 		/// </summary>
@@ -1136,20 +1109,7 @@ namespace TJAPlayer3
 					TJAPlayer3.ConfigIni.b垂直帰線待ちを行う = this.iSystemVSyncWait.bON;
 					TJAPlayer3.app.b次のタイミングで垂直帰線同期切り替えを行う = true;
 				}
-				#region [ AutoPlay #23886 2012.5.8 yyagi ]
-				else if ( this.list項目リスト[ this.n現在の選択項目 ] == this.iDrumsAutoPlayAll )
-				{
-					this.t全部のドラムパッドのAutoを切り替える( this.iDrumsAutoPlayAll.e現在の状態 == CItemThreeState.E状態.ON );
-				}
-				else if ( this.list項目リスト[ this.n現在の選択項目 ] == this.iGuitarAutoPlayAll )
-				{
-					this.t全部のギターパッドのAutoを切り替える( this.iGuitarAutoPlayAll.e現在の状態 == CItemThreeState.E状態.ON );
-				}
-				else if ( this.list項目リスト[ this.n現在の選択項目 ] == this.iBassAutoPlayAll )
-				{
-					this.t全部のベースパッドのAutoを切り替える( this.iBassAutoPlayAll.e現在の状態 == CItemThreeState.E状態.ON );
-				}
-				#endregion
+
 				#region [ キーアサインへの遷移と脱出 ]
 				else if ( this.list項目リスト[ this.n現在の選択項目 ] == this.iSystemGoToKeyAssign )			// #24609 2011.4.12 yyagi
 				{
@@ -1226,10 +1186,7 @@ namespace TJAPlayer3
 				g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
 				g.DrawImage( bmSrc, new Rectangle( 0, 0, bmSrc.Width / 4, bmSrc.Height / 4 ),
 					0, 0, bmSrc.Width, bmSrc.Height, GraphicsUnit.Pixel );
-				if ( txSkinSample1 != null )
-				{
-					TJAPlayer3.t安全にDisposeする( ref txSkinSample1 );
-				}
+				TJAPlayer3.t安全にDisposeする( ref txSkinSample1 );
 				txSkinSample1 = TJAPlayer3.tテクスチャの生成( bmDest );
 				g.Dispose();
 				bmDest.Dispose();
@@ -1519,10 +1476,7 @@ namespace TJAPlayer3
 			nSkinSampleIndex = -1;
 			#endregion
 
-            if ( !string.IsNullOrEmpty(TJAPlayer3.ConfigIni.FontName))
-			    this.prvFont = new CPrivateFastFont(new FontFamily(TJAPlayer3.ConfigIni.FontName), 20 );	// t項目リストの設定 の前に必要
-            else
-                this.prvFont = new CPrivateFastFont(new FontFamily("MS UI Gothic"), 20);
+            this.prvFont = new CPrivateFastFont(FontUtilities.GetFontFamilyOrFallback(TJAPlayer3.ConfigIni.FontName), 20); // t項目リストの設定 の前に必要
 
             //			this.listMenu = new List<stMenuItemRight>();
 
@@ -1580,7 +1534,7 @@ namespace TJAPlayer3
 						soundDeviceType = ESoundDeviceType.ASIO;
 						break;
 					case 2:
-						soundDeviceType = ESoundDeviceType.ExclusiveWASAPI;
+						soundDeviceType = ESoundDeviceType.SharedWASAPI;
 						break;
 					default:
 						soundDeviceType = ESoundDeviceType.Unknown;
@@ -1616,10 +1570,10 @@ namespace TJAPlayer3
 			if( this.b活性化してない )
 				return;
 
-			TJAPlayer3.t安全にDisposeする( ref this.txSkinSample1 );
-			//CDTXMania.t安全にDisposeする( ref this.tx通常項目行パネル );
-			//CDTXMania.t安全にDisposeする( ref this.txその他項目行パネル );
-			//CDTXMania.t安全にDisposeする( ref this.tx三角矢印 );
+			TJAPlayer3.t安全にDisposeする(ref this.txSkinSample1);
+			//CDTXMania.tテクスチャの解放( ref this.tx通常項目行パネル );
+			//CDTXMania.tテクスチャの解放( ref this.txその他項目行パネル );
+			//CDTXMania.tテクスチャの解放( ref this.tx三角矢印 );
 		
 			base.OnManagedリソースの解放();
 		}
@@ -1665,7 +1619,7 @@ namespace TJAPlayer3
 			//-----------------
 			if( base.b初めての進行描画 )
 			{
-                this.nスクロール用タイマ値 = (long)(CSound管理.rc演奏用タイマ.n現在時刻 * (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0));
+				this.nスクロール用タイマ値 = (long)(CSound管理.rc演奏用タイマ.n現在時刻 * (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0));
 				this.ct三角矢印アニメ.t開始( 0, 9, 50, TJAPlayer3.Timer );
 			
 				base.b初めての進行描画 = false;
@@ -1800,8 +1754,7 @@ namespace TJAPlayer3
 				{
 					case CItemBase.Eパネル種別.通常:
                     case CItemBase.Eパネル種別.その他:
-                        if ( TJAPlayer3.Tx.Config_ItemBox != null )
-                            TJAPlayer3.Tx.Config_ItemBox.t2D描画( TJAPlayer3.app.Device, x, y );
+                        TJAPlayer3.Tx.Config_ItemBox?.t2D描画( TJAPlayer3.app.Device, x, y );
 						break;
 				}
 				//-----------------
@@ -1810,7 +1763,7 @@ namespace TJAPlayer3
 				//-----------------
 				if ( listMenu[ nItem ].txMenuItemRight != null )	// 自前のキャッシュに含まれているようなら、再レンダリングせずキャッシュを使用
 				{
-                    listMenu[nItem].txMenuItemRight.t2D描画(TJAPlayer3.app.Device, x + 20 + TJAPlayer3.Skin.Config_ItemText_Correction_X, y + 12 + TJAPlayer3.Skin.Config_ItemText_Correction_Y);
+                    listMenu[nItem].txMenuItemRight.t2D描画(TJAPlayer3.app.Device, x + 20 + TJAPlayer3.Skin.Config_ItemText_Correction_XY[0], y + 12 + TJAPlayer3.Skin.Config_ItemText_Correction_XY[1]);
 				}
 				else
 				{
@@ -1818,7 +1771,7 @@ namespace TJAPlayer3
 					{
 					    listMenu[ nItem ].txMenuItemRight = TJAPlayer3.tテクスチャの生成( bmpItem );
 					    // ctItem.t2D描画( CDTXMania.app.Device, ( x + 0x12 ) * Scale.X, ( y + 12 ) * Scale.Y - 20 );
-					    // CDTXMania.t安全にDisposeする( ref ctItem );
+					    // CDTXMania.tテクスチャの解放( ref ctItem );
 					}
 				}
 				//CDTXMania.stageコンフィグ.actFont.t文字列描画( x + 0x12, y + 12, this.list項目リスト[ nItem ].str項目名 );
@@ -1835,28 +1788,6 @@ namespace TJAPlayer3
 						//-----------------
 						//CDTXMania.stageコンフィグ.actFont.t文字列描画( x + 210, y + 12, ( (CItemToggle) this.list項目リスト[ nItem ] ).bON ? "ON" : "OFF" );
 						strParam = ( (CItemToggle) this.list項目リスト[ nItem ] ).bON ? "ON" : "OFF";
-						break;
-					//-----------------
-						#endregion
-
-					case CItemBase.E種別.ONorOFFor不定スリーステート:
-						#region [ *** ]
-						//-----------------
-						switch ( ( (CItemThreeState) this.list項目リスト[ nItem ] ).e現在の状態 )
-						{
-							case CItemThreeState.E状態.ON:
-								strParam = "ON";
-								break;
-
-							case CItemThreeState.E状態.不定:
-								strParam = "- -";
-								break;
-
-							default:
-								strParam = "OFF";
-								break;
-						}
-						//CDTXMania.stageコンフィグ.actFont.t文字列描画( x + 210, y + 12, "ON" );
 						break;
 					//-----------------
 						#endregion
@@ -1915,7 +1846,7 @@ namespace TJAPlayer3
 				    {
 				        using (var txStr = TJAPlayer3.tテクスチャの生成( bmpStr ))
 				        {
-				            txStr.t2D描画( TJAPlayer3.app.Device, x + 400 + TJAPlayer3.Skin.Config_ItemText_Correction_X, y + 12 + TJAPlayer3.Skin.Config_ItemText_Correction_Y );
+				            txStr.t2D描画(TJAPlayer3.app.Device, x + 400 + TJAPlayer3.Skin.Config_ItemText_Correction_XY[0], y + 12 + TJAPlayer3.Skin.Config_ItemText_Correction_XY[1] );
 				        }
 				    }
 				}
@@ -1936,7 +1867,7 @@ namespace TJAPlayer3
 
 						listMenu[ nItem ] = stm;
 					}
-					listMenu[ nItem ].txParam.t2D描画( TJAPlayer3.app.Device,  x + 400 + TJAPlayer3.Skin.Config_ItemText_Correction_X, y + 12 + TJAPlayer3.Skin.Config_ItemText_Correction_Y );
+					listMenu[ nItem ].txParam.t2D描画(TJAPlayer3.app.Device,  x + 400 + TJAPlayer3.Skin.Config_ItemText_Correction_XY[0], y + 12 + TJAPlayer3.Skin.Config_ItemText_Correction_XY[1] );
 				}
 				//-----------------
 				#endregion
@@ -2151,8 +2082,6 @@ namespace TJAPlayer3
 
 		private CItemList iSystemGRmode;
 
-		//private CItemToggle iBassAutoPlay;
-		private CItemThreeState iBassAutoPlayAll;			// #23886 2012.5.8 yyagi
 		private CItemToggle iBassR;							//
 		private CItemToggle iBassG;							//
 		private CItemToggle iBassB;							//
@@ -2172,7 +2101,6 @@ namespace TJAPlayer3
 		private CItemInteger iCommonPlaySpeed;
 //		private CItemBase iCommonReturnToMenu;
 
-		private CItemThreeState iDrumsAutoPlayAll;
 		private CItemToggle iDrumsBass;
 		private CItemToggle iDrumsCymbalRide;
 		private CItemToggle iDrumsFloorTom;
@@ -2219,8 +2147,6 @@ namespace TJAPlayer3
         CItemToggle ShinuchiMode;
         CItemToggle FastRender;
         CItemInteger MusicPreTimeMs;
-		//private CItemToggle iGuitarAutoPlay;
-		private CItemThreeState iGuitarAutoPlayAll;			// #23886 2012.5.8 yyagi
 		private CItemToggle iGuitarR;						//
 		private CItemToggle iGuitarG;						//
 		private CItemToggle iGuitarB;						//
@@ -2261,18 +2187,7 @@ namespace TJAPlayer3
 			}
 			return nItem;
 		}
-		private void t全部のドラムパッドのAutoを切り替える( bool bAutoON )
-		{
-			this.iDrumsLeftCymbal.bON = this.iDrumsHiHat.bON = this.iDrumsSnare.bON = this.iDrumsBass.bON = this.iDrumsHighTom.bON = this.iDrumsLowTom.bON = this.iDrumsFloorTom.bON = this.iDrumsCymbalRide.bON = bAutoON;
-		}
-		private void t全部のギターパッドのAutoを切り替える( bool bAutoON )
-		{
-			this.iGuitarR.bON = this.iGuitarG.bON = this.iGuitarB.bON = this.iGuitarPick.bON = this.iGuitarW.bON = bAutoON;
-		}
-		private void t全部のベースパッドのAutoを切り替える( bool bAutoON )
-		{
-			this.iBassR.bON = this.iBassG.bON = this.iBassB.bON = this.iBassPick.bON = this.iBassW.bON = bAutoON;
-		}
+
 		private void tConfigIniへ記録する()
 		{
 			switch( this.eメニュー種別 )

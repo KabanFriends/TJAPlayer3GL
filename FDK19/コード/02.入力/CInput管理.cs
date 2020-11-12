@@ -91,13 +91,13 @@ namespace FDK
 			{
 				for (int joynum = 0; joynum < 8; joynum++)//2020.06.28 Mr-Ojii joystickの検出数を返す関数が見つからないので適当に8個で
 				{
-					if(OpenTK.Input.Joystick.GetState(joynum).IsConnected)
+					if (OpenTK.Input.Joystick.GetState(joynum).IsConnected)
 						this.list入力デバイス.Add(new CInputJoystick(joynum));
 				}
 			}
-			catch(Exception e) 
+			catch (Exception e)
 			{
-			Trace.WriteLine(e.ToString());
+				Trace.WriteLine(e.ToString());
 			}
 			#endregion
 			this.proc = new CWin32.MidiInProc(this.MidiInCallback);
@@ -128,7 +128,7 @@ namespace FDK
 				}
 				Trace.TraceError("MIDI In: [{0}] \"{1}\" の入力受付の開始に失敗しました。", i, lpMidiInCaps.szPname);
 			}
-			
+
 		}
 
 
@@ -240,7 +240,7 @@ namespace FDK
 
 		private void MidiInCallback(IntPtr hMidiIn, uint wMsg, IntPtr dwInstance, IntPtr dwParam1, IntPtr dwParam2)
 		{
-			int p = (int) dwParam1 & 0xF0;
+			int p = (int)dwParam1 & 0xF0;
 			if (wMsg != CWin32.MIM_DATA || (p != 0x80 && p != 0x90 && p != 0xB0))
 				return;
 

@@ -13,8 +13,6 @@
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SignAssembly>false</SignAssembly>
-    <AssemblyOriginatorKeyFile>
-    </AssemblyOriginatorKeyFile>
     <ApplicationIcon>
     </ApplicationIcon>
     <FileUpgradeFlags>
@@ -85,6 +83,7 @@
     <Compile Include="コード\00.共通\C共通.cs" />
     <Compile Include="コード\00.共通\ExtensionMethods\DoubleExtensions.cs" />
     <Compile Include="コード\00.共通\ExtensionMethods\Int32Extensions.cs" />
+    <Compile Include="コード\00.共通\StringExtensions.cs" />
     <Compile Include="コード\01.フレームワーク\GameWindowSize.cs" />
     <Compile Include="コード\01.フレームワーク\Game.cs" />
     <Compile Include="コード\02.入力\CInputJoystick.cs" />
@@ -107,22 +106,24 @@
     <Compile Include="コード\03.サウンド\ESoundDeviceType.cs" />
     <Compile Include="コード\03.サウンド\ESoundGroup.cs" />
     <Compile Include="コード\03.サウンド\Format Encoding\FourCC.cs" />
+    <Compile Include="コード\03.サウンド\Format Encoding\RiffChunk.cs" />
+    <Compile Include="コード\03.サウンド\Format Encoding\RiffPerser.cs" />
+    <Compile Include="コード\03.サウンド\Format Encoding\SoundStream.cs" />
     <Compile Include="コード\03.サウンド\Format Encoding\WaveFormat.cs" />
+    <Compile Include="コード\03.サウンド\Format Encoding\WaveFormatEncoding.cs" />
     <Compile Include="コード\03.サウンド\LoudnessMetadata.cs" />
     <Compile Include="コード\03.サウンド\LoudnessMetadataScanner.cs" />
     <Compile Include="コード\03.サウンド\Lufs.cs" />
-    <Compile Include="コード\03.サウンド\Format Encoding\RiffChunk.cs" />
-    <Compile Include="コード\03.サウンド\Format Encoding\RiffPerser.cs" />
     <Compile Include="コード\03.サウンド\SongGainController.cs" />
     <Compile Include="コード\03.サウンド\SoundDecoder.cs" />
     <Compile Include="コード\03.サウンド\ISoundDevice.cs" />
     <Compile Include="コード\03.サウンド\SoundGroupLevelController.cs" />
-    <Compile Include="コード\03.サウンド\Format Encoding\SoundStream.cs" />
-    <Compile Include="コード\03.サウンド\Format Encoding\WaveFormatEncoding.cs" />
     <Compile Include="コード\04.グラフィック\BitmapUtil.cs" />
     <Compile Include="コード\04.グラフィック\CAvi.cs" />
     <Compile Include="コード\04.グラフィック\CTexture.cs" />
     <Compile Include="コード\04.グラフィック\CTextureCreateFailedException.cs" />
+    <Compile Include="コード\04.グラフィック\HorizontalReferencePoint.cs" />
+    <Compile Include="コード\04.グラフィック\VerticalReferencePoint.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="コード\00.共通\CActivity.cs" />
     <Compile Include="コード\00.共通\CCounter.cs" />
@@ -140,6 +141,7 @@
     <None Include="OpenTK.dll.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
@@ -148,8 +150,4 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
-  </PropertyGroup>
 </Project>

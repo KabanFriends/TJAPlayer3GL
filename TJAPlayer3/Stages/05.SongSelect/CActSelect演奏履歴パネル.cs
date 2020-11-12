@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Drawing;
 using System.Runtime.InteropServices;
+using OpenTK;
 using FDK;
 
 namespace TJAPlayer3
@@ -60,6 +58,41 @@ namespace TJAPlayer3
 
 			base.b活性化してない = true;
 		}
+		public void t選択曲が変更された()
+		{
+			Cスコア cスコア = TJAPlayer3.stage選曲.r現在選択中のスコア;
+			if( ( cスコア != null ) && !TJAPlayer3.stage選曲.bスクロール中 )
+			{
+				try
+				{
+					Bitmap image = new Bitmap( 800, 240 );
+					Graphics graphics = Graphics.FromImage( image );
+					graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
+					for ( int i = 0; i < (int)Difficulty.Total; i++ )
+					{
+						if( ( cスコア.譜面情報.演奏履歴[ i ] != null ) && ( cスコア.譜面情報.演奏履歴[ i ].Length > 0 ) )
+						{
+							graphics.DrawString( cスコア.譜面情報.演奏履歴[ i ], this.ft表示用フォント, Brushes.Yellow, (float) 0f, (float) ( i * 36f ) );
+						}
+					}
+					graphics.Dispose();
+					if( this.tx文字列パネル != null )
+					{
+						this.tx文字列パネル.Dispose();
+					}
+					this.tx文字列パネル = new CTexture( TJAPlayer3.app.Device, image);
+					this.tx文字列パネル.vc拡大縮小倍率 = new Vector3( 0.5f, 0.5f, 1f );
+					image.Dispose();
+				}
+				catch( CTextureCreateFailedException e )
+				{
+					Trace.TraceError( e.ToString() );
+					Trace.TraceError( "演奏履歴文字列テクスチャの作成に失敗しました。" );
+					this.tx文字列パネル = null;
+				}
+			}
+		}
+
 
 		// CActivity 実装
 
@@ -90,6 +123,7 @@ namespace TJAPlayer3
                 //this.txスコアボード[2] = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\5_scoreboard_2.png" ) );
                 //this.txスコアボード[3] = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\5_scoreboard_3.png" ) );
                 //this.tx文字 = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\5_scoreboard_number.png" ) );
+				this.t選択曲が変更された();
 				base.OnManagedリソースの作成();
 			}
 		}
@@ -97,13 +131,13 @@ namespace TJAPlayer3
 		{
 			if( !base.b活性化してない )
 			{
-				//CDTXMania.t安全にDisposeする( ref this.txパネル本体 );
-				//CDTXMania.t安全にDisposeする( ref this.tx文字列パネル );
-    //            CDTXMania.t安全にDisposeする( ref this.txスコアボード[0] );
-    //            CDTXMania.t安全にDisposeする( ref this.txスコアボード[1] );
-    //            CDTXMania.t安全にDisposeする( ref this.txスコアボード[2] );
-    //            CDTXMania.t安全にDisposeする( ref this.txスコアボード[3] );
-    //            CDTXMania.t安全にDisposeする( ref this.tx文字 );
+				//CDTXMania.tテクスチャの解放( ref this.txパネル本体 );
+				//CDTXMania.tテクスチャの解放( ref this.tx文字列パネル );
+    //            CDTXMania.tテクスチャの解放( ref this.txスコアボード[0] );
+    //            CDTXMania.tテクスチャの解放( ref this.txスコアボード[1] );
+    //            CDTXMania.tテクスチャの解放( ref this.txスコアボード[2] );
+    //            CDTXMania.tテクスチャの解放( ref this.txスコアボード[3] );
+    //            CDTXMania.tテクスチャの解放( ref this.tx文字 );
 				base.OnManagedリソースの解放();
 			}
 		}
@@ -121,13 +155,12 @@ namespace TJAPlayer3
                 int y = 350;
                 if (TJAPlayer3.stage選曲.r現在選択中のスコア != null && this.ct登場アニメ用.n現在の値 >= 2000 && TJAPlayer3.stage選曲.r現在選択中の曲.eノード種別 == C曲リストノード.Eノード種別.SCORE)
                 {
-                    //CDTXMania.Tx.SongSelect_ScoreWindow_Text.n透明度 = ct登場アニメ用.n現在の値 - 1745;
-                    if (TJAPlayer3.Tx.SongSelect_ScoreWindow[TJAPlayer3.stage選曲.n現在選択中の曲の難易度] != null)
+                    var scoreWindowTexture = TJAPlayer3.Tx.SongSelect_ScoreWindow[TJAPlayer3.stage選曲.n現在選択中の曲の難易度];
+                    if (scoreWindowTexture != null)
                     {
-                        //CDTXMania.Tx.SongSelect_ScoreWindow[CDTXMania.stage選曲.n現在選択中の曲の難易度].n透明度 = ct登場アニメ用.n現在の値 - 1745;
-                        TJAPlayer3.Tx.SongSelect_ScoreWindow[TJAPlayer3.stage選曲.n現在選択中の曲の難易度].t2D描画(TJAPlayer3.app.Device, x, y);
+                        scoreWindowTexture.t2D描画(TJAPlayer3.app.Device, x, y);
                         this.t小文字表示(x + 56, y + 160, string.Format("{0,7:######0}", TJAPlayer3.stage選曲.r現在選択中のスコア.譜面情報.nハイスコア[TJAPlayer3.stage選曲.n現在選択中の曲の難易度].ToString()));
-                        TJAPlayer3.Tx.SongSelect_ScoreWindow_Text.t2D描画(TJAPlayer3.app.Device, x + 236, y + 166, new Rectangle(0, 36, 32, 30));
+                        TJAPlayer3.Tx.SongSelect_ScoreWindow_Text?.t2D描画(TJAPlayer3.app.Device, x + 236, y + 166, new Rectangle(0, 36, 32, 30));
                     }
                 }
 			}
@@ -166,10 +199,7 @@ namespace TJAPlayer3
                     if (this.st小文字位置[i].ch == ch)
                     {
                         Rectangle rectangle = new Rectangle( this.st小文字位置[i].pt.X, this.st小文字位置[i].pt.Y, 26, 36 );
-                        if (TJAPlayer3.Tx.SongSelect_ScoreWindow_Text != null)
-                        {
-                            TJAPlayer3.Tx.SongSelect_ScoreWindow_Text.t2D描画(TJAPlayer3.app.Device, x, y, rectangle);
-                        }
+                        TJAPlayer3.Tx.SongSelect_ScoreWindow_Text?.t2D描画(TJAPlayer3.app.Device, x, y, rectangle);
                         break;
                     }
                 }

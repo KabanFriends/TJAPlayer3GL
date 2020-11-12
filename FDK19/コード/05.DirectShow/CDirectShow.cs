@@ -28,12 +28,12 @@ namespace FDK
 			{
 				var status = Eグラフの状態.未定;
 
-				if( this.MediaCtrl != null )
+				if (this.MediaCtrl != null)
 				{
 					FilterState fs;
-					int hr = this.MediaCtrl.GetState( 0, out fs );		// それなりに重たいので注意。
+					int hr = this.MediaCtrl.GetState(0, out fs);        // それなりに重たいので注意。
 
-					if( hr == CWin32.E_FAIL )
+					if (hr == CWin32.E_FAIL)
 					{
 						#region [ 失敗。]
 						//-----------------
@@ -41,11 +41,11 @@ namespace FDK
 						//-----------------
 						#endregion
 					}
-					else if( hr == CWin32.VFW_S_STATE_INTERMEDIATE )
+					else if (hr == CWin32.VFW_S_STATE_INTERMEDIATE)
 					{
 						#region [ 遷移中。]
 						//-----------------
-						switch( fs )
+						switch (fs)
 						{
 							case FilterState.Running:
 								status = Eグラフの状態.再生へ遷移中;
@@ -70,7 +70,7 @@ namespace FDK
 					{
 						#region [ 安定状態。]
 						//-----------------
-						switch( fs )
+						switch (fs)
 						{
 							case FilterState.Running:
 								status = Eグラフの状態.再生中;
@@ -129,18 +129,18 @@ namespace FDK
 			get;
 			protected set;
 		}
-		
+
 		public long n現在のグラフの再生位置ms
 		{
 			get
 			{
-				if( this.MediaSeeking == null )
+				if (this.MediaSeeking == null)
 					return 0;
 
 				long current;
-				int hr = this.MediaSeeking.GetCurrentPosition( out current );
-				DsError.ThrowExceptionForHR( hr );
-				return (long) ( current / ( 1000.0 * 10.0 ) );
+				int hr = this.MediaSeeking.GetCurrentPosition(out current);
+				DsError.ThrowExceptionForHR(hr);
+				return (long)(current / (1000.0 * 10.0));
 			}
 		}
 		/// <summary>
@@ -154,7 +154,7 @@ namespace FDK
 			}
 			set
 			{
-				if( this.BasicAudio == null )
+				if (this.BasicAudio == null)
 					return;
 
 
@@ -167,19 +167,19 @@ namespace FDK
 
 				int n音量db = 0;
 
-				if( value == 0 )
+				if (value == 0)
 				{
-					n音量db = -10000;	// 完全無音
+					n音量db = -10000; // 完全無音
 				}
 				else
 				{
-					n音量db = (int) ( ( 20.0 * Math.Log10( ( (double) value ) / 100.0 ) ) * 100.0 );
+					n音量db = (int)((20.0 * Math.Log10(((double)value) / 100.0)) * 100.0);
 				}
 
 
 				// デシベル音量でグラフの音量を変更。
 
-				this.BasicAudio.put_Volume( n音量db );
+				this.BasicAudio.put_Volume(n音量db);
 			}
 		}
 		/// <summary>
@@ -189,38 +189,38 @@ namespace FDK
 		{
 			set
 			{
-				if( this.BasicAudio == null )
+				if (this.BasicAudio == null)
 					return;
 
 				// リニア位置をデシベル位置に変換。
 
-				int n位置 = Math.Min( Math.Max( value, -100 ), +100 );
+				int n位置 = Math.Min(Math.Max(value, -100), +100);
 				int n位置db = 0;
 
-				if( n位置 == 0 )
+				if (n位置 == 0)
 				{
 					n位置db = 0;
 				}
-				else if( n位置 == -100 )
+				else if (n位置 == -100)
 				{
 					n位置db = -10000;
 				}
-				else if( n位置 == 100 )
+				else if (n位置 == 100)
 				{
 					n位置db = +10000;
 				}
-				else if( n位置 < 0 )
+				else if (n位置 < 0)
 				{
-					n位置db = (int) ( ( 20.0 * Math.Log10( ( (double) ( n位置 + 100 ) ) / 100.0 ) ) * 100.0 );
+					n位置db = (int)((20.0 * Math.Log10(((double)(n位置 + 100)) / 100.0)) * 100.0);
 				}
 				else
 				{
-					n位置db = (int) ( ( -20.0 * Math.Log10( ( (double) ( 100 - n位置 ) ) / 100.0 ) ) * 100.0 );
+					n位置db = (int)((-20.0 * Math.Log10(((double)(100 - n位置)) / 100.0)) * 100.0);
 				}
 
 				// デシベル位置でグラフの位置を変更。
 
-				this.BasicAudio.put_Balance( n位置db );
+				this.BasicAudio.put_Balance(n位置db);
 			}
 		}
 		public IMediaControl MediaCtrl;
@@ -246,7 +246,7 @@ namespace FDK
 		public CDirectShow()
 		{
 		}
-		public CDirectShow( string fileName, IntPtr hWnd, bool bオーディオレンダラなし )
+		public CDirectShow(string fileName, IntPtr hWnd, bool bオーディオレンダラなし)
 		{
 			// 初期化。
 
@@ -264,23 +264,23 @@ namespace FDK
 
 			// 静的リストに登録し、インスタンスIDを得る。
 
-			CDirectShow.tインスタンスを登録する( this );
+			CDirectShow.tインスタンスを登録する(this);
 
 
 			// 並列処理準備。
 
-			if( CDirectShow.n並列度 == 0 )	// 算出がまだなら算出する。
-				CDirectShow.n並列度 = Environment.ProcessorCount;	// 並列度＝CPU数とする。
+			if (CDirectShow.n並列度 == 0)  // 算出がまだなら算出する。
+				CDirectShow.n並列度 = Environment.ProcessorCount;  // 並列度＝CPU数とする。
 
 			unsafe
 			{
-				this.dgライン描画ARGB32 = new DGライン描画[ CDirectShow.n並列度 ];
-				this.dgライン描画XRGB32 = new DGライン描画[ CDirectShow.n並列度 ];
+				this.dgライン描画ARGB32 = new DGライン描画[CDirectShow.n並列度];
+				this.dgライン描画XRGB32 = new DGライン描画[CDirectShow.n並列度];
 
-				for( int i = 0; i < CDirectShow.n並列度; i++ )
+				for (int i = 0; i < CDirectShow.n並列度; i++)
 				{
-					this.dgライン描画ARGB32[ i ] = new DGライン描画( this.tライン描画ARGB32 );
-					this.dgライン描画XRGB32[ i ] = new DGライン描画( this.tライン描画XRGB32 );
+					this.dgライン描画ARGB32[i] = new DGライン描画(this.tライン描画ARGB32);
+					this.dgライン描画XRGB32[i] = new DGライン描画(this.tライン描画XRGB32);
 				}
 			}
 
@@ -291,7 +291,7 @@ namespace FDK
 
 				// グラフビルダを生成。
 
-				this.graphBuilder = (IGraphBuilder) new FilterGraph();
+				this.graphBuilder = (IGraphBuilder)new FilterGraph();
 #if DEBUG
 				// ROT への登録。
 				this.rot = new DsROTEntry( graphBuilder );
@@ -311,17 +311,17 @@ namespace FDK
 				AMMediaType mediaType = null;
 
 				this.memoryRendererObject = new MemoryRenderer();
-				this.memoryRenderer = (IMemoryRenderer) this.memoryRendererObject;
-				var baseFilter = (IBaseFilter) this.memoryRendererObject;
+				this.memoryRenderer = (IMemoryRenderer)this.memoryRendererObject;
+				var baseFilter = (IBaseFilter)this.memoryRendererObject;
 
-				hr = this.graphBuilder.AddFilter( baseFilter, "MemoryRenderer" );
-				DsError.ThrowExceptionForHR( hr );
+				hr = this.graphBuilder.AddFilter(baseFilter, "MemoryRenderer");
+				DsError.ThrowExceptionForHR(hr);
 
 
 				// fileName からグラフを自動生成。
 
-				hr = this.graphBuilder.RenderFile( fileName, null );	// IMediaControl.RenderFile() は推奨されない
-				DsError.ThrowExceptionForHR( hr );
+				hr = this.graphBuilder.RenderFile(fileName, null);  // IMediaControl.RenderFile() は推奨されない
+				DsError.ThrowExceptionForHR(hr);
 
 
 				// 音声のみ？
@@ -331,8 +331,8 @@ namespace FDK
 					IPin videoInputPin;
 					IBaseFilter audioRenderer;
 					IPin audioInputPin;
-					CDirectShow.SearchMMRenderers( this.graphBuilder, out videoRenderer, out videoInputPin, out audioRenderer, out audioInputPin );
-					if ( videoRenderer == null && audioRenderer != null )
+					CDirectShow.SearchMMRenderers(this.graphBuilder, out videoRenderer, out videoInputPin, out audioRenderer, out audioInputPin);
+					if (videoRenderer == null && audioRenderer != null)
 					{
 						this.b音声のみ = true;
 					}
@@ -348,47 +348,47 @@ namespace FDK
 
 				// イメージ情報を取得。
 
-				if( !this.b音声のみ )
+				if (!this.b音声のみ)
 				{
 					long n;
 					int m;
-					this.memoryRenderer.GetWidth( out n );
-					this.n幅px = (int) n;
-					this.memoryRenderer.GetHeight( out n );
-					this.n高さpx = (int) n;
-					this.memoryRenderer.IsBottomUp( out m );
-					this.b上下反転 = ( m != 0 );
-					this.memoryRenderer.GetBufferSize( out n );
-					this.nデータサイズbyte = (int) n;
-					this.nスキャンライン幅byte = (int) this.nデータサイズbyte / this.n高さpx;
+					this.memoryRenderer.GetWidth(out n);
+					this.n幅px = (int)n;
+					this.memoryRenderer.GetHeight(out n);
+					this.n高さpx = (int)n;
+					this.memoryRenderer.IsBottomUp(out m);
+					this.b上下反転 = (m != 0);
+					this.memoryRenderer.GetBufferSize(out n);
+					this.nデータサイズbyte = (int)n;
+					this.nスキャンライン幅byte = (int)this.nデータサイズbyte / this.n高さpx;
 					// C共通.tCOMオブジェクトを解放する( ref baseFilter );		なんかキャスト元のオブジェクトまで解放されるので解放禁止。
 				}
 
 
 				// グラフを修正する。
 
-				if( bオーディオレンダラなし )
+				if (bオーディオレンダラなし)
 				{
-					CDirectShow.tオーディオレンダラをNullレンダラに変えてフォーマットを取得する( this.graphBuilder, out WaveFormatEx _, out byte[] _ );
+					CDirectShow.tオーディオレンダラをNullレンダラに変えてフォーマットを取得する(this.graphBuilder, out WaveFormatEx _, out byte[] _);
 				}
 
 
 				// その他の処理。
 
-				this.t再生準備開始();	// 1回以上 IMediaControl を呼び出してないと、IReferenceClock は取得できない。
-				this.t遷移完了まで待って状態を取得する();	// 完全に Pause へ遷移するのを待つ。（環境依存）
+				this.t再生準備開始(); // 1回以上 IMediaControl を呼び出してないと、IReferenceClock は取得できない。
+				this.t遷移完了まで待って状態を取得する();   // 完全に Pause へ遷移するのを待つ。（環境依存）
 
 
 				// イベント用ウィンドウハンドルを設定。
 
-				this.MediaEventEx.SetNotifyWindow( hWnd, (int) WM_DSGRAPHNOTIFY, new IntPtr( this.nインスタンスID ) );
+				this.MediaEventEx.SetNotifyWindow(hWnd, (int)WM_DSGRAPHNOTIFY, new IntPtr(this.nインスタンスID));
 			}
 #if !DEBUG
-			catch( Exception e )
+			catch (Exception e)
 			{
-				C共通.t例外の詳細をログに出力する( e );
+				C共通.t例外の詳細をログに出力する(e);
 				this.Dispose();
-				throw;	// 例外発出。
+				throw;  // 例外発出。
 			}
 #endif
 			finally
@@ -398,80 +398,80 @@ namespace FDK
 
 		public void t再生準備開始()
 		{
-			if( this.MediaCtrl != null )
+			if (this.MediaCtrl != null)
 			{
-				int hr = this.MediaCtrl.Pause();		// 再生準備を開始する。ここでは準備が完了するまで待たない。
-				DsError.ThrowExceptionForHR( hr );
+				int hr = this.MediaCtrl.Pause();        // 再生準備を開始する。ここでは準備が完了するまで待たない。
+				DsError.ThrowExceptionForHR(hr);
 			}
 		}
 		public void t再生開始()
 		{
-			if( this.MediaCtrl != null && --this.n再生一時停止呼び出しの累積回数 <= 0 )
+			if (this.MediaCtrl != null && --this.n再生一時停止呼び出しの累積回数 <= 0)
 			{
 				//this.t遷移完了まで待って状態を取得する();		// 再生準備（だろう）がまだ完了してなければ、待つ。	→ 意外と重い処理なので外部で判断して実行するよう変更する。(2011.8.7)
 
-				int hr = this.MediaCtrl.Run();					// 再生開始。
-				DsError.ThrowExceptionForHR( hr );
+				int hr = this.MediaCtrl.Run();                  // 再生開始。
+				DsError.ThrowExceptionForHR(hr);
 
-				this.n再生一時停止呼び出しの累積回数 = 0;		// 一時停止回数はここでリセットされる。
+				this.n再生一時停止呼び出しの累積回数 = 0;      // 一時停止回数はここでリセットされる。
 				this.b再生中 = true;
 			}
 		}
 		public void t再生一時停止()
 		{
-			if( this.MediaCtrl != null && this.n再生一時停止呼び出しの累積回数 == 0 )
+			if (this.MediaCtrl != null && this.n再生一時停止呼び出しの累積回数 == 0)
 			{
 				int hr = this.MediaCtrl.Pause();
-				DsError.ThrowExceptionForHR( hr );
+				DsError.ThrowExceptionForHR(hr);
 			}
 			this.n再生一時停止呼び出しの累積回数++;
 			this.b再生中 = false;
 		}
 		public void t再生停止()
 		{
-			if( this.MediaCtrl != null )
+			if (this.MediaCtrl != null)
 			{
 				int hr = this.MediaCtrl.Stop();
-				DsError.ThrowExceptionForHR( hr );
+				DsError.ThrowExceptionForHR(hr);
 			}
 
 			// 次への準備。
 			//this.t再生位置を変更する( 0.0 );		→ より細かく制御するために、FDK外部で制御するように変更。(2011.8.7)
 			//this.t再生準備開始();
 
-			this.n再生一時停止呼び出しの累積回数 = 0;	// 停止すると、一時停止呼び出し累積回数はリセットされる。
+			this.n再生一時停止呼び出しの累積回数 = 0;  // 停止すると、一時停止呼び出し累積回数はリセットされる。
 			this.b再生中 = false;
 		}
-		public void t再生位置を変更( double db再生位置ms )
+		public void t再生位置を変更(double db再生位置ms)
 		{
-			if( this.MediaSeeking == null )
+			if (this.MediaSeeking == null)
 				return;
 
 			int hr = this.MediaSeeking.SetPositions(
-				DsLong.FromInt64( (long) ( db再生位置ms * 1000.0 * 10.0 ) ),
+				DsLong.FromInt64((long)(db再生位置ms * 1000.0 * 10.0)),
 				AMSeekingSeekingFlags.AbsolutePositioning,
 				null,
-				AMSeekingSeekingFlags.NoPositioning );
+				AMSeekingSeekingFlags.NoPositioning);
 
-			DsError.ThrowExceptionForHR( hr );
+			DsError.ThrowExceptionForHR(hr);
 		}
 		public void t最初から再生開始()
 		{
-			this.t再生位置を変更( 0.0 );
+			this.t再生位置を変更(0.0);
 			this.t再生開始();
 		}
 		public Eグラフの状態 t遷移完了まで待って状態を取得する()
 		{
 			var status = Eグラフの状態.未定;
 
-			if( this.MediaCtrl != null )
+			if (this.MediaCtrl != null)
 			{
 				FilterState fs;
-				int hr = this.MediaCtrl.GetState( 1000, out fs );	// 遷移完了まで最大1000ms待つ。
+				int hr = this.MediaCtrl.GetState(1000, out fs); // 遷移完了まで最大1000ms待つ。
 			}
 			return this.eグラフの状態;
 		}
-		public unsafe void t現時点における最新のスナップイメージをTextureに転写する( CTexture texture )
+		public unsafe void t現時点における最新のスナップイメージをTextureに転写する(CTexture texture)
 		{/*
 			int hr;
 
@@ -582,92 +582,92 @@ namespace FDK
 
 		private IntPtr ip = IntPtr.Zero;
 
-		public static void tグラフを解析しデバッグ出力する( IGraphBuilder graphBuilder )
+		public static void tグラフを解析しデバッグ出力する(IGraphBuilder graphBuilder)
 		{
-			if( graphBuilder == null )
+			if (graphBuilder == null)
 			{
-				Debug.WriteLine( "指定されたグラフが null です。" );
+				Debug.WriteLine("指定されたグラフが null です。");
 				return;
 			}
 
 			int hr = 0;
 
 			IEnumFilters eFilters;
-			hr = graphBuilder.EnumFilters( out eFilters );
-			DsError.ThrowExceptionForHR( hr );
+			hr = graphBuilder.EnumFilters(out eFilters);
+			DsError.ThrowExceptionForHR(hr);
 			{
-				var filters = new IBaseFilter[ 1 ];
-				while( eFilters.Next( 1, filters, IntPtr.Zero ) == CWin32.S_OK )
+				var filters = new IBaseFilter[1];
+				while (eFilters.Next(1, filters, IntPtr.Zero) == CWin32.S_OK)
 				{
 					FilterInfo filterInfo;
-					hr = filters[ 0 ].QueryFilterInfo( out filterInfo );
-					DsError.ThrowExceptionForHR( hr );
+					hr = filters[0].QueryFilterInfo(out filterInfo);
+					DsError.ThrowExceptionForHR(hr);
 					{
-						Debug.WriteLine( filterInfo.achName );		// フィルタ名表示。
-						if( filterInfo.pGraph != null )
-							C共通.tCOMオブジェクトを解放する( ref filterInfo.pGraph );
+						Debug.WriteLine(filterInfo.achName);        // フィルタ名表示。
+						if (filterInfo.pGraph != null)
+							C共通.tCOMオブジェクトを解放する(ref filterInfo.pGraph);
 					}
 
 					IEnumPins ePins;
-					hr = filters[ 0 ].EnumPins( out ePins );
-					DsError.ThrowExceptionForHR( hr );
+					hr = filters[0].EnumPins(out ePins);
+					DsError.ThrowExceptionForHR(hr);
 					{
-						var pins = new IPin[ 1 ];
-						while( ePins.Next( 1, pins, IntPtr.Zero ) == CWin32.S_OK )
+						var pins = new IPin[1];
+						while (ePins.Next(1, pins, IntPtr.Zero) == CWin32.S_OK)
 						{
 							PinInfo pinInfo;
-							hr = pins[ 0 ].QueryPinInfo( out pinInfo );
-							DsError.ThrowExceptionForHR( hr );
+							hr = pins[0].QueryPinInfo(out pinInfo);
+							DsError.ThrowExceptionForHR(hr);
 							{
-								Debug.Write( "  " + pinInfo.name );	// ピン名表示。
-								Debug.Write( ( pinInfo.dir == PinDirection.Input ) ? " ← " : " → " );
+								Debug.Write("  " + pinInfo.name);   // ピン名表示。
+								Debug.Write((pinInfo.dir == PinDirection.Input) ? " ← " : " → ");
 
 								IPin connectPin;
-								hr = pins[ 0 ].ConnectedTo( out connectPin );
-								if( hr != CWin32.S_OK )
-									Debug.WriteLine( "(未接続)" );
+								hr = pins[0].ConnectedTo(out connectPin);
+								if (hr != CWin32.S_OK)
+									Debug.WriteLine("(未接続)");
 								else
 								{
-									DsError.ThrowExceptionForHR( hr );
+									DsError.ThrowExceptionForHR(hr);
 
 									PinInfo connectPinInfo;
-									hr = connectPin.QueryPinInfo( out connectPinInfo );
-									DsError.ThrowExceptionForHR( hr );
+									hr = connectPin.QueryPinInfo(out connectPinInfo);
+									DsError.ThrowExceptionForHR(hr);
 									{
 										FilterInfo connectFilterInfo;
-										hr = connectPinInfo.filter.QueryFilterInfo( out connectFilterInfo );
-										DsError.ThrowExceptionForHR( hr );
+										hr = connectPinInfo.filter.QueryFilterInfo(out connectFilterInfo);
+										DsError.ThrowExceptionForHR(hr);
 										{
-											Debug.Write( "[" + connectFilterInfo.achName + "]." );	// 接続先フィルタ名
+											Debug.Write("[" + connectFilterInfo.achName + "].");    // 接続先フィルタ名
 
-											if( connectFilterInfo.pGraph != null )
-												C共通.tCOMオブジェクトを解放する( ref connectFilterInfo.pGraph );
+											if (connectFilterInfo.pGraph != null)
+												C共通.tCOMオブジェクトを解放する(ref connectFilterInfo.pGraph);
 										}
 
-										Debug.WriteLine( connectPinInfo.name );		// 接続先ピン名
-										if( connectPinInfo.filter != null )
-											C共通.tCOMオブジェクトを解放する( ref connectPinInfo.filter );
-										DsUtils.FreePinInfo( connectPinInfo );
+										Debug.WriteLine(connectPinInfo.name);       // 接続先ピン名
+										if (connectPinInfo.filter != null)
+											C共通.tCOMオブジェクトを解放する(ref connectPinInfo.filter);
+										DsUtils.FreePinInfo(connectPinInfo);
 									}
-									C共通.tCOMオブジェクトを解放する( ref connectPin );
+									C共通.tCOMオブジェクトを解放する(ref connectPin);
 								}
-								if( pinInfo.filter != null )
-									C共通.tCOMオブジェクトを解放する( ref pinInfo.filter );
-								DsUtils.FreePinInfo( pinInfo );
+								if (pinInfo.filter != null)
+									C共通.tCOMオブジェクトを解放する(ref pinInfo.filter);
+								DsUtils.FreePinInfo(pinInfo);
 							}
-							C共通.tCOMオブジェクトを解放する( ref pins[ 0 ] );
+							C共通.tCOMオブジェクトを解放する(ref pins[0]);
 						}
 					}
-					C共通.tCOMオブジェクトを解放する( ref ePins );
+					C共通.tCOMオブジェクトを解放する(ref ePins);
 
-					C共通.tCOMオブジェクトを解放する( ref filters[ 0 ] );
+					C共通.tCOMオブジェクトを解放する(ref filters[0]);
 				}
 			}
-			C共通.tCOMオブジェクトを解放する( ref eFilters );
+			C共通.tCOMオブジェクトを解放する(ref eFilters);
 
 			Debug.Flush();
 		}
-		public static void tオーディオレンダラをNullレンダラに変えてフォーマットを取得する( IGraphBuilder graphBuilder, out WaveFormatEx wfx, out byte[] wfx拡張データ )
+		public static void tオーディオレンダラをNullレンダラに変えてフォーマットを取得する(IGraphBuilder graphBuilder, out WaveFormatEx wfx, out byte[] wfx拡張データ)
 		{
 			int hr = 0;
 
@@ -677,15 +677,15 @@ namespace FDK
 			IBaseFilter nullRenderer = null;
 			IPin nullRendererInputPin = null;
 			wfx = null;
-			wfx拡張データ = new byte[ 0 ];
+			wfx拡張データ = new byte[0];
 
 			try
 			{
 				// audioRenderer を探す。
 
-				audioRenderer = CDirectShow.tオーディオレンダラを探して返す( graphBuilder );
-				if( audioRenderer == null )
-					return;		// なかった
+				audioRenderer = CDirectShow.tオーディオレンダラを探して返す(graphBuilder);
+				if (audioRenderer == null)
+					return;     // なかった
 
 				#region [ 音量ゼロで一度再生する。（オーディオレンダラの入力ピンMediaTypeが、接続時とは異なる「正しいもの」に変わる可能性があるため。）]
 				//-----------------
@@ -693,29 +693,29 @@ namespace FDK
 					// ここに来た時点で、グラフのビデオレンダラは無効化（NullRendererへの置換や除去など）しておくこと。
 					// さもないと、StopWhenReady() 時に一瞬だけ Activeウィンドウが表示されてしまう。
 
-					var mediaCtrl = (IMediaControl) graphBuilder;
-					var basicAudio = (IBasicAudio) graphBuilder;
-					
-					basicAudio.put_Volume( -10000 );	// 最小音量
-					
+					var mediaCtrl = (IMediaControl)graphBuilder;
+					var basicAudio = (IBasicAudio)graphBuilder;
+
+					basicAudio.put_Volume(-10000);  // 最小音量
+
 
 					// グラフを再生してすぐ止める。（Paused → Stopped へ遷移する）
-					
+
 					mediaCtrl.StopWhenReady();
 
-		
+
 					// グラフが Stopped に遷移完了するまで待つ。（StopWhenReady() はグラフが Stopped になるのを待たずに帰ってくる。）
 
 					FilterState fs = FilterState.Paused;
 					hr = CWin32.S_FALSE;
-					while( fs != FilterState.Stopped || hr != CWin32.S_OK )
-						hr = mediaCtrl.GetState( 10, out fs );
-					
+					while (fs != FilterState.Stopped || hr != CWin32.S_OK)
+						hr = mediaCtrl.GetState(10, out fs);
+
 
 					// 終了処理。
 
-					basicAudio.put_Volume( 0 );			// 最大音量
-					
+					basicAudio.put_Volume(0);           // 最大音量
+
 					basicAudio = null;
 					mediaCtrl = null;
 				}
@@ -724,22 +724,22 @@ namespace FDK
 
 				// audioRenderer の入力ピンを探す。
 
-				rendererInputPin = t最初の入力ピンを探して返す( audioRenderer );
-				if( rendererInputPin == null )
+				rendererInputPin = t最初の入力ピンを探して返す(audioRenderer);
+				if (rendererInputPin == null)
 					return;
 
 
 				// WAVEフォーマットを取得し、wfx 引数へ格納する。
 
 				var type = new AMMediaType();
-				hr = rendererInputPin.ConnectionMediaType( type );
-				DsError.ThrowExceptionForHR( hr );
+				hr = rendererInputPin.ConnectionMediaType(type);
+				DsError.ThrowExceptionForHR(hr);
 				try
 				{
 					#region [ type.formatPtr から wfx に、拡張領域を除くデータをコピーする。]
 					//-----------------
-					var wfxTemp = new WaveFormatEx();	// SharpDX.Multimedia.WaveFormat は Marshal.PtrToStructure() で使えないので、それが使える DirectShowLib.WaveFormatEx を介して取得する。（面倒…）
-					Marshal.PtrToStructure( type.formatPtr, (object) wfxTemp );
+					var wfxTemp = new WaveFormatEx();   // SharpDX.Multimedia.WaveFormat は Marshal.PtrToStructure() で使えないので、それが使える DirectShowLib.WaveFormatEx を介して取得する。（面倒…）
+					Marshal.PtrToStructure(type.formatPtr, (object)wfxTemp);
 					wfx = wfxTemp;
 					//-----------------
 					#endregion
@@ -748,15 +748,15 @@ namespace FDK
 					int nWaveFormatEx本体サイズ = 16 + 2; // sizeof( WAVEFORMAT ) + sizof( WAVEFORMATEX.cbSize )
 					int nはみ出しサイズbyte = type.formatSize - nWaveFormatEx本体サイズ;
 
-					if( nはみ出しサイズbyte > 0 )
+					if (nはみ出しサイズbyte > 0)
 					{
-						wfx拡張データ = new byte[ nはみ出しサイズbyte ];
-						var hGC = GCHandle.Alloc( wfx拡張データ, GCHandleType.Pinned );	// 動くなよー
+						wfx拡張データ = new byte[nはみ出しサイズbyte];
+						var hGC = GCHandle.Alloc(wfx拡張データ, GCHandleType.Pinned);    // 動くなよー
 						unsafe
 						{
-							byte* src = (byte*) type.formatPtr.ToPointer();
-							byte* dst = (byte*) hGC.AddrOfPinnedObject().ToPointer();
-							CWin32.CopyMemory( dst, src + nWaveFormatEx本体サイズ, (uint) nはみ出しサイズbyte );
+							byte* src = (byte*)type.formatPtr.ToPointer();
+							byte* dst = (byte*)hGC.AddrOfPinnedObject().ToPointer();
+							CWin32.CopyMemory(dst, src + nWaveFormatEx本体サイズ, (uint)nはみ出しサイズbyte);
 						}
 						hGC.Free();
 					}
@@ -765,15 +765,15 @@ namespace FDK
 				}
 				finally
 				{
-					if( type != null )
-						DsUtils.FreeAMMediaType( type );
+					if (type != null)
+						DsUtils.FreeAMMediaType(type);
 				}
 
 
 				// audioRenderer につながる出力ピンを探す。
 
-				hr = rendererInputPin.ConnectedTo( out rendererConnectedOutputPin );
-				DsError.ThrowExceptionForHR( hr );
+				hr = rendererInputPin.ConnectedTo(out rendererConnectedOutputPin);
+				DsError.ThrowExceptionForHR(hr);
 
 
 				// audioRenderer をグラフから切断する。
@@ -784,35 +784,35 @@ namespace FDK
 
 				// audioRenderer をグラフから除去する。
 
-				hr = graphBuilder.RemoveFilter( audioRenderer );
-				DsError.ThrowExceptionForHR( hr );
+				hr = graphBuilder.RemoveFilter(audioRenderer);
+				DsError.ThrowExceptionForHR(hr);
 
 
 				// nullRenderer を作成し、グラフに追加する。
 
-				nullRenderer = (IBaseFilter) new NullRenderer();
-				hr = graphBuilder.AddFilter( nullRenderer, "Audio Null Renderer" );
-				DsError.ThrowExceptionForHR( hr );
+				nullRenderer = (IBaseFilter)new NullRenderer();
+				hr = graphBuilder.AddFilter(nullRenderer, "Audio Null Renderer");
+				DsError.ThrowExceptionForHR(hr);
 
 
 				// nullRenderer の入力ピンを探す。
 
-				hr = nullRenderer.FindPin( "In", out nullRendererInputPin );
-				DsError.ThrowExceptionForHR( hr );
+				hr = nullRenderer.FindPin("In", out nullRendererInputPin);
+				DsError.ThrowExceptionForHR(hr);
 
 
 				// nullRenderer をグラフに接続する。
 
-				hr = rendererConnectedOutputPin.Connect( nullRendererInputPin, null );
-				DsError.ThrowExceptionForHR( hr );
+				hr = rendererConnectedOutputPin.Connect(nullRendererInputPin, null);
+				DsError.ThrowExceptionForHR(hr);
 			}
 			finally
 			{
-				C共通.tCOMオブジェクトを解放する( ref nullRendererInputPin );
-				C共通.tCOMオブジェクトを解放する( ref nullRenderer );
-				C共通.tCOMオブジェクトを解放する( ref rendererConnectedOutputPin );
-				C共通.tCOMオブジェクトを解放する( ref rendererInputPin );
-				C共通.tCOMオブジェクトを解放する( ref audioRenderer );
+				C共通.tCOMオブジェクトを解放する(ref nullRendererInputPin);
+				C共通.tCOMオブジェクトを解放する(ref nullRenderer);
+				C共通.tCOMオブジェクトを解放する(ref rendererConnectedOutputPin);
+				C共通.tCOMオブジェクトを解放する(ref rendererInputPin);
+				C共通.tCOMオブジェクトを解放する(ref audioRenderer);
 			}
 		}
 		public static void ConnectNullRendererFromSampleGrabber(IGraphBuilder graphBuilder, IBaseFilter sampleGrabber)
@@ -877,7 +877,7 @@ namespace FDK
 					DsError.ThrowExceptionForHR(hr);
 				}
 
-				if ( audioRenderer != null && audioRendererInputPin != null )
+				if (audioRenderer != null && audioRendererInputPin != null)
 				{
 					C共通.tCOMオブジェクトを解放する(ref connectedOutputPin);
 
@@ -918,51 +918,51 @@ namespace FDK
 			}
 		}
 
-		private static IPin t最初の入力ピンを探して返す( IBaseFilter baseFilter )
+		private static IPin t最初の入力ピンを探して返す(IBaseFilter baseFilter)
 		{
 			int hr = 0;
 
 			IPin firstInputPin = null;
 
 			IEnumPins ePins;
-			hr = baseFilter.EnumPins( out ePins );
-			DsError.ThrowExceptionForHR( hr );
+			hr = baseFilter.EnumPins(out ePins);
+			DsError.ThrowExceptionForHR(hr);
 			try
 			{
-				var pins = new IPin[ 1 ];
-				while( ePins.Next( 1, pins, IntPtr.Zero ) == CWin32.S_OK )
+				var pins = new IPin[1];
+				while (ePins.Next(1, pins, IntPtr.Zero) == CWin32.S_OK)
 				{
 					PinInfo pinfo = new PinInfo() { filter = null };
 					try
 					{
-						hr = pins[ 0 ].QueryPinInfo( out pinfo );
-						DsError.ThrowExceptionForHR( hr );
+						hr = pins[0].QueryPinInfo(out pinfo);
+						DsError.ThrowExceptionForHR(hr);
 
-						if( pinfo.dir == PinDirection.Input )
+						if (pinfo.dir == PinDirection.Input)
 						{
-							firstInputPin = pins[ 0 ];
+							firstInputPin = pins[0];
 							break;
 						}
 					}
 					finally
 					{
-						if( pinfo.filter != null )
-							C共通.tCOMオブジェクトを解放する( ref pinfo.filter );
-						DsUtils.FreePinInfo( pinfo );
+						if (pinfo.filter != null)
+							C共通.tCOMオブジェクトを解放する(ref pinfo.filter);
+						DsUtils.FreePinInfo(pinfo);
 
-						if( firstInputPin == null )
-							C共通.tCOMオブジェクトを解放する( ref pins[ 0 ] );
+						if (firstInputPin == null)
+							C共通.tCOMオブジェクトを解放する(ref pins[0]);
 					}
 				}
 			}
 			finally
 			{
-				C共通.tCOMオブジェクトを解放する( ref ePins );
+				C共通.tCOMオブジェクトを解放する(ref ePins);
 			}
 
 			return firstInputPin;
 		}
-		private static void SearchMMRenderers( IFilterGraph graph, out IBaseFilter videoRenderer, out IPin inputVPin, out IBaseFilter audioRenderer, out IPin inputAPin)
+		private static void SearchMMRenderers(IFilterGraph graph, out IBaseFilter videoRenderer, out IPin inputVPin, out IBaseFilter audioRenderer, out IPin inputAPin)
 		{
 			int hr = 0;
 			string strVRフィルタ名 = null;
@@ -974,12 +974,12 @@ namespace FDK
 			// ビデオレンダラと入力ピンを探し、そのフィルタ名とピンIDを控える。
 
 			IEnumFilters eFilters;
-			hr = graph.EnumFilters( out eFilters );
-			DsError.ThrowExceptionForHR( hr );
+			hr = graph.EnumFilters(out eFilters);
+			DsError.ThrowExceptionForHR(hr);
 			try
 			{
-				var filters = new IBaseFilter[ 1 ];
-				while( eFilters.Next( 1, filters, IntPtr.Zero ) == CWin32.S_OK )
+				var filters = new IBaseFilter[1];
+				while (eFilters.Next(1, filters, IntPtr.Zero) == CWin32.S_OK)
 				{
 					try
 					{
@@ -988,82 +988,82 @@ namespace FDK
 						IEnumPins ePins;
 						bool b出力ピンがある = false;
 
-						hr = filters[ 0 ].EnumPins( out ePins );
-						DsError.ThrowExceptionForHR( hr );
+						hr = filters[0].EnumPins(out ePins);
+						DsError.ThrowExceptionForHR(hr);
 						try
 						{
-							var pins = new IPin[ 1 ];
-							while( ePins.Next( 1, pins, IntPtr.Zero ) == CWin32.S_OK )
+							var pins = new IPin[1];
+							while (ePins.Next(1, pins, IntPtr.Zero) == CWin32.S_OK)
 							{
 								try
 								{
-									if( b出力ピンがある )
+									if (b出力ピンがある)
 										continue;
 
 									PinDirection dir;
-									hr = pins[ 0 ].QueryDirection( out dir );
-									DsError.ThrowExceptionForHR( hr );
-									if( dir == PinDirection.Output )
+									hr = pins[0].QueryDirection(out dir);
+									DsError.ThrowExceptionForHR(hr);
+									if (dir == PinDirection.Output)
 										b出力ピンがある = true;
 								}
 								finally
 								{
-									C共通.tCOMオブジェクトを解放する( ref pins[ 0 ] );
+									C共通.tCOMオブジェクトを解放する(ref pins[0]);
 								}
 							}
 						}
 						finally
 						{
-							C共通.tCOMオブジェクトを解放する( ref ePins );
+							C共通.tCOMオブジェクトを解放する(ref ePins);
 						}
 
-						if( b出力ピンがある )
-							continue;	// 次のフィルタへ
+						if (b出力ピンがある)
+							continue;   // 次のフィルタへ
 
 						//-----------------
 						#endregion
 						#region [ 接続中の入力ピンが MEDIATYPE_Video に対応していたら、フィルタ名とピンIDを取得する。]
 						//-----------------
-						hr = filters[ 0 ].EnumPins( out ePins );
-						DsError.ThrowExceptionForHR( hr );
+						hr = filters[0].EnumPins(out ePins);
+						DsError.ThrowExceptionForHR(hr);
 						try
 						{
-							var pins = new IPin[ 1 ];
-							while( ePins.Next( 1, pins, IntPtr.Zero ) == CWin32.S_OK )
+							var pins = new IPin[1];
+							while (ePins.Next(1, pins, IntPtr.Zero) == CWin32.S_OK)
 							{
 								try
 								{
-									if( !string.IsNullOrEmpty(strVRフィルタ名) )
+									if (!string.IsNullOrEmpty(strVRフィルタ名))
 										continue;
 
 									var mediaType = new AMMediaType();
 
 									#region [ 現在接続中の MediaType を取得。つながってなければ次のピンへ。]
 									//-----------------
-									hr = pins[ 0 ].ConnectionMediaType( mediaType );
-									if( hr == CWin32.VFW_E_NOT_CONNECTED )
-										continue;	// つながってない
-									DsError.ThrowExceptionForHR( hr );
+									hr = pins[0].ConnectionMediaType(mediaType);
+									if (hr == CWin32.VFW_E_NOT_CONNECTED)
+										continue;   // つながってない
+									DsError.ThrowExceptionForHR(hr);
 									//-----------------
 									#endregion
 
 									try
 									{
-										if( mediaType.majorType.Equals( MediaType.Video ) )
+										if (mediaType.majorType.Equals(MediaType.Video))
 										{
 											#region [ フィルタ名取得！]
 											//-----------------
 											FilterInfo filterInfo;
-											hr = filters[ 0 ].QueryFilterInfo( out filterInfo );
-											DsError.ThrowExceptionForHR( hr );
+											hr = filters[0].QueryFilterInfo(out filterInfo);
+											DsError.ThrowExceptionForHR(hr);
 											strVRフィルタ名 = filterInfo.achName;
-											C共通.tCOMオブジェクトを解放する( ref filterInfo.pGraph );
+											C共通.tCOMオブジェクトを解放する(ref filterInfo.pGraph);
 											//-----------------
 											#endregion
 											#region [ ピンID取得！]
 											//-----------------
-											hr = pins[ 0 ].QueryId( out strVRピンID );
-											DsError.ThrowExceptionForHR( hr );
+											hr = pins[0].QueryId(out strVRピンID);
+											DsError.ThrowExceptionForHR(hr);
 											//-----------------
 											#endregion
 										}
@@ -1080,18 +1080,18 @@ namespace FDK
 									}
 									finally
 									{
-										DsUtils.FreeAMMediaType( mediaType );
+										DsUtils.FreeAMMediaType(mediaType);
 									}
 								}
 								finally
 								{
-									C共通.tCOMオブジェクトを解放する( ref pins[ 0 ] );
+									C共通.tCOMオブジェクトを解放する(ref pins[0]);
 								}
 							}
 						}
 						finally
 						{
-							C共通.tCOMオブジェクトを解放する( ref ePins );
+							C共通.tCOMオブジェクトを解放する(ref ePins);
 						}
 
 						//-----------------
@@ -1099,13 +1099,13 @@ namespace FDK
 					}
 					finally
 					{
-						C共通.tCOMオブジェクトを解放する( ref filters[ 0 ] );
+						C共通.tCOMオブジェクトを解放する(ref filters[0]);
 					}
 				}
 			}
 			finally
 			{
-				C共通.tCOMオブジェクトを解放する( ref eFilters );
+				C共通.tCOMオブジェクトを解放する(ref eFilters);
 			}
 
 
@@ -1116,13 +1116,13 @@ namespace FDK
 			audioRenderer = null;
 			inputAPin = null;
 
-			if ( !string.IsNullOrEmpty(strVRフィルタ名) )
+			if (!string.IsNullOrEmpty(strVRフィルタ名))
 			{
-				hr = graph.FindFilterByName(strVRフィルタ名, out videoRenderer );
-				DsError.ThrowExceptionForHR( hr );
+				hr = graph.FindFilterByName(strVRフィルタ名, out videoRenderer);
+				DsError.ThrowExceptionForHR(hr);
 
-				hr = videoRenderer.FindPin( strVRピンID, out inputVPin );
-				DsError.ThrowExceptionForHR( hr );
+				hr = videoRenderer.FindPin(strVRピンID, out inputVPin);
+				DsError.ThrowExceptionForHR(hr);
 			}
 
 			if (!string.IsNullOrEmpty(strARフィルタ名))
@@ -1134,31 +1134,31 @@ namespace FDK
 				DsError.ThrowExceptionForHR(hr);
 			}
 		}
-		private static IBaseFilter tオーディオレンダラを探して返す( IFilterGraph graph )
+		private static IBaseFilter tオーディオレンダラを探して返す(IFilterGraph graph)
 		{
 			int hr = 0;
 			IBaseFilter audioRenderer = null;
 
 			IEnumFilters eFilters;
-			hr = graph.EnumFilters( out eFilters );
-			DsError.ThrowExceptionForHR( hr );
+			hr = graph.EnumFilters(out eFilters);
+			DsError.ThrowExceptionForHR(hr);
 			try
 			{
-				var filters = new IBaseFilter[ 1 ];
-				while( eFilters.Next( 1, filters, IntPtr.Zero ) == CWin32.S_OK )
+				var filters = new IBaseFilter[1];
+				while (eFilters.Next(1, filters, IntPtr.Zero) == CWin32.S_OK)
 				{
-					if( ( filters[ 0 ] as IAMAudioRendererStats ) != null )
+					if ((filters[0] as IAMAudioRendererStats) != null)
 					{
-						audioRenderer = filters[ 0 ];
+						audioRenderer = filters[0];
 						break;
 					}
 
-					C共通.tCOMオブジェクトを解放する( ref filters[ 0 ] );
+					C共通.tCOMオブジェクトを解放する(ref filters[0]);
 				}
 			}
 			finally
 			{
-				C共通.tCOMオブジェクトを解放する( ref eFilters );
+				C共通.tCOMオブジェクトを解放する(ref eFilters);
 			}
 			return audioRenderer;
 		}
@@ -1167,24 +1167,24 @@ namespace FDK
 		#region [ 静的インスタンス管理 ]
 		//-----------------
 		public const int nインスタンスIDの最大数 = 100;
-		protected static Dictionary<int, CDirectShow> dicインスタンス = new Dictionary<int, CDirectShow>();	// <インスタンスID, そのIDを持つインスタンス>
+		protected static Dictionary<int, CDirectShow> dicインスタンス = new Dictionary<int, CDirectShow>();   // <インスタンスID, そのIDを持つインスタンス>
 
-		protected static void tインスタンスを登録する( CDirectShow ds )
+		protected static void tインスタンスを登録する(CDirectShow ds)
 		{
-			for( int i = 1; i < CDirectShow.nインスタンスIDの最大数; i++ )
+			for (int i = 1; i < CDirectShow.nインスタンスIDの最大数; i++)
 			{
-				if( !CDirectShow.dicインスタンス.ContainsKey( i ) )		// 空いている番号を使う。
+				if (!CDirectShow.dicインスタンス.ContainsKey(i))      // 空いている番号を使う。
 				{
 					ds.nインスタンスID = i;
-					CDirectShow.dicインスタンス.Add( i, ds );
+					CDirectShow.dicインスタンス.Add(i, ds);
 					break;
 				}
 			}
 		}
-		protected static void tインスタンスを解放する( int nインスタンスID )
+		protected static void tインスタンスを解放する(int nインスタンスID)
 		{
-			if( CDirectShow.dicインスタンス.ContainsKey( nインスタンスID ) )
-				CDirectShow.dicインスタンス.Remove( nインスタンスID );
+			if (CDirectShow.dicインスタンス.ContainsKey(nインスタンスID))
+				CDirectShow.dicインスタンス.Remove(nインスタンスID);
 		}
 		//-----------------
 		#endregion
@@ -1193,12 +1193,12 @@ namespace FDK
 		//-----------------
 		public virtual void Dispose()
 		{
-			this.Dispose( true );
-			GC.SuppressFinalize( this );	// ちゃんと Dispose されたので、ファイナライズ不要であることを CLR に伝える。
+			this.Dispose(true);
+			GC.SuppressFinalize(this);  // ちゃんと Dispose されたので、ファイナライズ不要であることを CLR に伝える。
 		}
-		protected virtual void Dispose( bool bManagedリソースも解放する )
+		protected virtual void Dispose(bool bManagedリソースも解放する)
 		{
-			if( bManagedリソースも解放する )
+			if (bManagedリソースも解放する)
 			{
 				#region [ ROTから解放する。]
 				//-----------------
@@ -1207,40 +1207,40 @@ namespace FDK
 #endif
 				//-----------------
 				#endregion
-				
-				CDirectShow.tインスタンスを解放する( this.nインスタンスID );
+
+				CDirectShow.tインスタンスを解放する(this.nインスタンスID);
 			}
 
 			#region [ インターフェース参照をなくし、COMオブジェクトを解放する。 ]
 			//-----------------
-			if( this.ip != IntPtr.Zero )
+			if (this.ip != IntPtr.Zero)
 			{
-				Marshal.FreeCoTaskMem( this.ip );
+				Marshal.FreeCoTaskMem(this.ip);
 				this.ip = IntPtr.Zero;
 			}
 
-			if( this.MediaCtrl != null )
+			if (this.MediaCtrl != null)
 			{
 				this.MediaCtrl.Stop();
 				this.MediaCtrl = null;
 			}
 
-			if( this.MediaEventEx != null )
+			if (this.MediaEventEx != null)
 			{
-				this.MediaEventEx.SetNotifyWindow( IntPtr.Zero, 0, IntPtr.Zero );
+				this.MediaEventEx.SetNotifyWindow(IntPtr.Zero, 0, IntPtr.Zero);
 				this.MediaEventEx = null;
 			}
 
-			if( this.MediaSeeking != null )
+			if (this.MediaSeeking != null)
 				this.MediaSeeking = null;
 
-			if( this.BasicAudio != null )
+			if (this.BasicAudio != null)
 				this.BasicAudio = null;
 
-			C共通.tCOMオブジェクトを解放する( ref this.nullRenderer );
-			C共通.tCOMオブジェクトを解放する( ref this.memoryRenderer );
-			C共通.tCOMオブジェクトを解放する( ref this.memoryRendererObject );
-			C共通.tCOMオブジェクトを解放する( ref this.graphBuilder );
+			C共通.tCOMオブジェクトを解放する(ref this.nullRenderer);
+			C共通.tCOMオブジェクトを解放する(ref this.memoryRenderer);
+			C共通.tCOMオブジェクトを解放する(ref this.memoryRendererObject);
+			C共通.tCOMオブジェクトを解放する(ref this.graphBuilder);
 			//-----------------
 			#endregion
 
@@ -1250,8 +1250,8 @@ namespace FDK
 		{
 			// ファイナライザが呼ばれたということは、Dispose() されなかったということ。
 			// この場合、Managed リソースは先にファイナライズされている可能性があるので、Unmamaed リソースのみを解放する。
-			
-			this.Dispose( false );
+
+			this.Dispose(false);
 		}
 		//-----------------
 		#endregion
@@ -1273,48 +1273,48 @@ namespace FDK
 #endif
 
 		// 可能な数のスレッドを使用して画像を転送する。大きい画像ほど有効。多すぎるとプール内のスレッドが空くまで待たされるので注意。
-		private static int n並列度 = 0;	// 0 の場合、最初の生成時に並列度を決定する。
+		private static int n並列度 = 0;    // 0 の場合、最初の生成時に並列度を決定する。
 
 		private DGライン描画[] dgライン描画ARGB32;
 		private DGライン描画[] dgライン描画XRGB32;
-		private unsafe delegate void DGライン描画( int n );
+		private unsafe delegate void DGライン描画(int n);
 		private unsafe byte* ptrSnap = null;
 		private unsafe UInt32** ptrTexture = null;
 
-		private unsafe void tライン描画XRGB32( int n )
+		private unsafe void tライン描画XRGB32(int n)
 		{
 			// Snap は RGB32、Textureは X8R8G8B8
 
-			UInt32* ptrTexture = this.ptrTexture[ n ];
-			for( int y = n; y < this.n高さpx; y += CDirectShow.n並列度 )
+			UInt32* ptrTexture = this.ptrTexture[n];
+			for (int y = n; y < this.n高さpx; y += CDirectShow.n並列度)
 			{
-				byte* ptrPixel = ptrSnap + ( ( ( this.n高さpx - y ) - 1 ) * this.nスキャンライン幅byte );
+				byte* ptrPixel = ptrSnap + (((this.n高さpx - y) - 1) * this.nスキャンライン幅byte);
 
 				// アルファ無視なので一括コピー。CopyMemory() は自前でループ展開するよりも速い。
-				CWin32.CopyMemory( (void*) ptrTexture, (void*) ptrPixel, (uint) ( this.n幅px * 4 ) );
+				CWin32.CopyMemory((void*)ptrTexture, (void*)ptrPixel, (uint)(this.n幅px * 4));
 
 				ptrTexture += this.n幅px * CDirectShow.n並列度;
 			}
 		}
-		private unsafe void tライン描画ARGB32( int n )
+		private unsafe void tライン描画ARGB32(int n)
 		{
 			// Snap は RGB32、Textureは A8R8G8B8
 
-			UInt32* ptrTexture = this.ptrTexture[ n ];
-			for( int y = n; y < this.n高さpx; y += CDirectShow.n並列度 )
+			UInt32* ptrTexture = this.ptrTexture[n];
+			for (int y = n; y < this.n高さpx; y += CDirectShow.n並列度)
 			{
-				UInt32* ptrPixel = (UInt32*) ( ptrSnap + ( ( ( this.n高さpx - y ) - 1 ) * this.nスキャンライン幅byte ) );
+				UInt32* ptrPixel = (UInt32*)(ptrSnap + (((this.n高さpx - y) - 1) * this.nスキャンライン幅byte));
 
 				//for( int x = 0; x < this.n幅px; x++ )
 				//	*( ptrTexture + x ) = 0xFF000000 | *ptrPixel++;
 				//			↓ループ展開により高速化。160fps の曲が 200fps まで上がった。
 
-				if( this.n幅px == 0 ) goto LEXIT;
+				if (this.n幅px == 0) goto LEXIT;
 				UInt32* pt = ptrTexture;
 				UInt32 nAlpha = 0xFF000000;
-				int d = ( this.n幅px % 32 );
+				int d = (this.n幅px % 32);
 
-				switch( d )
+				switch (d)
 				{
 					case 1: goto L031;
 					case 2: goto L030;
@@ -1381,9 +1381,9 @@ namespace FDK
 			L029: *pt++ = nAlpha | *ptrPixel++;
 			L030: *pt++ = nAlpha | *ptrPixel++;
 			L031: *pt++ = nAlpha | *ptrPixel++;
-				if( ( pt - ptrTexture ) < this.n幅px ) goto L000;
+				if ((pt - ptrTexture) < this.n幅px) goto L000;
 
-			LEXIT:
+				LEXIT:
 				ptrTexture += this.n幅px * CDirectShow.n並列度;
 			}
 		}

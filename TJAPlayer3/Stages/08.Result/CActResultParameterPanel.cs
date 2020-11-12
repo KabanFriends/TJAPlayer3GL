@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using System.Drawing;
 using System.IO;
-
 using FDK;
 
 namespace TJAPlayer3
 {
-	internal class CActResultParameterPanel : CActivity
+	internal sealed class CActResultParameterPanel : CActivity
 	{
 		// コンストラクタ
 
@@ -61,53 +57,6 @@ namespace TJAPlayer3
 			st文字位置11.pt = new Point( 0, 0 );
 			st文字位置Array[ 10 ] = st文字位置11;
 			this.st小文字位置 = st文字位置Array;
-
-			ST文字位置[] st文字位置Array2 = new ST文字位置[ 11 ];
-			ST文字位置 st文字位置12 = new ST文字位置();
-			st文字位置12.ch = '0';
-			st文字位置12.pt = new Point( 0, 0 );
-			st文字位置Array2[ 0 ] = st文字位置12;
-			ST文字位置 st文字位置13 = new ST文字位置();
-			st文字位置13.ch = '1';
-			st文字位置13.pt = new Point( 32, 0 );
-			st文字位置Array2[ 1 ] = st文字位置13;
-			ST文字位置 st文字位置14 = new ST文字位置();
-			st文字位置14.ch = '2';
-			st文字位置14.pt = new Point( 64, 0 );
-			st文字位置Array2[ 2 ] = st文字位置14;
-			ST文字位置 st文字位置15 = new ST文字位置();
-			st文字位置15.ch = '3';
-			st文字位置15.pt = new Point( 96, 0 );
-			st文字位置Array2[ 3 ] = st文字位置15;
-			ST文字位置 st文字位置16 = new ST文字位置();
-			st文字位置16.ch = '4';
-			st文字位置16.pt = new Point( 128, 0 );
-			st文字位置Array2[ 4 ] = st文字位置16;
-			ST文字位置 st文字位置17 = new ST文字位置();
-			st文字位置17.ch = '5';
-			st文字位置17.pt = new Point( 160, 0 );
-			st文字位置Array2[ 5 ] = st文字位置17;
-			ST文字位置 st文字位置18 = new ST文字位置();
-			st文字位置18.ch = '6';
-			st文字位置18.pt = new Point( 192, 0 );
-			st文字位置Array2[ 6 ] = st文字位置18;
-			ST文字位置 st文字位置19 = new ST文字位置();
-			st文字位置19.ch = '7';
-			st文字位置19.pt = new Point( 224, 0 );
-			st文字位置Array2[ 7 ] = st文字位置19;
-			ST文字位置 st文字位置20 = new ST文字位置();
-			st文字位置20.ch = '8';
-			st文字位置20.pt = new Point( 256, 0 );
-			st文字位置Array2[ 8 ] = st文字位置20;
-			ST文字位置 st文字位置21 = new ST文字位置();
-			st文字位置21.ch = '9';
-			st文字位置21.pt = new Point( 288, 0 );
-			st文字位置Array2[ 9 ] = st文字位置21;
-			ST文字位置 st文字位置22 = new ST文字位置();
-			st文字位置22.ch = '%';
-			st文字位置22.pt = new Point( 0x37, 0 );
-			st文字位置Array2[ 10 ] = st文字位置22;
-			this.st大文字位置 = st文字位置Array2;
 
             ST文字位置[] stScore文字位置Array = new ST文字位置[10];
             ST文字位置 stScore文字位置 = new ST文字位置();
@@ -216,130 +165,150 @@ namespace TJAPlayer3
 				base.b初めての進行描画 = false;
 			}
 			this.ct表示用.t進行();
-			if(TJAPlayer3.Tx.Result_Panel != null )
-			{
-                TJAPlayer3.Tx.Result_Panel.t2D描画( TJAPlayer3.app.Device, TJAPlayer3.Skin.nResultPanelP1X, TJAPlayer3.Skin.nResultPanelP1Y );
-			}
-			if(TJAPlayer3.Tx.Result_Score_Text != null )
-			{
-                TJAPlayer3.Tx.Result_Score_Text.t2D描画( TJAPlayer3.app.Device, 753, 249 ); //点
-			}
-            if(TJAPlayer3.Tx.Result_Judge != null )
-            {
-                TJAPlayer3.Tx.Result_Judge.t2D描画( TJAPlayer3.app.Device, TJAPlayer3.Skin.nResultJudge1_P1X, TJAPlayer3.Skin.nResultJudge1_P1Y );
-            }
-            if(TJAPlayer3.Tx.Result_Judge != null )
-            {
-                //CDTXMania.Tx.Result_Judge.t2D描画( CDTXMania.app.Device, CDTXMania.Skin.nResultJudge2_P1X, CDTXMania.Skin.nResultJudge2_P1Y );
-            }
+            
+            TJAPlayer3.Tx.Result_Panel?.t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.nResultPanelP1X, TJAPlayer3.Skin.nResultPanelP1Y);
+            TJAPlayer3.Tx.Result_Score_Text?.t2D描画(TJAPlayer3.app.Device, 753, 249); //点
+            TJAPlayer3.Tx.Result_Judge?.t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.nResultJudge1_P1X, TJAPlayer3.Skin.nResultJudge1_P1Y);
+
             if(TJAPlayer3.Tx.Result_Gauge_Base != null && TJAPlayer3.Tx.Result_Gauge != null )
             {
+
                 //int nRectX = (int)( CDTXMania.stage結果.st演奏記録.Drums.fゲージ / 2) * 12;
                 double Rate = TJAPlayer3.stage結果.st演奏記録.Drums.fゲージ;
                 //nRectX = CDTXMania.stage結果.st演奏記録.Drums.fゲージ >= 80.0f ? 80 : nRectX;
-                TJAPlayer3.Tx.Result_Gauge_Base.t2D描画( TJAPlayer3.app.Device, TJAPlayer3.Skin.nResultGaugeBaseP1X, TJAPlayer3.Skin.nResultGaugeBaseP1Y, new Rectangle( 0, 0, 691, 47 ) );
-                #region[ ゲージ本体 ]
-                if( Rate > 2 )
-                    TJAPlayer3.Tx.Result_Gauge.t2D描画( TJAPlayer3.app.Device, 559, 145, new Rectangle( 0, 20, 12, 20 ) );
-                if( Rate > 4 )
-                    TJAPlayer3.Tx.Result_Gauge.t2D描画( TJAPlayer3.app.Device, 559 + 12, 145, new Rectangle( 0, 20, 12, 20 ) );
-                if( Rate > 6 )
-                    TJAPlayer3.Tx.Result_Gauge.t2D描画( TJAPlayer3.app.Device, 559 + 24, 145, new Rectangle( 0, 20, 12, 20 ) );
-                if( Rate > 8 )
-                    TJAPlayer3.Tx.Result_Gauge.t2D描画( TJAPlayer3.app.Device, 559 + 36, 145, new Rectangle( 12, 20, 13, 20 ) );
-                if( Rate > 10 )
-                    TJAPlayer3.Tx.Result_Gauge.t2D描画( TJAPlayer3.app.Device, 559 + 49, 145, new Rectangle( 12, 20, 13, 20 ) );
-                if( Rate > 12 )
-                    TJAPlayer3.Tx.Result_Gauge.t2D描画( TJAPlayer3.app.Device, 559 + 62, 145, new Rectangle( 0, 20, 12, 20 ) );
-                if( Rate > 14 )
-                    TJAPlayer3.Tx.Result_Gauge.t2D描画( TJAPlayer3.app.Device, 559 + 74, 145, new Rectangle( 0, 20, 12, 20 ) );
-                if( Rate > 16 )
-                    TJAPlayer3.Tx.Result_Gauge.t2D描画( TJAPlayer3.app.Device, 559 + 86, 145, new Rectangle( 12, 20, 13, 20 ) );
-                if( Rate > 18 )
-                    TJAPlayer3.Tx.Result_Gauge.t2D描画( TJAPlayer3.app.Device, 559 + 99, 145, new Rectangle( 12, 20, 13, 20 ) );
-                if( Rate > 20 )
-                    TJAPlayer3.Tx.Result_Gauge.t2D描画( TJAPlayer3.app.Device, 559 + 112, 145, new Rectangle( 12, 20, 13, 20 ) );
-                if( Rate > 22 )
-                    TJAPlayer3.Tx.Result_Gauge.t2D描画( TJAPlayer3.app.Device, 559 + 125, 145, new Rectangle( 12, 20, 13, 20 ) );
-                if( Rate > 24 )
-                    TJAPlayer3.Tx.Result_Gauge.t2D描画( TJAPlayer3.app.Device, 559 + 138, 145, new Rectangle( 0, 20, 12, 20 ) );
-                if( Rate > 26 )
-                    TJAPlayer3.Tx.Result_Gauge.t2D描画( TJAPlayer3.app.Device, 559 + 150, 145, new Rectangle( 0, 20, 12, 20 ) );
-                if( Rate > 28 )
-                    TJAPlayer3.Tx.Result_Gauge.t2D描画( TJAPlayer3.app.Device, 559 + 162, 145, new Rectangle( 12, 20, 13, 20 ) );
-                if( Rate > 30 )
-                    TJAPlayer3.Tx.Result_Gauge.t2D描画( TJAPlayer3.app.Device, 559 + 175, 145, new Rectangle( 0, 20, 12, 20 ) );
-                if( Rate > 32 )
-                    TJAPlayer3.Tx.Result_Gauge.t2D描画( TJAPlayer3.app.Device, 559 + 187, 145, new Rectangle( 12, 20, 13, 20 ) );
-                if( Rate > 34 )
-                    TJAPlayer3.Tx.Result_Gauge.t2D描画( TJAPlayer3.app.Device, 559 + 200, 145, new Rectangle( 0, 20, 12, 20 ) );
-                if( Rate > 36 )
-                    TJAPlayer3.Tx.Result_Gauge.t2D描画( TJAPlayer3.app.Device, 559 + 212, 145, new Rectangle( 12, 20, 13, 20 ) );
-                if( Rate > 38 )
-                    TJAPlayer3.Tx.Result_Gauge.t2D描画( TJAPlayer3.app.Device, 559 + 225, 145, new Rectangle( 12, 20, 13, 20 ) );
-                if( Rate > 40 )
-                    TJAPlayer3.Tx.Result_Gauge.t2D描画( TJAPlayer3.app.Device, 559 + 238, 145, new Rectangle( 12, 20, 13, 20 ) );
-                if( Rate > 42 )
-                    TJAPlayer3.Tx.Result_Gauge.t2D描画( TJAPlayer3.app.Device, 559 + 251, 145, new Rectangle( 0, 20, 12, 20 ) );
-                if( Rate > 44 )
-                    TJAPlayer3.Tx.Result_Gauge.t2D描画( TJAPlayer3.app.Device, 559 + 263, 145, new Rectangle( 12, 20, 13, 20 ) );
-                if( Rate > 46 )
-                    TJAPlayer3.Tx.Result_Gauge.t2D描画( TJAPlayer3.app.Device, 559 + 276, 145, new Rectangle( 0, 20, 12, 20 ) );
-                if( Rate > 48 )
-                    TJAPlayer3.Tx.Result_Gauge.t2D描画( TJAPlayer3.app.Device, 559 + 288, 145, new Rectangle( 12, 20, 13, 20 ) );
-                if( Rate > 50 )
-                    TJAPlayer3.Tx.Result_Gauge.t2D描画( TJAPlayer3.app.Device, 559 + 301, 145, new Rectangle( 0, 20, 12, 20 ) );
-                if( Rate > 52 )
-                    TJAPlayer3.Tx.Result_Gauge.t2D描画( TJAPlayer3.app.Device, 559 + 313, 145, new Rectangle( 12, 20, 13, 20 ) );
-                if( Rate > 54 )
-                    TJAPlayer3.Tx.Result_Gauge.t2D描画( TJAPlayer3.app.Device, 559 + 326, 145, new Rectangle( 12, 20, 13, 20 ) );
-                if( Rate > 56 )
-                    TJAPlayer3.Tx.Result_Gauge.t2D描画( TJAPlayer3.app.Device, 559 + 339, 145, new Rectangle( 12, 20, 13, 20 ) );
-                if( Rate > 58 )
-                    TJAPlayer3.Tx.Result_Gauge.t2D描画( TJAPlayer3.app.Device, 559 + 352, 145, new Rectangle( 0, 20, 12, 20 ) );
-                if( Rate > 60 )
-                    TJAPlayer3.Tx.Result_Gauge.t2D描画( TJAPlayer3.app.Device, 559 + 364, 145, new Rectangle( 12, 20, 13, 20 ) );
-                if( Rate > 62 )
-                    TJAPlayer3.Tx.Result_Gauge.t2D描画( TJAPlayer3.app.Device, 559 + 377, 145, new Rectangle( 12, 20, 13, 20 ) );
-                if( Rate > 64 )
-                    TJAPlayer3.Tx.Result_Gauge.t2D描画( TJAPlayer3.app.Device, 559 + 390, 145, new Rectangle( 0, 20, 12, 20 ) );
-                if( Rate > 66 )
-                    TJAPlayer3.Tx.Result_Gauge.t2D描画( TJAPlayer3.app.Device, 559 + 402, 145, new Rectangle( 12, 20, 13, 20 ) );
-                if( Rate > 68 )
-                    TJAPlayer3.Tx.Result_Gauge.t2D描画( TJAPlayer3.app.Device, 559 + 415, 145, new Rectangle( 0, 20, 12, 20 ) );
-                if( Rate > 70 )
-                    TJAPlayer3.Tx.Result_Gauge.t2D描画( TJAPlayer3.app.Device, 559 + 427, 145, new Rectangle( 12, 20, 13, 20 ) );
-                if( Rate > 72 )
-                    TJAPlayer3.Tx.Result_Gauge.t2D描画( TJAPlayer3.app.Device, 559 + 440, 145, new Rectangle( 0, 20, 12, 20 ) );
-                if( Rate > 74 )
-                    TJAPlayer3.Tx.Result_Gauge.t2D描画( TJAPlayer3.app.Device, 559 + 452, 145, new Rectangle( 12, 20, 13, 20 ) );
-                if( Rate > 76 )
-                    TJAPlayer3.Tx.Result_Gauge.t2D描画( TJAPlayer3.app.Device, 559 + 465, 145, new Rectangle( 12, 20, 13, 20 ) );
-                if( Rate > 78 )
-                    TJAPlayer3.Tx.Result_Gauge.t2D描画( TJAPlayer3.app.Device, 559 + 478, 145, new Rectangle( 12, 20, 13, 20 ) );
 
-                if( Rate > 80 )
-                    TJAPlayer3.Tx.Result_Gauge.t2D描画( TJAPlayer3.app.Device, 559 + 491, 125, new Rectangle( 25, 0, 12, 40 ) );
-                if( Rate > 82 )
-                    TJAPlayer3.Tx.Result_Gauge.t2D描画( TJAPlayer3.app.Device, 559 + 503, 125, new Rectangle( 49, 0, 13, 40 ) );
-                if( Rate > 84 )
-                    TJAPlayer3.Tx.Result_Gauge.t2D描画( TJAPlayer3.app.Device, 559 + 516, 125, new Rectangle( 37, 0, 12, 40 ) );
-                if( Rate > 86 )
-                    TJAPlayer3.Tx.Result_Gauge.t2D描画( TJAPlayer3.app.Device, 559 + 528, 125, new Rectangle( 49, 0, 13, 40 ) );
-                if( Rate > 88 )
-                    TJAPlayer3.Tx.Result_Gauge.t2D描画( TJAPlayer3.app.Device, 559 + 541, 125, new Rectangle( 37, 0, 12, 40 ) );
-                if( Rate > 90 )
-                    TJAPlayer3.Tx.Result_Gauge.t2D描画( TJAPlayer3.app.Device, 559 + 553, 125, new Rectangle( 49, 0, 13, 40 ) );
-                if( Rate > 92 )
-                    TJAPlayer3.Tx.Result_Gauge.t2D描画( TJAPlayer3.app.Device, 559 + 566, 125, new Rectangle( 49, 0, 13, 40 ) );
-                if( Rate > 94 )
-                    TJAPlayer3.Tx.Result_Gauge.t2D描画( TJAPlayer3.app.Device, 559 + 579, 125, new Rectangle( 37, 0, 12, 40 ) );
-                if( Rate > 96 )
-                    TJAPlayer3.Tx.Result_Gauge.t2D描画( TJAPlayer3.app.Device, 559 + 591, 125, new Rectangle( 49, 0, 13, 40 ) );
-                if( Rate > 98 )
-                    TJAPlayer3.Tx.Result_Gauge.t2D描画( TJAPlayer3.app.Device, 559 + 604, 125, new Rectangle( 37, 0, 12, 40 ) );
-                if( Rate > 100 )
-                    TJAPlayer3.Tx.Result_Gauge.t2D描画( TJAPlayer3.app.Device, 559 + 616, 125, new Rectangle( 49, 0, 10, 40 ) );
+
+                //ハード/EXハードゲージ用のBase
+                CTexture gaugeBase;
+                switch (TJAPlayer3.ConfigIni.eGaugeMode)
+                {
+                    case EGaugeMode.ExHard:
+                        gaugeBase = TJAPlayer3.Tx.Result_Gauge_Base_ExHard ?? TJAPlayer3.Tx.Result_Gauge_Base_Hard ?? TJAPlayer3.Tx.Result_Gauge_Base;
+                        break;
+                    case EGaugeMode.Hard:
+                        gaugeBase = TJAPlayer3.Tx.Result_Gauge_Base_Hard ?? TJAPlayer3.Tx.Result_Gauge_Base;
+                        break;
+                    default:
+                        gaugeBase = TJAPlayer3.Tx.Result_Gauge_Base;
+                        break;
+                }
+                gaugeBase?.t2D描画(TJAPlayer3.app.Device, TJAPlayer3.Skin.nResultGaugeBaseP1X, TJAPlayer3.Skin.nResultGaugeBaseP1Y, new Rectangle(0, 0, 691, 47));
+
+                #region[ ゲージ本体 ]
+
+                //ハードゲージ用のゲージ画像の分岐(ゲージ本体のコードを使いまわしたいので)
+                CTexture gauge;
+                if (TJAPlayer3.Tx.Result_Gauge_ExHard != null && TJAPlayer3.ConfigIni.eGaugeMode == EGaugeMode.ExHard)
+                    gauge = TJAPlayer3.Tx.Result_Gauge_ExHard;
+                else if (TJAPlayer3.Tx.Result_Gauge_Hard != null && (TJAPlayer3.ConfigIni.eGaugeMode == EGaugeMode.Hard || TJAPlayer3.ConfigIni.eGaugeMode == EGaugeMode.ExHard))
+                    gauge = TJAPlayer3.Tx.Result_Gauge_Hard;
+                else
+                    gauge = TJAPlayer3.Tx.Result_Gauge;
+
+                if (gauge != null)
+                {
+                    if ( Rate > 2 )
+                        gauge.t2D描画( TJAPlayer3.app.Device, 559, 145, new Rectangle( 0, 20, 12, 20 ) );
+                    if( Rate > 4 )
+                        gauge.t2D描画( TJAPlayer3.app.Device, 559 + 12, 145, new Rectangle( 0, 20, 12, 20 ) );
+                    if( Rate > 6 )
+                        gauge.t2D描画( TJAPlayer3.app.Device, 559 + 24, 145, new Rectangle( 0, 20, 12, 20 ) );
+                    if( Rate > 8 )
+                        gauge.t2D描画( TJAPlayer3.app.Device, 559 + 36, 145, new Rectangle( 12, 20, 13, 20 ) );
+                    if( Rate > 10 )
+                        gauge.t2D描画( TJAPlayer3.app.Device, 559 + 49, 145, new Rectangle( 12, 20, 13, 20 ) );
+                    if( Rate > 12 )
+                        gauge.t2D描画( TJAPlayer3.app.Device, 559 + 62, 145, new Rectangle( 0, 20, 12, 20 ) );
+                    if( Rate > 14 )
+                        gauge.t2D描画( TJAPlayer3.app.Device, 559 + 74, 145, new Rectangle( 0, 20, 12, 20 ) );
+                    if( Rate > 16 )
+                        gauge.t2D描画( TJAPlayer3.app.Device, 559 + 86, 145, new Rectangle( 12, 20, 13, 20 ) );
+                    if( Rate > 18 )
+                        gauge.t2D描画( TJAPlayer3.app.Device, 559 + 99, 145, new Rectangle( 12, 20, 13, 20 ) );
+                    if( Rate > 20 )
+                        gauge.t2D描画( TJAPlayer3.app.Device, 559 + 112, 145, new Rectangle( 12, 20, 13, 20 ) );
+                    if( Rate > 22 )
+                        gauge.t2D描画( TJAPlayer3.app.Device, 559 + 125, 145, new Rectangle( 12, 20, 13, 20 ) );
+                    if( Rate > 24 )
+                        gauge.t2D描画( TJAPlayer3.app.Device, 559 + 138, 145, new Rectangle( 0, 20, 12, 20 ) );
+                    if( Rate > 26 )
+                        gauge.t2D描画( TJAPlayer3.app.Device, 559 + 150, 145, new Rectangle( 0, 20, 12, 20 ) );
+                    if( Rate > 28 )
+                        gauge.t2D描画( TJAPlayer3.app.Device, 559 + 162, 145, new Rectangle( 12, 20, 13, 20 ) );
+                    if( Rate > 30 )
+                        gauge.t2D描画( TJAPlayer3.app.Device, 559 + 175, 145, new Rectangle( 0, 20, 12, 20 ) );
+                    if( Rate > 32 )
+                        gauge.t2D描画( TJAPlayer3.app.Device, 559 + 187, 145, new Rectangle( 12, 20, 13, 20 ) );
+                    if( Rate > 34 )
+                        gauge.t2D描画( TJAPlayer3.app.Device, 559 + 200, 145, new Rectangle( 0, 20, 12, 20 ) );
+                    if( Rate > 36 )
+                        gauge.t2D描画( TJAPlayer3.app.Device, 559 + 212, 145, new Rectangle( 12, 20, 13, 20 ) );
+                    if( Rate > 38 )
+                        gauge.t2D描画( TJAPlayer3.app.Device, 559 + 225, 145, new Rectangle( 12, 20, 13, 20 ) );
+                    if( Rate > 40 )
+                        gauge.t2D描画( TJAPlayer3.app.Device, 559 + 238, 145, new Rectangle( 12, 20, 13, 20 ) );
+                    if( Rate > 42 )
+                        gauge.t2D描画( TJAPlayer3.app.Device, 559 + 251, 145, new Rectangle( 0, 20, 12, 20 ) );
+                    if( Rate > 44 )
+                        gauge.t2D描画( TJAPlayer3.app.Device, 559 + 263, 145, new Rectangle( 12, 20, 13, 20 ) );
+                    if( Rate > 46 )
+                        gauge.t2D描画( TJAPlayer3.app.Device, 559 + 276, 145, new Rectangle( 0, 20, 12, 20 ) );
+                    if( Rate > 48 )
+                        gauge.t2D描画( TJAPlayer3.app.Device, 559 + 288, 145, new Rectangle( 12, 20, 13, 20 ) );
+                    if( Rate > 50 )
+                        gauge.t2D描画( TJAPlayer3.app.Device, 559 + 301, 145, new Rectangle( 0, 20, 12, 20 ) );
+                    if( Rate > 52 )
+                        gauge.t2D描画( TJAPlayer3.app.Device, 559 + 313, 145, new Rectangle( 12, 20, 13, 20 ) );
+                    if( Rate > 54 )
+                        gauge.t2D描画( TJAPlayer3.app.Device, 559 + 326, 145, new Rectangle( 12, 20, 13, 20 ) );
+                    if( Rate > 56 )
+                        gauge.t2D描画( TJAPlayer3.app.Device, 559 + 339, 145, new Rectangle( 12, 20, 13, 20 ) );
+                    if( Rate > 58 )
+                        gauge.t2D描画( TJAPlayer3.app.Device, 559 + 352, 145, new Rectangle( 0, 20, 12, 20 ) );
+                    if( Rate > 60 )
+                        gauge.t2D描画( TJAPlayer3.app.Device, 559 + 364, 145, new Rectangle( 12, 20, 13, 20 ) );
+                    if( Rate > 62 )
+                        gauge.t2D描画( TJAPlayer3.app.Device, 559 + 377, 145, new Rectangle( 12, 20, 13, 20 ) );
+                    if( Rate > 64 )
+                        gauge.t2D描画( TJAPlayer3.app.Device, 559 + 390, 145, new Rectangle( 0, 20, 12, 20 ) );
+                    if( Rate > 66 )
+                        gauge.t2D描画( TJAPlayer3.app.Device, 559 + 402, 145, new Rectangle( 12, 20, 13, 20 ) );
+                    if( Rate > 68 )
+                        gauge.t2D描画( TJAPlayer3.app.Device, 559 + 415, 145, new Rectangle( 0, 20, 12, 20 ) );
+                    if( Rate > 70 )
+                        gauge.t2D描画( TJAPlayer3.app.Device, 559 + 427, 145, new Rectangle( 12, 20, 13, 20 ) );
+                    if( Rate > 72 )
+                        gauge.t2D描画( TJAPlayer3.app.Device, 559 + 440, 145, new Rectangle( 0, 20, 12, 20 ) );
+                    if( Rate > 74 )
+                        gauge.t2D描画( TJAPlayer3.app.Device, 559 + 452, 145, new Rectangle( 12, 20, 13, 20 ) );
+                    if( Rate > 76 )
+                        gauge.t2D描画( TJAPlayer3.app.Device, 559 + 465, 145, new Rectangle( 12, 20, 13, 20 ) );
+                    if( Rate > 78 )
+                        gauge.t2D描画( TJAPlayer3.app.Device, 559 + 478, 145, new Rectangle( 12, 20, 13, 20 ) );
+
+                    if( Rate > 80 )
+                        gauge.t2D描画( TJAPlayer3.app.Device, 559 + 491, 125, new Rectangle( 25, 0, 12, 40 ) );
+                    if( Rate > 82 )
+                        gauge.t2D描画( TJAPlayer3.app.Device, 559 + 503, 125, new Rectangle( 49, 0, 13, 40 ) );
+                    if( Rate > 84 )
+                        gauge.t2D描画( TJAPlayer3.app.Device, 559 + 516, 125, new Rectangle( 37, 0, 12, 40 ) );
+                    if( Rate > 86 )
+                        gauge.t2D描画( TJAPlayer3.app.Device, 559 + 528, 125, new Rectangle( 49, 0, 13, 40 ) );
+                    if( Rate > 88 )
+                        gauge.t2D描画( TJAPlayer3.app.Device, 559 + 541, 125, new Rectangle( 37, 0, 12, 40 ) );
+                    if( Rate > 90 )
+                        gauge.t2D描画( TJAPlayer3.app.Device, 559 + 553, 125, new Rectangle( 49, 0, 13, 40 ) );
+                    if( Rate > 92 )
+                        gauge.t2D描画( TJAPlayer3.app.Device, 559 + 566, 125, new Rectangle( 49, 0, 13, 40 ) );
+                    if( Rate > 94 )
+                        gauge.t2D描画( TJAPlayer3.app.Device, 559 + 579, 125, new Rectangle( 37, 0, 12, 40 ) );
+                    if( Rate > 96 )
+                        gauge.t2D描画( TJAPlayer3.app.Device, 559 + 591, 125, new Rectangle( 49, 0, 13, 40 ) );
+                    if( Rate > 98 )
+                        gauge.t2D描画( TJAPlayer3.app.Device, 559 + 604, 125, new Rectangle( 37, 0, 12, 40 ) );
+                    if( Rate >= 100 )
+                        gauge.t2D描画( TJAPlayer3.app.Device, 559 + 616, 125, new Rectangle( 49, 0, 10, 40 ) );
+                }
 
                 #endregion
             }
@@ -413,9 +382,8 @@ namespace TJAPlayer3
 		private bool bフルコンボ音再生済み;
 		private CCounter ct表示用;
 		private readonly Point[] ptFullCombo位置;
-		private CSound sdDTXで指定されたフルコンボ音;
+        private CSound sdDTXで指定されたフルコンボ音;
 		private readonly ST文字位置[] st小文字位置;
-		private readonly ST文字位置[] st大文字位置;
         private ST文字位置[] stScoreFont;
 
         private CTexture Dan_Plate;
@@ -433,47 +401,16 @@ namespace TJAPlayer3
 
 					if( this.st小文字位置[ i ].ch == ch )
 					{
-						Rectangle rectangle = new Rectangle( this.st小文字位置[ i ].pt.X, this.st小文字位置[ i ].pt.Y, 32, 38 );
-						if(TJAPlayer3.Tx.Result_Number != null )
-						{
-                            TJAPlayer3.Tx.Result_Number.t2D描画( TJAPlayer3.app.Device, x, y, rectangle );
-						}
-						break;
+                        var rectangle = new Rectangle( this.st小文字位置[ i ].pt.X, this.st小文字位置[ i ].pt.Y, 32, 38 );
+                        TJAPlayer3.Tx.Result_Number?.t2D描画(TJAPlayer3.app.Device, x, y, rectangle);
+                        break;
 					}
 				}
 				x += 22;
 			}
 		}
-		private void t大文字表示( int x, int y, string str )
-		{
-			this.t大文字表示( x, y, str, false );
-		}
-		private void t大文字表示( int x, int y, string str, bool b強調 )
-		{
-			foreach( char ch in str )
-			{
-				for( int i = 0; i < this.st大文字位置.Length; i++ )
-				{
-					if( this.st大文字位置[ i ].ch == ch )
-					{
-						Rectangle rectangle = new Rectangle( this.st大文字位置[ i ].pt.X, this.st大文字位置[ i ].pt.Y, 11, 0x10 );
-						if( ch == '.' )
-						{
-							rectangle.Width -= 2;
-							rectangle.Height -= 2;
-						}
-						if(TJAPlayer3.Tx.Result_Number != null )
-						{
-                            TJAPlayer3.Tx.Result_Number.t2D描画( TJAPlayer3.app.Device, x, y, rectangle );
-						}
-						break;
-					}
-				}
-				x += 8;
-			}
-		}
 
-        protected void tスコア文字表示(int x, int y, string str)
+        private void tスコア文字表示(int x, int y, string str)
         {
             foreach (char ch in str)
             {
@@ -481,11 +418,8 @@ namespace TJAPlayer3
                 {
                     if (this.stScoreFont[i].ch == ch)
                     {
-                        Rectangle rectangle = new Rectangle(this.stScoreFont[ i ].pt.X, 0, 24, 40);
-                        if (TJAPlayer3.Tx.Result_Score_Number != null)
-                        {
-                            TJAPlayer3.Tx.Result_Score_Number.t2D描画(TJAPlayer3.app.Device, x, y, rectangle);
-                        }
+                        var rectangle = new Rectangle(this.stScoreFont[ i ].pt.X, 0, 24, 40);
+                        TJAPlayer3.Tx.Result_Score_Number?.t2D描画(TJAPlayer3.app.Device, x, y, rectangle);
                         break;
                     }
                 }

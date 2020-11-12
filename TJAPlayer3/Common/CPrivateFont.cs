@@ -1,74 +1,22 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.IO;
-using System.Runtime.InteropServices;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Diagnostics;
-
-using FDK;
-using System.Linq;
+using FDK.ExtensionMethods;
+using TJAPlayer3.Common;
 
 namespace TJAPlayer3
 {
-    /// <summary>
-    /// プライベートフォントでの描画を扱うクラス。
-    /// </summary>
-    /// <exception cref="FileNotFoundException">フォントファイルが見つからない時に例外発生</exception>
-    /// <exception cref="ArgumentException">スタイル指定不正時に例外発生</exception>
-    /// <remarks>
-    /// 簡単な使い方
-    /// CPrivateFont prvFont = new CPrivateFont( CSkin.Path( @"Graphics\fonts\mplus-1p-bold.ttf" ), 36 );	// プライベートフォント
-    /// とか
-    /// CPrivateFont prvFont = new CPrivateFont( new FontFamily("MS UI Gothic"), 36, FontStyle.Bold );		// システムフォント
-    /// とかした上で、
-    /// Bitmap bmp = prvFont.DrawPrivateFont( "ABCDE", Color.White, Color.Black );							// フォント色＝白、縁の色＝黒の例。縁の色は省略可能
-    /// とか
-    /// Bitmap bmp = prvFont.DrawPrivateFont( "ABCDE", Color.White, Color.Black, Color.Yellow, Color.OrangeRed ); // 上下グラデーション(Yellow→OrangeRed)
-    /// とかして、
-    /// CTexture ctBmp = CDTXMania.tテクスチャの生成( bmp, false );
-    /// ctBMP.t2D描画( ～～～ );
-    /// で表示してください。
-    /// 
-    /// 注意点
-    /// 任意のフォントでのレンダリングは結構負荷が大きいので、なるべｋなら描画フレーム毎にフォントを再レンダリングするようなことはせず、
-    /// 一旦レンダリングしたものを描画に使い回すようにしてください。
-    /// また、長い文字列を与えると、返されるBitmapも横長になります。この横長画像をそのままテクスチャとして使うと、
-    /// 古いPCで問題を発生させやすいです。これを回避するには、一旦Bitmapとして取得したのち、256pixや512pixで分割して
-    /// テクスチャに定義するようにしてください。
-    /// </remarks>
-
-    #region In拡張子
-    public static class StringExtensions
-    {
-        public static bool In(this string str, params string[] param)
-        {
-            return param.Contains(str);
-        }
-    }
-    #endregion
-
     public class CPrivateFont : IDisposable
 	{
 		#region [ コンストラクタ ]
-		public CPrivateFont( FontFamily fontfamily, int pt, FontStyle style )
-		{
-			Initialize( null, fontfamily, pt, style );
-		}
 		public CPrivateFont( FontFamily fontfamily, int pt )
 		{
 			Initialize( null, fontfamily, pt, FontStyle.Regular );
 		}
-		public CPrivateFont( string fontpath, int pt, FontStyle style )
-		{
-			Initialize( fontpath, null, pt, style );
-		}
-		public CPrivateFont( string fontpath, int pt )
-		{
-			Initialize( fontpath, null, pt, FontStyle.Regular );
-		}
-		public CPrivateFont()
+
+		protected CPrivateFont()
 		{
 			//throw new ArgumentException("CPrivateFont: 引数があるコンストラクタを使用してください。");
 		}
@@ -96,28 +44,11 @@ namespace TJAPlayer3
 					this._pfc.AddFontFile(fontpath);								//PrivateFontCollectionにフォントを追加する
 					_fontfamily = _pfc.Families[0];
 				}
-				catch (System.IO.FileNotFoundException)
+				catch
 				{
-					Trace.TraceWarning("プライベートフォントの追加に失敗しました({0})。代わりにMS UI Gothicの使用を試みます。", fontpath);
-					//throw new FileNotFoundException( "プライベートフォントの追加に失敗しました。({0})", Path.GetFileName( fontpath ) );
-					//return;
+					Trace.TraceWarning($"プライベートフォントの追加に失敗しました({fontpath})。代わりに{FontUtilities.FallbackFontName}の使用を試みます。");
 					_fontfamily = null;
 				}
-
-				//foreach ( FontFamily ff in _pfc.Families )
-				//{
-				//	Debug.WriteLine( "fontname=" + ff.Name );
-				//	if ( ff.Name == Path.GetFileNameWithoutExtension( fontpath ) )
-				//	{
-				//		_fontfamily = ff;
-				//		break;
-				//	}
-				//}
-				//if ( _fontfamily == null )
-				//{
-				//	Trace.TraceError( "プライベートフォントの追加後、検索に失敗しました。({0})", fontpath );
-				//	return;
-				//}
 			}
 
 			// 指定されたフォントスタイルが適用できない場合は、フォント内で定義されているスタイルから候補を選んで使用する
@@ -148,24 +79,19 @@ namespace TJAPlayer3
 				//HighDPI対応のため、pxサイズで指定
 			}
 			else
-			// フォントファイルが見つからなかった場合 (MS PGothicを代わりに指定する)
-			{
-				float emSize = pt * 96.0f / 72.0f;
-				this._font = new Font("MS UI Gothic", emSize, style, GraphicsUnit.Pixel);	//MS PGothicのFontオブジェクトを作成する
-				FontFamily[] ffs = new System.Drawing.Text.InstalledFontCollection().Families;
-				int lcid = System.Globalization.CultureInfo.GetCultureInfo("en-us").LCID;
-				foreach (FontFamily ff in ffs)
-				{
-					// Trace.WriteLine( lcid ) );
-					if (ff.GetName(lcid) == "MS UI Gothic")
-					{
-						this._fontfamily = ff;
-						Trace.TraceInformation("MS UI Gothicを代わりに指定しました。");
-						return;
-					}
-				}
-				throw new FileNotFoundException("プライベートフォントの追加に失敗し、MS UI Gothicでの代替処理にも失敗しました。({0})", Path.GetFileName(fontpath));
-			}
+            {
+                try
+                {
+                    _fontfamily = new FontFamily(FontUtilities.FallbackFontName);
+                    float emSize = pt * 96.0f / 72.0f;
+                    _font = new Font(_fontfamily, emSize, style, GraphicsUnit.Pixel);
+                    Trace.TraceInformation($"{FontUtilities.FallbackFontName}を代わりに指定しました。");
+                }
+                catch (Exception e)
+                {
+                    throw new FileNotFoundException($"プライベートフォントの追加に失敗し、{FontUtilities.FallbackFontName}での代替処理にも失敗しました。({Path.GetFileName(fontpath)})", e);
+                }
+            }
 		}
 
 		[Flags]
@@ -178,16 +104,6 @@ namespace TJAPlayer3
 		}
 
 		#region [ DrawPrivateFontのオーバーロード群 ]
-		/// <summary>
-		/// 文字列を描画したテクスチャを返す
-		/// </summary>
-		/// <param name="drawstr">描画文字列</param>
-		/// <param name="fontColor">描画色</param>
-		/// <returns>描画済テクスチャ</returns>
-		public Bitmap DrawPrivateFont( string drawstr, Color fontColor )
-		{
-			return DrawPrivateFont( drawstr, DrawMode.Normal, fontColor, Color.White, Color.White, Color.White );
-		}
 
 		/// <summary>
 		/// 文字列を描画したテクスチャを返す
@@ -201,88 +117,6 @@ namespace TJAPlayer3
 			return DrawPrivateFont( drawstr, DrawMode.Edge, fontColor, edgeColor, Color.White, Color.White );
 		}
 
-		/// <summary>
-		/// 文字列を描画したテクスチャを返す
-		/// </summary>
-		/// <param name="drawstr">描画文字列</param>
-		/// <param name="fontColor">描画色</param>
-		/// <param name="gradationTopColor">グラデーション 上側の色</param>
-		/// <param name="gradationBottomColor">グラデーション 下側の色</param>
-		/// <returns>描画済テクスチャ</returns>
-		//public Bitmap DrawPrivateFont( string drawstr, Color fontColor, Color gradationTopColor, Color gradataionBottomColor )
-		//{
-		//    return DrawPrivateFont( drawstr, DrawMode.Gradation, fontColor, Color.White, gradationTopColor, gradataionBottomColor );
-		//}
-
-		/// <summary>
-		/// 文字列を描画したテクスチャを返す
-		/// </summary>
-		/// <param name="drawstr">描画文字列</param>
-		/// <param name="fontColor">描画色</param>
-		/// <param name="edgeColor">縁取色</param>
-		/// <param name="gradationTopColor">グラデーション 上側の色</param>
-		/// <param name="gradationBottomColor">グラデーション 下側の色</param>
-		/// <returns>描画済テクスチャ</returns>
-		public Bitmap DrawPrivateFont( string drawstr, Color fontColor, Color edgeColor, Color gradationTopColor, Color gradataionBottomColor )
-		{
-			return DrawPrivateFont( drawstr, DrawMode.Edge | DrawMode.Gradation, fontColor, edgeColor, gradationTopColor, gradataionBottomColor );
-		}
-
-#if こちらは使わない // (Bitmapではなく、CTextureを返す版)
-		/// <summary>
-		/// 文字列を描画したテクスチャを返す
-		/// </summary>
-		/// <param name="drawstr">描画文字列</param>
-		/// <param name="fontColor">描画色</param>
-		/// <returns>描画済テクスチャ</returns>
-		public CTexture DrawPrivateFont( string drawstr, Color fontColor )
-		{
-			Bitmap bmp = DrawPrivateFont( drawstr, DrawMode.Normal, fontColor, Color.White, Color.White, Color.White );
-			return CDTXMania.tテクスチャの生成( bmp, false );
-		}
-
-		/// <summary>
-		/// 文字列を描画したテクスチャを返す
-		/// </summary>
-		/// <param name="drawstr">描画文字列</param>
-		/// <param name="fontColor">描画色</param>
-		/// <param name="edgeColor">縁取色</param>
-		/// <returns>描画済テクスチャ</returns>
-		public CTexture DrawPrivateFont( string drawstr, Color fontColor, Color edgeColor )
-		{
-			Bitmap bmp = DrawPrivateFont( drawstr, DrawMode.Edge, fontColor, edgeColor, Color.White, Color.White );
-			return CDTXMania.tテクスチャの生成( bmp, false );
-		}
-
-		/// <summary>
-		/// 文字列を描画したテクスチャを返す
-		/// </summary>
-		/// <param name="drawstr">描画文字列</param>
-		/// <param name="fontColor">描画色</param>
-		/// <param name="gradationTopColor">グラデーション 上側の色</param>
-		/// <param name="gradationBottomColor">グラデーション 下側の色</param>
-		/// <returns>描画済テクスチャ</returns>
-		//public CTexture DrawPrivateFont( string drawstr, Color fontColor, Color gradationTopColor, Color gradataionBottomColor )
-		//{
-		//    Bitmap bmp = DrawPrivateFont( drawstr, DrawMode.Gradation, fontColor, Color.White, gradationTopColor, gradataionBottomColor );
-		//	  return CDTXMania.tテクスチャの生成( bmp, false );
-		//}
-
-		/// <summary>
-		/// 文字列を描画したテクスチャを返す
-		/// </summary>
-		/// <param name="drawstr">描画文字列</param>
-		/// <param name="fontColor">描画色</param>
-		/// <param name="edgeColor">縁取色</param>
-		/// <param name="gradationTopColor">グラデーション 上側の色</param>
-		/// <param name="gradationBottomColor">グラデーション 下側の色</param>
-		/// <returns>描画済テクスチャ</returns>
-		public CTexture DrawPrivateFont( string drawstr, Color fontColor, Color edgeColor,  Color gradationTopColor, Color gradataionBottomColor )
-		{
-			Bitmap bmp = DrawPrivateFont( drawstr, DrawMode.Edge | DrawMode.Gradation, fontColor, edgeColor, gradationTopColor, gradataionBottomColor );
-			return CDTXMania.tテクスチャの生成( bmp, false );
-		}
-#endif
 		#endregion
 
 
@@ -300,7 +134,7 @@ namespace TJAPlayer3
 		/// <returns>描画済テクスチャ</returns>
 		protected Bitmap DrawPrivateFont( string drawstr, DrawMode drawmode, Color fontColor, Color edgeColor, Color gradationTopColor, Color gradationBottomColor )
 		{
-			if ( this._fontfamily == null || drawstr == null || drawstr == "" )
+			if ( this._fontfamily == null || _font == null || drawstr == null || drawstr == "" )
 			{
 				// nullを返すと、その後bmp→texture処理や、textureのサイズを見て__の処理で全部例外が発生することになる。
 				// それは非常に面倒なので、最小限のbitmapを返してしまう。
@@ -340,7 +174,7 @@ namespace TJAPlayer3
             sf.FormatFlags = StringFormatFlags.NoWrap; // どんなに長くて単語の区切りが良くても改行しない (AioiLight)
             sf.Trimming = StringTrimming.None; // どんなに長くてもトリミングしない (AioiLight)
 			// レイアウト枠
-			Rectangle r = new Rectangle( 0, 0, stringSize.Width + nEdgePt * 2 + (TJAPlayer3.Skin.Text_Correction_X * stringSize.Width / 100), stringSize.Height + nEdgePt * 2 + (TJAPlayer3.Skin.Text_Correction_Y * stringSize.Height / 100));
+			Rectangle r = new Rectangle( 0, 0, stringSize.Width + nEdgePt * 2 + (TJAPlayer3.Skin.Text_Correction_XY[0] * stringSize.Width / 100), stringSize.Height + nEdgePt * 2 + (TJAPlayer3.Skin.Text_Correction_XY[1] * stringSize.Height / 100));
 
 			if ( bEdge )	// 縁取り有りの描画
 			{
@@ -407,7 +241,7 @@ namespace TJAPlayer3
 		/// <returns>描画済テクスチャ</returns>
 		protected Bitmap DrawPrivateFont_V( string drawstr, Color fontColor, Color edgeColor, bool bVertical )
 		{
-			if ( this._fontfamily == null || drawstr == null || drawstr == "" )
+			if ( this._fontfamily == null || _font == null || drawstr == null || drawstr == "" )
 			{
 				// nullを返すと、その後bmp→texture処理や、textureのサイズを見て__の処理で全部例外が発生することになる。
 				// それは非常に面倒なので、最小限のbitmapを返してしまう。
@@ -438,6 +272,8 @@ namespace TJAPlayer3
 
             #region[ キャンバスの大きさ予測 ]
             //大きさを計算していく。
+		    Bitmap bmpDummy = new Bitmap( 1, 1 );
+		    Graphics gCal = Graphics.FromImage( bmpDummy );
             int nHeight = 0;
             for( int i = 0; i < strName.Length; i++ )
             {
@@ -452,9 +288,7 @@ namespace TJAPlayer3
 
 
                 //できるだけ正確な値を計算しておきたい...!
-                Bitmap bmpDummy = new Bitmap( 150, 150 ); //とりあえず150
-                Graphics gCal = Graphics.FromImage( bmpDummy );
-                Rectangle rect正確なサイズ = this.MeasureStringPrecisely( gCal, strName[ i ], this._font, strSize, sFormat );
+                Rectangle rect正確なサイズ = CPreciseStringMeasurer.MeasureStringPrecisely( gCal, strName[ i ], this._font, strSize, sFormat );
                 int n余白サイズ = strSize.Height - rect正確なサイズ.Height;
 
                 Rectangle rect = new Rectangle( 0, -n余白サイズ + 2, 46, ( strSize.Height + 16 ));
@@ -467,10 +301,6 @@ namespace TJAPlayer3
                 else if( strName[ i ] == " " )
                 { nHeight += ( 12 ); }
                 else { nHeight += ( rect正確なサイズ.Height ) + 10; }
-
-                //念のため解放
-                bmpDummy.Dispose();
-                gCal.Dispose();
 
                 //stream.WriteLine( "文字の大きさ{0},大きさ合計{1}", ( rect正確なサイズ.Height ) + 6, nHeight );
                 
@@ -500,9 +330,7 @@ namespace TJAPlayer3
                 sFormat.Alignment = StringAlignment.Near;	// 画面中央（水平方向位置）
 
                 //できるだけ正確な値を計算しておきたい...!
-                Bitmap bmpDummy = new Bitmap(150, 150); //とりあえず150
-                Graphics gCal = Graphics.FromImage(bmpDummy);
-                Rectangle rect正確なサイズ = this.MeasureStringPrecisely(gCal, strName[i], this._font, strSize, sFormat);
+                Rectangle rect正確なサイズ = CPreciseStringMeasurer.MeasureStringPrecisely(gCal, strName[i], this._font, strSize, sFormat);
                 int n余白サイズ = strSize.Height - rect正確なサイズ.Height;
 
                 //Bitmap bmpV = new Bitmap( 36, ( strSize.Height + 12 ) - 6 );
@@ -513,18 +341,35 @@ namespace TJAPlayer3
                 Graphics gV = Graphics.FromImage(bmpV);
                 gV.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
 
+                //SongSelect_Correction*_Charaの何番目に当該の文字があるかを取得(20181222 rhimm)
+                int IndexX = Array.IndexOf(TJAPlayer3.Skin.SongSelect_CorrectionX_Chara, strName[i]);
+                int IndexY = Array.IndexOf(TJAPlayer3.Skin.SongSelect_CorrectionY_Chara, strName[i]);
 
-                if (strName[i].In(TJAPlayer3.Skin.SongSelect_CorrectionX_Chara))
+                //取得した*_Charaの配列上の位置にある*_Chara_Valueの値で補正
+                //補正文字の数に比べて補正値の数が足りない時、配列の一番最後の補正値で足りない分の文字を補正
+                //例えば　補正文字あ,い,う,え,おに対して補正値が10,13,15の3つだった時、
+                //あ　は補正値10、い　は補正値13、　う,え,お　は補正値15　となるようにする(20181222 rhimm)
+
+                if (-1 < IndexX && IndexX < TJAPlayer3.Skin.SongSelect_CorrectionX_Chara_Value.Length && strName[i].In(TJAPlayer3.Skin.SongSelect_CorrectionX_Chara))
                 {
-                    nEdge補正X = TJAPlayer3.Skin.SongSelect_CorrectionX_Chara_Value;
+                    nEdge補正X = TJAPlayer3.Skin.SongSelect_CorrectionX_Chara_Value[IndexX];
+                }
+                else if(-1 < IndexX && TJAPlayer3.Skin.SongSelect_CorrectionX_Chara_Value.Length <= IndexX && strName[i].In(TJAPlayer3.Skin.SongSelect_CorrectionX_Chara))
+                {
+                    nEdge補正X = TJAPlayer3.Skin.SongSelect_CorrectionX_Chara_Value[TJAPlayer3.Skin.SongSelect_CorrectionX_Chara_Value.Length - 1];
                 }
                 else
                 {
                     nEdge補正X = 0;
                 }
-                if (strName[i].In(TJAPlayer3.Skin.SongSelect_CorrectionY_Chara))
+
+                if (-1 < IndexY && IndexY < TJAPlayer3.Skin.SongSelect_CorrectionY_Chara_Value.Length && strName[i].In(TJAPlayer3.Skin.SongSelect_CorrectionY_Chara))
                 {
-                    nEdge補正Y = TJAPlayer3.Skin.SongSelect_CorrectionY_Chara_Value;
+                    nEdge補正Y = TJAPlayer3.Skin.SongSelect_CorrectionY_Chara_Value[IndexY];
+                }
+                else if (-1 < IndexY && TJAPlayer3.Skin.SongSelect_CorrectionY_Chara_Value.Length <= IndexY && strName[i].In(TJAPlayer3.Skin.SongSelect_CorrectionY_Chara))
+                {
+                    nEdge補正Y = TJAPlayer3.Skin.SongSelect_CorrectionY_Chara_Value[TJAPlayer3.Skin.SongSelect_CorrectionY_Chara_Value.Length - 1];
                 }
                 else
                 {
@@ -637,7 +482,6 @@ namespace TJAPlayer3
                 nNowPos += bmpV.Size.Height - 6;
 
                 if( bmpV != null ) bmpV.Dispose(); bmpV = null;
-                if( gCal != null ) gCal.Dispose(); gCal = null;
 
                 //bmpCambus.Save( "test.png" );
                 //if( this._pt < 20 )
@@ -654,309 +498,13 @@ namespace TJAPlayer3
 
             if( Gcambus != null ) Gcambus.Dispose();
 
+		    //念のため解放
+		    bmpDummy.Dispose();
+		    gCal.Dispose();
+
 			//return bmp;
             return bmpCambus;
 		}
-
-        ///// <summary>
-        ///// 文字列を描画したテクスチャを返す(メイン処理)
-        ///// </summary>
-        ///// <param name="rectDrawn">描画された領域</param>
-        ///// <param name="ptOrigin">描画文字列</param>
-        ///// <param name="drawstr">描画文字列</param>
-        ///// <param name="drawmode">描画モード</param>
-        ///// <param name="fontColor">描画色</param>
-        ///// <param name="edgeColor">縁取色</param>
-        ///// <param name="gradationTopColor">グラデーション 上側の色</param>
-        ///// <param name="gradationBottomColor">グラデーション 下側の色</param>
-        ///// <returns>描画済テクスチャ</returns>
-        //protected Bitmap DrawPrivateFont_V( string drawstr, Color fontColor, Color edgeColor, bool bVertical )
-        //{
-        //    if ( this._fontfamily == null || drawstr == null || drawstr == "" )
-        //    {
-        //        // nullを返すと、その後bmp→texture処理や、textureのサイズを見て__の処理で全部例外が発生することになる。
-        //        // それは非常に面倒なので、最小限のbitmapを返してしまう。
-        //        // まずはこの仕様で進めますが、問題有れば(上位側からエラー検出が必要であれば)例外を出したりエラー状態であるプロパティを定義するなり検討します。
-        //        if ( drawstr != "" )
-        //        {
-        //            Trace.TraceWarning( "DrawPrivateFont()の入力不正。最小値のbitmapを返します。" );
-        //        }
-        //        _rectStrings = new Rectangle( 0, 0, 0, 0 );
-        //        _ptOrigin = new Point( 0, 0 );
-        //        return new Bitmap(1, 1);
-        //    }
-
-        //    //StreamWriter stream = stream = new StreamWriter("Test.txt", false);
-
-        //    //try
-        //    //{
-        //    //    stream = new StreamWriter("Test.txt", false);
-        //    //}
-        //    //catch (Exception ex)
-        //    //{
-        //    //    stream.Close();
-        //    //    stream = new StreamWriter("Test.txt", false);
-        //    //}
-
-        //    string[] strName = new string[] { "焼","肉","定","食", "X", "G", "t", "e", "s", "t" };
-        //    strName = new string[ drawstr.Length ];
-        //    for( int i = 0; i < drawstr.Length; i++ ) strName[i] = drawstr.Substring(i, 1);
-            
-
-        //    Bitmap bmpCambus = new Bitmap( 48, ( drawstr.Length * 31 ) );
-        //    Graphics Gcambus = Graphics.FromImage( bmpCambus );
-
-        //    //キャンバス作成→1文字ずつ作成してキャンバスに描画という形がよさそうかな?
-
-        //    int nStartPos = 0;
-        //    int nNowPos = 0;
-
-        //    //forループで1文字ずつbitmap作成?
-        //    for( int i = 0; i < strName.Length; i++ )
-        //    {
-        //        Size strSize = System.Windows.Forms.TextRenderer.MeasureText( strName[ i ], this._font, new Size( int.MaxValue, int.MaxValue ),
-        //        System.Windows.Forms.TextFormatFlags.NoPrefix |
-        //        System.Windows.Forms.TextFormatFlags.NoPadding );
-
-        //        //Bitmap bmpV = new Bitmap( strSize.Width + 12, ( strSize.Height + 12 ) - 6 );
-        //        Bitmap bmpV = new Bitmap( 36, ( strSize.Height + 12 ) - 6 );
-        //        bmpV.MakeTransparent();
-        //        Graphics gV = Graphics.FromImage( bmpV );
-        //        gV.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
-
-        //        StringFormat sFormat = new StringFormat();
-        //        sFormat.LineAlignment = StringAlignment.Center;	// 画面下部（垂直方向位置）
-        //        sFormat.Alignment = StringAlignment.Center;	// 画面中央（水平方向位置）
-
-
-        //        //Rectangle rect = new Rectangle( 0, 0, strSize.Width + 12, ( strSize.Height + 12 ));
-        //        Rectangle rect = new Rectangle( 0, 0, 36, ( strSize.Height + 12 ));
-
-        //        // DrawPathで、ポイントサイズを使って描画するために、DPIを使って単位変換する
-        //        // (これをしないと、単位が違うために、小さめに描画されてしまう)
-        //        float sizeInPixels = _font.SizeInPoints * gV.DpiY / 72;  // 1 inch = 72 points
-
-        //        System.Drawing.Drawing2D.GraphicsPath gpV = new System.Drawing.Drawing2D.GraphicsPath();
-        //        gpV.AddString( strName[ i ], this._fontfamily, (int) this._font.Style, sizeInPixels, rect, sFormat );
-
-
-        //        Rectangle rect正確なサイズ = this.MeasureStringPrecisely( gV, strName[ i ], this._font, strSize, sFormat );
-
-        //        // 縁取りを描画する
-        //        Pen pV = new Pen( edgeColor, 6 );
-        //        pV.LineJoin = System.Drawing.Drawing2D.LineJoin.Round;
-        //        gV.DrawPath( pV, gpV );
-
-        //        // 塗りつぶす
-        //        Brush brV;
-        //        {
-        //            brV = new SolidBrush( fontColor );
-        //        }
-        //        gV.FillPath( brV, gpV );
-
-        //        if ( brV != null ) brV.Dispose(); brV = null;
-        //        if ( pV != null ) pV.Dispose(); pV = null;
-        //        if ( gpV != null ) gpV.Dispose(); gpV = null;
-
-        //        int n補正 = 0;
-
-        //        //bmpV.Save( "String" + i.ToString() + ".png" );
-        //        if( strName[ i ] == "ー" || strName[ i ] == "-" || strName[ i ] == "～")
-        //        {
-        //            bmpV.RotateFlip( RotateFlipType.Rotate90FlipNone );
-        //            nNowPos = nNowPos + 20;
-        //            n補正 = 2;
-        //        }
-        //        else if( strName[ i ] == "<" || strName[ i ] == ">" || strName[ i ] == "(" || strName[ i ] == ")" )
-        //        {
-        //            bmpV.RotateFlip( RotateFlipType.Rotate90FlipNone );
-        //            nNowPos = nNowPos + 8;
-        //            n補正 = 2;
-        //        }
-        //        else if( strName[ i ] == "_" )
-        //            nNowPos = nNowPos + 20;
-        //        else if( strName[ i ] == " " )
-        //            nNowPos = nNowPos + 10;
-
-        //        int n余白サイズ = strSize.Height - rect正確なサイズ.Height;
-        //        if( i == 0 )
-        //        {
-        //            nStartPos = -n余白サイズ + 2;
-        //            nNowPos = -n余白サイズ + 2;
-        //            Gcambus.DrawImage( bmpV, ( bmpCambus.Size.Width - bmpV.Size.Width ) + n補正, nStartPos );
-        //            //nNowPos += ( rect正確なサイズ.Height + 6 );
-        //        }
-        //        else
-        //        {
-        //            nNowPos += ( strSize.Height - n余白サイズ ) + 4;
-        //            Gcambus.DrawImage( bmpV, ( bmpCambus.Size.Width - bmpV.Size.Width ) + n補正, nNowPos );
-        //        }
-
-        //        if ( bmpV != null ) bmpV.Dispose();
-
-        //        //bmpCambus.Save( "test.png" );
-
-        //        _rectStrings = new Rectangle( 0, 0, strSize.Width, strSize.Height );
-        //        _ptOrigin = new Point( 6 * 2, 6 * 2 );
-
-
-        //        //stream.WriteLine( "黒無しサイズ{0},余白{1},黒あり予測サイズ{2},ポ↑ジ↓{3}",rect正確なサイズ.Height, n余白サイズ, rect正確なサイズ.Height + 6, nNowPos );
-                
-        //    }
-        //    //stream.Close();
-
-        //    //return bmp;
-        //    return bmpCambus;
-        //}
-
-
-        //------------------------------------------------
-        //使用:http://dobon.net/vb/dotnet/graphics/measurestring.html
-
-        /// <summary>
-        /// Graphics.DrawStringで文字列を描画した時の大きさと位置を正確に計測する
-        /// </summary>
-        /// <param name="g">文字列を描画するGraphics</param>
-        /// <param name="text">描画する文字列</param>
-        /// <param name="font">描画に使用するフォント</param>
-        /// <param name="proposedSize">これ以上大きいことはないというサイズ。
-        /// できるだけ小さくすること。</param>
-        /// <param name="stringFormat">描画に使用するStringFormat</param>
-        /// <returns>文字列が描画される範囲。
-        /// 見つからなかった時は、Rectangle.Empty。</returns>
-        public Rectangle MeasureStringPrecisely(Graphics g,
-            string text, Font font, Size proposedSize, StringFormat stringFormat)
-        {
-            //解像度を引き継いで、Bitmapを作成する
-            Bitmap bmp = new Bitmap(proposedSize.Width, proposedSize.Height, g);
-            //BitmapのGraphicsを作成する
-            Graphics bmpGraphics = Graphics.FromImage(bmp);
-            //Graphicsのプロパティを引き継ぐ
-            bmpGraphics.TextRenderingHint = g.TextRenderingHint;
-            bmpGraphics.TextContrast = g.TextContrast;
-            bmpGraphics.PixelOffsetMode = g.PixelOffsetMode;
-            //文字列の描かれていない部分の色を取得する
-            Color backColor = bmp.GetPixel(0, 0);
-            //実際にBitmapに文字列を描画する
-            bmpGraphics.DrawString(text, font, Brushes.Black,
-                new RectangleF(0f, 0f, proposedSize.Width, proposedSize.Height),
-                stringFormat);
-            bmpGraphics.Dispose();
-            //文字列が描画されている範囲を計測する
-            Rectangle resultRect = MeasureForegroundArea(bmp, backColor);
-            bmp.Dispose();
-
-            return resultRect;
-        }
-
-        /// <summary>
-        /// 指定されたBitmapで、backColor以外の色が使われている範囲を計測する
-        /// </summary>
-        private Rectangle MeasureForegroundArea(Bitmap bmp, Color backColor)
-        {
-            int backColorArgb = backColor.ToArgb();
-            int maxWidth = bmp.Width;
-            int maxHeight = bmp.Height;
-
-            //左側の空白部分を計測する
-            int leftPosition = -1;
-            for (int x = 0; x < maxWidth; x++)
-            {
-                for (int y = 0; y < maxHeight; y++)
-                {
-                    //違う色を見つけたときは、位置を決定する
-                    if (bmp.GetPixel(x, y).ToArgb() != backColorArgb)
-                    {
-                        leftPosition = x;
-                        break;
-                    }
-                }
-                if (0 <= leftPosition)
-                {
-                    break;
-                }
-            }
-            //違う色が見つからなかった時
-            if (leftPosition < 0)
-            {
-                return Rectangle.Empty;
-            }
-
-            //右側の空白部分を計測する
-            int rightPosition = -1;
-            for (int x = maxWidth - 1; leftPosition < x; x--)
-            {
-                for (int y = 0; y < maxHeight; y++)
-                {
-                    if (bmp.GetPixel(x, y).ToArgb() != backColorArgb)
-                    {
-                        rightPosition = x;
-                        break;
-                    }
-                }
-                if (0 <= rightPosition)
-                {
-                    break;
-                }
-            }
-            if (rightPosition < 0)
-            {
-                rightPosition = leftPosition;
-            }
-
-            //上の空白部分を計測する
-            int topPosition = -1;
-            for (int y = 0; y < maxHeight; y++)
-            {
-                for (int x = leftPosition; x <= rightPosition; x++)
-                {
-                    if (bmp.GetPixel(x, y).ToArgb() != backColorArgb)
-                    {
-                        topPosition = y;
-                        break;
-                    }
-                }
-                if (0 <= topPosition)
-                {
-                    break;
-                }
-            }
-            if (topPosition < 0)
-            {
-                return Rectangle.Empty;
-            }
-
-            //下の空白部分を計測する
-            int bottomPosition = -1;
-            for (int y = maxHeight - 1; topPosition < y; y--)
-            {
-                for (int x = leftPosition; x <= rightPosition; x++)
-                {
-                    if (bmp.GetPixel(x, y).ToArgb() != backColorArgb)
-                    {
-                        bottomPosition = y;
-                        break;
-                    }
-                }
-                if (0 <= bottomPosition)
-                {
-                    break;
-                }
-            }
-            if (bottomPosition < 0)
-            {
-                bottomPosition = topPosition;
-            }
-
-            //結果を返す
-            return new Rectangle(leftPosition, topPosition,
-                rightPosition - leftPosition, bottomPosition - topPosition);
-        }
-
-        private Rectangle MeasureForegroundArea(Bitmap bmp)
-        {
-            return MeasureForegroundArea(bmp, bmp.GetPixel(0, 0));
-        }
 
         //------------------------------------------------
 

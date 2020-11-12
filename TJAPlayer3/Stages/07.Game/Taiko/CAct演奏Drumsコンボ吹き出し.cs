@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
 using System.Runtime.InteropServices;
-
 using FDK;
 
 namespace TJAPlayer3
@@ -64,10 +63,10 @@ namespace TJAPlayer3
 		{
 			if( !base.b活性化してない )
 			{
-                //CDTXMania.t安全にDisposeする( ref this.tx吹き出し本体[ 0 ] );
+                //CDTXMania.tテクスチャの解放( ref this.tx吹き出し本体[ 0 ] );
                 //if (CDTXMania.stage演奏ドラム画面.bDoublePlay)
-                //    CDTXMania.t安全にDisposeする( ref this.tx吹き出し本体[ 1 ] );
-                //CDTXMania.t安全にDisposeする( ref this.tx数字 );
+                //    CDTXMania.tテクスチャの解放( ref this.tx吹き出し本体[ 1 ] );
+                //CDTXMania.tテクスチャの解放( ref this.tx数字 );
 				base.OnManagedリソースの解放();
 			}
 		}
@@ -86,7 +85,7 @@ namespace TJAPlayer3
                         }
                     }
 
-                    if( TJAPlayer3.Tx.Balloon_Combo[ i ] != null )
+                    if( TJAPlayer3.Tx.Balloon_Combo[ i ] != null && TJAPlayer3.Tx.Balloon_Number_Combo != null)
                     {
                         //半透明4f
                         if( this.ct進行[ i ].n現在の値 == 1 || this.ct進行[ i ].n現在の値 == 103 )
@@ -173,10 +172,7 @@ namespace TJAPlayer3
 					if( this.st小文字位置[ i ].ch == ch )
 					{
 						Rectangle rectangle = new Rectangle( this.st小文字位置[ i ].pt.X, this.st小文字位置[ i ].pt.Y, 44, 54 );
-						if(TJAPlayer3.Tx.Balloon_Number_Combo != null )
-						{
-                            TJAPlayer3.Tx.Balloon_Number_Combo.t2D描画( TJAPlayer3.app.Device, x, y, rectangle );
-						}
+                        TJAPlayer3.Tx.Balloon_Number_Combo?.t2D描画( TJAPlayer3.app.Device, x, y, rectangle );
 						break;
 					}
 				}

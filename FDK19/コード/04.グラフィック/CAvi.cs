@@ -12,10 +12,10 @@ namespace FDK
 	{
 		// プロパティ
 
-		public uint dwスケール 
+		public uint dwスケール
 		{
 			get;
-			set; 
+			set;
 		}
 		public uint dwレート
 		{
@@ -23,45 +23,45 @@ namespace FDK
 			set;
 		}
 		public uint nフレーム高さ
-		{ 
+		{
 			get;
 			set;
 		}
 		public uint nフレーム幅
 		{
 			get;
-			set; 
+			set;
 		}
 
 
 		// コンストラクタ
 
-		public CAvi( string filename )
+		public CAvi(string filename)
 		{
-			if ( AVIFileOpen( out this.aviFile, filename, OpenFileFlags.OF_READ, IntPtr.Zero ) != 0 )
+			if (AVIFileOpen(out this.aviFile, filename, OpenFileFlags.OF_READ, IntPtr.Zero) != 0)
 			{
 				this.Release();
-				throw new Exception( "AVIFileOpen failed." );
+				throw new Exception("AVIFileOpen failed.");
 			}
-			if ( AVIFileGetStream( this.aviFile, out this.aviStream, streamtypeVIDEO, 0 ) != 0 )
+			if (AVIFileGetStream(this.aviFile, out this.aviStream, streamtypeVIDEO, 0) != 0)
 			{
 				this.Release();
-				throw new Exception( "AVIFileGetStream failed." );
+				throw new Exception("AVIFileGetStream failed.");
 			}
 			var info = new AVISTREAMINFO();
-			AVIStreamInfo( this.aviStream, ref info, Marshal.SizeOf( info ) );
+			AVIStreamInfo(this.aviStream, ref info, Marshal.SizeOf(info));
 			this.dwレート = info.dwRate;
 			this.dwスケール = info.dwScale;
 			this.nフレーム幅 = info.rcFrame.right - info.rcFrame.left;
 			this.nフレーム高さ = info.rcFrame.bottom - info.rcFrame.top;
 			try
 			{
-				this.frame = AVIStreamGetFrameOpen( this.aviStream, 0 );
+				this.frame = AVIStreamGetFrameOpen(this.aviStream, 0);
 			}
 			catch
 			{
 				this.Release();
-				throw new Exception( "AVIStreamGetFrameOpen failed." );
+				throw new Exception("AVIStreamGetFrameOpen failed.");
 			}
 		}
 
@@ -76,61 +76,61 @@ namespace FDK
 		{
 			AVIFileExit();
 		}
-		
-		public Bitmap GetFrame( int no )
+
+		public Bitmap GetFrame(int no)
 		{
-			if( this.aviStream == IntPtr.Zero )
+			if (this.aviStream == IntPtr.Zero)
 				throw new InvalidOperationException();
 
-			return BitmapUtil.ToBitmap( AVIStreamGetFrame( this.frame, no ) );
+			return BitmapUtil.ToBitmap(AVIStreamGetFrame(this.frame, no));
 		}
-		public int GetFrameNoFromTime( int time )
+		public int GetFrameNoFromTime(int time)
 		{
-			return (int) ( time * ( ( (double) this.dwレート ) / ( 1000.0 * this.dwスケール ) ) );
+			return (int)(time * (((double)this.dwレート) / (1000.0 * this.dwスケール)));
 		}
-		public IntPtr GetFramePtr( int no )
+		public IntPtr GetFramePtr(int no)
 		{
-			if( this.aviStream == IntPtr.Zero )
+			if (this.aviStream == IntPtr.Zero)
 				throw new InvalidOperationException();
 
-			return AVIStreamGetFrame( this.frame, no );
+			return AVIStreamGetFrame(this.frame, no);
 		}
 		public int GetMaxFrameCount()
 		{
-			if( this.aviStream == IntPtr.Zero )
+			if (this.aviStream == IntPtr.Zero)
 				throw new InvalidOperationException();
 
-			return AVIStreamLength( this.aviStream );
+			return AVIStreamLength(this.aviStream);
 		}
 
 		#region [ Dispose-Finalize パターン実装 ]
 		//-----------------
 		public void Dispose()
 		{
-			this.Dispose( true );
-			GC.SuppressFinalize( this );		// 2011.8.19 from: 忘れてた。
+			this.Dispose(true);
+			GC.SuppressFinalize(this);      // 2011.8.19 from: 忘れてた。
 		}
-		protected void Dispose( bool disposeManagedObjects )
+		protected void Dispose(bool disposeManagedObjects)
 		{
-			if( this.bDispose完了済み )
+			if (this.bDispose完了済み)
 				return;
 
-			if( disposeManagedObjects )
+			if (disposeManagedObjects)
 			{
 				// (A) Managed リソースの解放
 			}
 
 			// (B) Unamanaged リソースの解放
 
-			if( this.frame != IntPtr.Zero )
-				AVIStreamGetFrameClose( this.frame );
+			if (this.frame != IntPtr.Zero)
+				AVIStreamGetFrameClose(this.frame);
 
 			this.Release();
 			this.bDispose完了済み = true;
 		}
 		~CAvi()
 		{
-			this.Dispose( false );
+			this.Dispose(false);
 		}
 		//-----------------
 		#endregion
@@ -160,7 +160,7 @@ namespace FDK
 			OF_WRITE = 1
 		}
 
-		[StructLayout( LayoutKind.Sequential, Pack = 1 )]
+		[StructLayout(LayoutKind.Sequential, Pack = 1)]
 		internal struct AVISTREAMINFO
 		{
 			public uint fccType;
@@ -180,11 +180,11 @@ namespace FDK
 			public CAvi.RECT rcFrame;
 			public uint dwEditCount;
 			public uint dwFormatChangeCount;
-			[MarshalAs( UnmanagedType.ByValArray, SizeConst = 0x40 )]
+			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 0x40)]
 			public ushort[] szName;
 		}
 
-		[StructLayout( LayoutKind.Sequential, Pack = 1 )]
+		[StructLayout(LayoutKind.Sequential, Pack = 1)]
 		internal struct RECT
 		{
 			public uint left;
@@ -193,28 +193,28 @@ namespace FDK
 			public uint bottom;
 		}
 
-		[DllImport( "AVIFIL32" )]
+		[DllImport("AVIFIL32")]
 		private static extern void AVIFileExit();
-		[DllImport( "AVIFIL32" )]
-		private static extern uint AVIFileGetStream( IntPtr pfile, out IntPtr ppavi, uint fccType, int lParam );
-		[DllImport( "AVIFIL32" )]
+		[DllImport("AVIFIL32")]
+		private static extern uint AVIFileGetStream(IntPtr pfile, out IntPtr ppavi, uint fccType, int lParam);
+		[DllImport("AVIFIL32")]
 		private static extern void AVIFileInit();
-		[DllImport( "AVIFIL32" )]
-		private static extern uint AVIFileOpen( out IntPtr ppfile, string szFile, OpenFileFlags mode, IntPtr pclsidHandler );
-		[DllImport( "AVIFIL32" )]
-		private static extern int AVIFileRelease( IntPtr pfile );
-		[DllImport( "AVIFIL32" )]
-		private static extern IntPtr AVIStreamGetFrame( IntPtr pgf, int lPos );
-		[DllImport( "AVIFIL32" )]
-		private static extern uint AVIStreamGetFrameClose( IntPtr pget );
-		[DllImport( "AVIFIL32" )]
-		private static extern IntPtr AVIStreamGetFrameOpen( IntPtr pavi, int lpbiWanted );
-		[DllImport( "AVIFIL32" )]
-		private static extern int AVIStreamInfo( IntPtr pavi, ref AVISTREAMINFO psi, int lSize );
-		[DllImport( "AVIFIL32" )]
-		private static extern int AVIStreamLength( IntPtr pavi );
-		[DllImport( "AVIFIL32" )]
-		private static extern int AVIStreamRelease( IntPtr pavi );
+		[DllImport("AVIFIL32")]
+		private static extern uint AVIFileOpen(out IntPtr ppfile, string szFile, OpenFileFlags mode, IntPtr pclsidHandler);
+		[DllImport("AVIFIL32")]
+		private static extern int AVIFileRelease(IntPtr pfile);
+		[DllImport("AVIFIL32")]
+		private static extern IntPtr AVIStreamGetFrame(IntPtr pgf, int lPos);
+		[DllImport("AVIFIL32")]
+		private static extern uint AVIStreamGetFrameClose(IntPtr pget);
+		[DllImport("AVIFIL32")]
+		private static extern IntPtr AVIStreamGetFrameOpen(IntPtr pavi, int lpbiWanted);
+		[DllImport("AVIFIL32")]
+		private static extern int AVIStreamInfo(IntPtr pavi, ref AVISTREAMINFO psi, int lSize);
+		[DllImport("AVIFIL32")]
+		private static extern int AVIStreamLength(IntPtr pavi);
+		[DllImport("AVIFIL32")]
+		private static extern int AVIStreamRelease(IntPtr pavi);
 		//-----------------
 		#endregion
 
@@ -226,25 +226,25 @@ namespace FDK
 		private IntPtr aviStream = IntPtr.Zero;
 		private bool bDispose完了済み;
 		private IntPtr frame = IntPtr.Zero;
-		private static readonly uint streamtypeAUDIO = mmioFOURCC( 'a', 'u', 'd', 's' );
-		private static readonly uint streamtypeMIDI = mmioFOURCC( 'm', 'i', 'd', 's' );
-		private static readonly uint streamtypeTEXT = mmioFOURCC( 't', 'x', 't', 's' );
-		private static readonly uint streamtypeVIDEO = mmioFOURCC( 'v', 'i', 'd', 's' );
+		private static readonly uint streamtypeAUDIO = mmioFOURCC('a', 'u', 'd', 's');
+		private static readonly uint streamtypeMIDI = mmioFOURCC('m', 'i', 'd', 's');
+		private static readonly uint streamtypeTEXT = mmioFOURCC('t', 'x', 't', 's');
+		private static readonly uint streamtypeVIDEO = mmioFOURCC('v', 'i', 'd', 's');
 
-		private static uint mmioFOURCC( char c0, char c1, char c2, char c3 )
+		private static uint mmioFOURCC(char c0, char c1, char c2, char c3)
 		{
-			return ( (uint) c3 << 0x18 ) | ( (uint) c2 << 0x10 ) | ( (uint) c1 << 0x08 ) | (uint) c0;
+			return ((uint)c3 << 0x18) | ((uint)c2 << 0x10) | ((uint)c1 << 0x08) | (uint)c0;
 		}
 		private void Release()
 		{
-			if( this.aviStream != IntPtr.Zero )
+			if (this.aviStream != IntPtr.Zero)
 			{
-				AVIStreamRelease( this.aviStream );
+				AVIStreamRelease(this.aviStream);
 				this.aviStream = IntPtr.Zero;
 			}
-			if( this.aviFile != IntPtr.Zero )
+			if (this.aviFile != IntPtr.Zero)
 			{
-				AVIFileRelease( this.aviFile );
+				AVIFileRelease(this.aviFile);
 				this.aviFile = IntPtr.Zero;
 			}
 		}

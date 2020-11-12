@@ -2,8 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
-using System.Runtime.InteropServices;
-
 using FDK;
 
 namespace TJAPlayer3
@@ -84,7 +82,7 @@ namespace TJAPlayer3
                     if(FireWork[i].IsUsing)
                     {
                         FireWork[i].Counter.t進行();
-                        TJAPlayer3.Tx.Effects_Hit_FireWorks.t2D中心基準描画(TJAPlayer3.app.Device, (float)FireWork[i].X, (float)FireWork[i].Y, 1, new Rectangle(FireWork[i].Counter.n現在の値 * TJAPlayer3.Skin.Game_Effect_FireWorks[0], 0, TJAPlayer3.Skin.Game_Effect_FireWorks[0], TJAPlayer3.Skin.Game_Effect_FireWorks[1]));
+                        TJAPlayer3.Tx.Effects_Hit_FireWorks?.t2D中心基準描画(TJAPlayer3.app.Device, (float)FireWork[i].X, (float)FireWork[i].Y, 1, new Rectangle(FireWork[i].Counter.n現在の値 * TJAPlayer3.Skin.Game_Effect_FireWorks[0], 0, TJAPlayer3.Skin.Game_Effect_FireWorks[0], TJAPlayer3.Skin.Game_Effect_FireWorks[1]));
                         if (FireWork[i].Counter.b終了値に達した)
                         {
                             FireWork[i].Counter.t停止();
@@ -101,7 +99,6 @@ namespace TJAPlayer3
 
         #region [ private ]
         //-----------------
-        [StructLayout(LayoutKind.Sequential)]
         private struct Status
         {
             public int Lane;

@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Drawing;
-using System.IO;
 using System.Runtime.InteropServices;
 using FDK;
 
@@ -112,10 +109,10 @@ namespace TJAPlayer3
 		{
 			if( !base.b活性化してない )
 			{
-				//CDTXMania.t安全にDisposeする( ref this.txStageFailed );
-				//CDTXMania.t安全にDisposeする( ref this.txGameFailed );
-    //            CDTXMania.t安全にDisposeする( ref this.txBlack );
-    //            CDTXMania.t安全にDisposeする( ref this.tx数字 );
+				//CDTXMania.tテクスチャの解放( ref this.txStageFailed );
+				//CDTXMania.tテクスチャの解放( ref this.txGameFailed );
+    //            CDTXMania.tテクスチャの解放( ref this.txBlack );
+    //            CDTXMania.tテクスチャの解放( ref this.tx数字 );
 				base.OnManagedリソースの解放();
 			}
 		}
@@ -145,8 +142,7 @@ namespace TJAPlayer3
                 }
                 if (this.ct進行.n現在の値 > 1500)
                 {
-                    if (TJAPlayer3.Tx.Failed_Game != null)
-                        TJAPlayer3.Tx.Failed_Game.t2D描画(TJAPlayer3.app.Device, 0, 0);
+                    TJAPlayer3.Tx.Failed_Game?.t2D描画(TJAPlayer3.app.Device, 0, 0);
 
                     int num = (TJAPlayer3.DTX.listChip.Count > 0) ? TJAPlayer3.DTX.listChip[TJAPlayer3.DTX.listChip.Count - 1].n発声時刻ms : 0;
                     this.t文字表示(640, 520, (((this.dbFailedTime) / 1000.0) / (((double)num) / 1000.0) * 100).ToString("##0") + "%");
@@ -170,18 +166,13 @@ namespace TJAPlayer3
                 }
                 else
                 {
-                    if (TJAPlayer3.Tx.Failed_Stage != null)
-                    {
-                        TJAPlayer3.Tx.Failed_Stage.t2D描画(TJAPlayer3.app.Device, 0, 0);
-                    }
+                    TJAPlayer3.Tx.Failed_Stage?.t2D描画(TJAPlayer3.app.Device, 0, 0);
+
                     if (this.ct進行.n現在の値 <= 250)
                     {
                         int num2 = TJAPlayer3.Random.Next(5) - 2;
                         int y = TJAPlayer3.Random.Next(5) - 2;
-                        if (TJAPlayer3.Tx.Failed_Stage != null)
-                        {
-                            TJAPlayer3.Tx.Failed_Stage.t2D描画(TJAPlayer3.app.Device, num2, y);
-                        }
+                        TJAPlayer3.Tx.Failed_Stage?.t2D描画(TJAPlayer3.app.Device, num2, y);
                     }
                     if (!this.b効果音再生済み)
                     {
@@ -219,11 +210,6 @@ namespace TJAPlayer3
         {
             public char ch;
             public Point pt;
-            public ST文字位置( char ch, Point pt )
-            {
-                this.ch = ch;
-                this.pt = pt;
-            }
         }
 
         private void t文字表示( int x, int y, string str )
@@ -239,10 +225,8 @@ namespace TJAPlayer3
                         {
                             rectangle.Width = 80;
                         }
-						if(TJAPlayer3.Tx.Balloon_Number_Roll != null )
-						{
-                            TJAPlayer3.Tx.Balloon_Number_Roll.t2D描画( TJAPlayer3.app.Device, x - ( 62 * str.Length / 2 ), y, rectangle );
-						}
+
+                        TJAPlayer3.Tx.Balloon_Number_Roll?.t2D描画( TJAPlayer3.app.Device, x - ( 62 * str.Length / 2 ), y, rectangle );
 						break;
 					}
 				}

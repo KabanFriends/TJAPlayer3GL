@@ -61,13 +61,13 @@ namespace TJAPlayer3
                 switch (i)
                 {
                     case (int)FlashType.Red:
-                        Flash[i] = new LaneFlash(ref TJAPlayer3.Tx.Lane_Red, player);
+                        Flash[i] = new LaneFlash(TJAPlayer3.Tx.Lane_Red, player);
                         break;
                     case (int)FlashType.Blue:
-                        Flash[i] = new LaneFlash(ref TJAPlayer3.Tx.Lane_Blue, player);
+                        Flash[i] = new LaneFlash(TJAPlayer3.Tx.Lane_Blue, player);
                         break;
                     case (int)FlashType.Hit:
-                        Flash[i] = new LaneFlash(ref TJAPlayer3.Tx.Lane_Yellow, player);
+                        Flash[i] = new LaneFlash(TJAPlayer3.Tx.Lane_Yellow, player);
                         break;
                     default:
                         break;

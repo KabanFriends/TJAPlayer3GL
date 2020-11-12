@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Text;
 using System.Runtime.InteropServices;
-using System.Drawing;
-using System.Drawing.Imaging;
 using System.Diagnostics;
 using System.IO;
 using System.Security.Cryptography;
 using FDK;
-using TJAPlayer3;
 
 namespace TJAPlayer3
 {
@@ -23,7 +19,6 @@ namespace TJAPlayer3
 		{
 			public string Title;
 			public string Name;
-			public string Hash;
 			public int PlayCountDrums;
 			public int PlayCountGuitar;
             public int PlayCountBass;
@@ -183,7 +178,6 @@ namespace TJAPlayer3
 			public STDGBVALUE<Eランダムモード> eRandom;
 			public Eダメージレベル eダメージレベル;
 			public STDGBVALUE<float> f譜面スクロール速度;
-			public string Hash;
 			public int nGoodになる範囲ms;
 			public int nGood数;
 			public int nGreatになる範囲ms;
@@ -284,7 +278,6 @@ namespace TJAPlayer3
 				this.nPoorになる範囲ms = 117;
 				this.strDTXManiaのバージョン = "Unknown";
 				this.最終更新日時 = "";
-				this.Hash = "00000000000000000000000000000000";
 				this.レーン9モード = true;
 				this.nRisky = 0;									// #23559 2011.6.20 yyagi
                 this.fゲージ = 0.0f;
@@ -471,37 +464,13 @@ namespace TJAPlayer3
 #endif
 		}
 
-		/// <summary>
-		/// <para>.score.ini の存在するフォルダ（絶対パス；末尾に '\' はついていない）。</para>
-		/// <para>未保存などでファイル名がない場合は null。</para>
-		/// </summary>
-		public string iniファイルのあるフォルダ名
-		{
-			get;
-			private set;
-		}
-
-		/// <summary>
-		/// <para>.score.ini のファイル名（絶対パス）。</para>
-		/// <para>未保存などでファイル名がない場合は null。</para>
-		/// </summary>
-		public string iniファイル名
-		{
-			get; 
-			private set;
-		}
-
-
 		// コンストラクタ
 
 		public CScoreIni()
 		{
-			this.iniファイルのあるフォルダ名 = null;
-			this.iniファイル名 = null;
 			this.stファイル = new STファイル();
 			stファイル.Title = "";
 			stファイル.Name = "";
-			stファイル.Hash = "";
 			stファイル.History = new string[] { "", "", "", "", "" };
 			stファイル.BestRank.Drums =  (int)ERANK.UNKNOWN;		// #24459 2011.2.24 yyagi
 			stファイル.BestRank.Guitar = (int)ERANK.UNKNOWN;		//
@@ -543,38 +512,13 @@ namespace TJAPlayer3
 		{
 			return true;	// オープンソース化に伴い、整合性チェックを無効化。（2010.10.21）
 		}
-		
-		/// <summary>
-		/// 指定されたファイルの内容から MD5 値を求め、それを16進数に変換した文字列を返す。
-		/// </summary>
-		/// <param name="ファイル名">MD5 を求めるファイル名。</param>
-		/// <returns>算出結果の MD5 を16進数で並べた文字列。</returns>
-		public static string tファイルのMD5を求めて返す( string ファイル名 )
-		{
-			byte[] buffer = null;
-			FileStream stream = new FileStream( ファイル名, FileMode.Open, FileAccess.Read );
-			buffer = new byte[ stream.Length ];
-			stream.Read( buffer, 0, (int) stream.Length );
-			stream.Close();
-			StringBuilder builder = new StringBuilder(0x21);
-			{
-				MD5CryptoServiceProvider m = new MD5CryptoServiceProvider();
-				byte[] buffer2 = m.ComputeHash(buffer);
-				foreach (byte num in buffer2)
-					builder.Append(num.ToString("x2"));
-			}
-			return builder.ToString();
-		}
-		
+
 		/// <summary>
 		/// 指定された .score.ini を読み込む。内容の真偽は判定しない。
 		/// </summary>
 		/// <param name="iniファイル名">読み込む .score.ini ファイルを指定します（絶対パスが安全）。</param>
 		public void t読み込み( string iniファイル名 )
 		{
-			this.iniファイルのあるフォルダ名 = Path.GetDirectoryName( iniファイル名 );
-			this.iniファイル名 = Path.GetFileName( iniファイル名 );
-
 			Eセクション種別 section = Eセクション種別.Unknown;
 			if( File.Exists( iniファイル名 ) )
 			{
@@ -695,10 +639,6 @@ namespace TJAPlayer3
 							if( item.Equals( "Name" ) )
 							{
 								this.stファイル.Name = para;
-							}
-							else if( item.Equals( "Hash" ) )
-							{
-								this.stファイル.Hash = para;
 							}
 							else if( item.Equals( "PlayCountDrums" ) )
 							{
@@ -1138,10 +1078,6 @@ namespace TJAPlayer3
 											{
 												c演奏記録.最終更新日時 = para;
 											}
-											else if ( item.Equals( "Hash" ) )
-											{
-												c演奏記録.Hash = para;
-											}
 											else if ( item.Equals( "9LaneMode" ) )
 											{
 												c演奏記録.レーン9モード = C変換.bONorOFF( para[ 0 ] );
@@ -1196,14 +1132,10 @@ namespace TJAPlayer3
 		}
 		internal void t書き出し( string iniファイル名 )
 		{
-			this.iniファイルのあるフォルダ名 = Path.GetDirectoryName( iniファイル名 );
-			this.iniファイル名 = Path.GetFileName( iniファイル名 );
-
 			StreamWriter writer = new StreamWriter( iniファイル名, false, Encoding.GetEncoding( "Shift_JIS" ) );
 			writer.WriteLine( "[File]" );
 			writer.WriteLine( "Title={0}", this.stファイル.Title );
 			writer.WriteLine( "Name={0}", this.stファイル.Name );
-			writer.WriteLine( "Hash={0}", this.stファイル.Hash );
 			writer.WriteLine( "PlayCountDrums={0}", this.stファイル.PlayCountDrums );
 			writer.WriteLine( "PlayCountGuitars={0}", this.stファイル.PlayCountGuitar );
             writer.WriteLine( "PlayCountBass={0}", this.stファイル.PlayCountBass );
@@ -1280,7 +1212,6 @@ namespace TJAPlayer3
 				writer.WriteLine( "PoorRange={0}", this.stセクション[ i ].nPoorになる範囲ms );
 				writer.WriteLine( "DTXManiaVersion={0}", this.stセクション[ i ].strDTXManiaのバージョン );
 				writer.WriteLine( "DateTime={0}", this.stセクション[ i ].最終更新日時 );
-				writer.WriteLine( "Hash={0}", this.stセクション[ i ].Hash );
                 writer.WriteLine( "HiScore1={0}", this.stセクション[ i ].nハイスコア[ 0 ] );
                 writer.WriteLine( "HiScore2={0}", this.stセクション[ i ].nハイスコア[ 1 ] );
                 writer.WriteLine( "HiScore3={0}", this.stセクション[ i ].nハイスコア[ 2 ] );
@@ -1378,107 +1309,7 @@ namespace TJAPlayer3
             //削除
 			return 1.0;
 		}
-        internal static double t超精密型スキルを計算して返す( CDTX dtx, int nTotal, int nPerfect, int nGood, int nMiss, int Poor, int nMaxLagTime, int nMinLagTimen, int nMaxCombo )
-        {
-            //演奏成績 最大60点
-            //最大コンボ 最大5点
-            //空打ち 最大10点(減点あり)
-            //最大_最小ズレ時間 最大10点
-            //平均ズレ時間 最大5点
-            //ボーナスA 最大5点
-            //ボーナスB 最大5点
 
-            double db演奏点 = 0;
-            double db最大コンボ = 0;
-            double db空打ち = 0;
-            double db最大ズレ時間 = 0;
-            double db最小ズレ時間 = 0;
-            double db平均最大ズレ時間 = 0;
-            double db平均最小ズレ時間 = 0;
-            double dbボーナスA = 0;
-            double dbボーナスB = 0;
-
-            #region[ 演奏点 ]
-
-            #endregion
-            #region[ 空打ち ]
-            int[] n空打ちArray = new int[] { 1, 2, 3, 5, 10, 15, 20, 30, 40, 50 };
-            int n空打ちpt = 0;
-            for( n空打ちpt = 0; n空打ちpt < 10; n空打ちpt++ )
-            {
-                if( Poor == n空打ちArray[ n空打ちpt ] )
-                    break;
-            }
-            db空打ち = ( Poor == 0 ? 10 : 10 - n空打ちpt );
-            #endregion
-
-            return 1.0;
-        }
-		internal static string t演奏セクションのMD5を求めて返す( C演奏記録 cc )
-		{
-			StringBuilder builder = new StringBuilder();
-			builder.Append( cc.nスコア.ToString() );
-			builder.Append( cc.dbゲーム型スキル値.ToString( ".000000" ) );
-			builder.Append( cc.db演奏型スキル値.ToString( ".000000" ) );
-			builder.Append( cc.nPerfect数 );
-			builder.Append( cc.nGreat数 );
-			builder.Append( cc.nGood数 );
-			builder.Append( cc.nPoor数 );
-			builder.Append( cc.nMiss数 );
-			builder.Append( cc.n最大コンボ数 );
-			builder.Append( cc.n全チップ数 );
-			for( int i = 0; i < 10; i++ )
-				builder.Append( boolToChar( cc.bAutoPlay[ i ] ) );
-			builder.Append( boolToChar( cc.bTight ) );
-			builder.Append( boolToChar( cc.bSudden.Drums ) );
-			builder.Append( boolToChar( cc.bSudden.Guitar ) );
-			builder.Append( boolToChar( cc.bSudden.Bass ) );
-			builder.Append( boolToChar( cc.bHidden.Drums ) );
-			builder.Append( boolToChar( cc.bHidden.Guitar ) );
-			builder.Append( boolToChar( cc.bHidden.Bass ) );
-			builder.Append( (int) cc.eInvisible.Drums );
-			builder.Append( (int) cc.eInvisible.Guitar );
-			builder.Append( (int) cc.eInvisible.Bass );
-			builder.Append( boolToChar( cc.bReverse.Drums ) );
-			builder.Append( boolToChar( cc.bReverse.Guitar ) );
-			builder.Append( boolToChar( cc.bReverse.Bass ) );
-			builder.Append( (int) cc.eRandom.Guitar );
-			builder.Append( (int) cc.eRandom.Bass );
-			builder.Append( boolToChar( cc.bLight.Guitar ) );
-			builder.Append( boolToChar( cc.bLight.Bass ) );
-			builder.Append( boolToChar( cc.bLeft.Guitar ) );
-			builder.Append( boolToChar( cc.bLeft.Bass ) );
-			builder.Append( (int) cc.eDark );
-			builder.Append( cc.f譜面スクロール速度.Drums.ToString( ".000000" ) );
-			builder.Append( cc.f譜面スクロール速度.Guitar.ToString( ".000000" ) );
-			builder.Append( cc.f譜面スクロール速度.Bass.ToString( ".000000" ) );
-			builder.Append( cc.n演奏速度分子 );
-			builder.Append( cc.n演奏速度分母 );
-			builder.Append( boolToChar( cc.bGuitar有効 ) );
-			builder.Append( boolToChar( cc.bDrums有効 ) );
-			builder.Append( boolToChar( cc.bSTAGEFAILED有効 ) );
-			builder.Append( (int) cc.eダメージレベル );
-			builder.Append( boolToChar( cc.b演奏にキーボードを使用した ) );
-			builder.Append( boolToChar( cc.b演奏にMIDI入力を使用した ) );
-			builder.Append( boolToChar( cc.b演奏にジョイパッドを使用した ) );
-			builder.Append( boolToChar( cc.b演奏にマウスを使用した ) );
-			builder.Append( cc.nPerfectになる範囲ms );
-			builder.Append( cc.nGreatになる範囲ms );
-			builder.Append( cc.nGoodになる範囲ms );
-			builder.Append( cc.nPoorになる範囲ms );
-			builder.Append( cc.strDTXManiaのバージョン );
-			builder.Append( cc.最終更新日時 );
-
-			byte[] bytes = Encoding.GetEncoding( "Shift_JIS" ).GetBytes( builder.ToString() );
-			StringBuilder builder2 = new StringBuilder(0x21);
-			{
-				MD5CryptoServiceProvider m = new MD5CryptoServiceProvider();
-				byte[] buffer2 = m.ComputeHash(bytes);
-				foreach (byte num2 in buffer2)
-					builder2.Append(num2.ToString("x2"));
-			}
-			return builder2.ToString();
-		}
 		internal static void t更新条件を取得する( out bool bDrumsを更新する, out bool bGuitarを更新する, out bool bBassを更新する )
 		{
             bDrumsを更新する = !TJAPlayer3.ConfigIni.b太鼓パートAutoPlay;

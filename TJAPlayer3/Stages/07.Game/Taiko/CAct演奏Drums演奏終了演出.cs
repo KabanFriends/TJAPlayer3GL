@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Runtime.InteropServices;
-using System.Drawing;
+﻿using System.Drawing;
 using FDK;
 using OpenTK;
 
@@ -43,15 +39,28 @@ namespace TJAPlayer3
                 // 通常のモード。
                 // ここでフルコンボフラグをチェックするが現時点ではない。
                 // 今の段階では魂ゲージ80%以上でチェック。
+
+                //ハードゲージの場合、完奏=クリアなので、
+                //EndModeチェックのタイミングでは常にクリアになってもいい気がするけど、一応↓
                 for (int i = 0; i < TJAPlayer3.ConfigIni.nPlayerCount; i++)
                 {
-                    if (TJAPlayer3.stage演奏ドラム画面.actGauge.db現在のゲージ値[i] >= 80)
+                    if (TJAPlayer3.ConfigIni.eGaugeMode == EGaugeMode.Hard || TJAPlayer3.ConfigIni.eGaugeMode == EGaugeMode.ExHard)
                     {
-                        this.Mode[i] = EndMode.StageCleared;
+                        if (TJAPlayer3.stage演奏ドラム画面.actGauge.db現在のゲージ値[i] > 0)
+                            this.Mode[i] = EndMode.StageCleared;
+                        else
+                            this.Mode[i] = EndMode.StageFailed;
                     }
                     else
                     {
-                        this.Mode[i] = EndMode.StageFailed;
+                        if (TJAPlayer3.stage演奏ドラム画面.actGauge.db現在のゲージ値[i] >= 80)
+                        {
+                            this.Mode[i] = EndMode.StageCleared;
+                        }
+                        else
+                        {
+                            this.Mode[i] = EndMode.StageFailed;
+                        }
                     }
                 }
             }
@@ -90,7 +99,7 @@ namespace TJAPlayer3
             {
                 base.b初めての進行描画 = false;
             }
-            if (this.ct進行メイン != null && (TJAPlayer3.stage演奏ドラム画面.eフェーズID == CStage.Eフェーズ.演奏_演奏終了演出 || TJAPlayer3.stage演奏ドラム画面.eフェーズID == CStage.Eフェーズ.演奏_STAGE_CLEAR_フェードアウト))
+            if (this.ct進行メイン != null && (TJAPlayer3.stage演奏ドラム画面.eフェーズID == CStage.Eフェーズ.演奏_演奏終了演出 || TJAPlayer3.stage演奏ドラム画面.eフェーズID == CStage.Eフェーズ.演奏_STAGE_CLEAR_フェードアウト || TJAPlayer3.stage演奏ドラム画面.eフェーズID == CStage.Eフェーズ.演奏_STAGE_FAILED_ハード))
             {
                 this.ct進行メイン.t進行();
 
@@ -198,7 +207,7 @@ namespace TJAPlayer3
                                         TJAPlayer3.Tx.End_Clear_Text.t2D描画(TJAPlayer3.app.Device, 890, y[i] + 2, new Rectangle(360, 0, 90, 90));
                                     }
                                 }
-                                if (this.ct進行メイン.n現在の値 >= 50 && this.ct進行メイン.n現在の値 < 90)
+                                if (this.ct進行メイン.n現在の値 >= 50 && this.ct進行メイン.n現在の値 < 90 && TJAPlayer3.Tx.End_Clear_Text_Effect != null)
                                 {
                                     if (this.ct進行メイン.n現在の値 < 70)
                                     {
@@ -228,51 +237,45 @@ namespace TJAPlayer3
                                 }
                                 else if (this.ct進行メイン.n現在の値 <= 35)
                                 {
-                                    if (TJAPlayer3.Tx.End_Clear_L[0] != null)
-                                        TJAPlayer3.Tx.End_Clear_L[0].t2D描画(TJAPlayer3.app.Device, 697 - (int)((this.ct進行メイン.n現在の値 - 12) * 10), y[i] - 30);
-                                    if (TJAPlayer3.Tx.End_Clear_R[0] != null)
-                                        TJAPlayer3.Tx.End_Clear_R[0].t2D描画(TJAPlayer3.app.Device, 738 + (int)((this.ct進行メイン.n現在の値 - 12) * 10), y[i] - 30);
+                                    TJAPlayer3.Tx.End_Clear_L[0]?.t2D描画(TJAPlayer3.app.Device, 697 - (int)((this.ct進行メイン.n現在の値 - 12) * 10), y[i] - 30);
+                                    TJAPlayer3.Tx.End_Clear_R[0]?.t2D描画(TJAPlayer3.app.Device, 738 + (int)((this.ct進行メイン.n現在の値 - 12) * 10), y[i] - 30);
                                 }
                                 else if (this.ct進行メイン.n現在の値 <= 46)
                                 {
+                                    //2016.07.16 kairera0467 またも原始的...
+                                    float[] fRet = { 1.0f, 0.99f, 0.98f, 0.97f, 0.96f, 0.95f, 0.96f, 0.97f, 0.98f, 0.99f, 1.0f };
+
                                     if (TJAPlayer3.Tx.End_Clear_L[0] != null)
                                     {
-                                        //2016.07.16 kairera0467 またも原始的...
-                                        float[] fRet = new float[] { 1.0f, 0.99f, 0.98f, 0.97f, 0.96f, 0.95f, 0.96f, 0.97f, 0.98f, 0.99f, 1.0f };
                                         TJAPlayer3.Tx.End_Clear_L[0].t2D描画(TJAPlayer3.app.Device, 466, y[i] - 30);
                                         TJAPlayer3.Tx.End_Clear_L[0].vc拡大縮小倍率 = new Vector3(fRet[this.ct進行メイン.n現在の値 - 36], 1.0f, 1.0f);
-                                        //CDTXMania.Tx.End_Clear_R[ 0 ].t2D描画( CDTXMania.app.Device, 956 + (( this.ct進行メイン.n現在の値 - 36 ) / 2), 180 );
+                                    }
+
+                                    if (TJAPlayer3.Tx.End_Clear_R[0] != null)
+                                    {
                                         TJAPlayer3.Tx.End_Clear_R[0].t2D描画(TJAPlayer3.app.Device, 1136 - 180 * fRet[this.ct進行メイン.n現在の値 - 36], y[i] - 30);
                                         TJAPlayer3.Tx.End_Clear_R[0].vc拡大縮小倍率 = new Vector3(fRet[this.ct進行メイン.n現在の値 - 36], 1.0f, 1.0f);
                                     }
                                 }
                                 else if (this.ct進行メイン.n現在の値 <= 49)
                                 {
-                                    if (TJAPlayer3.Tx.End_Clear_L[1] != null)
-                                        TJAPlayer3.Tx.End_Clear_L[1].t2D描画(TJAPlayer3.app.Device, 466, y[i] - 30);
-                                    if (TJAPlayer3.Tx.End_Clear_R[1] != null)
-                                        TJAPlayer3.Tx.End_Clear_R[1].t2D描画(TJAPlayer3.app.Device, 956, y[i] - 30);
+                                    TJAPlayer3.Tx.End_Clear_L[1]?.t2D描画(TJAPlayer3.app.Device, 466, y[i] - 30);
+                                    TJAPlayer3.Tx.End_Clear_R[1]?.t2D描画(TJAPlayer3.app.Device, 956, y[i] - 30);
                                 }
                                 else if (this.ct進行メイン.n現在の値 <= 54)
                                 {
-                                    if (TJAPlayer3.Tx.End_Clear_L[2] != null)
-                                        TJAPlayer3.Tx.End_Clear_L[2].t2D描画(TJAPlayer3.app.Device, 466, y[i] - 30);
-                                    if (TJAPlayer3.Tx.End_Clear_R[2] != null)
-                                        TJAPlayer3.Tx.End_Clear_R[2].t2D描画(TJAPlayer3.app.Device, 956, y[i] - 30);
+                                    TJAPlayer3.Tx.End_Clear_L[2]?.t2D描画(TJAPlayer3.app.Device, 466, y[i] - 30);
+                                    TJAPlayer3.Tx.End_Clear_R[2]?.t2D描画(TJAPlayer3.app.Device, 956, y[i] - 30);
                                 }
                                 else if (this.ct進行メイン.n現在の値 <= 58)
                                 {
-                                    if (TJAPlayer3.Tx.End_Clear_L[3] != null)
-                                        TJAPlayer3.Tx.End_Clear_L[3].t2D描画(TJAPlayer3.app.Device, 466, y[i] - 30);
-                                    if (TJAPlayer3.Tx.End_Clear_R[3] != null)
-                                        TJAPlayer3.Tx.End_Clear_R[3].t2D描画(TJAPlayer3.app.Device, 956, y[i] - 30);
+                                    TJAPlayer3.Tx.End_Clear_L[3]?.t2D描画(TJAPlayer3.app.Device, 466, y[i] - 30);
+                                    TJAPlayer3.Tx.End_Clear_R[3]?.t2D描画(TJAPlayer3.app.Device, 956, y[i] - 30);
                                 }
                                 else
                                 {
-                                    if (TJAPlayer3.Tx.End_Clear_L[4] != null)
-                                        TJAPlayer3.Tx.End_Clear_L[4].t2D描画(TJAPlayer3.app.Device, 466, y[i] - 30);
-                                    if (TJAPlayer3.Tx.End_Clear_R[4] != null)
-                                        TJAPlayer3.Tx.End_Clear_R[4].t2D描画(TJAPlayer3.app.Device, 956, y[i] - 30);
+                                    TJAPlayer3.Tx.End_Clear_L[4]?.t2D描画(TJAPlayer3.app.Device, 466, y[i] - 30);
+                                    TJAPlayer3.Tx.End_Clear_R[4]?.t2D描画(TJAPlayer3.app.Device, 956, y[i] - 30);
                                 }
                                 #endregion
                             }

@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Drawing2D;
 using System.Diagnostics;
 
 namespace TJAPlayer3
@@ -36,25 +32,13 @@ namespace TJAPlayer3
 
 
 		#region [ コンストラクタ ]
-		public CPrivateFastFont( FontFamily fontfamily, int pt, FontStyle style )
-		{
-			Initialize( null, fontfamily, pt, style );
-		}
 		public CPrivateFastFont( FontFamily fontfamily, int pt )
 		{
 			Initialize( null, fontfamily, pt, FontStyle.Regular );
 		}
-		public CPrivateFastFont( string fontpath, int pt, FontStyle style )
-		{
-			Initialize( fontpath, null, pt, style );
-		}
 		public CPrivateFastFont( string fontpath, int pt )
 		{
 			Initialize( fontpath, null, pt, FontStyle.Regular );
-		}
-		public CPrivateFastFont()
-		{
-			throw new ArgumentException("CPrivateFastFont: 引数があるコンストラクタを使用してください。");
 		}
 		#endregion
 		#region [ コンストラクタから呼ばれる初期化処理 ]
@@ -73,47 +57,12 @@ namespace TJAPlayer3
 		/// </summary>
 		/// <param name="drawstr">描画文字列</param>
 		/// <param name="fontColor">描画色</param>
-		/// <returns>描画済テクスチャ</returns>
-		public new Bitmap DrawPrivateFont( string drawstr, Color fontColor )
-		{
-			return DrawPrivateFont( drawstr, DrawMode.Normal, fontColor, Color.White, Color.White, Color.White );
-		}
-
-		/// <summary>
-		/// 文字列を描画したテクスチャを返す
-		/// </summary>
-		/// <param name="drawstr">描画文字列</param>
-		/// <param name="fontColor">描画色</param>
 		/// <param name="edgeColor">縁取色</param>
 		/// <returns>描画済テクスチャ</returns>
 		public new Bitmap DrawPrivateFont( string drawstr, Color fontColor, Color edgeColor )
 		{
 			return DrawPrivateFont( drawstr, DrawMode.Edge, fontColor, edgeColor, Color.White, Color.White );
 		}
-
-		/// <summary>
-		/// 文字列を描画したテクスチャを返す
-		/// </summary>
-		/// <param name="drawstr">描画文字列</param>
-		/// <param name="fontColor">描画色</param>
-		/// <param name="edgeColor">縁取色</param>
-		/// <returns>描画済テクスチャ</returns>
-		public Bitmap DrawPrivateFont( string drawstr, Color fontColor, Color edgeColor, DrawMode dMode )
-		{
-			return DrawPrivateFont( drawstr, dMode, fontColor, edgeColor, Color.White, Color.White );
-		}
-		/// <summary>
-		/// 文字列を描画したテクスチャを返す
-		/// </summary>
-		/// <param name="drawstr">描画文字列</param>
-		/// <param name="fontColor">描画色</param>
-		/// <param name="gradationTopColor">グラデーション 上側の色</param>
-		/// <param name="gradationBottomColor">グラデーション 下側の色</param>
-		/// <returns>描画済テクスチャ</returns>
-		//public new Bitmap DrawPrivateFont( string drawstr, Color fontColor, Color gradationTopColor, Color gradataionBottomColor )
-		//{
-		//    return DrawPrivateFont( drawstr, DrawMode.Gradation, fontColor, Color.White, gradationTopColor, gradataionBottomColor );
-		//}
 
 		/// <summary>
 		/// 文字列を描画したテクスチャを返す
@@ -143,61 +92,6 @@ namespace TJAPlayer3
 			return DrawPrivateFont_V( drawstr, fontColor, edgeColor, bVertical );
 		}
 
-#if こちらは使わない // (Bitmapではなく、CTextureを返す版)
-		/// <summary>
-		/// 文字列を描画したテクスチャを返す
-		/// </summary>
-		/// <param name="drawstr">描画文字列</param>
-		/// <param name="fontColor">描画色</param>
-		/// <returns>描画済テクスチャ</returns>
-		public CTexture DrawPrivateFont( string drawstr, Color fontColor )
-		{
-			Bitmap bmp = DrawPrivateFont( drawstr, DrawMode.Normal, fontColor, Color.White, Color.White, Color.White );
-			return CDTXMania.tテクスチャの生成( bmp, false );
-		}
-
-		/// <summary>
-		/// 文字列を描画したテクスチャを返す
-		/// </summary>
-		/// <param name="drawstr">描画文字列</param>
-		/// <param name="fontColor">描画色</param>
-		/// <param name="edgeColor">縁取色</param>
-		/// <returns>描画済テクスチャ</returns>
-		public CTexture DrawPrivateFont( string drawstr, Color fontColor, Color edgeColor )
-		{
-			Bitmap bmp = DrawPrivateFont( drawstr, DrawMode.Edge, fontColor, edgeColor, Color.White, Color.White );
-			return CDTXMania.tテクスチャの生成( bmp, false );
-		}
-
-		/// <summary>
-		/// 文字列を描画したテクスチャを返す
-		/// </summary>
-		/// <param name="drawstr">描画文字列</param>
-		/// <param name="fontColor">描画色</param>
-		/// <param name="gradationTopColor">グラデーション 上側の色</param>
-		/// <param name="gradationBottomColor">グラデーション 下側の色</param>
-		/// <returns>描画済テクスチャ</returns>
-		//public CTexture DrawPrivateFont( string drawstr, Color fontColor, Color gradationTopColor, Color gradataionBottomColor )
-		//{
-		//    Bitmap bmp = DrawPrivateFont( drawstr, DrawMode.Gradation, fontColor, Color.White, gradationTopColor, gradataionBottomColor );
-		//	  return CDTXMania.tテクスチャの生成( bmp, false );
-		//}
-
-		/// <summary>
-		/// 文字列を描画したテクスチャを返す
-		/// </summary>
-		/// <param name="drawstr">描画文字列</param>
-		/// <param name="fontColor">描画色</param>
-		/// <param name="edgeColor">縁取色</param>
-		/// <param name="gradationTopColor">グラデーション 上側の色</param>
-		/// <param name="gradationBottomColor">グラデーション 下側の色</param>
-		/// <returns>描画済テクスチャ</returns>
-		public CTexture DrawPrivateFont( string drawstr, Color fontColor, Color edgeColor,  Color gradationTopColor, Color gradataionBottomColor )
-		{
-			Bitmap bmp = DrawPrivateFont( drawstr, DrawMode.Edge | DrawMode.Gradation, fontColor, edgeColor, gradationTopColor, gradataionBottomColor );
-			return CDTXMania.tテクスチャの生成( bmp, false );
-		}
-#endif
 		#endregion
 
 		protected new Bitmap DrawPrivateFont( string drawstr, DrawMode drawmode, Color fontColor, Color edgeColor, Color gradationTopColor, Color gradationBottomColor )

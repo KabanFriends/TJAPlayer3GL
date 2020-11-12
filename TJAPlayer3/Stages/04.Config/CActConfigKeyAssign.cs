@@ -95,8 +95,8 @@ namespace TJAPlayer3
 		{
 			if( !base.b活性化してない )
 			{
-				//CDTXMania.t安全にDisposeする( ref this.txカーソル );
-				//CDTXMania.t安全にDisposeする( ref this.txHitKeyダイアログ );
+				//CDTXMania.tテクスチャの解放( ref this.txカーソル );
+				//CDTXMania.tテクスチャの解放( ref this.txHitKeyダイアログ );
 				base.On非活性化();
 			}
 		}
@@ -119,12 +119,12 @@ namespace TJAPlayer3
 					{
 						TJAPlayer3.Skin.sound取消音.t再生する();
 						this.bキー入力待ち = false;
-						TJAPlayer3.Input管理.tポーリング( TJAPlayer3.app.bApplicationActive );
+						TJAPlayer3.Input管理.tポーリング( TJAPlayer3.app.bApplicationActive);
 					}
 					else if( ( this.tキーチェックとアサイン_Keyboard() || this.tキーチェックとアサイン_MidiIn() ) || ( this.tキーチェックとアサイン_Joypad() || this.tキーチェックとアサイン_Mouse() ) )
 					{
 						this.bキー入力待ち = false;
-						TJAPlayer3.Input管理.tポーリング( TJAPlayer3.app.bApplicationActive );
+						TJAPlayer3.Input管理.tポーリング( TJAPlayer3.app.bApplicationActive);
 					}
 				}
 				else if( ( TJAPlayer3.Input管理.Keyboard.bキーが押された( (int)SlimDXKeys.Key.Delete ) && ( this.n現在の選択行 >= 0 ) ) && ( this.n現在の選択行 <= 15 ) )
@@ -185,9 +185,9 @@ namespace TJAPlayer3
 				y += num5;
 				TJAPlayer3.stageコンフィグ.actFont.t文字列描画( x + 20, y, "<< Returnto List", this.n現在の選択行 == 0x11, 0.75f );
 				y += num5;
-				if( this.bキー入力待ち && ( TJAPlayer3.Tx.Config_KeyAssign != null ) )
+				if( this.bキー入力待ち )
 				{
-                    TJAPlayer3.Tx.Config_KeyAssign.t2D描画( TJAPlayer3.app.Device, 0x185, 0xd7 );
+                    TJAPlayer3.Tx.Config_KeyAssign?.t2D描画( TJAPlayer3.app.Device, 0x185, 0xd7 );
 				}
 			}
 			return 0;

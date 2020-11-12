@@ -68,7 +68,7 @@ namespace FDK
 		}
 		public Size szテクスチャサイズ
 		{
-			get 
+			get
 			{
 				return sz画像サイズ;
 			}
@@ -206,7 +206,7 @@ namespace FDK
 
 				bitmap.UnlockBits(data);
 			}
-			catch 
+			catch
 			{
 				this.Dispose();
 				throw new CTextureCreateFailedException(string.Format("テクスチャの生成に失敗しました。"));
@@ -270,6 +270,45 @@ namespace FDK
 			this.t2D描画(device, x - (this.szテクスチャサイズ.Width / 2 * this.vc拡大縮小倍率.X), y - (szテクスチャサイズ.Height / 2 * this.vc拡大縮小倍率.Y), 1f, this.rc全画像);
 		}
 
+		public void t2D描画(
+			int device,
+			int x,
+			int y,
+			HorizontalReferencePoint horizontalReferencePoint,
+			VerticalReferencePoint verticalReferencePoint = VerticalReferencePoint.Top)
+		{
+			this.t2D描画(device, x + GetTruncatedOffset(horizontalReferencePoint), y + GetTruncatedOffset(verticalReferencePoint));
+		}
+
+		private int GetTruncatedOffset(HorizontalReferencePoint horizontalReferencePoint)
+		{
+			switch (horizontalReferencePoint)
+			{
+				case HorizontalReferencePoint.Center:
+					return -(szテクスチャサイズ.Width / 2);
+				case HorizontalReferencePoint.Left:
+					return 0;
+				case HorizontalReferencePoint.Right:
+					return -szテクスチャサイズ.Width;
+				default:
+					throw new ArgumentOutOfRangeException(nameof(horizontalReferencePoint), horizontalReferencePoint, null);
+			}
+		}
+
+		private int GetTruncatedOffset(VerticalReferencePoint verticalReferencePoint)
+		{
+			switch (verticalReferencePoint)
+			{
+				case VerticalReferencePoint.Center:
+					return -(szテクスチャサイズ.Height / 2);
+				case VerticalReferencePoint.Top:
+					return 0;
+				case VerticalReferencePoint.Bottom:
+					return -szテクスチャサイズ.Height;
+				default:
+					throw new ArgumentOutOfRangeException(nameof(verticalReferencePoint), verticalReferencePoint, null);
+			}
+		}
 
 		/// <summary>
 		/// テクスチャを 2D 画像と見なして描画する。
@@ -297,7 +336,7 @@ namespace FDK
 			float f左U値 = ((float)rc画像内の描画領域.Left) / ((float)this.szテクスチャサイズ.Width);
 			float f右U値 = ((float)rc画像内の描画領域.Right) / ((float)this.szテクスチャサイズ.Width);
 			float f上V値 = 1f - ((float)rc画像内の描画領域.Top) / ((float)this.szテクスチャサイズ.Height);
-			float f下V値 = 1f -((float)rc画像内の描画領域.Bottom) / ((float)this.szテクスチャサイズ.Height);
+			float f下V値 = 1f - ((float)rc画像内の描画領域.Bottom) / ((float)this.szテクスチャサイズ.Height);
 			this.color4.A = ((float)this._opacity) / 255f;
 
 			float x差 = (GameWindowSize.Width / 2);//中心軸がずれていることに対しての対策
@@ -367,7 +406,7 @@ namespace FDK
 			float f下V値 = 1f - ((float)rc画像内の描画領域.Bottom) / ((float)this.szテクスチャサイズ.Height);
 			this.color4.A = ((float)this._opacity) / 255f;
 
-			
+
 			float x差 = (GameWindowSize.Width / 2);//中心軸がずれていることに対しての対策
 			float y差 = (GameWindowSize.Height / 2);//中心軸がずれていることに対しての対策
 

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Drawing;
+﻿using System.Drawing;
 using FDK;
 
 namespace TJAPlayer3
@@ -15,15 +12,7 @@ namespace TJAPlayer3
 			白,
 			赤,
 			灰,
-			白細,
-			赤細,
-			灰細
-		}
-		public enum E配置
-		{
-			左詰,
-			中央,
-			右詰
+			白細
 		}
 
 
@@ -92,8 +81,8 @@ namespace TJAPlayer3
 		{
 			if( !base.b活性化してない )
 			{
-				this.txフォント8x16[ 0 ] = TJAPlayer3.Tx.TxC(@"Console_Font.png");
-				this.txフォント8x16[ 1 ] = TJAPlayer3.Tx.TxC(@"Console_Font_Small.png");
+				this.txフォント8x16[ 0 ] = TJAPlayer3.Tx.TxCUntracked(@"Console_Font.png");
+				this.txフォント8x16[ 1 ] = TJAPlayer3.Tx.TxCUntracked(@"Console_Font_Small.png");
                 base.OnManagedリソースの作成();
 			}
 		}

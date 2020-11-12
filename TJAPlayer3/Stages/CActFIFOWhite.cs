@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Drawing;
-using FDK;
+﻿using FDK;
 
 namespace TJAPlayer3
 {
@@ -20,10 +16,6 @@ namespace TJAPlayer3
 			this.mode = EFIFOモード.フェードイン;
 			this.counter = new CCounter( 0, 100, 5, TJAPlayer3.Timer );
 		}
-		public void tフェードイン完了()		// #25406 2011.6.9 yyagi
-		{
-			this.counter.n現在の値 = this.counter.n終了値;
-		}
 
 		// CActivity 実装
 
@@ -31,7 +23,7 @@ namespace TJAPlayer3
 		{
 			if( !base.b活性化してない )
 			{
-				//CDTXMania.t安全にDisposeする( ref this.tx白タイル64x64 );
+				//CDTXMania.tテクスチャの解放( ref this.tx白タイル64x64 );
 				base.On非活性化();
 			}
 		}
