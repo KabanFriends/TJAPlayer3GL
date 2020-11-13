@@ -1671,7 +1671,7 @@ for (int i = 0; i < 3; i++) {
 			#endregion
 
 			#region Discordの処理
-			Discord.Initialize("428233983025741855");
+			Discord.Initialize("776871625362112512");
 			StartupTime = Discord.GetUnixTime();
 			Discord.UpdatePresence("", Properties.Discord.Stage_StartUp, StartupTime);
 			#endregion
