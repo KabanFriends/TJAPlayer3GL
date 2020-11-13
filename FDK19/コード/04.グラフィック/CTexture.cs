@@ -257,11 +257,11 @@ namespace FDK
 		{
 			this.t2D描画(device, x - (this.szテクスチャサイズ.Width / 2), y - (this.szテクスチャサイズ.Height / 2), rc画像内の描画領域);
 		}
-		public void t2D下中央基準描画(int device, int x, int y)
+		public void t2D下中央基準描画(int device, float x, float y)
 		{
 			this.t2D描画(device, x - (this.szテクスチャサイズ.Width / 2), y - (szテクスチャサイズ.Height), this.rc全画像);
 		}
-		public void t2D下中央基準描画(int device, int x, int y, Rectangle rc画像内の描画領域)
+		public void t2D下中央基準描画(int device, float x, float y, Rectangle rc画像内の描画領域)
 		{
 			this.t2D描画(device, x - (rc画像内の描画領域.Width / 2), y - (rc画像内の描画領域.Height), rc画像内の描画領域);
 			//this.t2D描画(devicek x, y, rc画像内の描画領域;
@@ -274,8 +274,8 @@ namespace FDK
 
 		public void t2D描画(
 			int device,
-			int x,
-			int y,
+			float x,
+			float y,
 			HorizontalReferencePoint horizontalReferencePoint,
 			VerticalReferencePoint verticalReferencePoint = VerticalReferencePoint.Top)
 		{
@@ -349,7 +349,6 @@ namespace FDK
 				this.color4.A = ((float)this._opacity) / 255f;
 
 				LoadProjectionMatrix(Matrix4.Identity);
-				LoadViewMatrix(Matrix4.Identity);
 
 				GL.BindTexture(TextureTarget.Texture2D, (int)this.texture);
 
@@ -434,7 +433,7 @@ namespace FDK
 		public void t2D上下反転描画(int device, float x, float y, float depth, Rectangle rc画像内の描画領域)
 		{
 			if (this.texture == null)
-				throw new InvalidOperationException("テクスチャは生成されていません。");
+				return;
 
 			this.tレンダリングステートの設定(device);
 
@@ -507,20 +506,18 @@ namespace FDK
 			GL.Color4(this.color4);
 
 			GL.TexCoord2(f右U値, f上V値);
-			GL.Vertex3(x, y, z);
-
-			GL.TexCoord2(f左U値, f上V値);
-			GL.Vertex3(-x, y, z);
-
-			GL.TexCoord2(f左U値, f下V値);
 			GL.Vertex3(-x, -y, z);
 
-			GL.TexCoord2(f右U値, f下V値);
+			GL.TexCoord2(f左U値, f上V値);
 			GL.Vertex3(x, -y, z);
 
-			GL.End();
+			GL.TexCoord2(f左U値, f下V値);
+			GL.Vertex3(x, y, z);
 
-			//device.SetTransform(TransformState.World, matrix);
+			GL.TexCoord2(f右U値, f下V値);
+			GL.Vertex3(-x, y, z);
+
+			GL.End();
 		}
 
 		#region [ IDisposable 実装 ]
