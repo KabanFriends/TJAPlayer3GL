@@ -566,7 +566,7 @@ namespace FDK
 		public Color4 color4 = new Color4(1f, 1f, 1f, 1f);  // アルファ以外は不変
 															//-----------------
 
-		private float f画面表示倍率 = 1.15f;
+		private float f画面表示倍率 = 1.152f;
 
 		private void LoadProjectionMatrix(Matrix4 mat)
 		{
