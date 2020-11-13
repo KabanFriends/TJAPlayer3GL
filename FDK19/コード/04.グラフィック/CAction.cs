@@ -15,7 +15,7 @@ namespace FDK
 		{
 			get
 			{
-				return Matrix4.LookAt(new Vector3(0f, 0f, (float)(-GameWindowSize.Height / 2 * Math.Sqrt(3.0))), new Vector3(0f, 0f, 0f), new Vector3(0f, 1f, 0f));
+				return Matrix4.LookAt(new Vector3(0f, 0f, (float)(GameWindowSize.Height / 2 * Math.Sqrt(3.0))), new Vector3(0f, 0f, 0f), new Vector3(0f, 1f, 0f));
 			}
 		}
 

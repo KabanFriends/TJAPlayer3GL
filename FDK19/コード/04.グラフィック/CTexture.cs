@@ -333,94 +333,60 @@ namespace FDK
 
 			this.tレンダリングステートの設定(device);
 
-			if (this.fZ軸中心回転 == 0f)
-			{
-				#region [ (A) 回転なし ]
-				//-----------------
-				float f補正値X = -GameWindowSize.Width / 2f - 0.5f;
-				float f補正値Y = -GameWindowSize.Height / 2f - 0.5f;
-				float w = rc画像内の描画領域.Width;
-				float h = rc画像内の描画領域.Height;
-				float f左U値 = ((float)rc画像内の描画領域.Left) / ((float)this.szテクスチャサイズ.Width);
-				float f右U値 = ((float)rc画像内の描画領域.Right) / ((float)this.szテクスチャサイズ.Width);
-				float f上V値 = ((float)(rc全画像.Bottom - rc画像内の描画領域.Top)) / ((float)this.szテクスチャサイズ.Height);
-				float f下V値 = ((float)(rc全画像.Bottom - rc画像内の描画領域.Bottom)) / ((float)this.szテクスチャサイズ.Height);
+			//-----------------
+			float f補正値X = 1.15f;    // 1.15f は座標とピクセルの誤差を吸収するための座標補正値。
+			float f補正値Y = -1.15f;    //
+			float w = rc画像内の描画領域.Width * vc拡大縮小倍率.X;
+			float h = rc画像内の描画領域.Height * vc拡大縮小倍率.Y;
+			float f左U値 = ((float)rc画像内の描画領域.Left) / ((float)this.szテクスチャサイズ.Width);
+			float f右U値 = ((float)rc画像内の描画領域.Right) / ((float)this.szテクスチャサイズ.Width);
+			float f上V値 = 1f - ((float)rc画像内の描画領域.Top) / ((float)this.szテクスチャサイズ.Height);
+			float f下V値 = 1f - ((float)rc画像内の描画領域.Bottom) / ((float)this.szテクスチャサイズ.Height);
+			this.color4.A = ((float)this._opacity) / 255f;
 
-				this.color4.A = ((float)this._opacity) / 255f;
+			float x差 = (GameWindowSize.Width / 2);//中心軸がずれていることに対しての対策
+			float y差 = (GameWindowSize.Height / 2);//中心軸がずれていることに対しての対策
 
-				LoadProjectionMatrix(Matrix4.Identity);
+			double r = Math.Sqrt(Math.Pow(w / 2.0, 2) + Math.Pow(h / 2.0, 2));
 
-				GL.BindTexture(TextureTarget.Texture2D, (int)this.texture);
+			double 右下angle = Math.Asin((h / 2.0) / r) - fZ軸中心回転;//三角関数を使用し、ごりごり計算
+			double 左下angle = Math.PI - Math.Asin((h / 2.0) / r) - fZ軸中心回転;
+			double 左上angle = -Math.PI + Math.Asin((h / 2.0) / r) - fZ軸中心回転;
+			double 右上angle = -Math.Asin((h / 2.0) / r) - fZ軸中心回転;
 
-				GL.Begin(PrimitiveType.Quads);
+			double 右上xdiff = r * Math.Cos(右上angle);
+			double 左上xdiff = r * Math.Cos(左上angle);
+			double 左下xdiff = r * Math.Cos(左下angle);
+			double 右下xdiff = r * Math.Cos(右下angle);
 
-				GL.Color4(this.color4);
+			double 右上ydiff = r * Math.Sin(右上angle);
+			double 左上ydiff = r * Math.Sin(左上angle);
+			double 左下ydiff = r * Math.Sin(左下angle);
+			double 右下ydiff = r * Math.Sin(右下angle);
 
-				GL.TexCoord2(f右U値, f上V値);
-				GL.Vertex3(-(x + (w * this.vc拡大縮小倍率.X) + f補正値X), -(y + f補正値Y), depth);
+			Vector3 右上座標 = new Vector3((float)(x + 右上xdiff + (w / 2.0) - x差) / f画面表示倍率 * f補正値X, (float)(y + 右上ydiff + (h / 2.0) - y差) / f画面表示倍率 * f補正値Y, 0);
+			Vector3 左上座標 = new Vector3((float)(x + 左上xdiff + (w / 2.0) - x差) / f画面表示倍率 * f補正値X, (float)(y + 左上ydiff + (h / 2.0) - y差) / f画面表示倍率 * f補正値Y, 0);
+			Vector3 左下座標 = new Vector3((float)(x + 左下xdiff + (w / 2.0) - x差) / f画面表示倍率 * f補正値X, (float)(y + 左下ydiff + (h / 2.0) - y差) / f画面表示倍率 * f補正値Y, 0);
+			Vector3 右下座標 = new Vector3((float)(x + 右下xdiff + (w / 2.0) - x差) / f画面表示倍率 * f補正値X, (float)(y + 右下ydiff + (h / 2.0) - y差) / f画面表示倍率 * f補正値Y, 0);
 
-				GL.TexCoord2(f左U値, f上V値);
-				GL.Vertex3(-(x + f補正値X), -(y + f補正値Y), depth);
+			//メインのポリゴン表示
+			this.tレンダリングステートの設定(device);
 
-				GL.TexCoord2(f左U値, f下V値);
-				GL.Vertex3(-(x + f補正値X), -((y + (h * this.vc拡大縮小倍率.Y)) + f補正値Y), depth);
+			LoadProjectionMatrix(Matrix4.Identity);
 
-				GL.TexCoord2(f右U値, f下V値);
-				GL.Vertex3(-(x + (w * this.vc拡大縮小倍率.X) + f補正値X), -((y + (h * this.vc拡大縮小倍率.Y)) + f補正値Y), depth);
+			GL.BindTexture(TextureTarget.Texture2D, this.texture);
 
-				GL.End();
-				//-----------------
-				#endregion
-			}
-			else
-			{
-				#region [ (B) 回転あり ]
-				//-----------------
-				float f中央X = ((float)rc画像内の描画領域.Width) / 2f;
-				float f中央Y = ((float)rc画像内の描画領域.Height) / 2f;
-				float f左U値 = ((float)rc画像内の描画領域.Left) / ((float)this.szテクスチャサイズ.Width);
-				float f右U値 = ((float)rc画像内の描画領域.Right) / ((float)this.szテクスチャサイズ.Width);
-				float f上V値 = ((float)rc画像内の描画領域.Top) / ((float)this.szテクスチャサイズ.Height);
-				float f下V値 = ((float)rc画像内の描画領域.Bottom) / ((float)this.szテクスチャサイズ.Height);
-
-				this.color4.A = ((float)this._opacity) / 255f;
-
-				float n描画領域内X = x + (rc画像内の描画領域.Width / 2.0f);
-				float n描画領域内Y = y + (rc画像内の描画領域.Height / 2.0f);
-				var vc3移動量 = new Vector3(n描画領域内X - (((float)GameWindowSize.Width) / 2f), -(n描画領域内Y - (((float)GameWindowSize.Height) / 2f)), 0f);
-
-				this.vc.X = this.vc拡大縮小倍率.X;
-				this.vc.Y = this.vc拡大縮小倍率.Y;
-				this.vc.Z = this.vc拡大縮小倍率.Z;
-
-				var matrix = Matrix4.Identity * Matrix4.CreateScale(this.vc);
-				matrix *= Matrix4.CreateRotationZ(this.fZ軸中心回転);
-				matrix *= Matrix4.CreateTranslation(vc3移動量);
-
-				LoadProjectionMatrix(matrix);
-
-				GL.BindTexture(TextureTarget.Texture2D, (int)this.texture);
-
-				GL.Begin(PrimitiveType.Quads);
-
-				GL.Color4(this.color4);
-
-				GL.TexCoord2(f右U値, f上V値);
-				GL.Vertex3(-f中央X, -f中央Y, depth);
-
-				GL.TexCoord2(f左U値, f上V値);
-				GL.Vertex3(f中央X, -f中央Y, depth);
-
-				GL.TexCoord2(f左U値, f下V値);
-				GL.Vertex3(f中央X, f中央Y, depth);
-
-				GL.TexCoord2(f右U値, f下V値);
-				GL.Vertex3(-f中央X, f中央Y, depth);
-
-				GL.End();
-				//-----------------
-				#endregion
-			}
+			GL.Begin(PrimitiveType.Quads);
+			GL.Color4(color4);
+			GL.TexCoord2(f右U値, f上V値);
+			GL.Vertex3(右上座標);
+			GL.TexCoord2(f左U値, f上V値);
+			GL.Vertex3(左上座標);
+			GL.TexCoord2(f左U値, f下V値);
+			GL.Vertex3(左下座標);
+			GL.TexCoord2(f右U値, f下V値);
+			GL.Vertex3(右下座標);
+			GL.End();
 		}
 		public void t2D上下反転描画(int device, float x, float y)
 		{
@@ -435,40 +401,61 @@ namespace FDK
 			if (this.texture == null)
 				return;
 
-			this.tレンダリングステートの設定(device);
-
-			float f補正値X = -GameWindowSize.Width / 2f - 0.5f;
-			float f補正値Y = -GameWindowSize.Height / 2f - 0.5f;
-			float w = rc画像内の描画領域.Width;
-			float h = rc画像内の描画領域.Height;
+			float f補正値X = 1.15f;    // 1.15f は座標とピクセルの誤差を吸収するための座標補正値。
+			float f補正値Y = -1.15f;    //
+			float w = rc画像内の描画領域.Width * vc拡大縮小倍率.X;
+			float h = rc画像内の描画領域.Height * vc拡大縮小倍率.Y;
 			float f左U値 = ((float)rc画像内の描画領域.Left) / ((float)this.szテクスチャサイズ.Width);
 			float f右U値 = ((float)rc画像内の描画領域.Right) / ((float)this.szテクスチャサイズ.Width);
-			float f上V値 = ((float)(rc全画像.Bottom - rc画像内の描画領域.Top)) / ((float)this.szテクスチャサイズ.Height);
-			float f下V値 = ((float)(rc全画像.Bottom - rc画像内の描画領域.Bottom)) / ((float)this.szテクスチャサイズ.Height);
-
+			float f上V値 = 1f - ((float)rc画像内の描画領域.Top) / ((float)this.szテクスチャサイズ.Height);
+			float f下V値 = 1f - ((float)rc画像内の描画領域.Bottom) / ((float)this.szテクスチャサイズ.Height);
 			this.color4.A = ((float)this._opacity) / 255f;
 
-			LoadProjectionMatrix(Matrix4.Identity);
-			LoadViewMatrix(Matrix4.Identity);
 
-			GL.BindTexture(TextureTarget.Texture2D, (int)this.texture);
+			float x差 = (GameWindowSize.Width / 2);//中心軸がずれていることに対しての対策
+			float y差 = (GameWindowSize.Height / 2);//中心軸がずれていることに対しての対策
+
+			double r = Math.Sqrt(Math.Pow(w / 2.0, 2) + Math.Pow(h / 2.0, 2));
+
+			double 右下angle = Math.Asin((h / 2.0) / r) - fZ軸中心回転;//三角関数を使用し、ごりごり計算
+			double 左下angle = Math.PI - Math.Asin((h / 2.0) / r) - fZ軸中心回転;
+			double 左上angle = -Math.PI + Math.Asin((h / 2.0) / r) - fZ軸中心回転;
+			double 右上angle = -Math.Asin((h / 2.0) / r) - fZ軸中心回転;
+
+			double 右上xdiff = r * Math.Cos(右上angle);
+			double 左上xdiff = r * Math.Cos(左上angle);
+			double 左下xdiff = r * Math.Cos(左下angle);
+			double 右下xdiff = r * Math.Cos(右下angle);
+
+			double 右上ydiff = r * Math.Sin(右上angle);
+			double 左上ydiff = r * Math.Sin(左上angle);
+			double 左下ydiff = r * Math.Sin(左下angle);
+			double 右下ydiff = r * Math.Sin(右下angle);
+
+			Vector3 右上座標 = new Vector3((float)(x + 右上xdiff + (w / 2.0) - x差) / f画面表示倍率 * f補正値X, (float)(y + 右上ydiff + (h / 2.0) - y差) / f画面表示倍率 * f補正値Y, 0);
+			Vector3 左上座標 = new Vector3((float)(x + 左上xdiff + (w / 2.0) - x差) / f画面表示倍率 * f補正値X, (float)(y + 左上ydiff + (h / 2.0) - y差) / f画面表示倍率 * f補正値Y, 0);
+			Vector3 左下座標 = new Vector3((float)(x + 左下xdiff + (w / 2.0) - x差) / f画面表示倍率 * f補正値X, (float)(y + 左下ydiff + (h / 2.0) - y差) / f画面表示倍率 * f補正値Y, 0);
+			Vector3 右下座標 = new Vector3((float)(x + 右下xdiff + (w / 2.0) - x差) / f画面表示倍率 * f補正値X, (float)(y + 右下ydiff + (h / 2.0) - y差) / f画面表示倍率 * f補正値Y, 0);
+
+
+			//メインのポリゴン表示
+			GL.BindTexture(TextureTarget.Texture2D, this.texture);
+
+			this.tレンダリングステートの設定(device);
+
+			LoadProjectionMatrix(Matrix4.Identity);
+
+			GL.Color4(color4);
 
 			GL.Begin(PrimitiveType.Quads);
-
-			GL.Color4(this.color4);
-
-			GL.TexCoord2(f右U値, f上V値);
-			GL.Vertex3(-(x + (w * this.vc拡大縮小倍率.X) + f補正値X), -((y + (h * this.vc拡大縮小倍率.Y)) + f補正値Y), depth);
-
-			GL.TexCoord2(f左U値, f上V値);
-			GL.Vertex3(-(x + f補正値X), -((y + (h * this.vc拡大縮小倍率.Y)) + f補正値Y), depth);
-
-			GL.TexCoord2(f左U値, f下V値);
-			GL.Vertex3(-(x + f補正値X), -(y + f補正値Y), depth);
-
 			GL.TexCoord2(f右U値, f下V値);
-			GL.Vertex3(-(x + (w * this.vc拡大縮小倍率.X) + f補正値X), -(y + f補正値Y), depth);
-
+			GL.Vertex3(右上座標);
+			GL.TexCoord2(f左U値, f下V値);
+			GL.Vertex3(左上座標);
+			GL.TexCoord2(f左U値, f上V値);
+			GL.Vertex3(左下座標);
+			GL.TexCoord2(f右U値, f上V値);
+			GL.Vertex3(右下座標);
 			GL.End();
 		}
 
@@ -497,7 +484,6 @@ namespace FDK
 			this.tレンダリングステートの設定(device);
 
 			LoadProjectionMatrix(mat);
-			LoadViewMatrix(Matrix4.Identity);
 
 			GL.BindTexture(TextureTarget.Texture2D, (int)this.texture);
 
@@ -506,16 +492,16 @@ namespace FDK
 			GL.Color4(this.color4);
 
 			GL.TexCoord2(f右U値, f上V値);
-			GL.Vertex3(-x, -y, z);
-
-			GL.TexCoord2(f左U値, f上V値);
 			GL.Vertex3(x, -y, z);
 
+			GL.TexCoord2(f左U値, f上V値);
+			GL.Vertex3(-x, -y, z);
+
 			GL.TexCoord2(f左U値, f下V値);
-			GL.Vertex3(x, y, z);
+			GL.Vertex3(-x, y, z);
 
 			GL.TexCoord2(f右U値, f下V値);
-			GL.Vertex3(-x, y, z);
+			GL.Vertex3(x, y, z);
 
 			GL.End();
 		}
@@ -579,6 +565,9 @@ namespace FDK
 		protected Rectangle rc全画像;                              // テクスチャ作ったらあとは不変
 		public Color4 color4 = new Color4(1f, 1f, 1f, 1f);  // アルファ以外は不変
 															//-----------------
+
+		private float f画面表示倍率 = 1.15f;
+
 		private void LoadProjectionMatrix(Matrix4 mat)
 		{
 			Matrix4 tmpmat = CAction.Projection;
@@ -586,6 +575,8 @@ namespace FDK
 			GL.LoadMatrix(ref tmpmat);
 			GL.MultMatrix(ref mat);
 		}
+
+		/*
 		private void LoadViewMatrix(Matrix4 mat)
 		{
 			Matrix4 tmpmat = CAction.ModelView;
@@ -593,6 +584,7 @@ namespace FDK
 			GL.LoadMatrix(ref tmpmat);
 			GL.MultMatrix(ref mat);
 		}
+		*/
 
 		#endregion
 	}
