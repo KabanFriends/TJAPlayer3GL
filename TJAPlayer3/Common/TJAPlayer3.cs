@@ -356,56 +356,7 @@ namespace TJAPlayer3
 			}
 		}
 
-		#region [ #24609 リザルト画像をpngで保存する ]		// #24609 2011.3.14 yyagi; to save result screen in case BestRank or HiSkill.
-		/// <summary>
-		/// リザルト画像のキャプチャと保存。
-		/// </summary>
-		/// <param name="strFilename">保存するファイル名(フルパス)</param>
-		public bool SaveResultScreen(string strFullPath)
-		{
-			string strSavePath = Path.GetDirectoryName(strFullPath);
-			if (!Directory.Exists(strSavePath))
-			{
-				try
-				{
-					Directory.CreateDirectory(strSavePath);
-				}
-				catch (Exception e)
-				{
-					Trace.TraceError(e.ToString());
-					Trace.TraceError("例外が発生しましたが処理を継続します。 (0bfe6bff-2a56-4df4-9333-2df26d9b765b)");
-					return false;
-				}
-			}
-
-			if (GraphicsContext.CurrentContext == null)
-				throw new GraphicsContextException();
-
-			Bitmap bmp = new Bitmap(ClientSize.Width, ClientSize.Height);
-			System.Drawing.Imaging.BitmapData data =
-				bmp.LockBits(ClientRectangle, System.Drawing.Imaging.ImageLockMode.WriteOnly,
-				System.Drawing.Imaging.PixelFormat.Format24bppRgb);
-			GL.ReadPixels(0, 0, ClientSize.Width, ClientSize.Height,
-				OpenTK.Graphics.OpenGL.PixelFormat.Bgr, PixelType.UnsignedByte, data.Scan0);
-			bmp.UnlockBits(data);
-
-			bmp.RotateFlip(RotateFlipType.RotateNoneFlipY);
-			bmp.Save(strFullPath, ImageFormat.Png);
-			bmp.Dispose();
-
-			return true;
-		}
-		#endregion
-
 		// Game 実装
-
-		protected override void OnResize(EventArgs e)
-		{
-			base.OnResize(e);
-			base.Width = ClientRectangle.Height * 16 / 9;
-			base.Height = ClientRectangle.Height;
-			GL.Viewport(ClientRectangle);
-		}
 
 		protected override void OnLoad(EventArgs e)
 		{
@@ -429,11 +380,7 @@ namespace TJAPlayer3
 				this.bマウスカーソル表示中 = false;
 			}
 
-			GL.ClearColor(Color.Black);
-			GL.Disable(EnableCap.DepthTest);
-			GL.Enable(EnableCap.Blend);
-			GL.Enable(EnableCap.Texture2D);
-			GL.Enable(EnableCap.AlphaTest);
+			CAction.LoadContentAction();
 
 			if (this.listトップレベルActivities != null)
 			{
@@ -479,15 +426,7 @@ namespace TJAPlayer3
 			}
 			#endregion
 
-			GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
-
-			Matrix4 modelView = Matrix4.LookAt(Vector3.UnitZ * 10, Vector3.Zero, Vector3.UnitY);
-			GL.MatrixMode(MatrixMode.Modelview);
-			GL.LoadMatrix(ref modelView);
-
-			Matrix4 projection = Matrix4.CreatePerspectiveFieldOfView(MathHelper.PiOver4, (float)this.Width / (float)this.Height, 1.0f, 64.0f);
-			GL.MatrixMode(MatrixMode.Projection);
-			GL.LoadMatrix(ref projection);
+			CAction.BeginScene();
 
 			if (r現在のステージ != null)
 			{
@@ -1177,8 +1116,8 @@ for (int i = 0; i < 3; i++) {
 				}
 			}
 
-			//EndScene
-			//Flush
+			base.SwapBuffers();
+			CAction.Flush();
 
 			#region [ 全画面_ウインドウ切り替え ]
 			if (this.b次のタイミングで全画面_ウィンドウ切り替えを行う)
@@ -1212,9 +1151,6 @@ for (int i = 0; i < 3; i++) {
 				}
 			}
 			#endregion
-
-			GL.Flush();
-			base.SwapBuffers();
 		}
 
 		// その他
@@ -2146,7 +2082,7 @@ for (int i = 0; i < 3; i++) {
 						string strFullPath =
 						   Path.Combine(TJAPlayer3.strEXEのあるフォルダ, "Capture_img");
 						strFullPath = Path.Combine(strFullPath, DateTime.Now.ToString("yyyyMMddHHmmss") + ".png");
-						SaveResultScreen(strFullPath);
+						CSaveScreen.CSaveFromDevice(strFullPath);
 					}
 				}
 			}
