@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using FDK;
 
 namespace TJAPlayer3
@@ -26,7 +26,7 @@ namespace TJAPlayer3
         {
             ct上背景FIFOタイマー = null;
 
-            for (int i = 0; i < 2; i++)
+            for (int i = 0; i < TJAPlayer3.ConfigIni.nPlayerCount; i++)
             {
                 ct上背景スクロール用タイマー[i] = null;
             }
@@ -46,7 +46,7 @@ namespace TJAPlayer3
             //this.ct上背景スクロール用タイマー = new CCounter( 1, 328, 40, CDTXMania.Timer );
             this.ct上背景スクロール用タイマー = new CCounter[2];
             this.ct上背景クリアインタイマー = new CCounter[2];
-            for (int i = 0; i < 2; i++)
+            for (int i = 0; i < TJAPlayer3.ConfigIni.nPlayerCount; i++)
             {
                 if (TJAPlayer3.Tx.Background_Up[i] != null)
                 {
@@ -65,12 +65,12 @@ namespace TJAPlayer3
         {
             this.ct上背景FIFOタイマー.t進行();
             
-            for (int i = 0; i < 2; i++)
+            for (int i = 0; i < TJAPlayer3.ConfigIni.nPlayerCount; i++)
             {
                 if(this.ct上背景クリアインタイマー[i] != null)
                    this.ct上背景クリアインタイマー[i].t進行();
             }
-            for (int i = 0; i < 2; i++)
+            for (int i = 0; i < TJAPlayer3.ConfigIni.nPlayerCount; i++)
             {
                 if (this.ct上背景スクロール用タイマー[i] != null)
                     this.ct上背景スクロール用タイマー[i].t進行Loop();
@@ -81,7 +81,7 @@ namespace TJAPlayer3
 
 
             #region 1P-2P-上背景
-            for (int i = 0; i < 2; i++)
+            for (int i = 0; i < TJAPlayer3.ConfigIni.nPlayerCount; i++)
             {
                 var backgroundUpTexture = TJAPlayer3.Tx.Background_Up[i];
                 if (backgroundUpTexture != null && this.ct上背景スクロール用タイマー[i] != null)
