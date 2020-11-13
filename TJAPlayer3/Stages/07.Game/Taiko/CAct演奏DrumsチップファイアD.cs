@@ -185,8 +185,9 @@ namespace TJAPlayer3
                                         float f倍率 = 0.5f + ( (this.st状態_大[ i ].ct進行.n現在の値 * 0.5f) / 10.0f);
 
                                         Matrix4 mat = Matrix4.Identity;
-                                        mat *= Matrix4.CreateScale(f倍率, f倍率, f倍率);
-                                        mat *= Matrix4.CreateTranslation(TJAPlayer3.Skin.Game_Lane_Field_X[0] - GameWindowSize.Width / 2.0f, -(TJAPlayer3.Skin.Game_Lane_Field_Y[this.st状態[i].nPlayer] - GameWindowSize.Height / 2.0f), 0f);
+                                        mat *= Matrix4.CreateScale(f倍率, f倍率, 1.0f);
+                                        mat *= Matrix4.CreateTranslation(TJAPlayer3.Skin.Game_Lane_Field_X[0] - GameWindowSize.Width / 2.0f, -(TJAPlayer3.Skin.Game_Lane_Field_Y[this.st状態[i].nPlayer] - GameWindowSize.Height / 2.0f + 64), 0f);
+                                        //mat *= Matrix4.CreateTranslation(TJAPlayer3.Skin.Game_Lane_Field_X[0] - GameWindowSize.Width / 2.0f - this.st状態_大[i].ct進行.n現在の値 * 22.6f, -(TJAPlayer3.Skin.Game_Lane_Field_Y[this.st状態[i].nPlayer] - GameWindowSize.Height / 2.0f - this.st状態_大[i].ct進行.n現在の値 * 16.8f), 0f);
 
                                         TJAPlayer3.Tx.Effects_Hit_Explosion_Big.Opacity = 255;
                                         TJAPlayer3.Tx.Effects_Hit_Explosion_Big.t3D描画( TJAPlayer3.app.Device, mat );
