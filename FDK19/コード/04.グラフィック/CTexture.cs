@@ -364,10 +364,10 @@ namespace FDK
 			double 左下ydiff = r * Math.Sin(左下angle);
 			double 右下ydiff = r * Math.Sin(右下angle);
 
-			Vector3 右上座標 = new Vector3((float)(x + 右上xdiff + (w / 2.0) - x差) / f画面表示倍率 * f補正値X, (float)(y + 右上ydiff + (h / 2.0) - y差) / f画面表示倍率 * f補正値Y, 0);
-			Vector3 左上座標 = new Vector3((float)(x + 左上xdiff + (w / 2.0) - x差) / f画面表示倍率 * f補正値X, (float)(y + 左上ydiff + (h / 2.0) - y差) / f画面表示倍率 * f補正値Y, 0);
-			Vector3 左下座標 = new Vector3((float)(x + 左下xdiff + (w / 2.0) - x差) / f画面表示倍率 * f補正値X, (float)(y + 左下ydiff + (h / 2.0) - y差) / f画面表示倍率 * f補正値Y, 0);
-			Vector3 右下座標 = new Vector3((float)(x + 右下xdiff + (w / 2.0) - x差) / f画面表示倍率 * f補正値X, (float)(y + 右下ydiff + (h / 2.0) - y差) / f画面表示倍率 * f補正値Y, 0);
+			Vector3 右上座標 = new Vector3((float)(x + 右上xdiff + (w / 2.0) - x差) / f画面表示倍率 * f補正値X, (float)(y + 右上ydiff + (h / 2.0) - y差) / f画面表示倍率 * f補正値Y, depth);
+			Vector3 左上座標 = new Vector3((float)(x + 左上xdiff + (w / 2.0) - x差) / f画面表示倍率 * f補正値X, (float)(y + 左上ydiff + (h / 2.0) - y差) / f画面表示倍率 * f補正値Y, depth);
+			Vector3 左下座標 = new Vector3((float)(x + 左下xdiff + (w / 2.0) - x差) / f画面表示倍率 * f補正値X, (float)(y + 左下ydiff + (h / 2.0) - y差) / f画面表示倍率 * f補正値Y, depth);
+			Vector3 右下座標 = new Vector3((float)(x + 右下xdiff + (w / 2.0) - x差) / f画面表示倍率 * f補正値X, (float)(y + 右下ydiff + (h / 2.0) - y差) / f画面表示倍率 * f補正値Y, depth);
 
 			//メインのポリゴン表示
 			this.tレンダリングステートの設定(device);
@@ -432,10 +432,10 @@ namespace FDK
 			double 左下ydiff = r * Math.Sin(左下angle);
 			double 右下ydiff = r * Math.Sin(右下angle);
 
-			Vector3 右上座標 = new Vector3((float)(x + 右上xdiff + (w / 2.0) - x差) / f画面表示倍率 * f補正値X, (float)(y + 右上ydiff + (h / 2.0) - y差) / f画面表示倍率 * f補正値Y, 0);
-			Vector3 左上座標 = new Vector3((float)(x + 左上xdiff + (w / 2.0) - x差) / f画面表示倍率 * f補正値X, (float)(y + 左上ydiff + (h / 2.0) - y差) / f画面表示倍率 * f補正値Y, 0);
-			Vector3 左下座標 = new Vector3((float)(x + 左下xdiff + (w / 2.0) - x差) / f画面表示倍率 * f補正値X, (float)(y + 左下ydiff + (h / 2.0) - y差) / f画面表示倍率 * f補正値Y, 0);
-			Vector3 右下座標 = new Vector3((float)(x + 右下xdiff + (w / 2.0) - x差) / f画面表示倍率 * f補正値X, (float)(y + 右下ydiff + (h / 2.0) - y差) / f画面表示倍率 * f補正値Y, 0);
+			Vector3 右上座標 = new Vector3((float)(x + 右上xdiff + (w / 2.0) - x差) / f画面表示倍率 * f補正値X, (float)(y + 右上ydiff + (h / 2.0) - y差) / f画面表示倍率 * f補正値Y, depth);
+			Vector3 左上座標 = new Vector3((float)(x + 左上xdiff + (w / 2.0) - x差) / f画面表示倍率 * f補正値X, (float)(y + 左上ydiff + (h / 2.0) - y差) / f画面表示倍率 * f補正値Y, depth);
+			Vector3 左下座標 = new Vector3((float)(x + 左下xdiff + (w / 2.0) - x差) / f画面表示倍率 * f補正値X, (float)(y + 左下ydiff + (h / 2.0) - y差) / f画面表示倍率 * f補正値Y, depth);
+			Vector3 右下座標 = new Vector3((float)(x + 右下xdiff + (w / 2.0) - x差) / f画面表示倍率 * f補正値X, (float)(y + 右下ydiff + (h / 2.0) - y差) / f画面表示倍率 * f補正値Y, depth);
 
 
 			//メインのポリゴン表示
