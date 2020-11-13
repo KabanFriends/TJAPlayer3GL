@@ -1,10 +1,14 @@
 ﻿<!-- omit in toc -->
-# TJAPlayer3
-DTXMania → [kairera0467/TJAP2fPC](https://github.com/kairera0467/TJAP2fPC) → [AioiLight/TJAPlayer3](https://github.com/AioiLight/TJAPlayer3) → [twopointzero/TJAPlayer3](https://github.com/twopointzero/TJAPlayer3) → 今ここ
+# TJAPlayer3GL
+DirectXに依存しているTJAPlayer3を、OpenGLベースにしちゃおう！っていうプロジェクトです。
+プロジェクト制作主のKabanFriendsはOpenGLの知識がほとんどないのでプルリクエストお待ちしております！！
 
-このTJAPlayer3には、他の作者のTJAPlayer3の変更点の一部が含まれています:
-- [Akasoko-Master/TJAPlayer3](https://github.com/Akasoko-Master/TJAPlayer3)
-- [AkasokoPullyou/TJAPlayer3](https://github.com/AkasokoPullyou/TJAPlayer3)
+このTJAPlayer3のフォークのベースに使われたシミュレーターは[KabanFriends/TJAPlayer3](https://github.com/KabanFriends/TJAPlayer3)です。
+また、OpenGLの描画コード、OpenALの音声デコード･再生コードは[Mr-Ojii/TJAPlayer3-f](https://github.com/Mr-Ojii/TJAPlayer3-f)からお借りし、独自に改造しています。
 
-元のコードを作ってくれた方々にありがとう！！！！！！！！！！！！！！！！！！！！！
-Thank you for people who made these epic things!!!!!!!!!1!!1!!11!
+
+This TJAPlayer3 fork is KabanFriends' attempt to port OpenGL renderer to TJAPlayer3.
+KabanFriends doesn't really have so much knowledge about OpenGL, so I will appreciate pull requests related to OpenGL and other things!
+
+The base repository used to make this TJAPlayer3 fork is [KabanFriends/TJAPlayer3](https://github.com/KabanFriends/TJAPlayer3).
+OpenGL renderer, OpenAL audio decoder/player codes were borrowed from [Mr-Ojii/TJAPlayer3-f](https://github.com/Mr-Ojii/TJAPlayer3-f), and modified for our uses.

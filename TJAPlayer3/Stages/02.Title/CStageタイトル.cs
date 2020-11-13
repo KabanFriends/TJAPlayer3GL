@@ -182,7 +182,7 @@ namespace TJAPlayer3
                 TJAPlayer3.Tx.Title_Background?.t2D描画( TJAPlayer3.app.Device, 0, 0 );
 
                 #region[ バージョン表示 ]
-                const string repositoryUrl = "https://github.com/twopointzero/TJAPlayer3";
+                const string repositoryUrl = "https://github.com/KabanFriends/TJAPlayer3GL";
 #if DEBUG
                 TJAPlayer3.act文字コンソール.tPrint(4, 44, C文字コンソール.Eフォント種別.白, "DEBUG BUILD");
 #endif
