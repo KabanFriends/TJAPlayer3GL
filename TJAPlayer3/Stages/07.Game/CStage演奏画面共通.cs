@@ -3813,6 +3813,7 @@ namespace TJAPlayer3
         {
 			TJAPlayer3.DTX.t全チップの再生停止とミキサーからの削除();
             this.t数値の初期化( true, true );
+			this.actAVI.Seek(0);
             this.t演奏位置の変更( 0, 0 );
             this.t演奏位置の変更( 0, 1 );
             TJAPlayer3.stage演奏ドラム画面.On活性化();
