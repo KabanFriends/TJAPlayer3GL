@@ -1247,7 +1247,7 @@ namespace TJAPlayer3
 			this.strDTXManiaのバージョン = "Unknown";
 			this.str曲データ検索パス = @".\";
 			this.b全画面モード = false;
-			this.b垂直帰線待ちを行う = true;
+			this.b垂直帰線待ちを行う = false;
 			this.n初期ウィンドウ開始位置X = 0; // #30675 2013.02.04 ikanick add
 			this.n初期ウィンドウ開始位置Y = 0;  
 			this.nウインドウwidth = GameWindowSize.Width;			// #23510 2010.10.31 yyagi add
@@ -1409,7 +1409,7 @@ namespace TJAPlayer3
             this.bEndingAnime = false;
             this.nPlayerCount = 1; //2017.08.18 kairera0467 マルチプレイ対応
             ShinuchiMode = false;
-            FastRender = true;
+            FastRender = false;
             MusicPreTimeMs = 1000; // 一秒
             SendDiscordPlayingInformation = true;
             #region[ Ver.K追加 ]

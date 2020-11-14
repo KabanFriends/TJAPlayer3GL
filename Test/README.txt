@@ -31,5 +31,5 @@ If you want to keep the memory usage low, please switch to a sound device that i
 
 
 # 更新履歴 - CHANGELOG
-TJAPlayer3GL v1.0.0 (2020/11/15)
+TJAPlayer3GL v1.0.0 (2020/11/14)
 - 最初のリリース / The first release of the software
