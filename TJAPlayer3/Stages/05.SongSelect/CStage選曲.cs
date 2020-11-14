@@ -312,8 +312,10 @@ namespace TJAPlayer3
                     TJAPlayer3.act文字コンソール.tPrint(0, 0, C文字コンソール.Eフォント種別.白, "GAME: SURVIVAL");
                 if (TJAPlayer3.ConfigIni.eGameMode == EGame.完走叩ききりまショー激辛)
                     TJAPlayer3.act文字コンソール.tPrint(0, 0, C文字コンソール.Eフォント種別.白, "GAME: SURVIVAL HARD");
-                if (TJAPlayer3.ConfigIni.bSuperHard)
-                    TJAPlayer3.act文字コンソール.tPrint(0, 16, C文字コンソール.Eフォント種別.赤, "SUPER HARD MODE : ON");
+				if (TJAPlayer3.ConfigIni.eGameMode == EGame.特訓モード)
+					TJAPlayer3.act文字コンソール.tPrint(0, 0, C文字コンソール.Eフォント種別.白, "GAME: TRAINING MODE");
+				if (TJAPlayer3.ConfigIni.bSuperHard)
+					TJAPlayer3.act文字コンソール.tPrint(0, 16, C文字コンソール.Eフォント種別.赤, "SUPER HARD MODE : ON");
                 if (TJAPlayer3.ConfigIni.eScrollMode == EScrollMode.BMSCROLL)
                     TJAPlayer3.act文字コンソール.tPrint(0, 32, C文字コンソール.Eフォント種別.赤, "BMSCROLL : ON");
                 else if (TJAPlayer3.ConfigIni.eScrollMode == EScrollMode.HBSCROLL)

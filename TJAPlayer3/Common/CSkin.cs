@@ -323,6 +323,9 @@ namespace TJAPlayer3
         public Cシステムサウンド bgmリザルトループ = null;
         public Cシステムサウンド sound曲決定音 = null;
         public Cシステムサウンド sound成績発表 = null;
+        public Cシステムサウンド sound特訓再生音 = null;
+        public Cシステムサウンド sound特訓停止音 = null;
+        public Cシステムサウンド sound特訓スクロール音 = null;
 
         //public Cシステムサウンド soundRed = null;
         //public Cシステムサウンド soundBlue = null;
@@ -561,6 +564,10 @@ namespace TJAPlayer3
             this.soundBalloon = new Cシステムサウンド(@"Sounds\balloon.ogg", false, false, ESoundGroup.SoundEffect);
             this.sound曲決定音 = new Cシステムサウンド(@"Sounds\SongDecide.ogg", false, false, ESoundGroup.Voice);
             this.sound成績発表 = new Cシステムサウンド(@"Sounds\ResultIn.ogg", false, false, ESoundGroup.Voice);
+            this.sound特訓再生音 = new Cシステムサウンド(@"Sounds\Resume.ogg", false, false, ESoundGroup.SoundEffect);
+            this.sound特訓停止音 = new Cシステムサウンド(@"Sounds\Pause.ogg", false, false, ESoundGroup.SoundEffect);
+            this.sound特訓スクロール音 = new Cシステムサウンド(@"Sounds\Scroll.ogg", false, false, ESoundGroup.SoundEffect);
+
             ReloadSkin();
             tReadSkinConfig();
         }
@@ -2305,6 +2312,56 @@ namespace TJAPlayer3
                                 Text_Correction_XY = strParam.Split(',').Select(int.Parse).ToArray();
                             }
                             #endregion
+                            #region Training
+                            else if (strCommand == nameof(Game_Training_ScrollTime))
+                            {
+                                Game_Training_ScrollTime = int.Parse(strParam);
+                            }
+                            else if (strCommand == nameof(Game_Training_ProgressBar_X))
+                            {
+                                Game_Training_ProgressBar_X = int.Parse(strParam);
+                            }
+                            else if (strCommand == nameof(Game_Training_ProgressBar_Y))
+                            {
+                                Game_Training_ProgressBar_Y = int.Parse(strParam);
+                            }
+                            else if (strCommand == nameof(Game_Training_GoGoPoint_Y))
+                            {
+                                Game_Training_GoGoPoint_Y = int.Parse(strParam);
+                            }
+                            else if (strCommand == nameof(Game_Training_MaxMeasureCount_X))
+                            {
+                                Game_Training_MaxMeasureCount_X = int.Parse(strParam);
+                            }
+                            else if (strCommand == nameof(Game_Training_MaxMeasureCount_Y))
+                            {
+                                Game_Training_MaxMeasureCount_Y = int.Parse(strParam);
+                            }
+                            else if (strCommand == nameof(Game_Training_CurrentMeasureCount_X))
+                            {
+                                Game_Training_CurrentMeasureCount_X = int.Parse(strParam);
+                            }
+                            else if (strCommand == nameof(Game_Training_CurrentMeasureCount_Y))
+                            {
+                                Game_Training_CurrentMeasureCount_Y = int.Parse(strParam);
+                            }
+                            else if (strCommand == nameof(Game_Training_SpeedDisplay_X))
+                            {
+                                Game_Training_SpeedDisplay_X = int.Parse(strParam);
+                            }
+                            else if (strCommand == nameof(Game_Training_SpeedDisplay_Y))
+                            {
+                                Game_Training_SpeedDisplay_Y = int.Parse(strParam);
+                            }
+                            else if (strCommand == nameof(Game_Training_SmallNumber_Width))
+                            {
+                                Game_Training_SmallNumber_Width = int.Parse(strParam);
+                            }
+                            else if (strCommand == nameof(Game_Training_BigNumber_Width))
+                            {
+                                Game_Training_BigNumber_Width = int.Parse(strParam);
+                            }
+                            #endregion
                             #endregion
                         }
                         continue;
@@ -2763,6 +2820,20 @@ namespace TJAPlayer3
         public int Font_Edge_Ratio = 30;
         public int Font_Edge_Ratio_Vertical = 30;
         public int[] Text_Correction_XY = new int[] { 0, 0 };
+        #endregion
+        #region Training
+        public int Game_Training_ScrollTime = 350;
+        public int Game_Training_ProgressBar_X = 333;
+        public int Game_Training_ProgressBar_Y = 378;
+        public int Game_Training_GoGoPoint_Y = 396;
+        public int Game_Training_MaxMeasureCount_X = 284;
+        public int Game_Training_MaxMeasureCount_Y = 377;
+        public int Game_Training_CurrentMeasureCount_X = 254;
+        public int Game_Training_CurrentMeasureCount_Y = 370;
+        public int Game_Training_SpeedDisplay_X = 115;
+        public int Game_Training_SpeedDisplay_Y = 370;
+        public int Game_Training_SmallNumber_Width = 17;
+        public int Game_Training_BigNumber_Width = 20;
         #endregion
         #endregion
     }

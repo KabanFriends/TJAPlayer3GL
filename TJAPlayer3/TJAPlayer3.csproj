@@ -133,6 +133,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\Easing.cs" />
     <Compile Include="Common\FontUtilities.cs" />
     <Compile Include="Common\PreciseStringMeasurement\CPreciseStringMeasurer.cs" />
     <Compile Include="Animations\Animator.cs" />
@@ -242,6 +243,7 @@
     <Compile Include="Stages\07.Game\CLagLogger.cs" />
     <Compile Include="Stages\07.Game\CStage演奏画面共通.cs" />
     <Compile Include="Stages\07.Game\C演奏判定ライン座標共通.cs" />
+    <Compile Include="Stages\07.Game\Taiko\CAct特訓モード.cs" />
     <Compile Include="Stages\07.Game\Taiko\Dan_Cert.cs" />
     <Compile Include="Stages\07.Game\Taiko\CAct演奏DrumsRunner.cs" />
     <Compile Include="Stages\07.Game\Taiko\CAct演奏DrumsFooter.cs" />

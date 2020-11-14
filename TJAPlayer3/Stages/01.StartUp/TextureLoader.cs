@@ -37,6 +37,7 @@ namespace TJAPlayer3
         const string RUNNER = @"16_Runner\";
         const string PUCHICHARA = @"18_PuchiChara\";
         const string DANC = @"17_DanC\";
+        const string TRAINING = @"19_Training\";
 
         // InGame_Effects
         const string FIRE = @"Fire\";
@@ -167,7 +168,6 @@ namespace TJAPlayer3
             Notes_Arm = TxC($"{GAME}Notes_Arm.png");
             Judge = TxC($"{GAME}Judge.png");
 
-            Judge_Meter = TxC($"{GAME}Judge_Meter.png");
             Bar = TxC($"{GAME}Bar.png");
             Bar_Branch = TxC($"{GAME}Bar_Branch.png");
 
@@ -358,6 +358,16 @@ namespace TJAPlayer3
             #region PuichiChara
             PuchiChara = TxC($"{GAME}{PUCHICHARA}0.png");
             #endregion
+            #region Training
+            Tokkun_DownBG = TxC(GAME + TRAINING + @"Down.png");
+            Tokkun_BigTaiko = TxC(GAME + TRAINING + @"BigTaiko.png");
+            Tokkun_ProgressBar = TxC(GAME + TRAINING + @"ProgressBar_Red.png");
+            Tokkun_GoGoPoint = TxC(GAME + TRAINING + @"GoGoPoint.png");
+            Tokkun_Background_Up = TxC(GAME + TRAINING + @"Background_Up.png");
+            Tokkun_ProgressBarWhite = TxC(GAME + TRAINING + @"ProgressBar_White.png");
+            Tokkun_BigNumber = TxC(GAME + TRAINING + @"BigNumber.png");
+            Tokkun_SmallNumber = TxC(GAME + TRAINING + @"SmallNumber.png");
+            #endregion
             #endregion
 
             #region 6_結果発表
@@ -461,8 +471,7 @@ namespace TJAPlayer3
             SENotes,
             Notes_Arm,
             Judge;
-        public CTexture Judge_Meter,
-            Bar,
+        public CTexture Bar,
             Bar_Branch;
         #endregion
         #region キャラクター
@@ -598,6 +607,16 @@ namespace TJAPlayer3
         #endregion
         #region PuchiChara
         public CTexture PuchiChara;
+        #endregion
+        #region Training
+        public CTexture Tokkun_DownBG;
+        public CTexture Tokkun_BigTaiko;
+        public CTexture Tokkun_ProgressBar;
+        public CTexture Tokkun_GoGoPoint;
+        public CTexture Tokkun_Background_Up;
+        public CTexture Tokkun_ProgressBarWhite;
+        public CTexture Tokkun_BigNumber;
+        public CTexture Tokkun_SmallNumber;
         #endregion
         #endregion
 

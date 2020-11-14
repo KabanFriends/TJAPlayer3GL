@@ -110,17 +110,20 @@ namespace TJAPlayer3
 				}
 
 				int n整数値管理 = 0;
-				foreach (CDTX.CChip chip in listChip[i])
+				if (r指定時刻に一番近い未ヒットChipを過去方向優先で検索する(0, i) != null) //2020.07.08 Mr-Ojii 未ヒットチップがないときの例外の発生回避 <-(KabanFriends)コード借りましたごめんなさい(´・ω・`)
 				{
-					chip.nList上の位置 = n整数値管理;
-					if ((chip.nチャンネル番号 == 0x15 || chip.nチャンネル番号 == 0x16) && (n整数値管理 < this.listChip[i].Count - 1))
+					foreach (CDTX.CChip chip in listChip[i])
 					{
-						if (chip.db発声時刻ms < r指定時刻に一番近い未ヒットChipを過去方向優先で検索する(0, i).db発声時刻ms)
+						chip.nList上の位置 = n整数値管理;
+						if ((chip.nチャンネル番号 == 0x15 || chip.nチャンネル番号 == 0x16) && (n整数値管理 < this.listChip[i].Count - 1)) 
 						{
-							chip.n描画優先度 = 1;
+							if (chip.db発声時刻ms < r指定時刻に一番近い未ヒットChipを過去方向優先で検索する(0, i).db発声時刻ms)
+							{
+								chip.n描画優先度 = 1;
+							}
 						}
-					}
-					n整数値管理++;
+						n整数値管理++;
+					}	
 				}
 			}
 
@@ -450,6 +453,7 @@ namespace TJAPlayer3
 		public CAct演奏DrumsRunner actRunner;
 		public CAct演奏DrumsMob actMob;
 		public Dan_Cert actDan;
+		public CAct特訓モード actTokkun;
 		public bool bPAUSE;
 		public bool[] bIsAlreadyCleared;
 		public bool[] bIsAlreadyMaxed;
@@ -471,7 +475,7 @@ namespace TJAPlayer3
 		protected readonly int[] nパッド0Atoレーン07 = new int[] { 1, 2, 3, 4, 5, 6, 7, 1, 9, 0, 8, 8 };
 		public STDGBVALUE<CHITCOUNTOFRANK> nヒット数_Auto含まない;
 		public STDGBVALUE<CHITCOUNTOFRANK> nヒット数_Auto含む;
-		protected int n現在のトップChip = -1;
+		public int n現在のトップChip = -1;
 		protected int[] n最後に再生したBGMの実WAV番号 = new int[50];
 		protected int n最後に再生したHHのチャンネル番号;
 		protected List<int> L最後に再生したHHの実WAV番号;      // #23921 2011.1.4 yyagi: change "int" to "List<int>", for recording multiple wav No.
@@ -532,7 +536,7 @@ namespace TJAPlayer3
 		protected int nWaitButton;
 
 
-		protected CDTX.CChip[] chip現在処理中の連打チップ = new CDTX.CChip[4];
+		public CDTX.CChip[] chip現在処理中の連打チップ = new CDTX.CChip[4];
 
 		protected const int NOTE_GAP = 25;
 
@@ -3000,8 +3004,11 @@ namespace TJAPlayer3
                                     //    this.actChara.ctChara_GoGo = new CCounter( 0, this.actChara.arゴーゴーモーション番号.Length - 1, dbPtn_GoGo, CSound管理.rc演奏用タイマ );
                                     //}
                                 }
-                                actPlayInfo.NowMeasure[nPlayer] = pChip.n整数値_内部番号;
-                                pChip.bHit = true;
+								if (!bPAUSE)
+								{
+									actPlayInfo.NowMeasure[nPlayer] = pChip.n整数値_内部番号;
+								}
+								pChip.bHit = true;
                             }
                             this.t進行描画_チップ_小節線( configIni, ref dTX, ref pChip, nPlayer );
 							break;
