@@ -1485,7 +1485,7 @@ for (int i = 0; i < 3; i++) {
 			#endregion
 			#region [ Input管理 の初期化 ]
 			//---------------------
-			Trace.TraceInformation("DirectInput, MIDI入力の初期化を行います。");
+			Trace.TraceInformation("OpenTK.Input, MIDI入力の初期化を行います。");
 			Trace.Indent();
 			try
 			{
@@ -1502,11 +1502,11 @@ for (int i = 0; i < 3; i++) {
 						ConfigIni.dicJoystick.Add(key, device.GUID);
 					}
 				}
-				Trace.TraceInformation("DirectInput の初期化を完了しました。");
+				Trace.TraceInformation("OpenTK.Input の初期化を完了しました。");
 			}
 			catch
 			{
-				Trace.TraceError("DirectInput, MIDI入力の初期化に失敗しました。");
+				Trace.TraceError("OpenTK.Input, MIDI入力の初期化に失敗しました。");
 				throw;
 			}
 			finally
@@ -1853,22 +1853,22 @@ for (int i = 0; i < 3; i++) {
 				}
 				//---------------------
 				#endregion
-				#region [ DirectInput, MIDI入力の終了処理 ]
+				#region [ OpenTK.Input, MIDI入力の終了処理 ]
 				//---------------------
 				if (Input管理 != null)
 				{
-					Trace.TraceInformation("DirectInput, MIDI入力の終了処理を行います。");
+					Trace.TraceInformation("OpenTK.Input, MIDI入力の終了処理を行います。");
 					Trace.Indent();
 					try
 					{
 						Input管理.Dispose();
 						Input管理 = null;
-						Trace.TraceInformation("DirectInput, MIDI入力の終了処理を完了しました。");
+						Trace.TraceInformation("OpenTK.Input, MIDI入力の終了処理を完了しました。");
 					}
 					catch (Exception exception5)
 					{
 						Trace.TraceError(exception5.ToString());
-						Trace.TraceError("DirectInput, MIDI入力の終了処理に失敗しました。");
+						Trace.TraceError("OpenTK.Input, MIDI入力の終了処理に失敗しました。");
 					}
 					finally
 					{
