@@ -33,3 +33,7 @@ If you want to keep the memory usage low, please switch to a sound device that i
 # 更新履歴 - CHANGELOG
 TJAPlayer3GL v1.0.0 (2020/11/14)
 - 最初のリリース / The first release of the software
+
+TJAPlayer3GL v1.1.0 (2020/11/14)
+- 動画のデコード,再生をffmpegに対応 / ffmpeg-based video decoding and playing
+- 特訓モードの実装 / Implement Training Mode
