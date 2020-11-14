@@ -1690,7 +1690,7 @@ namespace FDK
 						Trace.TraceInformation(Path.GetFileName(strファイル名) + ": RIFF chunked Vorbis. Decode to raw Wave first, to avoid BASS.DLL troubles");
 						try
 						{
-							CDStoWAVFileImage.t変換(strファイル名, out byArrWAVファイルイメージ);
+							tオンメモリ方式でデコードする(strファイル名, out byArrWAVファイルイメージ, out _, out _, out _, true);
 							bファイルにVorbisコンテナが含まれている = true;
 						}
 						catch

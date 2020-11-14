@@ -2546,7 +2546,7 @@ namespace TJAPlayer3
 		{
 			if (((base.eフェーズID != CStage.Eフェーズ.演奏_STAGE_FAILED) && (base.eフェーズID != CStage.Eフェーズ.演奏_STAGE_FAILED_フェードアウト)) && (!TJAPlayer3.ConfigIni.bストイックモード && TJAPlayer3.ConfigIni.bAVI有効))
 			{
-				this.actAVI.t進行描画(x, y);
+				this.actAVI.t進行描画();
 			}
 		}
 		protected void t進行描画_STAGEFAILED()
@@ -3021,26 +3021,12 @@ namespace TJAPlayer3
 					#endregion
 					#region [ 54: 動画再生 ]
 					case 0x54:  // 動画再生
-						if (!pChip.bHit && (pChip.nバーからの距離dot.Drums < 0))
+						if (!pChip.bHit && (pChip.nバーからの距離dot.Drums < 0) && pChip.nPlayerSide == 0)
 						{
 							pChip.bHit = true;
-							if (configIni.bAVI有効)
+							if (configIni.bAVI有効 && pChip.rVD != null)
 							{
-								switch (pChip.eAVI種別)
-								{
-									case EAVI種別.AVI:
-										if (pChip.rAVI != null)
-										{
-											this.actAVI.Start(pChip.nチャンネル番号, pChip.rAVI, pChip.rDShow, 278, 355, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, pChip.n発声時刻ms);
-										}
-										break;
-									case EAVI種別.Unknown:
-										if (pChip.rAVI != null || pChip.rDShow != null)
-										{
-											this.actAVI.Start(pChip.nチャンネル番号, pChip.rAVI, pChip.rDShow, 278, 355, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, pChip.n発声時刻ms);
-										}
-										break;
-								}
+								this.actAVI.Start(pChip.nチャンネル番号, pChip.rVD);
 							}
 						}
 						break;
@@ -3820,7 +3806,6 @@ namespace TJAPlayer3
         {
 			TJAPlayer3.DTX.t全チップの再生停止とミキサーからの削除();
             this.t数値の初期化( true, true );
-            this.actAVI.tReset();
             this.t演奏位置の変更( 0, 0 );
             this.t演奏位置の変更( 0, 1 );
             TJAPlayer3.stage演奏ドラム画面.On活性化();
@@ -3952,41 +3937,39 @@ namespace TJAPlayer3
 
 			List<CSound> pausedCSound = new List<CSound>();
 
-#region [ BGMやギターなど、演奏開始のタイミングで再生がかかっているサウンドのの途中再生開始 ] // (CDTXのt入力_行解析_チップ配置()で小節番号が+1されているのを削っておくこと)
-			for ( int i = this.n現在のトップChip; i >= 0; i-- )
+			#region [ BGMやギターなど、演奏開始のタイミングで再生がかかっているサウンドのの途中再生開始 ] // (CDTXのt入力_行解析_チップ配置()で小節番号が+1されているのを削っておくこと)
+			for (int i = this.n現在のトップChip; i >= 0; i--)
 			{
-				CDTX.CChip pChip = dTX.listChip[ i ];
-				int nDuration = pChip.GetDuration();
-
-				if ( ( pChip.n発声時刻ms + nDuration > 0 ) && ( pChip.n発声時刻ms <= nStartTime ) && ( nStartTime <= pChip.n発声時刻ms + nDuration ) )
+				CDTX.CChip pChip = dTX.listChip[i];
+				if (pChip.nチャンネル番号 == 0x01 && (pChip.nチャンネル番号 >> 4) != 0xB) // wav系チャンネル、且つ、空打ちチップではない
 				{
-					if ( pChip.bWAVを使うチャンネルである && ( pChip.nチャンネル番号 >> 4 ) != 0xB )	// wav系チャンネル、且つ、空打ちチップではない
+					int nDuration = pChip.GetDuration();
+					long n発声時刻ms = (long)(pChip.n発声時刻ms / (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0));
+
+					if ((n発声時刻ms + nDuration > 0) && (n発声時刻ms <= nStartTime) && (nStartTime <= n発声時刻ms + nDuration))
 					{
 						CDTX.CWAV wc;
-						bool b = dTX.listWAV.TryGetValue( pChip.n整数値_内部番号, out wc );
-						if ( !b ) continue;
+						bool b = dTX.listWAV.TryGetValue(pChip.n整数値_内部番号, out wc);
+						if (!b) continue;
 
-						if ( ( wc.bIsBGMSound && TJAPlayer3.ConfigIni.bBGM音を発声する ) || ( !wc.bIsBGMSound ) )
+						if ((wc.bIsBGMSound && TJAPlayer3.ConfigIni.bBGM音を発声する) || (!wc.bIsBGMSound))
 						{
 							TJAPlayer3.DTX.tチップの再生(pChip, (long)((CSound管理.rc演奏用タイマ.n前回リセットした時のシステム時刻 * (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0))) + pChip.n発声時刻ms, (int)Eレーン.BGM);
 							#region [ PAUSEする ]
 							int j = wc.n現在再生中のサウンド番号;
-							if ( wc.rSound[ j ] != null )
+							if (wc.rSound[j] != null)
 							{
-							    wc.rSound[ j ].t再生を一時停止する();
-							    wc.rSound[ j ].t再生位置を変更する( nStartTime - pChip.n発声時刻ms );
-							    pausedCSound.Add( wc.rSound[ j ] );
+								wc.rSound[j].t再生を一時停止する();
+								wc.rSound[j].t再生位置を変更する(nStartTime - n発声時刻ms);
+								pausedCSound.Add(wc.rSound[j]);
 							}
-#endregion
+							#endregion
 						}
 					}
 				}
 			}
-#endregion
-#region [ 演奏開始時点で既に表示されているBGAとAVIの、シークと再生 ]
-			this.actAVI.SkipStart( nStartTime );
-#endregion
-#region [ PAUSEしていたサウンドを一斉に再生再開する(ただしタイマを止めているので、ここではまだ再生開始しない) ]
+			#endregion
+			#region [ PAUSEしていたサウンドを一斉に再生再開する(ただしタイマを止めているので、ここではまだ再生開始しない) ]
 			foreach ( CSound cs in pausedCSound )
 			{
 				cs.tサウンドを再生する();
