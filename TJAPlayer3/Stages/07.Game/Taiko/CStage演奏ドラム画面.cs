@@ -339,12 +339,12 @@ namespace TJAPlayer3
                     }
                 }
 
-                if ( !String.IsNullOrEmpty( TJAPlayer3.DTX.strBGIMAGE_PATH ) || ( TJAPlayer3.DTX.listAVI.Count == 0 ) ) //背景動画があったら背景画像を描画しない。
+                if ( !String.IsNullOrEmpty( TJAPlayer3.DTX.strBGIMAGE_PATH ) || ( TJAPlayer3.DTX.listVD.Count == 0 ) ) //背景動画があったら背景画像を描画しない。
                 {
 				    this.t進行描画_背景();
                 }
 
-                if (TJAPlayer3.ConfigIni.bAVI有効 && TJAPlayer3.DTX.listAVI.Count > 0)
+                if (TJAPlayer3.ConfigIni.bAVI有効 && TJAPlayer3.DTX.listVD.Count > 0)
                 {
                     this.t進行描画_AVI();
                 }

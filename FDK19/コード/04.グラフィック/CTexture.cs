@@ -173,6 +173,7 @@ namespace FDK
 		{
 			MakeTexture(device, strファイル名);
 		}
+
 		public void MakeTexture(int device, string strファイル名)
 		{
 			if (!File.Exists(strファイル名))     // #27122 2012.1.13 from: ImageInformation では FileNotFound 例外は返ってこないので、ここで自分でチェックする。わかりやすいログのために。
@@ -249,6 +250,16 @@ namespace FDK
 		{
 			this.t2D描画(device, x - ((rc画像内の描画領域.Width / 2)), y - (rc画像内の描画領域.Height * this.vc拡大縮小倍率.Y), 1f, rc画像内の描画領域);
 		}
+
+		public void t2D拡大率考慮下拡大率考慮中心基準描画(int device, float x, float y)
+		{
+			this.t2D拡大率考慮下拡大率考慮中心基準描画(device, x, y, this.rc全画像);
+		}
+		public void t2D拡大率考慮下拡大率考慮中心基準描画(int device, float x, float y, Rectangle rc画像内の描画領域)
+		{
+			this.t2D描画(device, x - (this.szテクスチャサイズ.Width * this.vc拡大縮小倍率.X / 2), y - (szテクスチャサイズ.Height * this.vc拡大縮小倍率.Y), 1f, rc画像内の描画領域);
+		}
+
 		public void t2D中央基準描画(int device, float x, float y)
 		{
 			this.t2D描画(device, x - (this.szテクスチャサイズ.Width / 2), y - (this.szテクスチャサイズ.Height / 2), this.rc全画像);

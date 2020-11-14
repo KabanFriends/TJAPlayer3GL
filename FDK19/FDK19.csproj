@@ -57,11 +57,6 @@
       <HintPath>..\Test\dll\Bass.Net.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="DirectShowLib-2005, Version=2.1.0.0, Culture=neutral, PublicKeyToken=67e7b740cdfc2d3f, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Test\dll\DirectShowLib-2005.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="FFmpeg.AutoGen, Version=4.3.1.0, Culture=neutral, PublicKeyToken=9b7632533a381715, processorArchitecture=MSIL">
       <HintPath>..\packages\FFmpeg.AutoGen.4.3.1\lib\net472\FFmpeg.AutoGen.dll</HintPath>
     </Reference>
@@ -142,9 +137,9 @@
     <Compile Include="コード\00.共通\CTraceLogListener.cs" />
     <Compile Include="コード\00.共通\CWin32.cs" />
     <Compile Include="コード\00.共通\C変換.cs" />
-    <Compile Include="コード\05.DirectShow\CDirectShow.cs" />
-    <Compile Include="コード\05.DirectShow\CDStoWAVFileImage.cs" />
-    <Compile Include="コード\05.DirectShow\MemoryRenderer.cs" />
+    <Compile Include="コード\04.グラフィック\Video\CDecodedFrame.cs" />
+    <Compile Include="コード\04.グラフィック\Video\CFrameConverter.cs" />
+    <Compile Include="コード\04.グラフィック\Video\CVideoDecoder.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
