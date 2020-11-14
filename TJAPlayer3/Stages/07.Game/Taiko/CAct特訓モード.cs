@@ -28,6 +28,7 @@ namespace TJAPlayer3
             var bIsInGoGo = false;
             var length = (TJAPlayer3.DTX.listChip.Count > 0) ? TJAPlayer3.DTX.listChip[TJAPlayer3.DTX.listChip.Count - 1].n発声時刻ms : 0;
 
+            TJAPlayer3.stage演奏ドラム画面.actAVI.Stop();
 
             for (int i = 0; i < dTX.listChip.Count; i++)
             {
@@ -255,7 +256,6 @@ namespace TJAPlayer3
 
             this.nスクロール後ms = CSound管理.rc演奏用タイマ.n現在時刻ms;
 
-            TJAPlayer3.stage演奏ドラム画面.actAVI.tReset();
             TJAPlayer3.stage演奏ドラム画面.On活性化();
             CSound管理.rc演奏用タイマ.t一時停止();
 
@@ -302,7 +302,6 @@ namespace TJAPlayer3
             }
 
             TJAPlayer3.stage演奏ドラム画面.t数値の初期化(true, true);
-            TJAPlayer3.stage演奏ドラム画面.actAVI.tReset();
             TJAPlayer3.stage演奏ドラム画面.On活性化();
 
             for (int i = 0; i < TJAPlayer3.ConfigIni.nPlayerCount; i++)
