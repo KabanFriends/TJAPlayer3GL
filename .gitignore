@@ -10,9 +10,9 @@
 *.swp
 *.DotSettings.user
 /packages
-/Test/Capture_img
-/Test/Config*.ini
-/Test/bs1770gain**
+/Test/*/Capture_img
+/Test/*/Config*.ini
+/Test/*/bs1770gain**
 /Test/*/CommonServiceLocator.*
 /Test/*/FDK.*
 /Test/*/Eto.*
