@@ -11,7 +11,6 @@ namespace FDK
 		Keyboard,
 		Mouse,
 		Joystick,
-		MidiIn,
 		Unknown
 	}
 }

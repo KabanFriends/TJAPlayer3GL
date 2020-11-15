@@ -356,9 +356,15 @@ namespace TJAPlayer3
 			}
 		}
 
-		// Game 実装
+        // Game 実装
 
-		protected override void OnLoad(EventArgs e)
+        protected override void OnResize(EventArgs e)
+        {
+            base.OnResize(e);
+
+			GL.Viewport(ClientRectangle);
+		}
+        protected override void OnLoad(EventArgs e)
 		{
 			base.OnLoad(e);
 			if (this.listトップレベルActivities != null)
@@ -396,7 +402,6 @@ namespace TJAPlayer3
 				foreach (CActivity activity in this.listトップレベルActivities)
 					activity.OnUnmanagedリソースの解放();
 			}
-			CPowerManagement.tEnableMonitorSuspend();       // スリープ抑止状態を解除
 			this.t終了処理();
 			base.OnUnload(e);
 		}
@@ -414,9 +419,6 @@ namespace TJAPlayer3
 			CSound管理.rc演奏用タイマ?.t更新();
 			Input管理?.tポーリング(this.bApplicationActive);
 			FPS?.tカウンタ更新();
-
-			if (this.bApplicationActive)    // DTXMania本体起動中の本体/モニタの省電力モード移行を抑止
-				CPowerManagement.tDisableMonitorSuspend();
 
 			// #xxxxx 2013.4.8 yyagi; sleepの挿入位置を、EndScnene～Present間から、BeginScene前に移動。描画遅延を小さくするため。
 			#region [ スリープ ]
@@ -1488,7 +1490,7 @@ for (int i = 0; i < 3; i++) {
 			#endregion
 			#region [ Input管理 の初期化 ]
 			//---------------------
-			Trace.TraceInformation("OpenTK.Input, MIDI入力の初期化を行います。");
+			Trace.TraceInformation("OpenTK.Input の初期化を行います。");
 			Trace.Indent();
 			try
 			{
@@ -1509,7 +1511,7 @@ for (int i = 0; i < 3; i++) {
 			}
 			catch
 			{
-				Trace.TraceError("OpenTK.Input, MIDI入力の初期化に失敗しました。");
+				Trace.TraceError("OpenTK.Input の初期化に失敗しました。");
 				throw;
 			}
 			finally
@@ -1860,18 +1862,18 @@ for (int i = 0; i < 3; i++) {
 				//---------------------
 				if (Input管理 != null)
 				{
-					Trace.TraceInformation("OpenTK.Input, MIDI入力の終了処理を行います。");
+					Trace.TraceInformation("OpenTK.Input 入力の終了処理を行います。");
 					Trace.Indent();
 					try
 					{
 						Input管理.Dispose();
 						Input管理 = null;
-						Trace.TraceInformation("OpenTK.Input, MIDI入力の終了処理を完了しました。");
+						Trace.TraceInformation("OpenTK.Input 入力の終了処理を完了しました。");
 					}
 					catch (Exception exception5)
 					{
 						Trace.TraceError(exception5.ToString());
-						Trace.TraceError("OpenTK.Input, MIDI入力の終了処理に失敗しました。");
+						Trace.TraceError("OpenTK.Input 入力の終了処理に失敗しました。");
 					}
 					finally
 					{

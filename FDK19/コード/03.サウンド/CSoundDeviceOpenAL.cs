@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Reflection;
+using FFmpeg.AutoGen;
 using System.Diagnostics;
 using System.IO;
 using System.Threading;
