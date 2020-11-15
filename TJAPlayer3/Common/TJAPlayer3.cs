@@ -362,7 +362,7 @@ namespace TJAPlayer3
         {
             base.OnResize(e);
 
-			GL.Viewport(ClientRectangle);
+			this.WindowReshape(ClientRectangle.Width, ClientRectangle.Height);
 		}
         protected override void OnLoad(EventArgs e)
 		{
@@ -2064,16 +2064,22 @@ for (int i = 0; i < 3; i++) {
 
 			TJAPlayer3.act文字コンソール.On活性化();
 		}
+		public void WindowReshape(int width, int height)
+		{
+			GL.Ortho(0.0, GameWindowSize.Width, GameWindowSize.Height, 0.0, 1.0, -1.0);
 
-		public int GetWindowX()
-        {
-			return base.X;
-        }
-		
-		public int GetWindowY()
-        {
-			return base.Y;
-        }
+			var ratioX = width / (float)GameWindowSize.Width;
+			var ratioY = height / (float)GameWindowSize.Height;
+			var ratio = ratioX < ratioY ? ratioX : ratioY;
+
+			var viewWidth = Convert.ToInt32(GameWindowSize.Width * ratio);
+			var viewHeight = Convert.ToInt32(GameWindowSize.Height * ratio);
+
+			var viewX = Convert.ToInt32((width - GameWindowSize.Width * ratio) / 2);
+			var viewY = Convert.ToInt32((height - GameWindowSize.Height * ratio) / 2);
+
+			GL.Viewport(viewX, viewY, viewWidth, viewHeight);
+		}
 
 		#region [ Windowイベント処理 ]
 		//-----------------

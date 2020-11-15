@@ -14,7 +14,7 @@ namespace FDK
 	public abstract class Game : GameWindow
 	{
 		public Game()
-			: base(GameWindowSize.Width, GameWindowSize.Height, GraphicsMode.Default, "TJAPlayer3GL")
+			: base(GameWindowSize.Width, GameWindowSize.Height, new GraphicsMode(32, 24, 8, 16), "TJAPlayer3GL")
 		{
             VSync = VSyncMode.On;
 		}
