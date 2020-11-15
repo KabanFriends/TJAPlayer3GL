@@ -49,12 +49,9 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <None Update="runtimeconfig.template.json">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>runtimeconfig.template.cs</LastGenOutput>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
   </ItemGroup>
+  <ProjectExtensions><VisualStudio><UserProperties runtimeconfig_1template_1json__JsonSchema="https://gitpod.io/schemas/gitpod-schema.json" /></VisualStudio></ProjectExtensions>
 </Project>
