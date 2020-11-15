@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Management;
 
 namespace FDK
 {
@@ -40,46 +39,20 @@ namespace FDK
 		{
 			return bCheckOSVersion(10, 0);
 		}
-		/// <summary>
-		/// OSがWin10以降、かつ指定build以降ならtrueを返す
-		/// </summary>
-		/// <returns></returns>
-		public static bool bIsWin10OrLater(WIN10BUILD build)
-		{
-			if (bCheckOSVersion(10, 0))
-			{
-				if (GetWin10BuildNumber() >= build)
-				{
-					return true;
-				}
-				else
-				{
-					return false;
-				}
-			}
-			else
-			{
-				return false;
-			};
-		}
-
 
 		/// <summary>
 		/// 指定のOSバージョン以上であればtrueを返す
 		/// </summary>
 		private static bool bCheckOSVersion(int major, int minor)
 		{
-			//プラットフォームの取得
-			//System.OperatingSystem os = System.Environment.OSVersion;
-			//if (os.Platform != PlatformID.Win32NT)      // NT系でなければ、XP以前か、PC Windows系以外のOS。
-			//{
-			//	return false;
-			//}
-			//var mmb = tpGetOSVersion();
-			int _major, _minor, _build;
-			tpGetOSVersion(out _major, out _minor, out _build);
+			if (Environment.OSVersion.Platform != PlatformID.Win32NT)      // NT系でなければ、XP以前か、PC Windows系以外のOS。
+			{
+				return false;
+			}
 
-			//if (os.Version.Major >= major && os.Version.Minor >= minor)
+			int _major, _minor;
+			tpGetOSVersion(out _major, out _minor);
+
 			if (_major > major)
 			{
 				return true;
@@ -94,68 +67,11 @@ namespace FDK
 			}
 		}
 
-
-		//public static (int major, int minor, int build) tpGetOSVersion()
-		public static void tpGetOSVersion(out int major, out int minor, out int build)
+		public static void tpGetOSVersion(out int major, out int minor)
 		{
-			//var result = (major: 0, minor: 0, build: 0);
-			major = 0;
-			minor = 0;
-			build = 0;
-
-			System.Management.ManagementClass mc =
-				new System.Management.ManagementClass("Win32_OperatingSystem");
-			System.Management.ManagementObjectCollection moc = mc.GetInstances();
-
-			foreach (System.Management.ManagementObject mo in moc)
-			{
-				string ver = mo["Version"].ToString();
-				string[] majorminor = ver.Split(new char[] { '.' }, StringSplitOptions.None);
-
-				major = Convert.ToInt32(majorminor[0]);
-				minor = Convert.ToInt32(majorminor[1]);
-				build = Convert.ToInt32(mo["BuildNumber"]);
-
-				break;  // 1回ループで終了(でいいよね)
-			}
-			moc.Dispose();
-			mc.Dispose();
-
-			//return result;
-		}
-		public enum WIN10BUILD : int
-		{
-			TH1 = 10240,    // 1507: 
-			TH2 = 10586,    // 1511: November Update
-			RS1 = 14393,    // 1607: Anniversary Update
-			RS2 = 15063,    // 1703: Creators Update
-			RS3 = 16299,    // 1709: Fall Creators Update
-			RS4 = 17134,    // 1803: April 2018 Update
-			RS5 = 17763,    // 1809: October 2018 Update
-			_19H1 = 18362,  // 1903: May 2019 Update
-			_19H2 = 18363,  // 1909: November 2019 Update
-			UNKNOWN = -1,
-			NOTWIN10 = 0
-		}
-		public static WIN10BUILD GetWin10BuildNumber()
-		{
-			WIN10BUILD ret = WIN10BUILD.UNKNOWN;
-
-			//var mmb = tpGetOSVersion();
-			int major, minor, build;
-			tpGetOSVersion(out major, out minor, out build);
-
-			if (major != 10)
-			{
-				ret = WIN10BUILD.NOTWIN10;
-			}
-			else
-			{
-				ret = (WIN10BUILD)build;
-			}
-
-			return ret;
+			var os = Environment.OSVersion;
+			major = os.Version.Major;
+			minor = os.Version.Minor;
 		}
 	}
 }
-

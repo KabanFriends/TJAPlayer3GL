@@ -1,4 +1,6 @@
-﻿namespace TJAPlayer3.Properties {
+﻿using System.Configuration;
+
+namespace TJAPlayer3.Properties {
     
     
     // このクラスでは設定クラスでの特定のイベントを処理することができます:
@@ -15,10 +17,6 @@
             //
             // this.SettingsSaving += this.SettingsSavingEventHandler;
             //
-        }
-        
-        private void SettingChangingEventHandler(object sender, System.Configuration.SettingChangingEventArgs e) {
-            // SettingChangingEvent イベントを処理するコードをここに追加してください。
         }
         
         private void SettingsSavingEventHandler(object sender, System.ComponentModel.CancelEventArgs e) {
