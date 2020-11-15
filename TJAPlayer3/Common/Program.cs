@@ -35,7 +35,7 @@ namespace TJAPlayer3
         {
 			Platform.Initialize(Platform.Detect);
 
-			SetDllDirectory("ffmpeg");
+			SetDllDirectory("lib");
 			Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
 			ErrorReporter.WithErrorReporting(MainImpl);
