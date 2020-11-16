@@ -20,6 +20,16 @@
 /Test/*/Hnx8.ReadJEnc.*
 /Test/*/System.*
 /Test/*/Microsoft.*
+/Test/*/GdkSharp.*
+/Test/*/GioSharp.*
+/Test/*/GLibSharp.*
+/Test/*/GtkSharp.*
+/Test/*/MonoMac.*
+/Test/*/AtkSharp.*
+/Test/*/CairoSharp.*
+/Test/*/PangoSharp.*
+/Test/*/osx-x64
+/Test/*/TJAPlayer3.app
 /Test/*/OpenTK.*
 /Test/*/TJAPlayer3GL.*
 /Test/*/Songs
