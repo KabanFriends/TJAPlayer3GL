@@ -293,8 +293,8 @@ namespace FDK
                 WorkingDirectory = workingDirectory ?? ""
             };
 
-            var stdoutWriter = new StringWriter();
-            var stderrWriter = new StringWriter();
+            using (var stdoutWriter = new StringWriter())
+            using (var stderrWriter = new StringWriter())
             using (var process = Process.Start(processStartInfo))
             {
                 process.OutputDataReceived += (s, e) =>
