@@ -146,28 +146,28 @@ namespace FDK
 				// 単位繰り上げ間隔[秒]の長さを持つ無音のサウンドを作成。
 
 				uint nデータサイズbyte = n単位繰り上げ間隔sec * 44100 * 2 * 2;
-				var ms = new MemoryStream();
-				var bw = new BinaryWriter( ms );
-				bw.Write( (uint) 0x46464952 );						// 'RIFF'
-				bw.Write( (uint) ( 44 + nデータサイズbyte - 8 ) );	// ファイルサイズ - 8
-				bw.Write( (uint) 0x45564157 );						// 'WAVE'
-				bw.Write( (uint) 0x20746d66 );						// 'fmt '
-				bw.Write( (uint) 16 );								// バイト数
-				bw.Write( (ushort) 1 );								// フォーマットID(リニアPCM)
-				bw.Write( (ushort) 2 );								// チャンネル数
-				bw.Write( (uint) 44100 );							// サンプリング周波数
-				bw.Write( (uint) ( 44100 * 2 * 2 ) );				// bytes/sec
-				bw.Write( (ushort) ( 2 * 2 ) );						// blockサイズ
-				bw.Write( (ushort) 16 );							// bit/sample
-				bw.Write( (uint) 0x61746164 );						// 'data'
-				bw.Write( (uint) nデータサイズbyte );				// データ長
-				for ( int i = 0; i < nデータサイズbyte / sizeof( long ); i++ )	// PCMデータ
-					bw.Write( (long) 0 );
-				var byArrWaveFleImage = ms.ToArray();
-				bw.Close();
-				ms = null;
-				bw = null;
-				this.sd経過時間計測用サウンドバッファ = this.tサウンドを作成する( byArrWaveFleImage, ESoundGroup.Unknown );
+				using (var ms = new MemoryStream())
+                using (var bw = new BinaryWriter(ms))
+                {
+                    bw.Write((uint) 0x46464952); // 'RIFF'
+                    bw.Write((uint) (44 + nデータサイズbyte - 8)); // ファイルサイズ - 8
+                    bw.Write((uint) 0x45564157); // 'WAVE'
+                    bw.Write((uint) 0x20746d66); // 'fmt '
+                    bw.Write((uint) 16); // バイト数
+                    bw.Write((ushort) 1); // フォーマットID(リニアPCM)
+                    bw.Write((ushort) 2); // チャンネル数
+                    bw.Write((uint) 44100); // サンプリング周波数
+                    bw.Write((uint) (44100 * 2 * 2)); // bytes/sec
+                    bw.Write((ushort) (2 * 2)); // blockサイズ
+                    bw.Write((ushort) 16); // bit/sample
+                    bw.Write((uint) 0x61746164); // 'data'
+                    bw.Write((uint) nデータサイズbyte); // データ長
+                    for (int i = 0; i < nデータサイズbyte / sizeof(long); i++) // PCMデータ
+                        bw.Write((long) 0);
+                    var byArrWaveFleImage = ms.ToArray();
+
+                    this.sd経過時間計測用サウンドバッファ = this.tサウンドを作成する( byArrWaveFleImage, ESoundGroup.Unknown );
+                }
 
 				CSound.listインスタンス.Remove( this.sd経過時間計測用サウンドバッファ );	// 特殊用途なのでインスタンスリストからは除外する。
 

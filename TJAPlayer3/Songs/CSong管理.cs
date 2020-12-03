@@ -97,11 +97,10 @@ namespace TJAPlayer3
 		{
 			this.nSongsDBから取得できたスコア数 = 0;
 			if( File.Exists( SongsDBファイル名 ) )
-			{
-				BinaryReader br = null;
-				try
+            {
+                using (var fileStream = File.OpenRead( SongsDBファイル名 ))
+                using (var br = new BinaryReader( fileStream ))
 				{
-					br = new BinaryReader( File.OpenRead( SongsDBファイル名 ) );
 					if ( !br.ReadString().Equals( SONGSDB_VERSION ) )
 					{
 						throw new InvalidDataException( "ヘッダが異なります。" );
@@ -122,12 +121,7 @@ namespace TJAPlayer3
 						}
 					}
 				}
-				finally
-				{
-					if( br != null )
-						br.Close();
-				}
-			}
+            }
 		}
 		//-----------------
 		#endregion
@@ -1141,12 +1135,14 @@ namespace TJAPlayer3
 		{
 			this.nSongsDBへ出力できたスコア数 = 0;
 			try
-			{
-				BinaryWriter bw = new BinaryWriter( new FileStream( SongsDBファイル名, FileMode.Create, FileAccess.Write ) );
-				bw.Write( SONGSDB_VERSION );
-				this.tSongsDBにリストを１つ出力する( bw, this.list曲ルート );
-				bw.Close();
-			}
+            {
+                using (var fileStream = new FileStream(SongsDBファイル名, FileMode.Create, FileAccess.Write))
+                using (var bw = new BinaryWriter(fileStream))
+                {
+                    bw.Write(SONGSDB_VERSION);
+                    this.tSongsDBにリストを１つ出力する(bw, this.list曲ルート);
+                }
+            }
 			catch (Exception e)
 			{
 				Trace.TraceError( "songs.dbの出力に失敗しました。" );
