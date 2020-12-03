@@ -776,15 +776,14 @@ namespace FDK
 				{
 					#region [ ファイルを読み込んで byArrWAVファイルイメージへ格納。]
 					//-----------------
-					var fs = File.Open( strファイル名, FileMode.Open, FileAccess.Read );
-					var br = new BinaryReader( fs );
+                    using (var fs = File.Open( strファイル名, FileMode.Open, FileAccess.Read ))
+                    using (var br = new BinaryReader(fs))
+                    {
+                        byArrWAVファイルイメージ = new byte[fs.Length];
+                        br.Read(byArrWAVファイルイメージ, 0, (int) fs.Length);
+                    }
 
-					byArrWAVファイルイメージ = new byte[ fs.Length ];
-					br.Read( byArrWAVファイルイメージ, 0, (int) fs.Length );
-
-					br.Close();
-					fs.Close();
-					//-----------------
+                    //-----------------
 					#endregion
 				}
 				else
