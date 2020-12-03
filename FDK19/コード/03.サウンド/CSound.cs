@@ -1795,37 +1795,38 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 					// wave headerを書き込む
 
 					int wfx拡張領域_Length = 0;
-					var ms = new MemoryStream();
-					var bw = new BinaryWriter( ms );
-					bw.Write( new byte[] { 0x52, 0x49, 0x46, 0x46 } );		// 'RIFF'
-					bw.Write( (UInt32) totalPCMSize + 44 - 8 );				// ファイルサイズ - 8 [byte]；今は不明なので後で上書きする。
-					bw.Write( new byte[] { 0x57, 0x41, 0x56, 0x45 } );		// 'WAVE'
-					bw.Write( new byte[] { 0x66, 0x6D, 0x74, 0x20 } );		// 'fmt '
-					bw.Write( (UInt32) ( 16 + ( ( wfx拡張領域_Length > 0 ) ? ( 2/*sizeof(WAVEFORMATEX.cbSize)*/ + wfx拡張領域_Length ) : 0 ) ) );	// fmtチャンクのサイズ[byte]
-					bw.Write( (UInt16) wfx.wFormatTag );					// フォーマットID（リニアPCMなら1）
-					bw.Write( (UInt16) wfx.nChannels );						// チャンネル数
-					bw.Write( (UInt32) wfx.nSamplesPerSec );				// サンプリングレート
-					bw.Write( (UInt32) wfx.nAvgBytesPerSec );				// データ速度
-					bw.Write( (UInt16) wfx.nBlockAlign );					// ブロックサイズ
-					bw.Write( (UInt16) wfx.wBitsPerSample );				// サンプルあたりのビット数
-					//if ( wfx拡張領域_Length > 0 )
-					//{
-					//    bw.Write( (UInt16) wfx拡張領域.Length );			// 拡張領域のサイズ[byte]
-					//    bw.Write( wfx拡張領域 );							// 拡張データ
-					//}
-					bw.Write( new byte[] { 0x64, 0x61, 0x74, 0x61 } );		// 'data'
-					//int nDATAチャンクサイズ位置 = (int) ms.Position;
-					bw.Write( (UInt32) totalPCMSize );						// dataチャンクのサイズ[byte]
+                    using (var ms = new MemoryStream())
+                    using (var bw = new BinaryWriter(ms))
+                    {
+                        bw.Write(new byte[] {0x52, 0x49, 0x46, 0x46}); // 'RIFF'
+                        bw.Write((UInt32) totalPCMSize + 44 - 8); // ファイルサイズ - 8 [byte]；今は不明なので後で上書きする。
+                        bw.Write(new byte[] {0x57, 0x41, 0x56, 0x45}); // 'WAVE'
+                        bw.Write(new byte[] {0x66, 0x6D, 0x74, 0x20}); // 'fmt '
+                        bw.Write((UInt32) (16 + ((wfx拡張領域_Length > 0)
+                            ? (2 /*sizeof(WAVEFORMATEX.cbSize)*/ + wfx拡張領域_Length)
+                            : 0))); // fmtチャンクのサイズ[byte]
+                        bw.Write((UInt16) wfx.wFormatTag); // フォーマットID（リニアPCMなら1）
+                        bw.Write((UInt16) wfx.nChannels); // チャンネル数
+                        bw.Write((UInt32) wfx.nSamplesPerSec); // サンプリングレート
+                        bw.Write((UInt32) wfx.nAvgBytesPerSec); // データ速度
+                        bw.Write((UInt16) wfx.nBlockAlign); // ブロックサイズ
+                        bw.Write((UInt16) wfx.wBitsPerSample); // サンプルあたりのビット数
+                        //if ( wfx拡張領域_Length > 0 )
+                        //{
+                        //    bw.Write( (UInt16) wfx拡張領域.Length );			// 拡張領域のサイズ[byte]
+                        //    bw.Write( wfx拡張領域 );							// 拡張データ
+                        //}
+                        bw.Write(new byte[] {0x64, 0x61, 0x74, 0x61}); // 'data'
+                        //int nDATAチャンクサイズ位置 = (int) ms.Position;
+                        bw.Write((UInt32) totalPCMSize); // dataチャンクのサイズ[byte]
 
-					byte[] bs = ms.ToArray();
+                        byte[] bs = ms.ToArray();
 
-					bw.Close();
-					ms.Close();
-
-					for ( int i = 0; i < bs.Length; i++ )
-					{
-						buffer[ i ] = bs[ i ];
-					}
+                        for ( int i = 0; i < bs.Length; i++ )
+                        {
+                            buffer[ i ] = bs[ i ];
+                        }
+                    }
 				}
 				int s = ( bIntegrateWaveHeader ) ? 44 : 0;
 				for ( int i = 0; i < totalPCMSize; i++ )
