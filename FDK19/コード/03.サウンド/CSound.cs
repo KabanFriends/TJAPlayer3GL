@@ -843,10 +843,8 @@ namespace FDK
 	
 			#region [ byArrWAVファイルイメージ[] から上記３つのデータを取得。]
 			//-----------------
-			var ms = new MemoryStream( byArrWAVファイルイメージ );
-			var br = new BinaryReader( ms );
-
-			try
+			using (var ms = new MemoryStream( byArrWAVファイルイメージ ))
+			using (var br = new BinaryReader( ms ))
 			{
 				// 'RIFF'＋RIFFデータサイズ
 
@@ -923,11 +921,7 @@ namespace FDK
 				if( nPCMサイズbyte < 0 )
 					throw new InvalidDataException( "data チャンクが存在しません。不正なサウンドデータです。" );
 			}
-			finally
-			{
-				ms.Close();
-				br.Close();
-			}
+
 			//-----------------
 			#endregion
 
