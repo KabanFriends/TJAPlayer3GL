@@ -1809,7 +1809,7 @@ for (int i = 0; i < 3; i++) {
 			}
 			catch (Exception e)
 			{
-                throw new NullReferenceException("サウンドデバイスがひとつも有効になっていないため、サウンドデバイスの初期化ができませんでした。", e);
+                throw new Exception("サウンドデバイスがひとつも有効になっていないため、サウンドデバイスの初期化ができませんでした。", e);
 			}
 			finally
 			{
