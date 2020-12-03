@@ -1135,12 +1135,14 @@ namespace TJAPlayer3
 		{
 			this.nSongsDBへ出力できたスコア数 = 0;
 			try
-			{
-				BinaryWriter bw = new BinaryWriter( new FileStream( SongsDBファイル名, FileMode.Create, FileAccess.Write ) );
-				bw.Write( SONGSDB_VERSION );
-				this.tSongsDBにリストを１つ出力する( bw, this.list曲ルート );
-				bw.Close();
-			}
+            {
+                using (var fileStream = new FileStream(SongsDBファイル名, FileMode.Create, FileAccess.Write))
+                using (var bw = new BinaryWriter(fileStream))
+                {
+                    bw.Write(SONGSDB_VERSION);
+                    this.tSongsDBにリストを１つ出力する(bw, this.list曲ルート);
+                }
+            }
 			catch (Exception e)
 			{
 				Trace.TraceError( "songs.dbの出力に失敗しました。" );
