@@ -97,11 +97,10 @@ namespace TJAPlayer3
 		{
 			this.nSongsDBから取得できたスコア数 = 0;
 			if( File.Exists( SongsDBファイル名 ) )
-			{
-				BinaryReader br = null;
-				try
+            {
+                using (var fileStream = File.OpenRead( SongsDBファイル名 ))
+                using (var br = new BinaryReader( fileStream ))
 				{
-					br = new BinaryReader( File.OpenRead( SongsDBファイル名 ) );
 					if ( !br.ReadString().Equals( SONGSDB_VERSION ) )
 					{
 						throw new InvalidDataException( "ヘッダが異なります。" );
@@ -122,12 +121,7 @@ namespace TJAPlayer3
 						}
 					}
 				}
-				finally
-				{
-					if( br != null )
-						br.Close();
-				}
-			}
+            }
 		}
 		//-----------------
 		#endregion
