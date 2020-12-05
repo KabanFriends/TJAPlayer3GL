@@ -1117,22 +1117,6 @@ namespace TJAPlayer3
 								this.tRollProcess(pChip, (CSound管理.rc演奏用タイマ.n現在時刻 * (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0)), 1, nNowInput, 0, nPlayer);
 							}
 
-							//if ((int)CSound管理.rc演奏用タイマ.n現在時刻ms >= pChip.nノーツ終了時刻ms)
-							//{
-							//    if (actChara.CharaAction_Balloon_Breaking.b進行中)
-							//    {
-							//        this.actChara.bマイどんアクション中 = false; // 風船終了後、再生されていたアクションがされないようにするために追加。(AioiLight)
-							//        if (actChara.CharaAction_Balloon_Miss != null)
-							//        {
-							//            actChara.アクションタイマーリセット();
-							//            actChara.bマイどんアクション中 = true;
-							//            actChara.CharaAction_Balloon_Miss = new CCounter(0, CDTXMania.Skin.Game_Chara_Ptn_Balloon_Miss - 1, CDTXMania.Skin.Game_Chara_Balloon_Timer, CDTXMania.Timer);
-							//            System.Windows.Forms.MessageBox.Show("");
-							//        }
-							//    }
-
-							//}
-
 							break;
 							//---------------------------
 							#endregion

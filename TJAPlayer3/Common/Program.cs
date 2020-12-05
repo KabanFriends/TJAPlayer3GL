@@ -18,13 +18,7 @@ namespace TJAPlayer3
 		private static Mutex mutex二重起動防止用;
 
 		#region [DllImport]
-		[DllImport( "kernel32", CharSet = CharSet.Unicode, SetLastError = true )]
-		internal static extern void FreeLibrary( IntPtr hModule );
-
-		[DllImport( "kernel32", CharSet = CharSet.Unicode, SetLastError = true )]
-		internal static extern IntPtr LoadLibrary( string lpFileName );
-
-		[DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+		[DllImport("kernel32", CharSet = CharSet.Unicode, SetLastError = true)]
 		static extern bool SetDllDirectory(string lpPathName);
 		#endregion
 		//-----------------------------

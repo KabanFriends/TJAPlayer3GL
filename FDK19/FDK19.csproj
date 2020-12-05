@@ -7,7 +7,6 @@
     <Authors />
     <Product />
     <Company />
-	<UseWindowsForms>false</UseWindowsForms>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
