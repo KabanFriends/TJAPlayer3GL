@@ -1379,13 +1379,8 @@ for (int i = 0; i < 3; i++) {
 
 			#region [ ウィンドウ初期化 ]
 			//---------------------
-			base.X = ConfigIni.n初期ウィンドウ開始位置X;
-			base.Y = ConfigIni.n初期ウィンドウ開始位置Y;
-			if (ConfigIni.n初期ウィンドウ開始位置Y <= 0) //無理矢理位置調整
-			{
-				base.Y = 20;
-				ConfigIni.n初期ウィンドウ開始位置Y = 20;
-			}
+			base.X = ConfigIni.n初期ウィンドウ開始位置X + 20;
+			base.Y = ConfigIni.n初期ウィンドウ開始位置Y + 20;
 
 			base.Title = "";
 
@@ -2139,8 +2134,8 @@ for (int i = 0; i < 3; i++) {
 		{
 			if (ConfigIni.bウィンドウモード)
 			{
-				ConfigIni.n初期ウィンドウ開始位置X = base.X;   // #30675 2013.02.04 ikanick add
-				ConfigIni.n初期ウィンドウ開始位置Y = base.Y;   //
+				ConfigIni.n初期ウィンドウ開始位置X = base.X - 20;   // #30675 2013.02.04 ikanick add
+				ConfigIni.n初期ウィンドウ開始位置Y = base.Y - 20;   //
 			}
 
 		}
