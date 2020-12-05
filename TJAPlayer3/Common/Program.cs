@@ -35,21 +35,7 @@ namespace TJAPlayer3
         {
 			Platform.Initialize(Platform.Detect);
 
-			if (IntPtr.Size == 8)
-			{
-				// 64bitっぽい
-				SetDllDirectory("lib/x64");
-			}
-			else if (IntPtr.Size == 4)
-			{
-				// 32bitっぽい
-				SetDllDirectory("lib/x86");
-			}
-			else
-            {
-				throw new PlatformNotSupportedException();
-			}
-
+			SetDllDirectory("lib");
 			Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
 			ErrorReporter.WithErrorReporting(MainImpl);

@@ -100,6 +100,35 @@ namespace FDK
 				Trace.WriteLine(e.ToString());
 			}
 			#endregion
+			this.proc = new CWin32.MidiInProc(this.MidiInCallback);
+			uint nMidiDevices = CWin32.midiInGetNumDevs();
+			Trace.TraceInformation("MIDI入力デバイス数: {0}", nMidiDevices);
+			for (uint i = 0; i < nMidiDevices; i++)
+			{
+				CInputMIDI item = new CInputMIDI(i);
+				CWin32.MIDIINCAPS lpMidiInCaps = new CWin32.MIDIINCAPS();
+				uint num3 = CWin32.midiInGetDevCaps(i, ref lpMidiInCaps, (uint)Marshal.SizeOf(lpMidiInCaps));
+				if (num3 != 0)
+				{
+					Trace.TraceError("MIDI In: Device{0}: midiInDevCaps(): {1:X2}: ", i, num3);
+				}
+				else
+				{
+					uint ret = CWin32.midiInOpen(ref item.hMidiIn, i, this.proc, IntPtr.Zero, 0x30000);
+					Trace.TraceInformation("midiInOpen()==" + ret);
+					Trace.TraceInformation("item.hMidiIn==" + item.hMidiIn.ToString());
+					if ((ret == 0) && (item.hMidiIn != IntPtr.Zero))
+					{
+						CWin32.midiInStart(item.hMidiIn);
+						Trace.TraceInformation("MIDI In: [{0}] \"{1}\" の入力受付を開始しました。", i, lpMidiInCaps.szPname);
+						item.strDeviceName = lpMidiInCaps.szPname;
+						this.list入力デバイス.Add(item);
+						continue;
+					}
+				}
+				Trace.TraceError("MIDI In: [{0}] \"{1}\" の入力受付の開始に失敗しました。", i, lpMidiInCaps.szPname);
+			}
+
 		}
 
 
@@ -116,20 +145,33 @@ namespace FDK
 			}
 			return null;
 		}
-
+		public IInputDevice MidiIn(int ID)
+		{
+			foreach (IInputDevice device in this.list入力デバイス)
+			{
+				if ((device.e入力デバイス種別 == E入力デバイス種別.MidiIn) && (device.ID == ID))
+				{
+					return device;
+				}
+			}
+			return null;
+		}
 		public void tポーリング(bool bWindowがアクティブ中)
 		{
-				//				foreach( IInputDevice device in this.list入力デバイス )
-			for (int i = this.list入力デバイス.Count - 1; i >= 0; i--)    // #24016 2011.1.6 yyagi: change not to use "foreach" to avoid InvalidOperation exception by Remove().
+			lock (this.objMidiIn排他用)
 			{
-				IInputDevice device = this.list入力デバイス[i];
-				try
+				//				foreach( IInputDevice device in this.list入力デバイス )
+				for (int i = this.list入力デバイス.Count - 1; i >= 0; i--)    // #24016 2011.1.6 yyagi: change not to use "foreach" to avoid InvalidOperation exception by Remove().
 				{
-					device.tポーリング(bWindowがアクティブ中);
-				}
-				catch (Exception e)                                      // #24016 2011.1.6 yyagi: catch exception for unplugging USB joystick, and remove the device object from the polling items.
-				{
-					Trace.WriteLine(e.ToString());//2020.06.28 isconnectを使用しているので、デバイスを消さない。
+					IInputDevice device = this.list入力デバイス[i];
+					try
+					{
+						device.tポーリング(bWindowがアクティブ中);
+					}
+					catch (Exception e)                                      // #24016 2011.1.6 yyagi: catch exception for unplugging USB joystick, and remove the device object from the polling items.
+					{
+						Trace.WriteLine(e.ToString());//2020.06.28 isconnectを使用しているので、デバイスを消さない。
+					}
 				}
 			}
 		}
@@ -148,14 +190,23 @@ namespace FDK
 				{
 					foreach (IInputDevice device in this.list入力デバイス)
 					{
-						device.Dispose();
+						CInputMIDI tmidi = device as CInputMIDI;
+						if (tmidi != null)
+						{
+							CWin32.midiInStop(tmidi.hMidiIn);
+							CWin32.midiInReset(tmidi.hMidiIn);
+							CWin32.midiInClose(tmidi.hMidiIn);
+							Trace.TraceInformation("MIDI In: [{0}] を停止しました。", new object[] { tmidi.ID });
+						}
 					}
 					foreach (IInputDevice device2 in this.list入力デバイス)
 					{
 						device2.Dispose();
 					}
-
-					this.list入力デバイス.Clear();
+					lock (this.objMidiIn排他用)
+					{
+						this.list入力デバイス.Clear();
+					}
 
 					//if( this.timer != null )
 					//{
@@ -182,8 +233,35 @@ namespace FDK
 		private IInputDevice _Keyboard;
 		private IInputDevice _Mouse;
 		private bool bDisposed済み;
+		private List<uint> listHMIDIIN = new List<uint>(8);
+		private object objMidiIn排他用 = new object();
+		private CWin32.MidiInProc proc;
 		//		private CTimer timer;
 
+		private void MidiInCallback(IntPtr hMidiIn, uint wMsg, IntPtr dwInstance, IntPtr dwParam1, IntPtr dwParam2)
+		{
+			int p = (int)dwParam1 & 0xF0;
+			if (wMsg != CWin32.MIM_DATA || (p != 0x80 && p != 0x90 && p != 0xB0))
+				return;
+
+			long time = CSound管理.rc演奏用タイマ.nシステム時刻;  // lock前に取得。演奏用タイマと同じタイマを使うことで、BGMと譜面、入力ずれを防ぐ。
+
+			lock (this.objMidiIn排他用)
+			{
+				if ((this.list入力デバイス != null) && (this.list入力デバイス.Count != 0))
+				{
+					foreach (IInputDevice device in this.list入力デバイス)
+					{
+						CInputMIDI tmidi = device as CInputMIDI;
+						if ((tmidi != null) && (tmidi.hMidiIn == hMidiIn))
+						{
+							tmidi.tメッセージからMIDI信号のみ受信(wMsg, dwInstance, dwParam1, dwParam2, time);
+							break;
+						}
+					}
+				}
+			}
+		}
 		//-----------------
 		#endregion
 	}

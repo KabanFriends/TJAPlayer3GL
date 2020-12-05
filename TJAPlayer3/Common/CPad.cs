@@ -15,11 +15,13 @@ namespace TJAPlayer3
 		internal struct STHIT
 		{
 			public bool Keyboard;
+			public bool MIDIIN;
 			public bool Joypad;
 			public bool Mouse;
 			public void Clear()
 			{
 				this.Keyboard = false;
+				this.MIDIIN = false;
 				this.Joypad = false;
 				this.Mouse = false;
 			}
@@ -61,6 +63,15 @@ namespace TJAPlayer3
 										this.st検知したデバイス.Keyboard = true;
 									}
 									break;
+
+								case E入力デバイス.MIDI入力:
+									if( ( ( device.e入力デバイス種別 == E入力デバイス種別.MidiIn ) && ( device.ID == stkeyassignArray[ i ].ID ) ) && ( event2.nKey == stkeyassignArray[ i ].コード ) )
+									{
+										list.Add( event2 );
+										this.st検知したデバイス.MIDIIN = true;
+									}
+									break;
+
 								case E入力デバイス.ジョイパッド:
 									if( ( ( device.e入力デバイス種別 == E入力デバイス種別.Joystick ) && ( device.ID == stkeyassignArray[ i ].ID ) ) && ( event2.nKey == stkeyassignArray[ i ].コード ) )
 									{
@@ -100,6 +111,16 @@ namespace TJAPlayer3
 
 							this.st検知したデバイス.Keyboard = true;
 							return true;
+
+						case E入力デバイス.MIDI入力:
+							{
+								IInputDevice device2 = this.rInput管理.MidiIn( stkeyassignArray[ i ].ID );
+								if( ( device2 == null ) || !device2.bキーが押された( stkeyassignArray[ i ].コード ) )
+									break;
+
+								this.st検知したデバイス.MIDIIN = true;
+								return true;
+							}
 						case E入力デバイス.ジョイパッド:
 							{
 								if( !this.rConfigIni.dicJoystick.ContainsKey( stkeyassignArray[ i ].ID ) )

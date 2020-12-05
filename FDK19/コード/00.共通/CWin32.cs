@@ -35,6 +35,15 @@ namespace FDK
 		public static readonly IntPtr HWND_TOPMOST = new IntPtr(-1);
 		public const uint MAXPNAMELEN = 0x20;
 
+		#region [ MIDIメッセージ ]
+		public const uint MIM_CLOSE = 0x3c2;
+		public const uint MIM_DATA = 0x3c3;
+		public const uint MIM_ERROR = 0x3c5;
+		public const uint MIM_LONGDATA = 0x3c4;
+		public const uint MIM_LONGERROR = 0x3c6;
+		public const uint MIM_OPEN = 0x3c1;
+		#endregion
+
 		public const int MONITOR_DEFAULTTOPRIMARY = 1;
 
 		public const int PBT_APMQUERYSTANDBY = 1;
@@ -311,6 +320,75 @@ namespace FDK
 		//-----------------
 		#endregion
 
+		#region [ Win32 関数 ]
+		//-----------------
+		[return: MarshalAs(UnmanagedType.Bool)]
+		[DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+		public static extern bool AdjustWindowRect(ref RECT lpRect, uint dwStyle, [MarshalAs(UnmanagedType.Bool)] bool bMenu);
+		[return: MarshalAs(UnmanagedType.Bool)]
+		[DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+		public static extern bool GetClientRect(IntPtr hWnd, out RECT lpRect);
+		[DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+		public static extern uint GetWindowLong(IntPtr hWnd, int nIndex);
+		[return: MarshalAs(UnmanagedType.Bool)]
+		[DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+		public static extern bool GetWindowPlacement(IntPtr hWnd, ref WINDOWPLACEMENT lpwndpl);
+		[return: MarshalAs(UnmanagedType.Bool)]
+		[DllImport("user32.dll", CharSet = CharSet.Auto)]
+		public static extern bool IsIconic(IntPtr hWnd);
+		[return: MarshalAs(UnmanagedType.Bool)]
+		[DllImport("user32.dll", CharSet = CharSet.Auto)]
+		public static extern bool IsWindowVisible(IntPtr hWnd);
+		[return: MarshalAs(UnmanagedType.Bool)]
+		[DllImport("user32.dll", CharSet = CharSet.Auto)]
+		public static extern bool IsZoomed(IntPtr hWnd);
+		[DllImport("winmm.dll")]
+		public static extern uint midiInClose(IntPtr hMidiIn);
+		[DllImport("winmm.dll")]
+		public static extern uint midiInGetDevCaps(uint uDeviceID, ref MIDIINCAPS lpMidiInCaps, uint cbMidiInCaps);
+		[DllImport("winmm.dll")]
+		public static extern uint midiInGetID(IntPtr hMidiIn, ref IntPtr puDeviceID);
+		[DllImport("winmm.dll")]
+		public static extern uint midiInGetNumDevs();
+		[DllImport("winmm.dll")]
+		public static extern uint midiInOpen(ref IntPtr phMidiIn, uint uDeviceID, MidiInProc dwCallback, IntPtr dwInstance, int fdwOpen);
+		[DllImport("winmm.dll")]
+		public static extern uint midiInReset(IntPtr hMidiIn);
+		[DllImport("winmm.dll")]
+		public static extern uint midiInStart(IntPtr hMidiIn);
+		[DllImport("winmm.dll")]
+		public static extern uint midiInStop(IntPtr hMidiIn);
+		[DllImport("user32.dll", CharSet = CharSet.Auto)]
+		public static extern IntPtr MonitorFromWindow(IntPtr hwnd, uint dwFlags);
+		[return: MarshalAs(UnmanagedType.Bool)]
+		[DllImport("user32.dll", CharSet = CharSet.Auto)]
+		public static extern bool PeekMessage(out WindowMessage message, IntPtr hwnd, uint messageFilterMin, uint messageFilterMax, uint flags);
+		[DllImport("kernel32.dll", CharSet = CharSet.Auto)]
+		public static extern uint SetThreadExecutionState(uint esFlags);
+		[DllImport("Kernel32.Dll")]
+		public static unsafe extern void CopyMemory(void* pDest, void* pSrc, uint numOfBytes);
+
+		[DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+		public static extern uint SetWindowLong(IntPtr hWnd, int nIndex, uint dwNewLong);
+		[return: MarshalAs(UnmanagedType.Bool)]
+		[DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+		public static extern bool SetWindowPlacement(IntPtr hWnd, ref WINDOWPLACEMENT lpwndpl);
+		[return: MarshalAs(UnmanagedType.Bool)]
+		[DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+		public static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, uint uFlags);
+		[return: MarshalAs(UnmanagedType.Bool)]
+		[DllImport("user32.dll", CharSet = CharSet.Auto)]
+		public static extern bool ShowWindow(IntPtr hWnd, EShowWindow nCmdShow);
+		[return: MarshalAs(UnmanagedType.Bool)]
+		[DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+		public static extern bool SystemParametersInfo(uint uiAction, uint uiParam, IntPtr pvParam, uint fWinIni);
+		[DllImport("kernel32.dll")]
+		public static extern void GetSystemInfo(ref SYSTEM_INFO ptmpsi);
+		[DllImport("kernel32.dll")]
+		internal static extern ExecutionState SetThreadExecutionState(ExecutionState esFlags);
+		//-----------------
+		#endregion
+
 		#region [ Win32 構造体 ]
 		//-----------------
 		[StructLayout(LayoutKind.Sequential)]
@@ -425,5 +503,174 @@ namespace FDK
 		}
 		//-----------------
 		#endregion
+
+
+		// プロパティ
+
+		public static bool bアプリがIdle状態である
+		{
+			get
+			{
+				WindowMessage message;
+				return !PeekMessage(out message, IntPtr.Zero, 0, 0, 0);
+			}
+		}
+
+
+		// キーボードの特殊機能の制御
+
+		public static class Cトグルキー機能
+		{
+			public static void t無効化する()
+			{
+				if ((stored.dwFlags & 1L) == 0L)
+				{
+					CWin32.TOGGLEKEYS structure = new CWin32.TOGGLEKEYS();
+					structure.dwFlags = stored.dwFlags;
+					structure.cbSize = stored.cbSize;
+					structure.dwFlags &= -5;
+					structure.dwFlags &= -9;
+					int cb = Marshal.SizeOf(structure);
+					IntPtr ptr = Marshal.AllocCoTaskMem(cb);
+					Marshal.StructureToPtr(structure, ptr, false);
+					CWin32.SystemParametersInfo(0x35, (uint)cb, ptr, 0);
+					Marshal.FreeCoTaskMem(ptr);
+				}
+			}
+			public static void t復元する()
+			{
+				int cb = Marshal.SizeOf(stored);
+				IntPtr ptr = Marshal.AllocCoTaskMem(cb);
+				Marshal.StructureToPtr(stored, ptr, false);
+				CWin32.SystemParametersInfo(0x35, (uint)cb, ptr, 0);
+				Marshal.FreeCoTaskMem(ptr);
+			}
+
+			#region [ private ]
+			//-----------------
+			static Cトグルキー機能()
+			{
+				int cb = Marshal.SizeOf(stored);
+				IntPtr ptr = Marshal.AllocCoTaskMem(cb);
+				Marshal.StructureToPtr(stored, ptr, false);
+				CWin32.SystemParametersInfo(0x34, (uint)cb, ptr, 0);
+				stored = (CWin32.TOGGLEKEYS)Marshal.PtrToStructure(ptr, typeof(CWin32.TOGGLEKEYS));
+				Marshal.FreeCoTaskMem(ptr);
+			}
+
+			private const uint SPI_GETTOGGLEKEYS = 0x34;
+			private const uint SPI_SETTOGGLEKEYS = 0x35;
+			private static CWin32.TOGGLEKEYS stored = new CWin32.TOGGLEKEYS();
+			private const uint TKF_CONFIRMHOTKEY = 8;
+			private const uint TKF_HOTKEYACTIVE = 4;
+			private const uint TKF_TOGGLEKEYSON = 1;
+			//-----------------
+			#endregion
+		}
+		public static class Cフィルタキー機能
+		{
+			public static void t無効化する()
+			{
+				if ((stored.dwFlags & 1L) == 0L)
+				{
+					CWin32.FILTERKEYS structure = new CWin32.FILTERKEYS();
+					structure.dwFlags = stored.dwFlags;
+					structure.cbSize = stored.cbSize;
+					structure.dwFlags &= -5;
+					structure.dwFlags &= -9;
+					int cb = Marshal.SizeOf(structure);
+					IntPtr ptr = Marshal.AllocCoTaskMem(cb);
+					Marshal.StructureToPtr(structure, ptr, false);
+					CWin32.SystemParametersInfo(0x3b, (uint)cb, ptr, 0);
+					Marshal.FreeCoTaskMem(ptr);
+				}
+			}
+			public static void t復元する()
+			{
+				int cb = Marshal.SizeOf(stored);
+				IntPtr ptr = Marshal.AllocCoTaskMem(cb);
+				Marshal.StructureToPtr(stored, ptr, false);
+				CWin32.SystemParametersInfo(0x3b, (uint)cb, ptr, 0);
+				Marshal.FreeCoTaskMem(ptr);
+			}
+
+			#region [ private ]
+			//-----------------
+			static Cフィルタキー機能()
+			{
+				stored.cbSize = 0;
+				stored.dwFlags = 0;
+				int cb = Marshal.SizeOf(stored);
+				IntPtr ptr = Marshal.AllocCoTaskMem(cb);
+				Marshal.StructureToPtr(stored, ptr, false);
+				CWin32.SystemParametersInfo(50, (uint)cb, ptr, 0);
+				stored = (CWin32.FILTERKEYS)Marshal.PtrToStructure(ptr, typeof(CWin32.FILTERKEYS));
+				Marshal.FreeCoTaskMem(ptr);
+			}
+
+			private const uint FKF_CONFIRMHOTKEY = 8;
+			private const uint FKF_FILTERKEYSON = 1;
+			private const uint FKF_HOTKEYACTIVE = 4;
+			private const uint SPI_GETFILTERKEYS = 50;
+			private const uint SPI_SETFILTERKEYS = 0x3b;
+			private static CWin32.FILTERKEYS stored = new CWin32.FILTERKEYS();
+			//-----------------
+			#endregion
+		}
+		public static class C固定キー機能
+		{
+			public static void t無効化する()
+			{
+				if ((stored.dwFlags & 1L) == 0L)
+				{
+					CWin32.STICKYKEYS structure = new CWin32.STICKYKEYS();
+					structure.dwFlags = stored.dwFlags;
+					structure.cbSize = stored.cbSize;
+					structure.dwFlags &= -5;
+					structure.dwFlags &= -9;
+					int cb = Marshal.SizeOf(structure);
+					IntPtr ptr = Marshal.AllocCoTaskMem(cb);
+					Marshal.StructureToPtr(structure, ptr, false);
+					CWin32.SystemParametersInfo(0x3b, (uint)cb, ptr, 0);
+					Marshal.FreeCoTaskMem(ptr);
+				}
+			}
+			public static void t復元する()
+			{
+				int cb = Marshal.SizeOf(stored);
+				IntPtr ptr = Marshal.AllocCoTaskMem(cb);
+				Marshal.StructureToPtr(stored, ptr, false);
+				CWin32.SystemParametersInfo(0x3b, (uint)cb, ptr, 0);
+				Marshal.FreeCoTaskMem(ptr);
+			}
+
+			#region [ private ]
+			//-----------------
+			static C固定キー機能()
+			{
+				stored.cbSize = 0;
+				stored.dwFlags = 0;
+				int cb = Marshal.SizeOf(stored);
+				IntPtr ptr = Marshal.AllocCoTaskMem(cb);
+				Marshal.StructureToPtr(stored, ptr, false);
+				CWin32.SystemParametersInfo(0x3a, (uint)cb, ptr, 0);
+				stored = (CWin32.STICKYKEYS)Marshal.PtrToStructure(ptr, typeof(CWin32.STICKYKEYS));
+				Marshal.FreeCoTaskMem(ptr);
+			}
+
+			private const uint SKF_CONFIRMHOTKEY = 8;
+			private const uint SKF_HOTKEYACTIVE = 4;
+			private const uint SKF_STICKYKEYSON = 1;
+			private const uint SPI_GETSTICKYKEYS = 0x3a;
+			private const uint SPI_SETSTICKYKEYS = 0x3b;
+			private static CWin32.STICKYKEYS stored = new CWin32.STICKYKEYS();
+			//-----------------
+			#endregion
+		}
+
+
+		// Win32 メッセージ処理デリゲート
+
+		public delegate void MidiInProc(IntPtr hMidiIn, uint wMsg, IntPtr dwInstance, IntPtr dwParam1, IntPtr dwParam2);
 	}
 }

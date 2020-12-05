@@ -254,7 +254,6 @@ namespace TJAPlayer3
 						//float to int
 						SizeF fstringSize = gtmp.MeasureString(drawstr, this._font, new PointF(0, 0), sf);
 						stringSize = new Size((int)fstringSize.Width, (int)fstringSize.Height);
-						stringSize.Height = _font.Height;
 						stringSize.Width += 10; //2015.04.01 kairera0467 ROTTERDAM NATIONの描画サイズがうまくいかんので。
 					}
 				}
@@ -392,7 +391,6 @@ namespace TJAPlayer3
 						}
 					}
 				}
-				strSize.Height = _font.Height;
 
 				//stringformatは最初にやっていてもいいだろう。
 				using (StringFormat sFormat = new StringFormat()
@@ -461,7 +459,6 @@ namespace TJAPlayer3
 							}
 						}
 					}
-					strSize.Height = _font.Height;
 
 					//stringformatは最初にやっていてもいいだろう。
 					StringFormat sFormat = new StringFormat()

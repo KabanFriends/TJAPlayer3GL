@@ -2534,6 +2534,10 @@ namespace TJAPlayer3
 			{
 				this.b演奏にジョイパッドを使った[(int)part] = true;
 			}
+			if (TJAPlayer3.Pad.st検知したデバイス.MIDIIN)
+			{
+				this.b演奏にMIDI入力を使った[(int)part] = true;
+			}
 			if (TJAPlayer3.Pad.st検知したデバイス.Mouse)
 			{
 				this.b演奏にマウスを使った[(int)part] = true;

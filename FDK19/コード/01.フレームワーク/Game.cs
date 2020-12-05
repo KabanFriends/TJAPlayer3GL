@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
-using System.IO;
-using System.Reflection;
+using System.Threading;
 using OpenTK;
 using OpenTK.Graphics;
 using FFmpeg.AutoGen; 
