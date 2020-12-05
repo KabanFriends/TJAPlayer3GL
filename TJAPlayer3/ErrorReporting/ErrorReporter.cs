@@ -1,10 +1,22 @@
 ﻿using System;
-using Eto.Forms;
+using System.Diagnostics;
+using System.Security.Cryptography;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace TJAPlayer3.ErrorReporting
 {
     public static class ErrorReporter
     {
+        private const string EnvironmentAlpha = "alpha";
+        private const string EnvironmentBeta = "beta";
+        private const string EnvironmentDevelopment = "development";
+        private const string EnvironmentProduction = "production";
+
+        public const string GetCurrentSkinNameOrFallbackFallbackForExceptionEncountered = "[GetCurrentSkinNameOrNull exception encountered]";
+
         public static void WithErrorReporting(Action action)
         {
             var appInformationalVersion = TJAPlayer3.AppInformationalVersion;
@@ -29,11 +41,11 @@ namespace TJAPlayer3.ErrorReporting
                 "An error has occurred.\n" +
                 "Technical information:" +
                 exception;
-
             var dialogResult = MessageBox.Show(
                 messageBoxText,
                 $"{TJAPlayer3.AppDisplayNameWithThreePartVersion} Error",
-                MessageBoxButtons.OK, MessageBoxType.Error);
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Error);
         }
     }
 }

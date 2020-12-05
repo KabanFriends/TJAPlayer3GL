@@ -2,7 +2,6 @@
 using System.Runtime.InteropServices;
 using System.Diagnostics;
 using System.Drawing;
-using OpenTK.Input;
 using FDK;
 
 namespace TJAPlayer3
@@ -232,7 +231,7 @@ namespace TJAPlayer3
 				// URLの座標が押されたらブラウザで開いてやる 兼 マウスクリックのテスト
 				// クライアント領域内のカーソル座標を取得する。
 				// point.X、point.Yは負の値になることもある。
-				var point = TJAPlayer3.app.PointToClient(new Point(Mouse.GetCursorState().X, Mouse.GetCursorState().Y));
+				var point = TJAPlayer3.app.PointToClient(System.Windows.Forms.Cursor.Position);
 				// クライアント領域の横幅を取得して、1280で割る。もちろんdouble型。
 				var scaling = 1.000 * TJAPlayer3.app.ClientSize.Width / 1280;
 				if (TJAPlayer3.Input管理.Mouse.bキーが押された((int)OpenTK.Input.MouseButton.Left))

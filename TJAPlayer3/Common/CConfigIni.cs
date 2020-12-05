@@ -7,7 +7,6 @@ using System.IO;
 using System.Diagnostics;
 using FDK;
 using FDK.ExtensionMethods;
-using OpenTK;
 using TJAPlayer3.Common;
 
 namespace TJAPlayer3
@@ -1446,7 +1445,7 @@ namespace TJAPlayer3
 		}
 		public void t書き出し( string iniファイル名 )
 		{
-			StreamWriter sw = new StreamWriter( iniファイル名, false, Encoding.GetEncoding("UTF-8") );
+			StreamWriter sw = new StreamWriter( iniファイル名, false, Encoding.GetEncoding( "Shift_JIS" ) );
 			sw.WriteLine( ";-------------------" );
 			
 			#region [ System ]
@@ -1987,7 +1986,7 @@ namespace TJAPlayer3
 			{
 				string str;
 				this.tキーアサインを全部クリアする();
-				using ( StreamReader reader = new StreamReader( this.ConfigIniファイル名, Encoding.GetEncoding("UTF-8") ) )
+				using ( StreamReader reader = new StreamReader( this.ConfigIniファイル名, Encoding.GetEncoding( "Shift_JIS" ) ) )
 				{
 					str = reader.ReadToEnd();
 				}
@@ -2157,12 +2156,12 @@ namespace TJAPlayer3
                                             else if ( str3.Equals( "WindowX" ) )		// #30675 2013.02.04 ikanick add
 											{
 												this.n初期ウィンドウ開始位置X = C変換.n値を文字列から取得して範囲内に丸めて返す(
-													str4, 0, DisplayDevice.Default.Width - 1, this.n初期ウィンドウ開始位置X);
+                                                    str4, 0,  System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width - 1 , this.n初期ウィンドウ開始位置X );
 											}
 											else if ( str3.Equals( "WindowY" ) )		// #30675 2013.02.04 ikanick add
 											{
 												this.n初期ウィンドウ開始位置Y = C変換.n値を文字列から取得して範囲内に丸めて返す(
-													str4, 0, DisplayDevice.Default.Height - 1, this.n初期ウィンドウ開始位置Y) ;
+                                                    str4, 0,  System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height - 1 , this.n初期ウィンドウ開始位置Y );
 											}
 											else if ( str3.Equals( "WindowWidth" ) )		// #23510 2010.10.31 yyagi add
 											{

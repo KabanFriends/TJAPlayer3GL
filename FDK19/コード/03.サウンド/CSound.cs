@@ -427,9 +427,9 @@ namespace FDK
 			switch (SoundDeviceType)
 			{
 				case ESoundDeviceType.ExclusiveWASAPI:
-					return "WASAPI";
+					return "WASAPI(Exclusive)";
 				case ESoundDeviceType.SharedWASAPI:
-					return "WASAPI";
+					return "WASAPI(Shared)";
 				case ESoundDeviceType.ASIO:
 					return "ASIO";
 				case ESoundDeviceType.OpenAL:

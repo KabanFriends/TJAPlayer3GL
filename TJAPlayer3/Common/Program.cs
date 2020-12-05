@@ -3,11 +3,9 @@ using System.Globalization;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Diagnostics;
-using System.Reflection;
+using System.Windows.Forms;
 using System.IO;
 using TJAPlayer3.ErrorReporting;
-using System.Text;
-using Eto;
 
 namespace TJAPlayer3
 {
@@ -33,10 +31,7 @@ namespace TJAPlayer3
 		[STAThread]
         private static void Main()
         {
-			Platform.Initialize(Platform.Detect);
-
 			SetDllDirectory("ffmpeg");
-			Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
 			ErrorReporter.WithErrorReporting(MainImpl);
         }
@@ -53,9 +48,9 @@ namespace TJAPlayer3
 				bool bDLLnotfound = false;
 
 				Trace.WriteLine( "Current Directory: " + Environment.CurrentDirectory );
-				Trace.WriteLine( "EXEのあるフォルダ: " + Path.GetDirectoryName(Assembly.GetEntryAssembly().Location));
+				Trace.WriteLine( "EXEのあるフォルダ: " + Path.GetDirectoryName( Application.ExecutablePath ) );
 
-				Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+                Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
 
 				if ( !bDLLnotfound )
 				{

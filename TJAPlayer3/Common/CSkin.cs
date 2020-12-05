@@ -784,8 +784,7 @@ namespace TJAPlayer3
             void LoadSkinConfigFromFile(string path, ref string work)
             {
                 if (!File.Exists(Path(path))) return;
-                Encoding enc = CReadTextEncoding.JudgeFileEncoding(Path(path));
-                using (var streamReader = new StreamReader(Path(path), enc))
+                using (var streamReader = new StreamReader(Path(path), Encoding.GetEncoding("Shift_JIS")))
                 {
                     while (streamReader.Peek() > -1) // 一行ずつ読み込む。
                     {

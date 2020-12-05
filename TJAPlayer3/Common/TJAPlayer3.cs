@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
+using System.Windows.Forms;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Diagnostics;
@@ -10,7 +11,6 @@ using System.Linq;
 using System.Threading;
 using FDK;
 using System.Reflection;
-using Eto.Forms;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
@@ -346,12 +346,12 @@ namespace TJAPlayer3
 			{
 				if (ConfigIni.bウィンドウモード == false)   // #23510 2010.10.27 yyagi: backup current window size before going fullscreen mode
 				{
-					base.WindowState = OpenTK.WindowState.Fullscreen;
+					base.WindowState = WindowState.Fullscreen;
 				}
 
 				if (ConfigIni.bウィンドウモード == true)    // #23510 2010.10.27 yyagi: to resume window size from backuped value
 				{
-					base.WindowState = OpenTK.WindowState.Normal;
+					base.WindowState = WindowState.Normal;
 				}
 			}
 		}
@@ -432,13 +432,12 @@ namespace TJAPlayer3
 			{
 				this.n進行描画の戻り値 = (r現在のステージ != null) ? r現在のステージ.On進行描画() : 0;
 
-				/*
 				if ( Control.IsKeyLocked( Keys.CapsLock ) )				// #30925 2013.3.11 yyagi; capslock=ON時は、EnumSongsしないようにして、起動負荷とASIOの音切れの関係を確認する
 				{														// → songs.db等の書き込み時だと音切れするっぽい
 					actEnumSongs.On非活性化();
 					EnumSongs.SongListEnumCompletelyDone();
 					TJAPlayer3.stage選曲.bIsEnumeratingSongs = false;
-				}*/
+				}
 
 				#region [ 曲検索スレッドの起動/終了 ]					// ここに"Enumerating Songs..."表示を集約
 
@@ -1131,8 +1130,8 @@ for (int i = 0; i < 3; i++) {
 			#region [ 垂直基線同期切り替え ]
 			if (this.b次のタイミングで垂直帰線同期切り替えを行う)
 			{
-				bool bIsMaximized = (this.WindowState == OpenTK.WindowState.Maximized);// #23510 2010.11.3 yyagi: to backup current window mode before changing VSyncWait
-				bool bIsFullScreen = (this.WindowState == OpenTK.WindowState.Fullscreen);
+				bool bIsMaximized = (this.WindowState == WindowState.Maximized);// #23510 2010.11.3 yyagi: to backup current window mode before changing VSyncWait
+				bool bIsFullScreen = (this.WindowState == WindowState.Fullscreen);
 
 				if (ConfigIni.b垂直帰線待ちを行う)
 					base.VSync = VSyncMode.On;
@@ -1144,11 +1143,11 @@ for (int i = 0; i < 3; i++) {
 				base.Height = ConfigIni.bウィンドウモード ? ConfigIni.nウインドウheight : GameWindowSize.Height;
 				if (bIsMaximized)
 				{
-					this.WindowState = OpenTK.WindowState.Maximized;// #23510 2010.11.3 yyagi: to resume window mode after changing VSyncWait
+					this.WindowState = WindowState.Maximized;// #23510 2010.11.3 yyagi: to resume window mode after changing VSyncWait
 				}
 				else if (bIsFullScreen)
 				{
-					this.WindowState = OpenTK.WindowState.Fullscreen;
+					this.WindowState = WindowState.Fullscreen;
 				}
 			}
 			#endregion
@@ -1316,7 +1315,7 @@ for (int i = 0; i < 3; i++) {
 #if DEBUG
 			strEXEのあるフォルダ = Environment.CurrentDirectory + @"\";
 #else
-			strEXEのあるフォルダ = Path.GetDirectoryName( Assembly.GetEntryAssembly().Location ) + @"\";	// #23629 2010.11.9 yyagi: set correct pathname where DTXManiaGR.exe is.
+			strEXEのあるフォルダ = Path.GetDirectoryName( Application.ExecutablePath ) + @"\";	// #23629 2010.11.9 yyagi: set correct pathname where DTXManiaGR.exe is.
 #endif
 			// END #23629 2010.11.13 from
 			//-----------------
@@ -1349,18 +1348,16 @@ for (int i = 0; i < 3; i++) {
 			{
 				try
 				{
-					Trace.Listeners.Add(new CTraceLogListener(new StreamWriter(System.IO.Path.Combine(strEXEのあるフォルダ, "TJAPlayer3.log"), false, Encoding.GetEncoding("UTF-8"))));
+					Trace.Listeners.Add(new CTraceLogListener(new StreamWriter(System.IO.Path.Combine(strEXEのあるフォルダ, "TJAPlayer3.log"), false, Encoding.GetEncoding("Shift_JIS"))));
 				}
 				catch (System.UnauthorizedAccessException)          // #24481 2011.2.20 yyagi
 				{
 					int c = (CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "ja") ? 0 : 1;
 					string[] mes_writeErr = {
-						"TJAPlayer3.logへの書き込みができませんでした。書き込みできるようにしてから、再度起動してください。",
+						"DTXManiaLog.txtへの書き込みができませんでした。書き込みできるようにしてから、再度起動してください。",
 						"Failed to write DTXManiaLog.txt. Please set it writable and try again."
 					};
-
-					MessageBox.Show(mes_writeErr[c], "DTXMania boot error");
-
+					MessageBox.Show(mes_writeErr[c], "DTXMania boot error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 					Environment.Exit(1);
 				}
 			}
@@ -1393,9 +1390,9 @@ for (int i = 0; i < 3; i++) {
 			#endregion
 			#region [ Direct3D9 デバイスの生成 ]
 			if (ConfigIni.bウィンドウモード)
-				base.WindowState = OpenTK.WindowState.Normal;
+				base.WindowState = WindowState.Normal;
 			else
-				base.WindowState = OpenTK.WindowState.Fullscreen;
+				base.WindowState = WindowState.Fullscreen;
 
 			if (ConfigIni.b垂直帰線待ちを行う)
 				base.VSync = VSyncMode.On;
@@ -2062,17 +2059,6 @@ for (int i = 0; i < 3; i++) {
 
 			TJAPlayer3.act文字コンソール.On活性化();
 		}
-
-		public int GetWindowX()
-        {
-			return base.X;
-        }
-		
-		public int GetWindowY()
-        {
-			return base.Y;
-        }
-
 		#region [ Windowイベント処理 ]
 		//-----------------
 		private void Window_KeyDown(object sender, OpenTK.Input.KeyboardKeyEventArgs e)
