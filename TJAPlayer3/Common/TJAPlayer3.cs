@@ -1539,7 +1539,7 @@ for (int i = 0; i < 3; i++) {
 			//---------------------
 			Trace.TraceInformation("サウンドデバイスの初期化を行います。");
 			Trace.Indent();
-			try
+			//try
 			{
 				ESoundDeviceType soundDeviceType;
 				switch (TJAPlayer3.ConfigIni.nSoundDeviceType)
@@ -1597,14 +1597,14 @@ for (int i = 0; i < 3; i++) {
 				//FDK.CSound管理.bIsMP3DecodeByWindowsCodec = CDTXMania.ConfigIni.bNoMP3Streaming;
 				Trace.TraceInformation("サウンドデバイスの初期化を完了しました。");
 			}
-			catch (Exception e)
+			/*catch (Exception e)
 			{
 				throw new NullReferenceException("サウンドデバイスがひとつも有効になっていないため、サウンドデバイスの初期化ができませんでした。", e);
 			}
 			finally
 			{
 				Trace.Unindent();
-			}
+			}*/
 			//---------------------
 			#endregion
 			#region [ Songs管理 の初期化 ]

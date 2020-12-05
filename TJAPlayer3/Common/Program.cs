@@ -28,10 +28,20 @@ namespace TJAPlayer3
 		//-----------------------------
 		#endregion
 
+
 		[STAThread]
         private static void Main()
         {
-			SetDllDirectory("ffmpeg");
+			if (IntPtr.Size == 8)
+			{
+				// 64bitっぽい
+				SetDllDirectory("lib/x64");
+			}
+			else if (IntPtr.Size == 4)
+			{
+				// 32bitっぽい
+				SetDllDirectory("lib/x86");
+			}
 
 			ErrorReporter.WithErrorReporting(MainImpl);
         }
