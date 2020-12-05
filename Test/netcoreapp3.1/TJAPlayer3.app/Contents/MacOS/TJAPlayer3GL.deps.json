@@ -1,0 +1,371 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v3.1/osx-x64",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v3.1": {},
+    ".NETCoreApp,Version=v3.1/osx-x64": {
+      "TJAPlayer3GL/1.2.0": {
+        "dependencies": {
+          "Eto.Forms": "2.5.6",
+          "Eto.Platform.Gtk": "2.5.6",
+          "Eto.Platform.Mac64": "2.5.6",
+          "FDK": "1.0.0",
+          "LargeAddressAware": "1.0.5",
+          "OpenTK": "3.2.0",
+          "System.Drawing.Common": "5.0.0",
+          "System.Resources.Extensions": "5.0.0"
+        },
+        "runtime": {
+          "TJAPlayer3GL.dll": {}
+        }
+      },
+      "AtkSharp/3.22.25.74": {
+        "dependencies": {
+          "GLibSharp": "3.22.25.74"
+        },
+        "runtime": {
+          "lib/netstandard2.0/AtkSharp.dll": {
+            "assemblyVersion": "3.22.25.74",
+            "fileVersion": "3.22.25.74"
+          }
+        }
+      },
+      "CairoSharp/3.22.25.74": {
+        "runtime": {
+          "lib/netstandard2.0/CairoSharp.dll": {
+            "assemblyVersion": "3.22.25.74",
+            "fileVersion": "3.22.25.74"
+          }
+        }
+      },
+      "Eto.Forms/2.5.6": {
+        "dependencies": {
+          "System.ComponentModel.Annotations": "4.7.0"
+        },
+        "runtime": {
+          "lib/netstandard2.0/Eto.dll": {
+            "assemblyVersion": "2.5.0.0",
+            "fileVersion": "2.5.7565.31969"
+          }
+        }
+      },
+      "Eto.Platform.Gtk/2.5.6": {
+        "dependencies": {
+          "Eto.Forms": "2.5.6",
+          "GtkSharp": "3.22.25.74"
+        },
+        "runtime": {
+          "lib/netstandard2.0/Eto.Gtk.dll": {
+            "assemblyVersion": "2.5.0.0",
+            "fileVersion": "2.5.7565.32009"
+          }
+        }
+      },
+      "Eto.Platform.Mac64/2.5.6": {
+        "dependencies": {
+          "Eto.Forms": "2.5.6"
+        },
+        "runtime": {
+          "lib/netstandard2.0/Eto.Mac64.dll": {
+            "assemblyVersion": "2.5.0.0",
+            "fileVersion": "2.5.7565.31975"
+          },
+          "lib/netstandard2.0/MonoMac.dll": {
+            "assemblyVersion": "0.0.1.0",
+            "fileVersion": "0.0.1.0"
+          }
+        }
+      },
+      "FFmpeg.AutoGen/4.3.1": {
+        "runtime": {
+          "lib/netstandard2.1/FFmpeg.AutoGen.dll": {
+            "assemblyVersion": "4.3.1.0",
+            "fileVersion": "4.3.1.0"
+          }
+        }
+      },
+      "GdkSharp/3.22.25.74": {
+        "dependencies": {
+          "CairoSharp": "3.22.25.74",
+          "GLibSharp": "3.22.25.74",
+          "GioSharp": "3.22.25.74",
+          "PangoSharp": "3.22.25.74"
+        },
+        "runtime": {
+          "lib/netstandard2.0/GdkSharp.dll": {
+            "assemblyVersion": "3.22.25.74",
+            "fileVersion": "3.22.25.74"
+          }
+        }
+      },
+      "GioSharp/3.22.25.74": {
+        "dependencies": {
+          "GLibSharp": "3.22.25.74"
+        },
+        "runtime": {
+          "lib/netstandard2.0/GioSharp.dll": {
+            "assemblyVersion": "3.22.25.74",
+            "fileVersion": "3.22.25.74"
+          }
+        }
+      },
+      "GLibSharp/3.22.25.74": {
+        "runtime": {
+          "lib/netstandard2.0/GLibSharp.dll": {
+            "assemblyVersion": "3.22.25.74",
+            "fileVersion": "3.22.25.74"
+          }
+        }
+      },
+      "GtkSharp/3.22.25.74": {
+        "dependencies": {
+          "AtkSharp": "3.22.25.74",
+          "CairoSharp": "3.22.25.74",
+          "GLibSharp": "3.22.25.74",
+          "GdkSharp": "3.22.25.74",
+          "GioSharp": "3.22.25.74",
+          "PangoSharp": "3.22.25.74"
+        },
+        "runtime": {
+          "lib/netstandard2.0/GtkSharp.dll": {
+            "assemblyVersion": "3.22.25.74",
+            "fileVersion": "3.22.25.74"
+          }
+        }
+      },
+      "LargeAddressAware/1.0.5": {},
+      "Microsoft.NETCore.Platforms/5.0.0": {},
+      "Microsoft.Win32.SystemEvents/5.0.0": {
+        "dependencies": {
+          "Microsoft.NETCore.Platforms": "5.0.0"
+        },
+        "runtime": {
+          "lib/netstandard2.0/Microsoft.Win32.SystemEvents.dll": {
+            "assemblyVersion": "5.0.0.0",
+            "fileVersion": "5.0.20.51904"
+          }
+        }
+      },
+      "OpenTK/3.2.0": {
+        "runtime": {
+          "lib/net20/OpenTK.dll": {
+            "assemblyVersion": "3.2.0.0",
+            "fileVersion": "3.2.0.0"
+          }
+        }
+      },
+      "PangoSharp/3.22.25.74": {
+        "dependencies": {
+          "CairoSharp": "3.22.25.74",
+          "GLibSharp": "3.22.25.74"
+        },
+        "runtime": {
+          "lib/netstandard2.0/PangoSharp.dll": {
+            "assemblyVersion": "3.22.25.74",
+            "fileVersion": "3.22.25.74"
+          }
+        }
+      },
+      "ReadJEnc/1.3.1.2": {
+        "runtime": {
+          "lib/netcoreapp2.0/Hnx8.ReadJEnc.dll": {
+            "assemblyVersion": "1.3.1.2",
+            "fileVersion": "1.3.1.2"
+          }
+        }
+      },
+      "System.ComponentModel.Annotations/4.7.0": {},
+      "System.Drawing.Common/5.0.0": {
+        "dependencies": {
+          "Microsoft.Win32.SystemEvents": "5.0.0"
+        },
+        "runtime": {
+          "runtimes/unix/lib/netcoreapp3.0/System.Drawing.Common.dll": {
+            "assemblyVersion": "5.0.0.0",
+            "fileVersion": "5.0.20.51904"
+          }
+        }
+      },
+      "System.Resources.Extensions/5.0.0": {
+        "runtime": {
+          "lib/netstandard2.0/System.Resources.Extensions.dll": {
+            "assemblyVersion": "5.0.0.0",
+            "fileVersion": "5.0.20.51904"
+          }
+        }
+      },
+      "FDK/1.0.0": {
+        "dependencies": {
+          "FFmpeg.AutoGen": "4.3.1",
+          "OpenTK": "3.2.0",
+          "ReadJEnc": "1.3.1.2",
+          "System.Drawing.Common": "5.0.0"
+        },
+        "runtime": {
+          "FDK.dll": {}
+        }
+      },
+      "Bass.Net/2.4.14.1": {
+        "runtime": {
+          "Bass.Net.dll": {
+            "assemblyVersion": "2.4.14.1",
+            "fileVersion": "2.4.14.1"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "TJAPlayer3GL/1.2.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "AtkSharp/3.22.25.74": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-uHPidgASKeXiFMhI5bXk+mj5JluKttZwUInS5CbX1eE/83TBlzb9mkOnwa0Lc9RhQhlvf8Nko/Q75TcOSXVgmQ==",
+      "path": "atksharp/3.22.25.74",
+      "hashPath": "atksharp.3.22.25.74.nupkg.sha512"
+    },
+    "CairoSharp/3.22.25.74": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-Qz3E7Pvq3vPBCXjE40xfBWEWrd3Z0lUh9Xvwg725FNhgl6H3Sn+Jl8iPaANofd2k5eWrubZTEYpGrR4Z1rOD0A==",
+      "path": "cairosharp/3.22.25.74",
+      "hashPath": "cairosharp.3.22.25.74.nupkg.sha512"
+    },
+    "Eto.Forms/2.5.6": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-z62tGSaucGGeE4hK6XH9sN5DbibSVDnmbcKbmZVBSFbkOskjgq6jx+oaIFoG9LoKwgSy5AeR8PuMltgTYNN+WQ==",
+      "path": "eto.forms/2.5.6",
+      "hashPath": "eto.forms.2.5.6.nupkg.sha512"
+    },
+    "Eto.Platform.Gtk/2.5.6": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-6TflWmhQlZED6PiXXXDgfu+J0eCKCgAMW/+v6Edol6ZezTnJoDsjgCJBQvwhAVbyczgmtJUqFGVvlle7nOmNrA==",
+      "path": "eto.platform.gtk/2.5.6",
+      "hashPath": "eto.platform.gtk.2.5.6.nupkg.sha512"
+    },
+    "Eto.Platform.Mac64/2.5.6": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-nF/E9UHDgzWIyBCRze29i4xPrRXoGnivcAhrGPzAY1SDpxa0xdh2/4EVQuB6Tpz6DDF/FbWgvMY3WvoR+cDnOA==",
+      "path": "eto.platform.mac64/2.5.6",
+      "hashPath": "eto.platform.mac64.2.5.6.nupkg.sha512"
+    },
+    "FFmpeg.AutoGen/4.3.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-YtbirDY3Q5enxrSbiBCEOYdsPrbJYecllOM3Y89HNFHur5hK8EcDrPphUVT/aPgj9BByeL8rTtw2T1dcAcml3Q==",
+      "path": "ffmpeg.autogen/4.3.1",
+      "hashPath": "ffmpeg.autogen.4.3.1.nupkg.sha512"
+    },
+    "GdkSharp/3.22.25.74": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-GlY3N8BQda3/KUVmMLLwzTBMludCGRJSMh2w4OKvc3KX4J2Fs9tBKh7/qdUfRV+TqKEPhAKh4wwYeM1fzjk/rg==",
+      "path": "gdksharp/3.22.25.74",
+      "hashPath": "gdksharp.3.22.25.74.nupkg.sha512"
+    },
+    "GioSharp/3.22.25.74": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-YHaT6D+df57EajZ5EzgMFPz+vLA16eOb/sySEka2T5MnCQIhKUFBsJfJY0iMy1CBEBSJzVNrCFi4R55QivhaPg==",
+      "path": "giosharp/3.22.25.74",
+      "hashPath": "giosharp.3.22.25.74.nupkg.sha512"
+    },
+    "GLibSharp/3.22.25.74": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-82PaZvqcSyHCYEnwTelhlqxT0wvwaNQNI2D9NlP5DzNZ9J0YMBDm9L9I2YmwJmJhcscu171kxpPs0eeRxHvbdg==",
+      "path": "glibsharp/3.22.25.74",
+      "hashPath": "glibsharp.3.22.25.74.nupkg.sha512"
+    },
+    "GtkSharp/3.22.25.74": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-n1DJKEC1N+A0YjaURm3Nuj3lwuwoZwNdMT2xxgLz3FauSECYVZIbPL9QFy4To+8i6fqaO3/1eqO3roi/qOJ+eQ==",
+      "path": "gtksharp/3.22.25.74",
+      "hashPath": "gtksharp.3.22.25.74.nupkg.sha512"
+    },
+    "LargeAddressAware/1.0.5": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-BD0M9HEgD8kdT4tP9HWDbhzJ7YuacD4x3DWc8RckSaWZY+l/8jhGCqa49El0kCJpA+MoFgO+ttxSwSUjBX09zw==",
+      "path": "largeaddressaware/1.0.5",
+      "hashPath": "largeaddressaware.1.0.5.nupkg.sha512"
+    },
+    "Microsoft.NETCore.Platforms/5.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-VyPlqzH2wavqquTcYpkIIAQ6WdenuKoFN0BdYBbCWsclXacSOHNQn66Gt4z5NBqEYW0FAPm5rlvki9ZiCij5xQ==",
+      "path": "microsoft.netcore.platforms/5.0.0",
+      "hashPath": "microsoft.netcore.platforms.5.0.0.nupkg.sha512"
+    },
+    "Microsoft.Win32.SystemEvents/5.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-Bh6blKG8VAKvXiLe2L+sEsn62nc1Ij34MrNxepD2OCrS5cpCwQa9MeLyhVQPQ/R4Wlzwuy6wMK8hLb11QPDRsQ==",
+      "path": "microsoft.win32.systemevents/5.0.0",
+      "hashPath": "microsoft.win32.systemevents.5.0.0.nupkg.sha512"
+    },
+    "OpenTK/3.2.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-31L+x7r3EV1bnRjzqk/Z6rh3oO4h2kNa68+hbwAvXctHS+eI00x9d+ox++wY+uoKg2y0ILi7wQRBLktcb7/fEQ==",
+      "path": "opentk/3.2.0",
+      "hashPath": "opentk.3.2.0.nupkg.sha512"
+    },
+    "PangoSharp/3.22.25.74": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-Dntn1HA3G5NzrQ7WrgiNfNhfHlEII61sZRvXwFGePZ/y9KN/jSzPST+gKu4Twm3C5kk130nBqbF2A1hET1PdeQ==",
+      "path": "pangosharp/3.22.25.74",
+      "hashPath": "pangosharp.3.22.25.74.nupkg.sha512"
+    },
+    "ReadJEnc/1.3.1.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-zBFi3ohQSRk3VvpNM8yqW8R+hoHcDNfxGOrPH4yZgJDVRHOrUn1TTiUnI/XQ+BmqTIZuaUT0SI2+6waJUOp4Tg==",
+      "path": "readjenc/1.3.1.2",
+      "hashPath": "readjenc.1.3.1.2.nupkg.sha512"
+    },
+    "System.ComponentModel.Annotations/4.7.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-0YFqjhp/mYkDGpU0Ye1GjE53HMp9UVfGN7seGpAMttAC0C40v5gw598jCgpbBLMmCo0E5YRLBv5Z2doypO49ZQ==",
+      "path": "system.componentmodel.annotations/4.7.0",
+      "hashPath": "system.componentmodel.annotations.4.7.0.nupkg.sha512"
+    },
+    "System.Drawing.Common/5.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-SztFwAnpfKC8+sEKXAFxCBWhKQaEd97EiOL7oZJZP56zbqnLpmxACWA8aGseaUExciuEAUuR9dY8f7HkTRAdnw==",
+      "path": "system.drawing.common/5.0.0",
+      "hashPath": "system.drawing.common.5.0.0.nupkg.sha512"
+    },
+    "System.Resources.Extensions/5.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-KBiqY/+W6hWVwucHBHO76JkgBGyawlxCcP946MhK8dNjalaBgZkyHaux8ko58PENTqQHHjoDa7cfIkAchfJPPA==",
+      "path": "system.resources.extensions/5.0.0",
+      "hashPath": "system.resources.extensions.5.0.0.nupkg.sha512"
+    },
+    "FDK/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Bass.Net/2.4.14.1": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}
