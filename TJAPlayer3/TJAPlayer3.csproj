@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Release</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
@@ -77,13 +77,14 @@
     <OutputPath>..\Test\</OutputPath>
     <DefineConstants>DEBUG;TRACE;_TEST_ENGLISH TEST_Direct3D9Ex_ _WindowedFullscreen MemoryRenderer</DefineConstants>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <WarningLevel>0</WarningLevel>
+    <WarningLevel>4</WarningLevel>
     <NoWarn>0219</NoWarn>
     <DebugType>full</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <UseVSHostingProcess>false</UseVSHostingProcess>
     <LangVersion>7.3</LangVersion>
     <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <OutputPath>..\Test\</OutputPath>
@@ -99,7 +100,6 @@
   <ItemGroup>
     <Reference Include="Bass.Net">
       <HintPath>..\Test\lib\Bass.Net.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="CSharpTest.Net.Collections, Version=14.906.1403.1082, Culture=neutral, PublicKeyToken=06aee00cce822474, processorArchitecture=MSIL">
       <HintPath>..\packages\CSharpTest.Net.Collections.14.906.1403.1082\lib\net40\CSharpTest.Net.Collections.dll</HintPath>
@@ -109,9 +109,6 @@
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.VisualBasic" />
-    <Reference Include="Microsoft.Win32.Registry, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Win32.Registry.4.5.0\lib\net461\Microsoft.Win32.Registry.dll</HintPath>
-    </Reference>
     <Reference Include="OpenTK, Version=3.2.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
       <HintPath>..\packages\OpenTK.3.2\lib\net20\OpenTK.dll</HintPath>
     </Reference>
@@ -172,8 +169,8 @@
       <DependentUpon>Discord.resx</DependentUpon>
     </Compile>
     <None Include="app.config" />
-    <None Include="packages.config" />
     <None Include="OpenTK.dll.config" />
+    <None Include="packages.config" />
     <None Include="TJAPlayer3.manifest" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -358,15 +355,25 @@
   -->
   <PropertyGroup>
     <PostBuildEvent>move /y "$(TargetDir)Bass.Net.dll" "$(SolutionDir)Test\lib\"
+
 move /y "$(TargetDir)CSharpTest.Net.Collections.*" "$(SolutionDir)Test\lib\"
+
 move /y "$(TargetDir)DirectShowLib-2005.dll" "$(SolutionDir)Test\lib\"
+
 move /y "$(TargetDir)FDK.dll" "$(SolutionDir)Test\lib\"
+
 move /y "$(TargetDir)FDK.pdb" "$(SolutionDir)Test\lib\"
+
 move /y "$(TargetDir)SlimDX.dll" "$(SolutionDir)Test\lib\"
+
 move /y "$(TargetDir)OpenTK.*" "$(SolutionDir)Test\lib\"
+
 move /y "$(TargetDir)FFmpeg.AutoGen.*" "$(SolutionDir)Test\lib\"
+
 move /y "$(TargetDir)DynamicInterop.*" "$(SolutionDir)Test\lib\"
+
 move /y "$(TargetDir)Microsoft.Win32.Registry.dll" "$(SolutionDir)Test\lib\"
+
 move /y "$(TargetDir)System.Security.*" "$(SolutionDir)Test\lib\"
 </PostBuildEvent>
   </PropertyGroup>

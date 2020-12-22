@@ -28,7 +28,6 @@ namespace TJAPlayer3
 		//-----------------------------
 		#endregion
 
-
 		[STAThread]
         private static void Main()
         {
@@ -41,6 +40,10 @@ namespace TJAPlayer3
 			{
 				// 32bitっぽい
 				SetDllDirectory("lib/x86");
+			}
+			else
+			{
+				throw new PlatformNotSupportedException();
 			}
 
 			ErrorReporter.WithErrorReporting(MainImpl);
