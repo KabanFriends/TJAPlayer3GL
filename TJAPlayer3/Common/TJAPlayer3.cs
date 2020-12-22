@@ -356,9 +356,16 @@ namespace TJAPlayer3
 			}
 		}
 
-		// Game 実装
+        // Game 実装
 
-		protected override void OnLoad(EventArgs e)
+        protected override void OnResize(EventArgs e)
+        {
+            base.OnResize(e);
+
+			this.WindowReshape(ClientRectangle.Width, ClientRectangle.Height);
+        }
+
+        protected override void OnLoad(EventArgs e)
 		{
 			base.OnLoad(e);
 			if (this.listトップレベルActivities != null)
@@ -1372,6 +1379,11 @@ for (int i = 0; i < 3; i++) {
 			//---------------------
 			base.X = ConfigIni.n初期ウィンドウ開始位置X;
 			base.Y = ConfigIni.n初期ウィンドウ開始位置Y;
+			if (ConfigIni.n初期ウィンドウ開始位置Y <= 0) //無理矢理位置調整
+			{
+				base.Y = 20;
+				ConfigIni.n初期ウィンドウ開始位置Y = 20;
+			}
 
 			base.Title = "";
 
@@ -2113,6 +2125,24 @@ for (int i = 0; i < 3; i++) {
 			}
 
 		}
+
+		public void WindowReshape(int width, int height)
+        {
+			GL.Ortho(0.0, GameWindowSize.Width, GameWindowSize.Height, 0.0, 1.0, -1.0);
+
+			var ratioX = width / (float)GameWindowSize.Width;
+			var ratioY = height / (float)GameWindowSize.Height;
+			var ratio = ratioX < ratioY ? ratioX : ratioY;
+
+			var viewWidth = Convert.ToInt32(GameWindowSize.Width * ratio);
+			var viewHeight = Convert.ToInt32(GameWindowSize.Height * ratio);
+
+			var viewX = Convert.ToInt32((width - GameWindowSize.Width * ratio) / 2);
+			var viewY = Convert.ToInt32((height - GameWindowSize.Height * ratio) / 2);
+
+			GL.Viewport(viewX, viewY, viewWidth, viewHeight);
+		}
+
 		#endregion
 		#endregion
 	}
