@@ -67,7 +67,6 @@ namespace TJAPlayer3
 				Drums.bSTAGEFAILED有効 = TJAPlayer3.ConfigIni.bSTAGEFAILED有効;
 				Drums.eダメージレベル = TJAPlayer3.ConfigIni.eダメージレベル;
 				Drums.b演奏にキーボードを使用した = this.b演奏にキーボードを使った.Drums;
-				Drums.b演奏にMIDI入力を使用した = this.b演奏にMIDI入力を使った.Drums;
 				Drums.b演奏にジョイパッドを使用した = this.b演奏にジョイパッドを使った.Drums;
 				Drums.b演奏にマウスを使用した = this.b演奏にマウスを使った.Drums;
 				Drums.nPerfectになる範囲ms = TJAPlayer3.nPerfect範囲ms;
@@ -174,7 +173,6 @@ namespace TJAPlayer3
 			{
 				this.b演奏にキーボードを使った[i] = false;
 				this.b演奏にジョイパッドを使った[i] = false;
-				this.b演奏にMIDI入力を使った[i] = false;
 				this.b演奏にマウスを使った[i] = false;
 			}
 			this.bAUTOでないチップが１つでもバーを通過した = false;
@@ -457,7 +455,6 @@ namespace TJAPlayer3
 		public bool bPAUSE;
 		public bool[] bIsAlreadyCleared;
 		public bool[] bIsAlreadyMaxed;
-		protected STDGBVALUE<bool> b演奏にMIDI入力を使った;
 		protected STDGBVALUE<bool> b演奏にキーボードを使った;
 		protected STDGBVALUE<bool> b演奏にジョイパッドを使った;
 		protected STDGBVALUE<bool> b演奏にマウスを使った;
@@ -2533,10 +2530,6 @@ namespace TJAPlayer3
 			if (TJAPlayer3.Pad.st検知したデバイス.Joypad)
 			{
 				this.b演奏にジョイパッドを使った[(int)part] = true;
-			}
-			if (TJAPlayer3.Pad.st検知したデバイス.MIDIIN)
-			{
-				this.b演奏にMIDI入力を使った[(int)part] = true;
 			}
 			if (TJAPlayer3.Pad.st検知したデバイス.Mouse)
 			{

@@ -103,7 +103,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="コード\00.共通\COS.cs" />
-    <Compile Include="コード\00.共通\CPowerManagement.cs" />
     <Compile Include="コード\00.共通\CTimerBase.cs" />
     <Compile Include="コード\00.共通\C共通.cs" />
     <Compile Include="コード\00.共通\ExtensionMethods\DoubleExtensions.cs" />
@@ -113,7 +112,6 @@
     <Compile Include="コード\01.フレームワーク\Game.cs" />
     <Compile Include="コード\02.入力\CInputJoystick.cs" />
     <Compile Include="コード\02.入力\CInputKeyboard.cs" />
-    <Compile Include="コード\02.入力\CInputMIDI.cs" />
     <Compile Include="コード\02.入力\CInputMouse.cs" />
     <Compile Include="コード\02.入力\CInput管理.cs" />
     <Compile Include="コード\02.入力\DeviceConstantConverter.cs" />
