@@ -3,17 +3,17 @@
 	/// <summary>
 	/// 一定間隔で単純増加する整数（カウント値）を扱う。
 	/// </summary>
-    /// <remarks>
-    /// ○使い方
-    /// 1.CCounterの変数をつくる。
-    /// 2.CCounterを生成
-    ///   ctCounter = new CCounter( 0, 3, 10, CDTXMania.Timer );
-    /// 3.進行メソッドを使用する。
-    /// 4.ウマー。
-    ///
-    /// double値を使う場合、t進行db、t進行LoopDbを使うこと。
-    /// また、double版では間隔の値はミリ秒単位ではなく、通常の秒単位になります。
-    /// </remarks>
+	/// <remarks>
+	/// ○使い方
+	/// 1.CCounterの変数をつくる。
+	/// 2.CCounterを生成
+	///   ctCounter = new CCounter( 0, 3, 10, CDTXMania.Timer );
+	/// 3.進行メソッドを使用する。
+	/// 4.ウマー。
+	///
+	/// double値を使う場合、t進行db、t進行LoopDbを使うこと。
+	/// また、double版では間隔の値はミリ秒単位ではなく、通常の秒単位になります。
+	/// </remarks>
 	public class CCounter
 	{
 		// 値プロパティ
@@ -39,26 +39,26 @@
 			set;
 		}
 
-        public double db開始値
-        {
-            get;
-            private set;
-        }
-        public double db終了値
-        {
-            get;
-            private set;
-        }
-        public double db現在の値
-        {
-            get;
-            set;
-        }
-        public double db現在の経過時間
-        {
-            get;
-            set;
-        }
+		public double db開始値
+		{
+			get;
+			private set;
+		}
+		public double db終了値
+		{
+			get;
+			private set;
+		}
+		public double db現在の値
+		{
+			get;
+			set;
+		}
+		public double db現在の経過時間
+		{
+			get;
+			set;
+		}
 
 		public double _db間隔
 		{
@@ -76,7 +76,7 @@
 
 		public bool b進行中
 		{
-			get { return ( this.n現在の経過時間ms != -1 ); }
+			get { return (this.n現在の経過時間ms != -1); }
 		}
 		public bool b停止中
 		{
@@ -84,36 +84,36 @@
 		}
 		public bool b終了値に達した
 		{
-			get { return ( this.n現在の値 >= this.n終了値 ); }
+			get { return (this.n現在の値 >= this.n終了値); }
 		}
 		public bool b終了値に達してない
 		{
 			get { return !this.b終了値に達した; }
 		}
 
-        /// <summary>通常のCCounterでは使用できません。</summary>
-        public bool b進行中db
-        {
-            get { return ( this.db現在の経過時間 != -1 ); }
-        }
+		/// <summary>通常のCCounterでは使用できません。</summary>
+		public bool b進行中db
+		{
+			get { return (this.db現在の経過時間 != -1); }
+		}
 
-        /// <summary>通常のCCounterでは使用できません。</summary>
-        public bool b停止中db
-        {
-            get { return !this.b進行中db; }
-        }
+		/// <summary>通常のCCounterでは使用できません。</summary>
+		public bool b停止中db
+		{
+			get { return !this.b進行中db; }
+		}
 
-        /// <summary>通常のCCounterでは使用できません。</summary>
-        public bool b終了値に達したdb
-        {
-            get { return ( this.db現在の値 >= this.db終了値 ); }
-        }
+		/// <summary>通常のCCounterでは使用できません。</summary>
+		public bool b終了値に達したdb
+		{
+			get { return (this.db現在の値 >= this.db終了値); }
+		}
 
-        /// <summary>通常のCCounterでは使用できません。</summary>
-        public bool b終了値に達してないdb
-        {
-            get { return !this.b終了値に達したdb; }
-        }
+		/// <summary>通常のCCounterでは使用できません。</summary>
+		public bool b終了値に達してないdb
+		{
+			get { return !this.b終了値に達したdb; }
+		}
 
 
 		// コンストラクタ
@@ -127,11 +127,11 @@
 			this.n現在の値 = 0;
 			this.n現在の経過時間ms = CTimer.n未使用;
 
-            this.db開始値 = 0;
-            this.db終了値 = 0;
+			this.db開始値 = 0;
+			this.db終了値 = 0;
 			this._db間隔 = 0;
 			this.db現在の値 = 0;
-            this.db現在の経過時間 = CSoundTimer.n未使用;
+			this.db現在の経過時間 = CSoundTimer.n未使用;
 		}
 
 		/// <summary>生成と同時に開始する。</summary>
@@ -144,7 +144,7 @@
 		/// <summary>生成と同時に開始する。(double版)</summary>
 		public CCounter(double db開始値, double db終了値, double db間隔ms, CSoundTimer timer)
 			: this()
-        {
+		{
 			this.t開始(db開始値, db終了値, db間隔ms * 1000.0, timer);
 		}
 
@@ -184,8 +184,8 @@
 			this.timerdb = timer;
 			this.db現在の経過時間 = this.timerdb.dbシステム時刻;
 			this.db現在の値 = db開始値;
-            if (db間隔 <= 0)
-                db間隔 = -db間隔;
+			if (db間隔 <= 0)
+				db間隔 = -db間隔;
 		}
 
 		/// <summary>
@@ -216,16 +216,16 @@
 		/// </summary>
 		public void t進行db()
 		{
-			if ( ( this.timerdb != null ) && ( this.db現在の経過時間 != CSoundTimer.n未使用 ) )
+			if ((this.timerdb != null) && (this.db現在の経過時間 != CSoundTimer.n未使用))
 			{
 
 				double num = this.timerdb.n現在時刻;
-				if ( num < this.db現在の経過時間 )
+				if (num < this.db現在の経過時間)
 					this.db現在の経過時間 = num;
 
-				while ( ( num - this.db現在の経過時間 ) >= this.db間隔 )
+				while ((num - this.db現在の経過時間) >= this.db間隔)
 				{
-					if ( ++this.db現在の値 > this.db終了値 )
+					if (++this.db現在の値 > this.db終了値)
 						this.db現在の値 = this.db終了値;
 
 					this.db現在の経過時間 += this.db間隔;
@@ -262,15 +262,15 @@
 		/// </summary>
 		public void t進行LoopDb()
 		{
-			if ( ( this.timerdb != null ) && ( this.db現在の経過時間 != CSoundTimer.n未使用 ) )
+			if ((this.timerdb != null) && (this.db現在の経過時間 != CSoundTimer.n未使用))
 			{
 				double num = this.timerdb.n現在時刻;
-				if ( num < this.n現在の経過時間ms )
+				if (num < this.n現在の経過時間ms)
 					this.db現在の経過時間 = num;
 
-				while ( ( num - this.db現在の経過時間 ) >= this.db間隔 )
+				while ((num - this.db現在の経過時間) >= this.db間隔)
 				{
-					if ( ++this.db現在の値 > this.db終了値 )
+					if (++this.db現在の値 > this.db終了値)
 						this.db現在の値 = this.db開始値;
 
 					this.db現在の経過時間 += this.db間隔;
@@ -285,7 +285,7 @@
 		public void t停止()
 		{
 			this.n現在の経過時間ms = CTimer.n未使用;
-            this.db現在の経過時間 = CSoundTimer.n未使用;
+			this.db現在の経過時間 = CSoundTimer.n未使用;
 		}
 
 
@@ -301,15 +301,15 @@
 		/// </summary>
 		/// <param name="bキー押下">キーが押下されている場合は true。</param>
 		/// <param name="tキー処理">キーが押下されている場合に実行する処理。</param>
-		public void tキー反復( bool bキー押下, DGキー処理 tキー処理 )
+		public void tキー反復(bool bキー押下, DGキー処理 tキー処理)
 		{
 			const int n1回目 = 0;
 			const int n2回目 = 1;
 			const int n3回目以降 = 2;
 
-			if ( bキー押下 )
+			if (bキー押下)
 			{
-				switch ( this.n現在の値 )
+				switch (this.n現在の値)
 				{
 					case n1回目:
 
@@ -320,7 +320,7 @@
 
 					case n2回目:
 
-						if ( ( this.timer.n現在時刻 - this.n現在の経過時間ms ) > 200 )
+						if ((this.timer.n現在時刻 - this.n現在の経過時間ms) > 200)
 						{
 							tキー処理();
 							this.n現在の経過時間ms = this.timer.n現在時刻;
@@ -330,7 +330,7 @@
 
 					case n3回目以降:
 
-						if ( ( this.timer.n現在時刻 - this.n現在の経過時間ms ) > 30 )
+						if ((this.timer.n現在時刻 - this.n現在の経過時間ms) > 30)
 						{
 							tキー処理();
 							this.n現在の経過時間ms = this.timer.n現在時刻;
@@ -351,8 +351,8 @@
 		#region [ private ]
 		//-----------------
 		private CTimer timer;
-        private CSoundTimer timerdb;
-        private double db間隔;
+		private CSoundTimer timerdb;
+		private double db間隔;
 		//-----------------
 		#endregion
 	}

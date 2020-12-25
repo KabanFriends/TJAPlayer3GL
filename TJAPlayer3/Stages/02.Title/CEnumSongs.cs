@@ -580,12 +580,12 @@ namespace TJAPlayer3
 		private static void SerializeSongList( CSongs管理 cs, string strPathSongList )
 		{
 			bool bSucceededSerialize = true;
-			Stream output = null;
 			try
 			{
-				output = File.Create( strPathSongList );
-				BinaryFormatter formatter = new BinaryFormatter();
-				formatter.Serialize( output, cs );
+                using (var output = File.Create(strPathSongList))
+                {
+                    new BinaryFormatter().Serialize( output, cs );
+                }
 			}
 			catch ( Exception e )
 			{
@@ -595,7 +595,6 @@ namespace TJAPlayer3
 			}
 			finally
 			{
-				output.Close();
 				if ( !bSucceededSerialize )
 				{
 					try

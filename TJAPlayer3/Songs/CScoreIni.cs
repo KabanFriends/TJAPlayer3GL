@@ -523,603 +523,683 @@ namespace TJAPlayer3
 			if( File.Exists( iniファイル名 ) )
 			{
 				string str;
-				StreamReader reader = new StreamReader( iniファイル名, Encoding.GetEncoding( "Shift_JIS" ) );
-				while( ( str = reader.ReadLine() ) != null )
-				{
-					str = str.Replace( '\t', ' ' ).TrimStart( new char[] { '\t', ' ' } );
-					if( ( str.Length != 0 ) && ( str[ 0 ] != ';' ) )
-					{
-						try
-						{
-							string item;
-							string para;
-							C演奏記録 c演奏記録;
-							#region [ section ]
-							if ( str[ 0 ] == '[' )
-							{
-								StringBuilder builder = new StringBuilder( 0x20 );
-								int num = 1;
-								while( ( num < str.Length ) && ( str[ num ] != ']' ) )
-								{
-									builder.Append( str[ num++ ] );
-								}
-								string str2 = builder.ToString();
-								if( str2.Equals( "File" ) )
-								{
-									section = Eセクション種別.File;
-								}
-								else if( str2.Equals( "HiScore.Drums" ) )
-								{
-									section = Eセクション種別.HiScoreDrums;
-								}
-								else if( str2.Equals( "HiSkill.Drums" ) )
-								{
-									section = Eセクション種別.HiSkillDrums;
-								}
-								else if( str2.Equals( "HiScore.Guitar" ) )
-								{
-									section = Eセクション種別.HiScoreGuitar;
-								}
-								else if( str2.Equals( "HiSkill.Guitar" ) )
-								{
-									section = Eセクション種別.HiSkillGuitar;
-								}
-								else if( str2.Equals( "HiScore.Bass" ) )
-								{
-									section = Eセクション種別.HiScoreBass;
-                                }
-                                else if (str2.Equals("HiSkill.Bass"))
-                                {
-                                    section = Eセクション種別.HiSkillBass;
-                                }
-                                // #23595 2011.1.9 ikanick
-                                else if (str2.Equals("LastPlay.Drums"))
-                                {
-                                    section = Eセクション種別.LastPlayDrums;
-                                }
-                                else if (str2.Equals("LastPlay.Guitar"))
-                                {
-                                    section = Eセクション種別.LastPlayGuitar;
-                                }
-                                else if (str2.Equals("LastPlay.Bass"))
-                                {
-                                    section = Eセクション種別.LastPlayBass;
-                                }
-                                //----------------------------------------------------
-								else
-								{
-									section = Eセクション種別.Unknown;
-								}
-							}
-							#endregion
-							else
-							{
-								string[] strArray = str.Split( new char[] { '=' } );
-								if( strArray.Length == 2 )
-								{
-									item = strArray[ 0 ].Trim();
-									para = strArray[ 1 ].Trim();
-									switch( section )
-									{
-										case Eセクション種別.File:
-											{
-												if( !item.Equals( "Title" ) )
-												{
-													goto Label_01C7;
-												}
-												this.stファイル.Title = para;
-												continue;
-											}
-										case Eセクション種別.HiScoreDrums:
-										case Eセクション種別.HiSkillDrums:
-										case Eセクション種別.HiScoreGuitar:
-										case Eセクション種別.HiSkillGuitar:
-										case Eセクション種別.HiScoreBass:
-                                        case Eセクション種別.HiSkillBass:
-                                        case Eセクション種別.LastPlayDrums:// #23595 2011.1.9 ikanick
-                                        case Eセクション種別.LastPlayGuitar:
-                                        case Eセクション種別.LastPlayBass:
-											{
-												c演奏記録 = this.stセクション[ (int) section ];
-												if( !item.Equals( "Score" ) )
-												{
-													goto Label_03B9;
-												}
-												c演奏記録.nスコア = long.Parse( para );
-                                                
+                using (var reader = new StreamReader(iniファイル名, Encoding.GetEncoding("Shift_JIS")))
+                {
+                    while ((str = reader.ReadLine()) != null)
+                    {
+                        str = str.Replace('\t', ' ').TrimStart(new char[] {'\t', ' '});
+                        if ((str.Length != 0) && (str[0] != ';'))
+                        {
+                            try
+                            {
+                                string item;
+                                string para;
+                                C演奏記録 c演奏記録;
 
-												continue;
-											}
-									}
-								}
-							}
-							continue;
-							#region [ File section ]
-						Label_01C7:
-							if( item.Equals( "Name" ) )
-							{
-								this.stファイル.Name = para;
-							}
-							else if( item.Equals( "PlayCountDrums" ) )
-							{
-								this.stファイル.PlayCountDrums = C変換.n値を文字列から取得して範囲内に丸めて返す( para, 0, 99999999, 0 );
-							}
-							else if( item.Equals( "PlayCountGuitars" ) )// #23596 11.2.5 changed ikanick
-							{
-								this.stファイル.PlayCountGuitar = C変換.n値を文字列から取得して範囲内に丸めて返す( para, 0, 99999999, 0 );
-							}
-							else if( item.Equals( "PlayCountBass" ) )
-							{
-								this.stファイル.PlayCountBass = C変換.n値を文字列から取得して範囲内に丸めて返す( para, 0, 99999999, 0 );
-                            }
-                            // #23596 10.11.16 add ikanick------------------------------------/
-                            else if (item.Equals("ClearCountDrums"))
-                            {
-                                this.stファイル.ClearCountDrums = C変換.n値を文字列から取得して範囲内に丸めて返す(para, 0, 99999999, 0);
-                            }
-                            else if (item.Equals("ClearCountGuitars"))// #23596 11.2.5 changed ikanick
-                            {
-                                this.stファイル.ClearCountGuitar = C変換.n値を文字列から取得して範囲内に丸めて返す(para, 0, 99999999, 0);
-                            }
-                            else if (item.Equals("ClearCountBass"))
-                            {
-                                this.stファイル.ClearCountBass = C変換.n値を文字列から取得して範囲内に丸めて返す(para, 0, 99999999, 0);
-                            }
-                            // #24459 2011.2.24 yyagi-----------------------------------------/
-							else if ( item.Equals( "BestRankDrums" ) )
-							{
-								this.stファイル.BestRank.Drums = C変換.n値を文字列から取得して範囲内に丸めて返す( para, (int) ERANK.SS, (int) ERANK.E, (int) ERANK.UNKNOWN );
-							}
-							else if ( item.Equals( "BestRankGuitar" ) )
-							{
-								this.stファイル.BestRank.Guitar = C変換.n値を文字列から取得して範囲内に丸めて返す( para, (int) ERANK.SS, (int) ERANK.E, (int) ERANK.UNKNOWN );
-							}
-							else if ( item.Equals( "BestRankBass" ) )
-							{
-								this.stファイル.BestRank.Bass = C変換.n値を文字列から取得して範囲内に丸めて返す( para, (int) ERANK.SS, (int) ERANK.E, (int) ERANK.UNKNOWN );
-							}
-							//----------------------------------------------------------------/
-							else if ( item.Equals( "History0" ) )
-							{
-								this.stファイル.History[ 0 ] = para;
-							}
-							else if( item.Equals( "History1" ) )
-							{
-								this.stファイル.History[ 1 ] = para;
-							}
-							else if( item.Equals( "History2" ) )
-							{
-								this.stファイル.History[ 2 ] = para;
-							}
-							else if( item.Equals( "History3" ) )
-							{
-								this.stファイル.History[ 3 ] = para;
-							}
-							else if( item.Equals( "History4" ) )
-							{
-								this.stファイル.History[ 4 ] = para;
-							}
-							else if( item.Equals( "HistoryCount" ) )
-							{
-								this.stファイル.HistoryCount = C変換.n値を文字列から取得して範囲内に丸めて返す( para, 0, 99999999, 0 );
-							}
-							else if( item.Equals( "BGMAdjust" ) )
-							{
-								this.stファイル.BGMAdjust = C変換.n値を文字列から取得して返す( para, 0 );
-							}
-							continue;
-							#endregion
-							#region [ Score section ]
-						Label_03B9:
-                                                if ( item.Equals( "HiScore1" ) )
-											    {
-												    c演奏記録.nハイスコア[ 0 ] = int.Parse( para );
-											    }
-											    else if ( item.Equals( "HiScore2" ) )
-											    {
-										    		c演奏記録.nハイスコア[ 1 ] = int.Parse( para );
-									    		}
-								    			else if ( item.Equals( "HiScore3" ) )
-							    				{
-						    						c演奏記録.nハイスコア[ 2 ] = int.Parse( para );
-					    						}
-				    							else if ( item.Equals( "HiScore4" ) )
-											    {
-			    									c演奏記録.nハイスコア[ 3 ] = int.Parse( para );
-		    									}
-	    										else if ( item.Equals( "HiScore5" ) )
-    											{
-												    c演奏記録.nハイスコア[ 4 ] = int.Parse( para );
-											    }
-							if( item.Equals( "PlaySkill" ) )
-							{
-                                try
+                                #region [ section ]
+
+                                if (str[0] == '[')
                                 {
-								    c演奏記録.db演奏型スキル値 = (double) decimal.Parse( para );
+                                    StringBuilder builder = new StringBuilder(0x20);
+                                    int num = 1;
+                                    while ((num < str.Length) && (str[num] != ']'))
+                                    {
+                                        builder.Append(str[num++]);
+                                    }
+
+                                    string str2 = builder.ToString();
+                                    if (str2.Equals("File"))
+                                    {
+                                        section = Eセクション種別.File;
+                                    }
+                                    else if (str2.Equals("HiScore.Drums"))
+                                    {
+                                        section = Eセクション種別.HiScoreDrums;
+                                    }
+                                    else if (str2.Equals("HiSkill.Drums"))
+                                    {
+                                        section = Eセクション種別.HiSkillDrums;
+                                    }
+                                    else if (str2.Equals("HiScore.Guitar"))
+                                    {
+                                        section = Eセクション種別.HiScoreGuitar;
+                                    }
+                                    else if (str2.Equals("HiSkill.Guitar"))
+                                    {
+                                        section = Eセクション種別.HiSkillGuitar;
+                                    }
+                                    else if (str2.Equals("HiScore.Bass"))
+                                    {
+                                        section = Eセクション種別.HiScoreBass;
+                                    }
+                                    else if (str2.Equals("HiSkill.Bass"))
+                                    {
+                                        section = Eセクション種別.HiSkillBass;
+                                    }
+                                    // #23595 2011.1.9 ikanick
+                                    else if (str2.Equals("LastPlay.Drums"))
+                                    {
+                                        section = Eセクション種別.LastPlayDrums;
+                                    }
+                                    else if (str2.Equals("LastPlay.Guitar"))
+                                    {
+                                        section = Eセクション種別.LastPlayGuitar;
+                                    }
+                                    else if (str2.Equals("LastPlay.Bass"))
+                                    {
+                                        section = Eセクション種別.LastPlayBass;
+                                    }
+                                    //----------------------------------------------------
+                                    else
+                                    {
+                                        section = Eセクション種別.Unknown;
+                                    }
                                 }
-                                catch
+
+                                #endregion
+
+                                else
                                 {
-                                    c演奏記録.db演奏型スキル値 = 0.0;
-                                }
-							}
-							else if( item.Equals( "Skill" ) )
-							{
-                                try
-                                {
-								    c演奏記録.dbゲーム型スキル値 = (double) decimal.Parse( para );
-                                }
-                                catch
-                                {
-                                    c演奏記録.dbゲーム型スキル値 = 0.0;
-                                }
-							}
-							else if( item.Equals( "Perfect" ) )
-							{
-								c演奏記録.nPerfect数 = int.Parse( para );
-							}
-							else if( item.Equals( "Great" ) )
-							{
-								c演奏記録.nGreat数 = int.Parse( para );
-							}
-							else if( item.Equals( "Good" ) )
-							{
-								c演奏記録.nGood数 = int.Parse( para );
-							}
-							else if( item.Equals( "Poor" ) )
-							{
-								c演奏記録.nPoor数 = int.Parse( para );
-							}
-							else if( item.Equals( "Miss" ) )
-							{
-								c演奏記録.nMiss数 = int.Parse( para );
-							}
-                            else if( item.Equals( "Roll" ) )
-                            {
-								c演奏記録.n連打数 = int.Parse( para );
-                            }
-							else if( item.Equals( "MaxCombo" ) )
-							{
-								c演奏記録.n最大コンボ数 = int.Parse( para );
-							}
-							else if( item.Equals( "TotalChips" ) )
-							{
-								c演奏記録.n全チップ数 = int.Parse( para );
-							}
-							else if( item.Equals( "AutoPlay" ) )
-							{
-								// LCなし               LCあり               CYとRDが別           Gt/Bs autolane/pick
-								if( para.Length == 9 || para.Length == 10 || para.Length == 11 || para.Length == 21 )
-								{
-									for( int i = 0; i < para.Length; i++ )
-									{
-										c演奏記録.bAutoPlay[ i ] = this.ONorOFF( para[ i ] );
-									}
-								}
-							}
-							else if ( item.Equals( "Risky" ) )
-							{
-								c演奏記録.nRisky = int.Parse( para );
-							}
-							else if ( item.Equals( "TightDrums" ) )
-							{
-								c演奏記録.bTight = C変換.bONorOFF( para[ 0 ] );
-							}
-							else if ( item.Equals( "SuddenDrums" ) )
-							{
-								c演奏記録.bSudden.Drums = C変換.bONorOFF( para[ 0 ] );
-							}
-							else if ( item.Equals( "SuddenGuitar" ) )
-							{
-								c演奏記録.bSudden.Guitar = C変換.bONorOFF( para[ 0 ] );
-							}
-							else if ( item.Equals( "SuddenBass" ) )
-							{
-								c演奏記録.bSudden.Bass = C変換.bONorOFF( para[ 0 ] );
-							}
-							else if ( item.Equals( "HiddenDrums" ) )
-							{
-								c演奏記録.bHidden.Drums = C変換.bONorOFF( para[ 0 ] );
-							}
-							else if ( item.Equals( "HiddenGuitar" ) )
-							{
-								c演奏記録.bHidden.Guitar = C変換.bONorOFF( para[ 0 ] );
-							}
-							else if ( item.Equals( "HiddenBass" ) )
-							{
-								c演奏記録.bHidden.Bass = C変換.bONorOFF( para[ 0 ] );
-							}
-							else if ( item.Equals( "InvisibleDrums" ) )
-							{
-								c演奏記録.eInvisible.Drums = (EInvisible) int.Parse( para );
-							}
-							else if ( item.Equals( "InvisibleGuitar" ) )
-							{
-								c演奏記録.eInvisible.Guitar = (EInvisible) int.Parse( para );
-							}
-							else if ( item.Equals( "InvisibleBass" ) )
-							{
-								c演奏記録.eInvisible.Bass = (EInvisible) int.Parse( para );
-							}
-							else if ( item.Equals( "ReverseDrums" ) )
-							{
-								c演奏記録.bReverse.Drums = C変換.bONorOFF( para[ 0 ] );
-							}
-							else if ( item.Equals( "ReverseGuitar" ) )
-							{
-								c演奏記録.bReverse.Guitar = C変換.bONorOFF( para[ 0 ] );
-							}
-							else if ( item.Equals( "ReverseBass" ) )
-							{
-								c演奏記録.bReverse.Bass = C変換.bONorOFF( para[ 0 ] );
-							}
-							#endregion
-							else
-							{
-								#region [ RandomGuitar ]
-								if ( item.Equals( "RandomGuitar" ) )
-								{
-									switch ( int.Parse( para ) )
-									{
-										case (int) Eランダムモード.OFF:
-											{
-												c演奏記録.eRandom.Guitar = Eランダムモード.OFF;
-												continue;
-											}
-										case (int) Eランダムモード.RANDOM:
-											{
-												c演奏記録.eRandom.Guitar = Eランダムモード.RANDOM;
-												continue;
-											}
-										case (int) Eランダムモード.SUPERRANDOM:
-											{
-												c演奏記録.eRandom.Guitar = Eランダムモード.SUPERRANDOM;
-												continue;
-											}
-										case (int) Eランダムモード.HYPERRANDOM:		// #25452 2011.6.20 yyagi
-											{
-												c演奏記録.eRandom.Guitar = Eランダムモード.SUPERRANDOM;
-												continue;
-											}
-									}
-									throw new Exception( "RandomGuitar の値が無効です。" );
-								}
-								#endregion
-								#region [ RandomBass ]
-								if ( item.Equals( "RandomBass" ) )
-								{
-									switch ( int.Parse( para ) )
-									{
-										case (int) Eランダムモード.OFF:
-											{
-												c演奏記録.eRandom.Bass = Eランダムモード.OFF;
-												continue;
-											}
-										case (int) Eランダムモード.RANDOM:
-											{
-												c演奏記録.eRandom.Bass = Eランダムモード.RANDOM;
-												continue;
-											}
-										case (int) Eランダムモード.SUPERRANDOM:
-											{
-												c演奏記録.eRandom.Bass = Eランダムモード.SUPERRANDOM;
-												continue;
-											}
-										case (int) Eランダムモード.HYPERRANDOM:		// #25452 2011.6.20 yyagi
-											{
-												c演奏記録.eRandom.Bass = Eランダムモード.SUPERRANDOM;
-												continue;
-											}
-									}
-									throw new Exception( "RandomBass の値が無効です。" );
-								}
-								#endregion
-								#region [ LightGuitar ]
-								if ( item.Equals( "LightGuitar" ) )
-								{
-									c演奏記録.bLight.Guitar = C変換.bONorOFF( para[ 0 ] );
-								}
-								#endregion
-								#region [ LightBass ]
-								else if ( item.Equals( "LightBass" ) )
-								{
-									c演奏記録.bLight.Bass = C変換.bONorOFF( para[ 0 ] );
-								}
-								#endregion
-								#region [ LeftGuitar ]
-								else if ( item.Equals( "LeftGuitar" ) )
-								{
-									c演奏記録.bLeft.Guitar = C変換.bONorOFF( para[ 0 ] );
-								}
-								#endregion
-								#region [ LeftBass ]
-								else if ( item.Equals( "LeftBass" ) )
-								{
-									c演奏記録.bLeft.Bass = C変換.bONorOFF( para[ 0 ] );
-								}
-								#endregion
-								else
-								{
-									#region [ Dark ]
-									if ( item.Equals( "Dark" ) )
-									{
-										switch ( int.Parse( para ) )
-										{
-											case 0:
-												{
-													c演奏記録.eDark = Eダークモード.OFF;
-													continue;
-												}
-											case 1:
-												{
-													c演奏記録.eDark = Eダークモード.HALF;
-													continue;
-												}
-											case 2:
-												{
-													c演奏記録.eDark = Eダークモード.FULL;
-													continue;
-												}
-										}
-										throw new Exception( "Dark の値が無効です。" );
-									}
-									#endregion
-									#region [ ScrollSpeedDrums ]
-									if ( item.Equals( "ScrollSpeedDrums" ) )
-									{
-										c演奏記録.f譜面スクロール速度.Drums = (float) decimal.Parse( para );
-									}
-									#endregion
-									#region [ ScrollSpeedGuitar ]
-									else if ( item.Equals( "ScrollSpeedGuitar" ) )
-									{
-										c演奏記録.f譜面スクロール速度.Guitar = (float) decimal.Parse( para );
-									}
-									#endregion
-									#region [ ScrollSpeedBass ]
-									else if ( item.Equals( "ScrollSpeedBass" ) )
-									{
-										c演奏記録.f譜面スクロール速度.Bass = (float) decimal.Parse( para );
-									}
-									#endregion
-									#region [ PlaySpeed ]
-									else if ( item.Equals( "PlaySpeed" ) )
-									{
-										string[] strArray2 = para.Split( new char[] { '/' } );
-										if ( strArray2.Length == 2 )
-										{
-											c演奏記録.n演奏速度分子 = int.Parse( strArray2[ 0 ] );
-											c演奏記録.n演奏速度分母 = int.Parse( strArray2[ 1 ] );
-										}
-									}
-									#endregion
-									else
-									{
-										#region [ Guitar ]
-										if ( item.Equals( "Guitar" ) )
-										{
-											c演奏記録.bGuitar有効 = C変換.bONorOFF( para[ 0 ] );
-										}
-										#endregion
-										#region [ Drums ]
-										else if ( item.Equals( "Drums" ) )
-										{
-											c演奏記録.bDrums有効 = C変換.bONorOFF( para[ 0 ] );
-										}
-										#endregion
-										#region [ StageFailed ]
-										else if ( item.Equals( "StageFailed" ) )
-										{
-											c演奏記録.bSTAGEFAILED有効 = C変換.bONorOFF( para[ 0 ] );
-										}
-										#endregion
-										else
-										{
-											#region [ DamageLevel ]
-											if ( item.Equals( "DamageLevel" ) )
-											{
-												switch ( int.Parse( para ) )
-												{
-													case 0:
-														{
-															c演奏記録.eダメージレベル = Eダメージレベル.少ない;
-															continue;
-														}
-													case 1:
-														{
-															c演奏記録.eダメージレベル = Eダメージレベル.普通;
-															continue;
-														}
-													case 2:
-														{
-															c演奏記録.eダメージレベル = Eダメージレベル.大きい;
-															continue;
-														}
-												}
-												throw new Exception( "DamageLevel の値が無効です。" );
-											}
-											#endregion
-											if ( item.Equals( "UseKeyboard" ) )
-											{
-												c演奏記録.b演奏にキーボードを使用した = C変換.bONorOFF( para[ 0 ] );
-											}
-											else if ( item.Equals( "UseMIDIIN" ) )
-											{
-												c演奏記録.b演奏にMIDI入力を使用した = C変換.bONorOFF( para[ 0 ] );
-											}
-											else if ( item.Equals( "UseJoypad" ) )
-											{
-												c演奏記録.b演奏にジョイパッドを使用した = C変換.bONorOFF( para[ 0 ] );
-											}
-											else if ( item.Equals( "UseMouse" ) )
-											{
-												c演奏記録.b演奏にマウスを使用した = C変換.bONorOFF( para[ 0 ] );
-											}
-											else if ( item.Equals( "PerfectRange" ) )
-											{
-												c演奏記録.nPerfectになる範囲ms = int.Parse( para );
-											}
-											else if ( item.Equals( "GreatRange" ) )
-											{
-												c演奏記録.nGreatになる範囲ms = int.Parse( para );
-											}
-											else if ( item.Equals( "GoodRange" ) )
-											{
-												c演奏記録.nGoodになる範囲ms = int.Parse( para );
-											}
-											else if ( item.Equals( "PoorRange" ) )
-											{
-												c演奏記録.nPoorになる範囲ms = int.Parse( para );
-											}
-											else if ( item.Equals( "DTXManiaVersion" ) )
-											{
-												c演奏記録.strDTXManiaのバージョン = para;
-											}
-											else if ( item.Equals( "DateTime" ) )
-											{
-												c演奏記録.最終更新日時 = para;
-											}
-											else if ( item.Equals( "9LaneMode" ) )
-											{
-												c演奏記録.レーン9モード = C変換.bONorOFF( para[ 0 ] );
-											}
-                                            else if ( item.Equals( "HiScore1" ) )
+                                    string[] strArray = str.Split(new char[] {'='});
+                                    if (strArray.Length == 2)
+                                    {
+                                        item = strArray[0].Trim();
+                                        para = strArray[1].Trim();
+                                        switch (section)
+                                        {
+                                            case Eセクション種別.File:
                                             {
-                                                c演奏記録.nハイスコア[ 0 ] = int.Parse( para );
+                                                if (!item.Equals("Title"))
+                                                {
+                                                    goto Label_01C7;
+                                                }
+
+                                                this.stファイル.Title = para;
+                                                continue;
                                             }
-                                            else if ( item.Equals( "HiScore2" ) )
+                                            case Eセクション種別.HiScoreDrums:
+                                            case Eセクション種別.HiSkillDrums:
+                                            case Eセクション種別.HiScoreGuitar:
+                                            case Eセクション種別.HiSkillGuitar:
+                                            case Eセクション種別.HiScoreBass:
+                                            case Eセクション種別.HiSkillBass:
+                                            case Eセクション種別.LastPlayDrums: // #23595 2011.1.9 ikanick
+                                            case Eセクション種別.LastPlayGuitar:
+                                            case Eセクション種別.LastPlayBass:
                                             {
-                                                c演奏記録.nハイスコア[ 1 ] = int.Parse( para );
-                                            }
-                                            else if ( item.Equals( "HiScore3" ) )
-                                            {
-                                                c演奏記録.nハイスコア[ 2 ] = int.Parse( para );
-                                            }
-                                            else if ( item.Equals( "HiScore4" ) )
-                                            {
-                                                c演奏記録.nハイスコア[ 3 ] = int.Parse( para );
-                                            }
-                                            //else if ( item.Equals( "HiScore5" ) )
-                                            //{
-                                            //    c演奏記録.nハイスコア[ 4 ] = int.Parse( para );
-                                            //}
+                                                c演奏記録 = this.stセクション[(int) section];
+                                                if (!item.Equals("Score"))
+                                                {
+                                                    goto Label_03B9;
+                                                }
+
+                                                c演奏記録.nスコア = long.Parse(para);
 
 
-										}
-									}
-								}
-							}
-							continue;
-						}
-						catch( Exception exception )
-						{
-							Trace.TraceError( exception.ToString() );
-							Trace.TraceError( "読み込みを中断します。({0})", iniファイル名 );
-							break;
-						}
-					}
-				}
-				reader.Close();
-			}
+                                                continue;
+                                            }
+                                        }
+                                    }
+                                }
+
+                                continue;
+
+                                #region [ File section ]
+
+                                Label_01C7:
+                                if (item.Equals("Name"))
+                                {
+                                    this.stファイル.Name = para;
+                                }
+                                else if (item.Equals("PlayCountDrums"))
+                                {
+                                    this.stファイル.PlayCountDrums = C変換.n値を文字列から取得して範囲内に丸めて返す(para, 0, 99999999, 0);
+                                }
+                                else if (item.Equals("PlayCountGuitars")) // #23596 11.2.5 changed ikanick
+                                {
+                                    this.stファイル.PlayCountGuitar = C変換.n値を文字列から取得して範囲内に丸めて返す(para, 0, 99999999, 0);
+                                }
+                                else if (item.Equals("PlayCountBass"))
+                                {
+                                    this.stファイル.PlayCountBass = C変換.n値を文字列から取得して範囲内に丸めて返す(para, 0, 99999999, 0);
+                                }
+                                // #23596 10.11.16 add ikanick------------------------------------/
+                                else if (item.Equals("ClearCountDrums"))
+                                {
+                                    this.stファイル.ClearCountDrums = C変換.n値を文字列から取得して範囲内に丸めて返す(para, 0, 99999999, 0);
+                                }
+                                else if (item.Equals("ClearCountGuitars")) // #23596 11.2.5 changed ikanick
+                                {
+                                    this.stファイル.ClearCountGuitar = C変換.n値を文字列から取得して範囲内に丸めて返す(para, 0, 99999999, 0);
+                                }
+                                else if (item.Equals("ClearCountBass"))
+                                {
+                                    this.stファイル.ClearCountBass = C変換.n値を文字列から取得して範囲内に丸めて返す(para, 0, 99999999, 0);
+                                }
+                                // #24459 2011.2.24 yyagi-----------------------------------------/
+                                else if (item.Equals("BestRankDrums"))
+                                {
+                                    this.stファイル.BestRank.Drums = C変換.n値を文字列から取得して範囲内に丸めて返す(
+                                        para,
+                                        (int) ERANK.SS,
+                                        (int) ERANK.E,
+                                        (int) ERANK.UNKNOWN);
+                                }
+                                else if (item.Equals("BestRankGuitar"))
+                                {
+                                    this.stファイル.BestRank.Guitar = C変換.n値を文字列から取得して範囲内に丸めて返す(
+                                        para,
+                                        (int) ERANK.SS,
+                                        (int) ERANK.E,
+                                        (int) ERANK.UNKNOWN);
+                                }
+                                else if (item.Equals("BestRankBass"))
+                                {
+                                    this.stファイル.BestRank.Bass = C変換.n値を文字列から取得して範囲内に丸めて返す(
+                                        para,
+                                        (int) ERANK.SS,
+                                        (int) ERANK.E,
+                                        (int) ERANK.UNKNOWN);
+                                }
+                                //----------------------------------------------------------------/
+                                else if (item.Equals("History0"))
+                                {
+                                    this.stファイル.History[0] = para;
+                                }
+                                else if (item.Equals("History1"))
+                                {
+                                    this.stファイル.History[1] = para;
+                                }
+                                else if (item.Equals("History2"))
+                                {
+                                    this.stファイル.History[2] = para;
+                                }
+                                else if (item.Equals("History3"))
+                                {
+                                    this.stファイル.History[3] = para;
+                                }
+                                else if (item.Equals("History4"))
+                                {
+                                    this.stファイル.History[4] = para;
+                                }
+                                else if (item.Equals("HistoryCount"))
+                                {
+                                    this.stファイル.HistoryCount = C変換.n値を文字列から取得して範囲内に丸めて返す(para, 0, 99999999, 0);
+                                }
+                                else if (item.Equals("BGMAdjust"))
+                                {
+                                    this.stファイル.BGMAdjust = C変換.n値を文字列から取得して返す(para, 0);
+                                }
+
+                                continue;
+
+                                #endregion
+
+                                #region [ Score section ]
+
+                                Label_03B9:
+                                if (item.Equals("HiScore1"))
+                                {
+                                    c演奏記録.nハイスコア[0] = int.Parse(para);
+                                }
+                                else if (item.Equals("HiScore2"))
+                                {
+                                    c演奏記録.nハイスコア[1] = int.Parse(para);
+                                }
+                                else if (item.Equals("HiScore3"))
+                                {
+                                    c演奏記録.nハイスコア[2] = int.Parse(para);
+                                }
+                                else if (item.Equals("HiScore4"))
+                                {
+                                    c演奏記録.nハイスコア[3] = int.Parse(para);
+                                }
+                                else if (item.Equals("HiScore5"))
+                                {
+                                    c演奏記録.nハイスコア[4] = int.Parse(para);
+                                }
+
+                                if (item.Equals("PlaySkill"))
+                                {
+                                    try
+                                    {
+                                        c演奏記録.db演奏型スキル値 = (double) decimal.Parse(para);
+                                    }
+                                    catch
+                                    {
+                                        c演奏記録.db演奏型スキル値 = 0.0;
+                                    }
+                                }
+                                else if (item.Equals("Skill"))
+                                {
+                                    try
+                                    {
+                                        c演奏記録.dbゲーム型スキル値 = (double) decimal.Parse(para);
+                                    }
+                                    catch
+                                    {
+                                        c演奏記録.dbゲーム型スキル値 = 0.0;
+                                    }
+                                }
+                                else if (item.Equals("Perfect"))
+                                {
+                                    c演奏記録.nPerfect数 = int.Parse(para);
+                                }
+                                else if (item.Equals("Great"))
+                                {
+                                    c演奏記録.nGreat数 = int.Parse(para);
+                                }
+                                else if (item.Equals("Good"))
+                                {
+                                    c演奏記録.nGood数 = int.Parse(para);
+                                }
+                                else if (item.Equals("Poor"))
+                                {
+                                    c演奏記録.nPoor数 = int.Parse(para);
+                                }
+                                else if (item.Equals("Miss"))
+                                {
+                                    c演奏記録.nMiss数 = int.Parse(para);
+                                }
+                                else if (item.Equals("Roll"))
+                                {
+                                    c演奏記録.n連打数 = int.Parse(para);
+                                }
+                                else if (item.Equals("MaxCombo"))
+                                {
+                                    c演奏記録.n最大コンボ数 = int.Parse(para);
+                                }
+                                else if (item.Equals("TotalChips"))
+                                {
+                                    c演奏記録.n全チップ数 = int.Parse(para);
+                                }
+                                else if (item.Equals("AutoPlay"))
+                                {
+                                    // LCなし               LCあり               CYとRDが別           Gt/Bs autolane/pick
+                                    if (para.Length == 9 || para.Length == 10 || para.Length == 11 || para.Length == 21)
+                                    {
+                                        for (int i = 0; i < para.Length; i++)
+                                        {
+                                            c演奏記録.bAutoPlay[i] = this.ONorOFF(para[i]);
+                                        }
+                                    }
+                                }
+                                else if (item.Equals("Risky"))
+                                {
+                                    c演奏記録.nRisky = int.Parse(para);
+                                }
+                                else if (item.Equals("TightDrums"))
+                                {
+                                    c演奏記録.bTight = C変換.bONorOFF(para[0]);
+                                }
+                                else if (item.Equals("SuddenDrums"))
+                                {
+                                    c演奏記録.bSudden.Drums = C変換.bONorOFF(para[0]);
+                                }
+                                else if (item.Equals("SuddenGuitar"))
+                                {
+                                    c演奏記録.bSudden.Guitar = C変換.bONorOFF(para[0]);
+                                }
+                                else if (item.Equals("SuddenBass"))
+                                {
+                                    c演奏記録.bSudden.Bass = C変換.bONorOFF(para[0]);
+                                }
+                                else if (item.Equals("HiddenDrums"))
+                                {
+                                    c演奏記録.bHidden.Drums = C変換.bONorOFF(para[0]);
+                                }
+                                else if (item.Equals("HiddenGuitar"))
+                                {
+                                    c演奏記録.bHidden.Guitar = C変換.bONorOFF(para[0]);
+                                }
+                                else if (item.Equals("HiddenBass"))
+                                {
+                                    c演奏記録.bHidden.Bass = C変換.bONorOFF(para[0]);
+                                }
+                                else if (item.Equals("InvisibleDrums"))
+                                {
+                                    c演奏記録.eInvisible.Drums = (EInvisible) int.Parse(para);
+                                }
+                                else if (item.Equals("InvisibleGuitar"))
+                                {
+                                    c演奏記録.eInvisible.Guitar = (EInvisible) int.Parse(para);
+                                }
+                                else if (item.Equals("InvisibleBass"))
+                                {
+                                    c演奏記録.eInvisible.Bass = (EInvisible) int.Parse(para);
+                                }
+                                else if (item.Equals("ReverseDrums"))
+                                {
+                                    c演奏記録.bReverse.Drums = C変換.bONorOFF(para[0]);
+                                }
+                                else if (item.Equals("ReverseGuitar"))
+                                {
+                                    c演奏記録.bReverse.Guitar = C変換.bONorOFF(para[0]);
+                                }
+                                else if (item.Equals("ReverseBass"))
+                                {
+                                    c演奏記録.bReverse.Bass = C変換.bONorOFF(para[0]);
+                                }
+
+                                #endregion
+
+                                else
+                                {
+                                    #region [ RandomGuitar ]
+
+                                    if (item.Equals("RandomGuitar"))
+                                    {
+                                        switch (int.Parse(para))
+                                        {
+                                            case (int) Eランダムモード.OFF:
+                                            {
+                                                c演奏記録.eRandom.Guitar = Eランダムモード.OFF;
+                                                continue;
+                                            }
+                                            case (int) Eランダムモード.RANDOM:
+                                            {
+                                                c演奏記録.eRandom.Guitar = Eランダムモード.RANDOM;
+                                                continue;
+                                            }
+                                            case (int) Eランダムモード.SUPERRANDOM:
+                                            {
+                                                c演奏記録.eRandom.Guitar = Eランダムモード.SUPERRANDOM;
+                                                continue;
+                                            }
+                                            case (int) Eランダムモード.HYPERRANDOM: // #25452 2011.6.20 yyagi
+                                            {
+                                                c演奏記録.eRandom.Guitar = Eランダムモード.SUPERRANDOM;
+                                                continue;
+                                            }
+                                        }
+
+                                        throw new Exception("RandomGuitar の値が無効です。");
+                                    }
+
+                                    #endregion
+
+                                    #region [ RandomBass ]
+
+                                    if (item.Equals("RandomBass"))
+                                    {
+                                        switch (int.Parse(para))
+                                        {
+                                            case (int) Eランダムモード.OFF:
+                                            {
+                                                c演奏記録.eRandom.Bass = Eランダムモード.OFF;
+                                                continue;
+                                            }
+                                            case (int) Eランダムモード.RANDOM:
+                                            {
+                                                c演奏記録.eRandom.Bass = Eランダムモード.RANDOM;
+                                                continue;
+                                            }
+                                            case (int) Eランダムモード.SUPERRANDOM:
+                                            {
+                                                c演奏記録.eRandom.Bass = Eランダムモード.SUPERRANDOM;
+                                                continue;
+                                            }
+                                            case (int) Eランダムモード.HYPERRANDOM: // #25452 2011.6.20 yyagi
+                                            {
+                                                c演奏記録.eRandom.Bass = Eランダムモード.SUPERRANDOM;
+                                                continue;
+                                            }
+                                        }
+
+                                        throw new Exception("RandomBass の値が無効です。");
+                                    }
+
+                                    #endregion
+
+                                    #region [ LightGuitar ]
+
+                                    if (item.Equals("LightGuitar"))
+                                    {
+                                        c演奏記録.bLight.Guitar = C変換.bONorOFF(para[0]);
+                                    }
+
+                                    #endregion
+
+                                    #region [ LightBass ]
+
+                                    else if (item.Equals("LightBass"))
+                                    {
+                                        c演奏記録.bLight.Bass = C変換.bONorOFF(para[0]);
+                                    }
+
+                                    #endregion
+
+                                    #region [ LeftGuitar ]
+
+                                    else if (item.Equals("LeftGuitar"))
+                                    {
+                                        c演奏記録.bLeft.Guitar = C変換.bONorOFF(para[0]);
+                                    }
+
+                                    #endregion
+
+                                    #region [ LeftBass ]
+
+                                    else if (item.Equals("LeftBass"))
+                                    {
+                                        c演奏記録.bLeft.Bass = C変換.bONorOFF(para[0]);
+                                    }
+
+                                    #endregion
+
+                                    else
+                                    {
+                                        #region [ Dark ]
+
+                                        if (item.Equals("Dark"))
+                                        {
+                                            switch (int.Parse(para))
+                                            {
+                                                case 0:
+                                                {
+                                                    c演奏記録.eDark = Eダークモード.OFF;
+                                                    continue;
+                                                }
+                                                case 1:
+                                                {
+                                                    c演奏記録.eDark = Eダークモード.HALF;
+                                                    continue;
+                                                }
+                                                case 2:
+                                                {
+                                                    c演奏記録.eDark = Eダークモード.FULL;
+                                                    continue;
+                                                }
+                                            }
+
+                                            throw new Exception("Dark の値が無効です。");
+                                        }
+
+                                        #endregion
+
+                                        #region [ ScrollSpeedDrums ]
+
+                                        if (item.Equals("ScrollSpeedDrums"))
+                                        {
+                                            c演奏記録.f譜面スクロール速度.Drums = (float) decimal.Parse(para);
+                                        }
+
+                                        #endregion
+
+                                        #region [ ScrollSpeedGuitar ]
+
+                                        else if (item.Equals("ScrollSpeedGuitar"))
+                                        {
+                                            c演奏記録.f譜面スクロール速度.Guitar = (float) decimal.Parse(para);
+                                        }
+
+                                        #endregion
+
+                                        #region [ ScrollSpeedBass ]
+
+                                        else if (item.Equals("ScrollSpeedBass"))
+                                        {
+                                            c演奏記録.f譜面スクロール速度.Bass = (float) decimal.Parse(para);
+                                        }
+
+                                        #endregion
+
+                                        #region [ PlaySpeed ]
+
+                                        else if (item.Equals("PlaySpeed"))
+                                        {
+                                            string[] strArray2 = para.Split(new char[] {'/'});
+                                            if (strArray2.Length == 2)
+                                            {
+                                                c演奏記録.n演奏速度分子 = int.Parse(strArray2[0]);
+                                                c演奏記録.n演奏速度分母 = int.Parse(strArray2[1]);
+                                            }
+                                        }
+
+                                        #endregion
+
+                                        else
+                                        {
+                                            #region [ Guitar ]
+
+                                            if (item.Equals("Guitar"))
+                                            {
+                                                c演奏記録.bGuitar有効 = C変換.bONorOFF(para[0]);
+                                            }
+
+                                            #endregion
+
+                                            #region [ Drums ]
+
+                                            else if (item.Equals("Drums"))
+                                            {
+                                                c演奏記録.bDrums有効 = C変換.bONorOFF(para[0]);
+                                            }
+
+                                            #endregion
+
+                                            #region [ StageFailed ]
+
+                                            else if (item.Equals("StageFailed"))
+                                            {
+                                                c演奏記録.bSTAGEFAILED有効 = C変換.bONorOFF(para[0]);
+                                            }
+
+                                            #endregion
+
+                                            else
+                                            {
+                                                #region [ DamageLevel ]
+
+                                                if (item.Equals("DamageLevel"))
+                                                {
+                                                    switch (int.Parse(para))
+                                                    {
+                                                        case 0:
+                                                        {
+                                                            c演奏記録.eダメージレベル = Eダメージレベル.少ない;
+                                                            continue;
+                                                        }
+                                                        case 1:
+                                                        {
+                                                            c演奏記録.eダメージレベル = Eダメージレベル.普通;
+                                                            continue;
+                                                        }
+                                                        case 2:
+                                                        {
+                                                            c演奏記録.eダメージレベル = Eダメージレベル.大きい;
+                                                            continue;
+                                                        }
+                                                    }
+
+                                                    throw new Exception("DamageLevel の値が無効です。");
+                                                }
+
+                                                #endregion
+
+                                                if (item.Equals("UseKeyboard"))
+                                                {
+                                                    c演奏記録.b演奏にキーボードを使用した = C変換.bONorOFF(para[0]);
+                                                }
+                                                else if (item.Equals("UseMIDIIN"))
+                                                {
+                                                    c演奏記録.b演奏にMIDI入力を使用した = C変換.bONorOFF(para[0]);
+                                                }
+                                                else if (item.Equals("UseJoypad"))
+                                                {
+                                                    c演奏記録.b演奏にジョイパッドを使用した = C変換.bONorOFF(para[0]);
+                                                }
+                                                else if (item.Equals("UseMouse"))
+                                                {
+                                                    c演奏記録.b演奏にマウスを使用した = C変換.bONorOFF(para[0]);
+                                                }
+                                                else if (item.Equals("PerfectRange"))
+                                                {
+                                                    c演奏記録.nPerfectになる範囲ms = int.Parse(para);
+                                                }
+                                                else if (item.Equals("GreatRange"))
+                                                {
+                                                    c演奏記録.nGreatになる範囲ms = int.Parse(para);
+                                                }
+                                                else if (item.Equals("GoodRange"))
+                                                {
+                                                    c演奏記録.nGoodになる範囲ms = int.Parse(para);
+                                                }
+                                                else if (item.Equals("PoorRange"))
+                                                {
+                                                    c演奏記録.nPoorになる範囲ms = int.Parse(para);
+                                                }
+                                                else if (item.Equals("DTXManiaVersion"))
+                                                {
+                                                    c演奏記録.strDTXManiaのバージョン = para;
+                                                }
+                                                else if (item.Equals("DateTime"))
+                                                {
+                                                    c演奏記録.最終更新日時 = para;
+                                                }
+                                                else if (item.Equals("9LaneMode"))
+                                                {
+                                                    c演奏記録.レーン9モード = C変換.bONorOFF(para[0]);
+                                                }
+                                                else if (item.Equals("HiScore1"))
+                                                {
+                                                    c演奏記録.nハイスコア[0] = int.Parse(para);
+                                                }
+                                                else if (item.Equals("HiScore2"))
+                                                {
+                                                    c演奏記録.nハイスコア[1] = int.Parse(para);
+                                                }
+                                                else if (item.Equals("HiScore3"))
+                                                {
+                                                    c演奏記録.nハイスコア[2] = int.Parse(para);
+                                                }
+                                                else if (item.Equals("HiScore4"))
+                                                {
+                                                    c演奏記録.nハイスコア[3] = int.Parse(para);
+                                                }
+                                                //else if ( item.Equals( "HiScore5" ) )
+                                                //{
+                                                //    c演奏記録.nハイスコア[ 4 ] = int.Parse( para );
+                                                //}
+
+
+                                            }
+                                        }
+                                    }
+                                }
+
+                                continue;
+                            }
+                            catch (Exception exception)
+                            {
+                                Trace.TraceError(exception.ToString());
+                                Trace.TraceError("読み込みを中断します。({0})", iniファイル名);
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
 		}
 
 		internal void tヒストリを追加する( string str追加文字列 )
@@ -1132,100 +1212,105 @@ namespace TJAPlayer3
 		}
 		internal void t書き出し( string iniファイル名 )
 		{
-			StreamWriter writer = new StreamWriter( iniファイル名, false, Encoding.GetEncoding( "Shift_JIS" ) );
-			writer.WriteLine( "[File]" );
-			writer.WriteLine( "Title={0}", this.stファイル.Title );
-			writer.WriteLine( "Name={0}", this.stファイル.Name );
-			writer.WriteLine( "PlayCountDrums={0}", this.stファイル.PlayCountDrums );
-			writer.WriteLine( "PlayCountGuitars={0}", this.stファイル.PlayCountGuitar );
-            writer.WriteLine( "PlayCountBass={0}", this.stファイル.PlayCountBass );
-            writer.WriteLine( "ClearCountDrums={0}", this.stファイル.ClearCountDrums );       // #23596 10.11.16 add ikanick
-            writer.WriteLine( "ClearCountGuitars={0}", this.stファイル.ClearCountGuitar );    //
-            writer.WriteLine( "ClearCountBass={0}", this.stファイル.ClearCountBass );         //
-			writer.WriteLine( "BestRankDrums={0}", this.stファイル.BestRank.Drums );		// #24459 2011.2.24 yyagi
-			writer.WriteLine( "BestRankGuitar={0}", this.stファイル.BestRank.Guitar );		//
-			writer.WriteLine( "BestRankBass={0}", this.stファイル.BestRank.Bass );			//
-			writer.WriteLine( "HistoryCount={0}", this.stファイル.HistoryCount );
-			writer.WriteLine( "History0={0}", this.stファイル.History[ 0 ] );
-			writer.WriteLine( "History1={0}", this.stファイル.History[ 1 ] );
-			writer.WriteLine( "History2={0}", this.stファイル.History[ 2 ] );
-			writer.WriteLine( "History3={0}", this.stファイル.History[ 3 ] );
-			writer.WriteLine( "History4={0}", this.stファイル.History[ 4 ] );
-			writer.WriteLine( "BGMAdjust={0}", this.stファイル.BGMAdjust );
-			writer.WriteLine();
-			for( int i = 0; i < 9; i++ )
-			{
-                string[] strArray = { "HiScore.Drums", "HiSkill.Drums", "HiScore.Guitar", "HiSkill.Guitar", "HiScore.Bass", "HiSkill.Bass", "LastPlay.Drums", "LastPlay.Guitar", "LastPlay.Bass" };
-				writer.WriteLine( "[{0}]", strArray[ i ] );
-				writer.WriteLine( "Score={0}", this.stセクション[ i ].nスコア );
-				writer.WriteLine( "PlaySkill={0}", this.stセクション[ i ].db演奏型スキル値 );
-				writer.WriteLine( "Skill={0}", this.stセクション[ i ].dbゲーム型スキル値 );
-				writer.WriteLine( "Perfect={0}", this.stセクション[ i ].nPerfect数 );
-				writer.WriteLine( "Great={0}", this.stセクション[ i ].nGreat数 );
-				writer.WriteLine( "Good={0}", this.stセクション[ i ].nGood数 );
-				writer.WriteLine( "Poor={0}", this.stセクション[ i ].nPoor数 );
-				writer.WriteLine( "Miss={0}", this.stセクション[ i ].nMiss数 );
-				writer.WriteLine( "MaxCombo={0}", this.stセクション[ i ].n最大コンボ数 );
-				writer.WriteLine( "TotalChips={0}", this.stセクション[ i ].n全チップ数 );
-				writer.Write( "AutoPlay=" );
-				for ( int j = 0; j < (int) Eレーン.MAX; j++ )
-				{
-					writer.Write( this.stセクション[ i ].bAutoPlay[ j ] ? 1 : 0 );
-				}
-				writer.WriteLine();
-				writer.WriteLine( "Risky={0}", this.stセクション[ i ].nRisky );
-				writer.WriteLine( "SuddenDrums={0}", this.stセクション[ i ].bSudden.Drums ? 1 : 0 );
-				writer.WriteLine( "SuddenGuitar={0}", this.stセクション[ i ].bSudden.Guitar ? 1 : 0 );
-				writer.WriteLine( "SuddenBass={0}", this.stセクション[ i ].bSudden.Bass ? 1 : 0 );
-				writer.WriteLine( "HiddenDrums={0}", this.stセクション[ i ].bHidden.Drums ? 1 : 0 );
-				writer.WriteLine( "HiddenGuitar={0}", this.stセクション[ i ].bHidden.Guitar ? 1 : 0 );
-				writer.WriteLine( "HiddenBass={0}", this.stセクション[ i ].bHidden.Bass ? 1 : 0 );
-				writer.WriteLine( "InvisibleDrums={0}", (int) this.stセクション[ i ].eInvisible.Drums );
-				writer.WriteLine( "InvisibleGuitar={0}", (int) this.stセクション[ i ].eInvisible.Guitar );
-				writer.WriteLine( "InvisibleBass={0}", (int) this.stセクション[ i ].eInvisible.Bass );
-				writer.WriteLine( "ReverseDrums={0}", this.stセクション[ i ].bReverse.Drums ? 1 : 0 );
-				writer.WriteLine( "ReverseGuitar={0}", this.stセクション[ i ].bReverse.Guitar ? 1 : 0 );
-				writer.WriteLine( "ReverseBass={0}", this.stセクション[ i ].bReverse.Bass ? 1 : 0 );
-				writer.WriteLine( "TightDrums={0}", this.stセクション[ i ].bTight ? 1 : 0 );
-				writer.WriteLine( "RandomGuitar={0}", (int) this.stセクション[ i ].eRandom.Guitar );
-				writer.WriteLine( "RandomBass={0}", (int) this.stセクション[ i ].eRandom.Bass );
-				writer.WriteLine( "LightGuitar={0}", this.stセクション[ i ].bLight.Guitar ? 1 : 0 );
-				writer.WriteLine( "LightBass={0}", this.stセクション[ i ].bLight.Bass ? 1 : 0 );
-				writer.WriteLine( "LeftGuitar={0}", this.stセクション[ i ].bLeft.Guitar ? 1 : 0 );
-				writer.WriteLine( "LeftBass={0}", this.stセクション[ i ].bLeft.Bass ? 1 : 0 );
-				writer.WriteLine( "Dark={0}", (int) this.stセクション[ i ].eDark );
-				writer.WriteLine( "ScrollSpeedDrums={0}", this.stセクション[ i ].f譜面スクロール速度.Drums );
-				writer.WriteLine( "ScrollSpeedGuitar={0}", this.stセクション[ i ].f譜面スクロール速度.Guitar );
-				writer.WriteLine( "ScrollSpeedBass={0}", this.stセクション[ i ].f譜面スクロール速度.Bass );
-				writer.WriteLine( "PlaySpeed={0}/{1}", this.stセクション[ i ].n演奏速度分子, this.stセクション[ i ].n演奏速度分母 );
-				writer.WriteLine( "Guitar={0}", this.stセクション[ i ].bGuitar有効 ? 1 : 0 );
-				writer.WriteLine( "Drums={0}", this.stセクション[ i ].bDrums有効 ? 1 : 0 );
-				writer.WriteLine( "StageFailed={0}", this.stセクション[ i ].bSTAGEFAILED有効 ? 1 : 0 );
-				writer.WriteLine( "DamageLevel={0}", (int) this.stセクション[ i ].eダメージレベル );
-				writer.WriteLine( "UseKeyboard={0}", this.stセクション[ i ].b演奏にキーボードを使用した ? 1 : 0 );
-				writer.WriteLine( "UseMIDIIN={0}", this.stセクション[ i ].b演奏にMIDI入力を使用した ? 1 : 0 );
-				writer.WriteLine( "UseJoypad={0}", this.stセクション[ i ].b演奏にジョイパッドを使用した ? 1 : 0 );
-				writer.WriteLine( "UseMouse={0}", this.stセクション[ i ].b演奏にマウスを使用した ? 1 : 0 );
-				writer.WriteLine( "PerfectRange={0}", this.stセクション[ i ].nPerfectになる範囲ms );
-				writer.WriteLine( "GreatRange={0}", this.stセクション[ i ].nGreatになる範囲ms );
-				writer.WriteLine( "GoodRange={0}", this.stセクション[ i ].nGoodになる範囲ms );
-				writer.WriteLine( "PoorRange={0}", this.stセクション[ i ].nPoorになる範囲ms );
-				writer.WriteLine( "DTXManiaVersion={0}", this.stセクション[ i ].strDTXManiaのバージョン );
-				writer.WriteLine( "DateTime={0}", this.stセクション[ i ].最終更新日時 );
-                writer.WriteLine( "HiScore1={0}", this.stセクション[ i ].nハイスコア[ 0 ] );
-                writer.WriteLine( "HiScore2={0}", this.stセクション[ i ].nハイスコア[ 1 ] );
-                writer.WriteLine( "HiScore3={0}", this.stセクション[ i ].nハイスコア[ 2 ] );
-                writer.WriteLine( "HiScore4={0}", this.stセクション[ i ].nハイスコア[ 3 ] );
-                writer.WriteLine( "HiScore5={0}", this.stセクション[ i ].nハイスコア[ 4 ] );
-                writer.WriteLine( "Roll1={0}", this.stセクション[ i ].n連打[ 0 ] );
-                writer.WriteLine( "Roll2={0}", this.stセクション[ i ].n連打[ 1 ] );
-                writer.WriteLine( "Roll3={0}", this.stセクション[ i ].n連打[ 2 ] );
-                writer.WriteLine( "Roll4={0}", this.stセクション[ i ].n連打[ 3 ] );
-                writer.WriteLine( "Roll5={0}", this.stセクション[ i ].n連打[ 4 ] );
-			}
+            using (var writer = new StreamWriter(iniファイル名, false, Encoding.GetEncoding("Shift_JIS")))
+            {
+                writer.WriteLine("[File]");
+                writer.WriteLine("Title={0}", this.stファイル.Title);
+                writer.WriteLine("Name={0}", this.stファイル.Name);
+                writer.WriteLine("PlayCountDrums={0}", this.stファイル.PlayCountDrums);
+                writer.WriteLine("PlayCountGuitars={0}", this.stファイル.PlayCountGuitar);
+                writer.WriteLine("PlayCountBass={0}", this.stファイル.PlayCountBass);
+                writer.WriteLine("ClearCountDrums={0}", this.stファイル.ClearCountDrums); // #23596 10.11.16 add ikanick
+                writer.WriteLine("ClearCountGuitars={0}", this.stファイル.ClearCountGuitar); //
+                writer.WriteLine("ClearCountBass={0}", this.stファイル.ClearCountBass); //
+                writer.WriteLine("BestRankDrums={0}", this.stファイル.BestRank.Drums); // #24459 2011.2.24 yyagi
+                writer.WriteLine("BestRankGuitar={0}", this.stファイル.BestRank.Guitar); //
+                writer.WriteLine("BestRankBass={0}", this.stファイル.BestRank.Bass); //
+                writer.WriteLine("HistoryCount={0}", this.stファイル.HistoryCount);
+                writer.WriteLine("History0={0}", this.stファイル.History[0]);
+                writer.WriteLine("History1={0}", this.stファイル.History[1]);
+                writer.WriteLine("History2={0}", this.stファイル.History[2]);
+                writer.WriteLine("History3={0}", this.stファイル.History[3]);
+                writer.WriteLine("History4={0}", this.stファイル.History[4]);
+                writer.WriteLine("BGMAdjust={0}", this.stファイル.BGMAdjust);
+                writer.WriteLine();
+                for (int i = 0; i < 9; i++)
+                {
+                    string[] strArray =
+                    {
+                        "HiScore.Drums", "HiSkill.Drums", "HiScore.Guitar", "HiSkill.Guitar", "HiScore.Bass", 
+                        "HiSkill.Bass", "LastPlay.Drums", "LastPlay.Guitar", "LastPlay.Bass"
+                    };
+                    writer.WriteLine("[{0}]", strArray[i]);
+                    writer.WriteLine("Score={0}", this.stセクション[i].nスコア);
+                    writer.WriteLine("PlaySkill={0}", this.stセクション[i].db演奏型スキル値);
+                    writer.WriteLine("Skill={0}", this.stセクション[i].dbゲーム型スキル値);
+                    writer.WriteLine("Perfect={0}", this.stセクション[i].nPerfect数);
+                    writer.WriteLine("Great={0}", this.stセクション[i].nGreat数);
+                    writer.WriteLine("Good={0}", this.stセクション[i].nGood数);
+                    writer.WriteLine("Poor={0}", this.stセクション[i].nPoor数);
+                    writer.WriteLine("Miss={0}", this.stセクション[i].nMiss数);
+                    writer.WriteLine("MaxCombo={0}", this.stセクション[i].n最大コンボ数);
+                    writer.WriteLine("TotalChips={0}", this.stセクション[i].n全チップ数);
+                    writer.Write("AutoPlay=");
+                    for (int j = 0; j < (int) Eレーン.MAX; j++)
+                    {
+                        writer.Write(this.stセクション[i].bAutoPlay[j] ? 1 : 0);
+                    }
 
-			writer.Close();
-		}
+                    writer.WriteLine();
+                    writer.WriteLine("Risky={0}", this.stセクション[i].nRisky);
+                    writer.WriteLine("SuddenDrums={0}", this.stセクション[i].bSudden.Drums ? 1 : 0);
+                    writer.WriteLine("SuddenGuitar={0}", this.stセクション[i].bSudden.Guitar ? 1 : 0);
+                    writer.WriteLine("SuddenBass={0}", this.stセクション[i].bSudden.Bass ? 1 : 0);
+                    writer.WriteLine("HiddenDrums={0}", this.stセクション[i].bHidden.Drums ? 1 : 0);
+                    writer.WriteLine("HiddenGuitar={0}", this.stセクション[i].bHidden.Guitar ? 1 : 0);
+                    writer.WriteLine("HiddenBass={0}", this.stセクション[i].bHidden.Bass ? 1 : 0);
+                    writer.WriteLine("InvisibleDrums={0}", (int) this.stセクション[i].eInvisible.Drums);
+                    writer.WriteLine("InvisibleGuitar={0}", (int) this.stセクション[i].eInvisible.Guitar);
+                    writer.WriteLine("InvisibleBass={0}", (int) this.stセクション[i].eInvisible.Bass);
+                    writer.WriteLine("ReverseDrums={0}", this.stセクション[i].bReverse.Drums ? 1 : 0);
+                    writer.WriteLine("ReverseGuitar={0}", this.stセクション[i].bReverse.Guitar ? 1 : 0);
+                    writer.WriteLine("ReverseBass={0}", this.stセクション[i].bReverse.Bass ? 1 : 0);
+                    writer.WriteLine("TightDrums={0}", this.stセクション[i].bTight ? 1 : 0);
+                    writer.WriteLine("RandomGuitar={0}", (int) this.stセクション[i].eRandom.Guitar);
+                    writer.WriteLine("RandomBass={0}", (int) this.stセクション[i].eRandom.Bass);
+                    writer.WriteLine("LightGuitar={0}", this.stセクション[i].bLight.Guitar ? 1 : 0);
+                    writer.WriteLine("LightBass={0}", this.stセクション[i].bLight.Bass ? 1 : 0);
+                    writer.WriteLine("LeftGuitar={0}", this.stセクション[i].bLeft.Guitar ? 1 : 0);
+                    writer.WriteLine("LeftBass={0}", this.stセクション[i].bLeft.Bass ? 1 : 0);
+                    writer.WriteLine("Dark={0}", (int) this.stセクション[i].eDark);
+                    writer.WriteLine("ScrollSpeedDrums={0}", this.stセクション[i].f譜面スクロール速度.Drums);
+                    writer.WriteLine("ScrollSpeedGuitar={0}", this.stセクション[i].f譜面スクロール速度.Guitar);
+                    writer.WriteLine("ScrollSpeedBass={0}", this.stセクション[i].f譜面スクロール速度.Bass);
+                    writer.WriteLine("PlaySpeed={0}/{1}", this.stセクション[i].n演奏速度分子, this.stセクション[i].n演奏速度分母);
+                    writer.WriteLine("Guitar={0}", this.stセクション[i].bGuitar有効 ? 1 : 0);
+                    writer.WriteLine("Drums={0}", this.stセクション[i].bDrums有効 ? 1 : 0);
+                    writer.WriteLine("StageFailed={0}", this.stセクション[i].bSTAGEFAILED有効 ? 1 : 0);
+                    writer.WriteLine("DamageLevel={0}", (int) this.stセクション[i].eダメージレベル);
+                    writer.WriteLine("UseKeyboard={0}", this.stセクション[i].b演奏にキーボードを使用した ? 1 : 0);
+                    writer.WriteLine("UseMIDIIN={0}", this.stセクション[i].b演奏にMIDI入力を使用した ? 1 : 0);
+                    writer.WriteLine("UseJoypad={0}", this.stセクション[i].b演奏にジョイパッドを使用した ? 1 : 0);
+                    writer.WriteLine("UseMouse={0}", this.stセクション[i].b演奏にマウスを使用した ? 1 : 0);
+                    writer.WriteLine("PerfectRange={0}", this.stセクション[i].nPerfectになる範囲ms);
+                    writer.WriteLine("GreatRange={0}", this.stセクション[i].nGreatになる範囲ms);
+                    writer.WriteLine("GoodRange={0}", this.stセクション[i].nGoodになる範囲ms);
+                    writer.WriteLine("PoorRange={0}", this.stセクション[i].nPoorになる範囲ms);
+                    writer.WriteLine("DTXManiaVersion={0}", this.stセクション[i].strDTXManiaのバージョン);
+                    writer.WriteLine("DateTime={0}", this.stセクション[i].最終更新日時);
+                    writer.WriteLine("HiScore1={0}", this.stセクション[i].nハイスコア[0]);
+                    writer.WriteLine("HiScore2={0}", this.stセクション[i].nハイスコア[1]);
+                    writer.WriteLine("HiScore3={0}", this.stセクション[i].nハイスコア[2]);
+                    writer.WriteLine("HiScore4={0}", this.stセクション[i].nハイスコア[3]);
+                    writer.WriteLine("HiScore5={0}", this.stセクション[i].nハイスコア[4]);
+                    writer.WriteLine("Roll1={0}", this.stセクション[i].n連打[0]);
+                    writer.WriteLine("Roll2={0}", this.stセクション[i].n連打[1]);
+                    writer.WriteLine("Roll3={0}", this.stセクション[i].n連打[2]);
+                    writer.WriteLine("Roll4={0}", this.stセクション[i].n連打[3]);
+                    writer.WriteLine("Roll5={0}", this.stセクション[i].n連打[4]);
+                }
+            }
+        }
 		internal void t全演奏記録セクションの整合性をチェックし不整合があればリセットする()
 		{
 			for( int i = 0; i < 9; i++ )
