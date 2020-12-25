@@ -82,9 +82,6 @@
     <Reference Include="FFmpeg.AutoGen, Version=4.3.1.0, Culture=neutral, PublicKeyToken=9b7632533a381715, processorArchitecture=MSIL">
       <HintPath>..\packages\FFmpeg.AutoGen.4.3.1\lib\net472\FFmpeg.AutoGen.dll</HintPath>
     </Reference>
-    <Reference Include="Hnx8.ReadJEnc, Version=1.3.1.2, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ReadJEnc.1.3.1.2\lib\net47\Hnx8.ReadJEnc.dll</HintPath>
-    </Reference>
     <Reference Include="OpenTK, Version=3.2.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
       <HintPath>..\packages\OpenTK.3.2\lib\net20\OpenTK.dll</HintPath>
     </Reference>

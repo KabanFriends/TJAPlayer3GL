@@ -1508,12 +1508,13 @@ namespace TJAPlayer3
                         //TimeSpan span;
                         string[] files = Directory.GetFiles(this.strフォルダ名, "*.tja");
 
-                        StreamReader reader = new StreamReader(strファイル名, Encoding.GetEncoding("Shift_JIS"));
+                        Encoding enc = CReadTextEncoding.JudgeFileEncoding(strファイル名);
+                        StreamReader reader = new StreamReader(strファイル名, enc);
                         string str2 = reader.ReadToEnd();
                         reader.Close();
 
-                        //StreamReader reader2 = new StreamReader( this.strフォルダ名 + "test.tja", Encoding.GetEncoding( "Shift_JIS" ) );
-                        StreamReader reader2 = new StreamReader(files[0], Encoding.GetEncoding("Shift_JIS"));
+                        Encoding enc2 = CReadTextEncoding.JudgeFileEncoding(files[0]);
+                        StreamReader reader2 = new StreamReader(files[0], enc2);
                         string str3 = reader2.ReadToEnd();
                         reader2.Close();
 
@@ -1529,7 +1530,8 @@ namespace TJAPlayer3
                         //DateTime timeBeginLoad = DateTime.Now;
                         //TimeSpan span;
 
-                        StreamReader reader = new StreamReader(strファイル名, Encoding.GetEncoding("Shift_JIS"));
+                        Encoding enc = CReadTextEncoding.JudgeFileEncoding(strファイル名);
+                        StreamReader reader = new StreamReader(strファイル名, enc);
                         string str2 = reader.ReadToEnd();
                         reader.Close();
 

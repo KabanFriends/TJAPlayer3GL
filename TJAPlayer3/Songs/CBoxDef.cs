@@ -66,7 +66,8 @@ namespace TJAPlayer3
 
 		private CBoxDef(DirectoryInfo directoryInfo, string boxdefファイル名)
 		{
-            using (var reader = new StreamReader(boxdefファイル名, Encoding.GetEncoding("Shift_JIS")))
+            Encoding enc = CReadTextEncoding.JudgeFileEncoding(boxdefファイル名);
+            using (var reader = new StreamReader(boxdefファイル名, enc))
             {
                 string str = null;
                 while ((str = reader.ReadLine()) != null)

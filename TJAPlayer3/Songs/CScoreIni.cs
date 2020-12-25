@@ -523,7 +523,8 @@ namespace TJAPlayer3
 			if( File.Exists( iniファイル名 ) )
 			{
 				string str;
-                using (var reader = new StreamReader(iniファイル名, Encoding.GetEncoding("Shift_JIS")))
+                Encoding enc = CReadTextEncoding.JudgeFileEncoding(iniファイル名);
+                using (var reader = new StreamReader(iniファイル名, enc))
                 {
                     while ((str = reader.ReadLine()) != null)
                     {
@@ -1212,7 +1213,7 @@ namespace TJAPlayer3
 		}
 		internal void t書き出し( string iniファイル名 )
 		{
-            using (var writer = new StreamWriter(iniファイル名, false, Encoding.GetEncoding("Shift_JIS")))
+            using (var writer = new StreamWriter(iniファイル名, false, Encoding.GetEncoding("UTF-8")))
             {
                 writer.WriteLine("[File]");
                 writer.WriteLine("Title={0}", this.stファイル.Title);
