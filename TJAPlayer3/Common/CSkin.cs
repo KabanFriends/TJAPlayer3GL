@@ -203,7 +203,7 @@ namespace TJAPlayer3
                 {
                     try
                     {
-                        this.rSound[i] = TJAPlayer3.Sound管理.tサウンドを生成する(CSkin.Path(this.strファイル名), _soundGroup);
+                        this.rSound[i] = TJAPlayer3.Sound管理?.tサウンドを生成する(CSkin.Path(this.strファイル名), _soundGroup);
                     }
                     catch
                     {
